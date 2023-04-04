@@ -37,13 +37,13 @@ In order to do so, you need to install the venv package. Open the cmd and instal
 Now you need to download the project. To do so, you need to clone this repository into your device.
 Here, I will use the Visual Studio Code interface, but you can use whatever, even cmd.
 
-3.1. Open the command palette with the key combination of Ctrl + Shift + P.
+- Open the command palette with the key combination of Ctrl + Shift + P.
 
-3.2. At the command palette prompt, enter gitcl, select the Git: Clone command, then select Clone from GitHub and press Enter.
+- At the command palette prompt, enter gitcl, select the Git: Clone command, then select Clone from GitHub and press Enter.
 
-3.3. When prompted for the Repository URL, select clone from GitHub, then press Enter.
+- When prompted for the Repository URL, select clone from GitHub, then press Enter.
 
-3.4. If you are asked to sign into GitHub, complete the sign-in process.
+- If you are asked to sign into GitHub, complete the sign-in process.
 
 Note: This section was taken from the microsoft official documentation: [GitHub in VSCode](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=create-repo-command-palette%2Cinitialize-repo-activity-bar%2Ccreate-branch-command-palette%2Ccommit-changes-command-palette%2Cpush-command-palette).
 
