@@ -1,0 +1,3 @@
+
+class SequenceTest:
+    pass
