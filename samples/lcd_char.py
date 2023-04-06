@@ -25,6 +25,7 @@ binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)[1]
 # Find contours
 contours = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 
+# Convert to binary (text detection)
 binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 37, 35)
 
 # Detect LCD
@@ -50,7 +51,7 @@ else:
     lcd_text = lcd_text.replace(" ", "").replace("\n\n", "\n")
     print(lcd_text)
 
-# Evaluation
+# Validation
 test = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGH\n' \
         'IJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnop\n' \
         'qrstuvwxyz{|}~!"#$%&\'()*+,-./0123456789:\n' \
