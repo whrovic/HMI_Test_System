@@ -4,10 +4,10 @@ class PosCenter:
         self.x = x
         self.y = y
     
-    def setPos(new_x, new_y):
-        PosCenter.x = new_x
-        PosCenter.y = new_y
+    def setPos(self, new_x, new_y):
+        self.x = new_x
+        self.y = new_y
     
-    def getPos():
-        return {PosCenter.x, PosCenter.y}
+    def getPos(self):
+        return {self.x, self.y}
         

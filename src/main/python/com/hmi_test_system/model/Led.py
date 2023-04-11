@@ -1,20 +1,20 @@
 import PosCenter
 
 class Led(PosCenter):
-    #name = "test"
-    def __init__(self, name, colourTest):
+    def __init__(self, name, colourTest, x, y):
+        super().__init__(x, y)
         self.name = name
         self.colourTest = colourTest
     
-    def setName(newName):
-        Led.name = newName
+    def setName(self, name):
+        self.name = name
     
-    def getName():
-        return Led.name
+    def getName(self):
+        return self.name
     
-    def setColour(newColour):
-        Led.colourTest = newColour
+    def setColour(self, colour):
+        self.colourTest = colour
 
-    def getColour():
-        return Led.colourTest
+    def getColour(self):
+        return self.colourTest
     
