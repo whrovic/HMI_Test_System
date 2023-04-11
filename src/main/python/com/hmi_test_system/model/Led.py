@@ -14,4 +14,7 @@ class Led(PosCenter):
     
     def setColour(newColour):
         Led.colourTest = newColour
+
+    def getColour():
+        return Led.colourTest
     
