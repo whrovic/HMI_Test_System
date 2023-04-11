@@ -34,6 +34,8 @@ In order to do so, you need to install the venv package. Open the cmd and instal
 
 3. Clone the project
 
+First you need to install git from the [official site](https://git-scm.com/downloads).
+
 Now you need to download the project. To do so, you need to clone this repository into your device.
 Here, I will use the Visual Studio Code interface, but you can use whatever, even cmd.
 
