@@ -1,5 +1,3 @@
-import PosCenter
-
 class Display:
     def __init__(self, name, posInc_x, posInc_y, dim_x, dim_y):
         self.name = name

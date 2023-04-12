@@ -1,9 +1,11 @@
+from Display import Display
+
 class DisplayTest:
     RGB: bool          
     Pixel: bool          
     Characters: bool
 
-    def __init__(self, display):
+    def __init__(self, display: Display):
         self.display = display
          
     
