@@ -1,5 +1,5 @@
 from Model import Model
-from hmi_test_system.test import SequenceTest
+from hmi_test_system.test.SequenceTest import SequenceTest
 from ModelTest import ModelTest
 from LedTest import LedTest
 from ButtonTest import ButtonTest

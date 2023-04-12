@@ -2,8 +2,6 @@ from hmi_test_system.model.Settings import Settings
 from hmi_test_system.model.Led import Led
 from hmi_test_system.model.Button import Button
 from hmi_test_system.model.Display import Display
-from hmi_test_system.model.Model import Model
-
 
 M = Settings()
 Leds_alarm = []
@@ -12,7 +10,7 @@ Leds_buttons = []
 Buttons_model = []
 Special_buttons = []
 
-name = 'm1'
+name_model = 'm1'
 
 n_specialbuttons = 9
 n_buttons = 9
@@ -40,13 +38,13 @@ dim_x = 10
 dim_y = 10
 
 
-if(M.callModel(name) is None):
+if(M.callModel(name_model) is None):
 
     display = Display('display', x_display , y_display , dim_x, dim_y)
 
-    M.newModel(name, n_controll, n_alarm, n_buttons*2, n_buttons, n_specialbuttons, display, 2)
+    M.newModel(name_model, n_controll, n_alarm, n_buttons*2, n_buttons, n_specialbuttons, display, 2)
 
-    index = M.indexModel(name)
+    index = M.indexModel(name_model)
     
     if(index != -1):
         
@@ -79,7 +77,7 @@ if(M.callModel(name) is None):
         print("ERROR")
 
 
-M.setModelTest(name)
+M.setModelTest(name_model)
 
 
 
