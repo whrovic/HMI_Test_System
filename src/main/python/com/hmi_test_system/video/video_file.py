@@ -10,7 +10,7 @@ class VideoFile(VideoDevice):
     _current_frame: int
 
     def __init__(self, device, interval=0.5, width=1920, height=1080):
-        super().__init__(device, interval, width, height)
+        super().__init__(interval, width, height)
 
         self.set_path(device)
 
@@ -22,7 +22,11 @@ class VideoFile(VideoDevice):
         cwd = Path.cwd().parent
         resources_path = (cwd / "../../../resources").resolve()
 
-        self._path = str((resources_path / path).resolve())
+        pth = (resources_path / path).resolve()
+
+        assert Path.exists(pth), "The file doesn't exist"
+        
+        self._path = str(pth)
         self._cap = cv2.VideoCapture(self._path)
 
     def get_frame(self):

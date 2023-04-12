@@ -16,11 +16,9 @@ def test_image_files():
     Img.stop_capture()
 
     cv2.imshow("img1", Img.get_image())
-
     cv2.waitKey(0)
 
     cv2.imshow("img2", Img.get_image())
-
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
@@ -71,6 +69,6 @@ def test_list_cameras():
 
 if (__name__ == "__main__"):
     #test_image_files()
-    #test_video_file()
+    test_video_file()
     #test_camera()
-    test_list_cameras()
+    #test_list_cameras()
