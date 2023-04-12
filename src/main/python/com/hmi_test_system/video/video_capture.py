@@ -1,5 +1,6 @@
 import queue
 from abc import ABC, abstractmethod
+import cv2
 
 class VideoCapture(ABC):
 
@@ -20,6 +21,21 @@ class VideoCapture(ABC):
     def clear_queue(self):
         self._frame_queue.queue.clear()
 
+    @staticmethod
+    def list_available_cameras():
+        cameras = []
+        
+        i = 0
+        while (True):
+            cap = cv2.VideoCapture(i)
+            if (cap is not None and cap.isOpened()):
+                cameras.append((i, cap.get(cv2.CAP_PROP_BACKEND)))
+            else:
+                break
+            i += 1
+
+        return cameras
+        
     @abstractmethod
     def start_capture(self):
         pass

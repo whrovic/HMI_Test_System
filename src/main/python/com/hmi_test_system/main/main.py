@@ -1,13 +1,11 @@
 import sys
 sys.path.append('../')
-from video.image_files import ImageFiles
-from video.video_file import VideoFile
-from video.camera import Camera
 import cv2
 import time
 
-
 def test_image_files():
+    from video.image_files import ImageFiles
+
     img1 = "test_images/char_test.png"
     img2 = "test_images/HMI.png"
 
@@ -28,6 +26,8 @@ def test_image_files():
     cv2.destroyAllWindows()
 
 def test_video_file():
+    from video.video_file import VideoFile
+
     path = "Vídeo Display.MOV"
 
     video = VideoFile(str(path), 1)
@@ -48,6 +48,7 @@ def test_video_file():
         i += 1
 
 def test_camera():
+    from video.camera import Camera
 
     camera = Camera()
     camera.start_capture()
@@ -63,8 +64,13 @@ def test_camera():
         frame = camera.get_image()
         i += 1
 
+def test_list_cameras():
+    from video.video_capture import VideoCapture
+
+    print(VideoCapture.list_available_cameras())
 
 if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
-    test_camera()
+    #test_camera()
+    test_list_cameras()
