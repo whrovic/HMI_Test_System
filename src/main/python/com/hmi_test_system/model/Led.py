@@ -1,4 +1,4 @@
-import PosCenter
+from PosCenter import PosCenter
 
 
 class Led(PosCenter):

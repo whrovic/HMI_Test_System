@@ -1,10 +1,12 @@
 class DisplayTest:
+    RGB: bool          
+    Pixel: bool          
+    Characters: bool
+
     def __init__(self, display):
         self.display = display
-        self.RGB = 1            
-        self.Pixel = 1          
-        self.Characters = 1     
-
+         
+    
     # RGB screen detetado por CV
     def RGB_CV(self, RGB):
         self.RGB = RGB
@@ -13,7 +15,7 @@ class DisplayTest:
         return self.RGB
        
     def testRGB(self):
-        if(self.RGB == 'imagem de referência'):
+        if(self.RGB):
             return 1
         else:
             return 0
@@ -27,7 +29,7 @@ class DisplayTest:
         return self.Pixel
 
     def testPixel(self):
-        if(self.Pixel == 'imagem de referência'):
+        if(self.Pixel):
             return 1
         else:
             return 0
@@ -41,7 +43,7 @@ class DisplayTest:
         return self.Characters
             
     def testCharacters(self):
-        if(self.Characters == 'imagem de referência'):
+        if(self.Characters):
             return 1
         else:
             return 0

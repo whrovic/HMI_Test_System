@@ -1,21 +1,24 @@
+from Button import Button
+
 class ButtonTest:
-    def __init__(self, button):
+    def __init__(self, button: Button):
         self.button = button
-        self.pressedDisplay = bool
-        self.pressedSerialPort = bool
+        self.pressedDisplay = False
+        self.pressedSerialPort = False
         
     def setButton(self, button):
         self.button = button
 
     #valor detetado pelo CV ao premir o botão
-    def pressTest(self, pressCV):
+    def pressTest_SP(self, pressCV):
         self.pressedDisplay = pressCV
-
-    def getPressedResult(self):
-        return self.pressedDisplay
         
-    def test(self):
-        if self.pressedDisplay == 1:
-            return 1
-        else: 
-            return 0
+    def testButton_SP(self):
+        return self.pressedDisplay
+    
+    #valor detetado pelo Serial Port ao premir o botão
+    def pressTest_SP(self, pressSP):
+        self.pressedSerialPort = pressSP
+        
+    def testButton_SP(self):
+        return self.pressedSerialPort

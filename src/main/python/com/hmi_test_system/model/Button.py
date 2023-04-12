@@ -1,4 +1,4 @@
-import PosCenter
+from PosCenter import PosCenter
 
 class Button(PosCenter):
     def __init__(self, name, x, y):

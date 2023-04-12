@@ -1,21 +1,19 @@
-import LedTest
-import ButtonTest
-import Display
+from LedTest import LedTest
+from ButtonTest import ButtonTest
+from DisplayTest import DisplayTest
+from Model import Model
+from Led import Led
+from Button import Button
+from Display import Display
 
-class Model:
+class ModelTest:
     
-    def __init__(self, name, version):
-        self.name = name
-        self.ledsControll = LedTest
-        self.ledsAlarm = LedTest
-        self.ledsButtons = LedTest
-        self.buttonsModel = ButtonTest
-        self.specialButtons = ButtonTest
-        self.display = Display
-        self.version = version
-    
+    def __init__(self, model: Model):
+        self.model = model
+        self.ledsControll_test = [LedTest]
+
     def setModelTest(self):
-        pass
+        for i in self.model.nledsControll:
+             self.ledsControll_test.append(LedTest(self.model.ledsControll[i]))
 
-    def clearModelTest(self):
-        pass
+        

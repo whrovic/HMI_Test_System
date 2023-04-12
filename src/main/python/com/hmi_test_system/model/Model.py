@@ -1,10 +1,10 @@
-import Led
-import Button
-import Display
+from Led import Led
+from Button import Button
+from Display import Display
 
 class Model:
     
-    def __init__(self, name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display, version):
+    def __init__(self, name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display: Display, version):
         self.name = name
         self.nledsControll = nledsControll
         self.nledsAlarm = nledsAlarm
@@ -28,7 +28,7 @@ class Model:
 
 
     #vetor dos leds de controlo 
-    def setLedsControll(self, led):
+    def setLedsControll(self, led: Led):
         if(len(self.ledsControll) < self.nledsControll):
             self.ledsControll.append(led)
         else:
@@ -39,7 +39,7 @@ class Model:
 
 
     #vetor dos leds de alarme 
-    def setLedsAlarm(self, led):
+    def setLedsAlarm(self, led: Led):
         if(len(self.ledsAlarm) < self.nledsAlarm):
             self.ledsAlarm.append(led)
         else:
@@ -50,7 +50,7 @@ class Model:
 
 
     #vetor dos leds dos botoes       
-    def setLedsButtons(self, led):
+    def setLedsButtons(self, led: Led):
         if(len(self.ledsButtons) < self.nledsButtons):
             self.ledsButtons.append(led)
         else:
@@ -61,7 +61,7 @@ class Model:
 
 
     #vetor dos botoes
-    def setButtonsModel(self, button):
+    def setButtonsModel(self, button: Button):
         if(len(self.buttonsModel) < self.nbuttonsModel):
             self.buttonsModel.append(button)
         else:
@@ -72,7 +72,7 @@ class Model:
 
     
     #vetor dos botoes especiais
-    def setSpecialButtons(self, button):
+    def setSpecialButtons(self, button: Button):
         if(len(self.specialButtons) < self.nspecialButtons):
             self.specialButtons.append(button)
         else:

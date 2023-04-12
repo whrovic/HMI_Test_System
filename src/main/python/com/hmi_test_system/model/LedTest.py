@@ -1,8 +1,8 @@
-import Led
+from Led import Led
 
 
 class LedTest:
-    def __init__(self, led):
+    def __init__(self, led: Led):
         self.led = led
         self.coloursCV = []
     
@@ -16,7 +16,7 @@ class LedTest:
     def getColourResult(self):
         return self.coloursCV
     
-    def test(self):
+    def testLed(self):
         if(self.coloursCV == self.led.colours):
             return 1
         else:
