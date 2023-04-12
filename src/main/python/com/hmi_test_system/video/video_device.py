@@ -1,27 +1,37 @@
 from video.video_capture import VideoCapture
 from abc import ABC, abstractmethod
 from threading import Thread
+from time import sleep
 import cv2
 
 class VideoDevice(VideoCapture, ABC):
     
-    _interval: int
+    _interval: float
     _thread: Thread
     _is_capturing: bool
     _cap: cv2.VideoCapture
 
-    def __init__(self, width=1920, height=1080):
+    def __init__(self, interval=0.5, width=1920, height=1080):
         super().__init__(width, height)
-        pass
+
+        self._interval = interval
+        self._is_capturing = False
+        self._thread = Thread(target=self.capture_loop)
 
     def start_capture(self):
-        pass
+        self._is_capturing = True
+        self._thread.start()
 
     def stop_capture(self):
-        pass
+        self._is_capturing = False
+        self._thread.join()
 
     def capture_loop(self):
-        pass
+        while self._is_capturing:
+            frame = self.get_frame()
+            if (frame is not None):
+                self._frame_queue.put(frame)
+            sleep(self._interval)
     
     @abstractmethod
     def get_frame(self):
