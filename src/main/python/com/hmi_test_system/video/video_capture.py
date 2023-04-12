@@ -12,7 +12,7 @@ class VideoCapture(ABC):
         self.height = height
 
     def get_image(self):
-        if (self.frame_queue.empty):
+        if (self.frame_queue.empty()):
             return None
         else:
             return self.frame_queue.get()
