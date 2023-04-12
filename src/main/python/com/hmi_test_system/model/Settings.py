@@ -37,27 +37,36 @@ class Settings:
         
         #nao encontra o modelo
         return -1
+    
+    def deleteModel(self, name):
+        N_model = int(self.indexModel(name))
+
+        if(N_model == -1):
+            print("ERROR - Modelo a eliminar não existe")
+        else:
+            self.model.remove(N_model)
+
 
     def setModelTest(self, name):
         N_model = int(self.indexModel(name))
 
         if(N_model == -1):
-            print("ERROR")
+            print("ERROR - Modelo a testar não existe")
             return
+        else:
+            for i in self.model[N_model].nledsControll:
+                self.mT.ledsControll_test.append(LedTest(self.model[N_model].ledsControll[i]))
 
-        for i in self.model[N_model].nledsControll:
-             self.mT.ledsControll_test.append(LedTest(self.model[N_model].ledsControll[i]))
+            for i in self.model[N_model].nledsAlarm:
+                self.mT.ledsAlarm_test.append(LedTest(self.model[N_model].ledsAlarm[i]))
 
-        for i in self.model[N_model].nledsAlarm:
-            self.mT.ledsAlarm_test.append(LedTest(self.model[N_model].ledsAlarm[i]))
+            for i in self.model[N_model].nledsButtons:
+                self.mT.ledsButtons_test.append(LedTest(self.model[N_model].ledsButtons[i]))
 
-        for i in self.model[N_model].nledsButtons:
-            self.mT.ledsButtons_test.append(LedTest(self.model[N_model].ledsButtons[i]))
+            for i in self.model[N_model].nbuttonsModel:
+                self.mT.buttonsModel_test.append(ButtonTest(self.model[N_model].buttonsModel[i]))
 
-        for i in self.model[N_model].nbuttonsModel:
-            self.mT.buttonsModel_test.append(ButtonTest(self.model[N_model].buttonsModel[i]))
+            for i in self.model[N_model].nspecialButtons:
+                self.mT.specialButtons_test.append(ButtonTest(self.model[N_model].specialButtons[i]))   
 
-        for i in self.model[N_model].nspecialButtons:
-            self.mT.specialButtons_test.append(ButtonTest(self.model[N_model].specialButtons[i]))   
-
-        self.mT.display_test= DisplayTest(self.model[N_model].display) 
+            self.mT.display_test= DisplayTest(self.model[N_model].display) 
