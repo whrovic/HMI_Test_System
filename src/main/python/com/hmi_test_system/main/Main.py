@@ -4,12 +4,6 @@ from hmi_test_system.model.Button import Button
 from hmi_test_system.model.Display import Display
 
 M = Settings()
-Leds_alarm = []
-Leds_controll = []
-Leds_buttons = []
-Buttons_model = []
-Special_buttons = []
-
 
 print("Nome do modelo: ")
 name_model = input()
