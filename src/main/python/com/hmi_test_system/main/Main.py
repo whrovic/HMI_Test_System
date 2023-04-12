@@ -3,16 +3,8 @@ from hmi_test_system.model.Led import Led
 from hmi_test_system.model.Button import Button
 from hmi_test_system.model.Display import Display
 
-M = Settings()
-
-print("Nome do modelo: ")
-name_model = input()
-
-
-if(M.callModel(name_model) is None):
+def createModel(settings: Settings, name_model):
     
-    print("MODELO NOVO")
-
     print("Numero de botoes especiais: ")
     n_specialbuttons = int(input())
 
@@ -58,7 +50,7 @@ if(M.callModel(name_model) is None):
     for i in n_controll:
         print("Pos x do led de controlo %d: ", i)
         x_controll.append(int(input))
-    print("Pos y do leds de controlo: ")
+    print("Pos y dos leds de controlo: ")
     y_controll = int(input())
     print("Cor 1 do led de controlo: ")
     colour_controll1 = input()
@@ -75,26 +67,31 @@ if(M.callModel(name_model) is None):
     dim_x = int(input())
     print("Dim_y do LCD: ")
     dim_y = int(input())
-
     display = Display('display', x_display , y_display , dim_x, dim_y)
 
-    #Cria o modelo
-    M.newModel(name_model, n_controll, n_alarm, n_buttonsmodel*2, n_buttonsmodel, n_specialbuttons, display, 2)
 
-    index = M.indexModel(name_model)
+    #version
+    print("Versao do modelo: ")
+    version = int(input())
+    
+
+    #Adciona o modelo
+    settings.newModel(name_model, n_controll, n_alarm, n_buttonsmodel*2, n_buttonsmodel, n_specialbuttons, display, version)
+
+    index = settings.indexModel(name_model)
     
     if(index != -1):
         for i in n_alarm:
             led = Led('LA'+str(i), 2, x_alarm, y_alarm[i])
             led.newColour(colour_alarm1)
             led.newColour(colour_alarm2)
-            M.model[int(index)].setLedsAlarm(led)
+            settings.model[int(index)].setLedsAlarm(led)
 
         for i in n_controll:
             led = Led('LC'+str(i), 2, x_controll[i], y_controll)
             led.newColour(colour_controll1)
             led.newColour(colour_controll2)
-            M.model[int(index)].setLedsControll(led)
+            settings.model[int(index)].setLedsControll(led)
 
         for i in n_buttonsmodel*2:
             led = Led('LB'+str(i), 1, x_buttons[i], y_buttons[i])
@@ -102,23 +99,31 @@ if(M.callModel(name_model) is None):
                 led.newColour(colour_button1)
             else:
                 led.newColour(colour_button2)
-            M.model[int(index)].setLedsButtons(led)
+            settings.model[int(index)].setLedsButtons(led)
 
         for i in n_buttonsmodel:
-            M.model[int(index)].setButtonsModel(Button('BM'+str(i), 0, 0))
+            settings.model[int(index)].setButtonsModel(Button('BM'+str(i), 0, 0))
 
         for i in n_specialbuttons:
-            M.model[int(index)].setSpecialButtons(Button('SB'+str(i), 0, 0))
+            settings.model[int(index)].setSpecialButtons(Button('SB'+str(i), 0, 0))
     else:
         print("ERROR - Modelo mal criado")
-        M.deleteModel(name_model)
+        settings.deleteModel(name_model)
 
 
-else:
-    print("MODELO EXISTENTE")
+def main():
+    M = Settings()
 
+    print("Nome do modelo: ")
+    name_model = input()
 
-M.setModelTest(name_model)
+    if(M.callModel(name_model) is None):
+        print("MODELO NOVO")
+        createModel(M, name_model)
+    else:
+        print("MODELO EXISTENTE")
+
+    M.setModelTest(name_model)
 
 
 
