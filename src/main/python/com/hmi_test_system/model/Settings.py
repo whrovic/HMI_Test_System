@@ -8,6 +8,7 @@ from Display import Display
 from typing import List
 
 
+
 class Settings:
         
     def __init__(self):
@@ -19,14 +20,26 @@ class Settings:
     def newModel(self, name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display: Display, version):
         self.model.append(Model(name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display, version))
 
+    
+    def callModel(self, name):
+        for i in len(self.model):
+            if(name == self.model[int(i)].name):
+                return self.model[i]
+        
+        #nao encontra o modelo
+        return None
+
+    
+    def indexModel(self, name):
+        for i in len(self.model):
+            if(name == self.model[int(i)].name):
+                return i
+        
+        #nao encontra o modelo
+        return -1
 
     def setModelTest(self, name):
-        N_model = -1
-
-        for i in len(self.model):
-            if(name == self.model[i].name):
-                N_model = i
-                break
+        N_model = int(self.indexModel(name))
 
         if(N_model == -1):
             print("ERROR")
@@ -47,13 +60,4 @@ class Settings:
         for i in self.model[N_model].nspecialButtons:
             self.mT.specialButtons_test.append(ButtonTest(self.model[N_model].specialButtons[i]))   
 
-        self.mT.display_test= DisplayTest(self.model[N_model].display)   
-
-
-    def callModel(self, name):
-        for i in len(self.model):
-            if(name == self.model[i].name):
-                return self.model[i]
-        
-        #nao encontra o modelo
-        return None 
+        self.mT.display_test= DisplayTest(self.model[N_model].display) 
