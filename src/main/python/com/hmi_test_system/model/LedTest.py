@@ -1,16 +1,25 @@
+import Led
+
+
 class LedTest:
-    def __init__(self, led, testColour):
+    def __init__(self, led):
         self.led = led
-        self.testColour = testColour
+        self.coloursCV = []
     
     def setLed(self, led):
         self.led = led
-        
-    def getName(self, led):
-        pass   
 
-    def testColourPass():
-        pass
+    #vetor de cores detetas por cv
+    def colourTest(self, colour):
+        self.coloursCV.append(colour)
 
-    def getColourResult():
-        pass
+    def getColourResult(self):
+        return self.coloursCV
+    
+    def test(self):
+        if(self.coloursCV == self.led.colours):
+            return 1
+        else:
+            return 0
+
+

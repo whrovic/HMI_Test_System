@@ -1,10 +1,12 @@
 import PosCenter
 
+
 class Led(PosCenter):
-    def __init__(self, name, colourTest, x, y):
+    def __init__(self, name, nColour, x, y):
         super().__init__(x, y)
         self.name = name
-        self.colourTest = colourTest
+        self.nColour = nColour
+        self.colours = []
     
     def setName(self, name):
         self.name = name
@@ -12,9 +14,17 @@ class Led(PosCenter):
     def getName(self):
         return self.name
     
-    def setColour(self, colour):
-        self.colourTest = colour
+    #vetor das cores associadas ao led
+    def newColour(self, colour):
+        if(len(self.colours) < self.nColour):
+            self.colours.append[colour]
+        else: 
+            print("ERROR")
+
+    def deleteColour(self):
+        self.colours = []
 
     def getColour(self):
-        return self.colourTest
+        return self.colours
+    
     
