@@ -7,8 +7,6 @@ from DisplayTest import DisplayTest
 from Display import Display
 from typing import List
 
-
-
 class Settings:
         
     def __init__(self):
