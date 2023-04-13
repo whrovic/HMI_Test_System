@@ -1,4 +1,4 @@
-from Display import Display
+from hmi_test_system.model.Display import Display
 
 class DisplayTest:
     RGB: bool          

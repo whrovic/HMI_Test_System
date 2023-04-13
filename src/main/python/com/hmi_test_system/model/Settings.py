@@ -1,9 +1,9 @@
 from Model import Model
 from hmi_test_system.test.SequenceTest import SequenceTest
-from ModelTest import ModelTest
-from LedTest import LedTest
-from ButtonTest import ButtonTest
-from DisplayTest import DisplayTest
+from hmi_test_system.modelTest.ModelTest import ModelTest
+from hmi_test_system.modelTest.LedTest import LedTest
+from hmi_test_system.modelTest.ButtonTest import ButtonTest
+from hmi_test_system.modelTest.DisplayTest import DisplayTest
 from Display import Display
 from typing import List
 
