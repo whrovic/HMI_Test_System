@@ -1,4 +1,0 @@
-from Test import Test
-
-class SequenceTest:
-    pass
