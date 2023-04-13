@@ -1,4 +1,4 @@
-from hmi_test_system.model.Display import Display
+from hmi_test_system.data.Display import Display
 
 class ModelTest:
     def __init__(self):

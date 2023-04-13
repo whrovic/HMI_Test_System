@@ -1,4 +1,4 @@
-from hmi_test_system.model.Settings import Settings
+from hmi_test_system.data.Settings import Settings
 from Library import createModel
 
 M = Settings()

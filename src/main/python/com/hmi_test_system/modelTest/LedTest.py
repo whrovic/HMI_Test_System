@@ -1,4 +1,4 @@
-from hmi_test_system.model.Led import Led
+from hmi_test_system.data.Led import Led
 
 
 class LedTest:

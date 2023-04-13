@@ -1,7 +1,7 @@
-from hmi_test_system.model.Led import Led
-from hmi_test_system.model.Button import Button
-from hmi_test_system.model.Display import Display
-from hmi_test_system.model.Settings import Settings
+from hmi_test_system.data.Led import Led
+from hmi_test_system.data.Button import Button
+from hmi_test_system.data.Display import Display
+from hmi_test_system.data.Settings import Settings
 
 def createModel(settings: Settings, name_model):
     

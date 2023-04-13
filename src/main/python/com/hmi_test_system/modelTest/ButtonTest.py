@@ -1,4 +1,4 @@
-from hmi_test_system.model.Button import Button
+from hmi_test_system.data.Button import Button
 
 class ButtonTest:
     def __init__(self, button: Button):
