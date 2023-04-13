@@ -13,7 +13,7 @@ class DisplayTest:
     def RGB_CV(self, RGB):
         self.RGB = RGB
        
-    def testRGB(self):
+    def test_RGB(self):
         return self.RGB
         
 

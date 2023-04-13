@@ -4,20 +4,20 @@ from Led import Led
 class LedTest:
     def __init__(self, led: Led):
         self.led = led
-        self.coloursCV = []
+        self.colours_cv = []
     
-    def setLed(self, led):
+    def set_led(self, led):
         self.led = led
 
     #vetor de cores detetas por cv
-    def colourTest(self, colour):
-        self.coloursCV.append(colour)
+    def colour_test(self, colour):
+        self.colours_cv.append(colour)
 
     def getColourResult(self):
-        return self.coloursCV
+        return self.colours_cv
     
     def testLed(self):
-        if(self.coloursCV == self.led.colours):
+        if(self.colours_cv == self.led.colours):
             return 1
         else:
             return 0

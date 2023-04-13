@@ -12,7 +12,7 @@ class Settings:
     def __init__(self):
         self.model:List[Model] = []
         self.mT = ModelTest()
-        self.sequenceTest = SequenceTest
+        self.sequence_test = SequenceTest
 
 
     def newModel(self, name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display: Display, version):
@@ -46,25 +46,25 @@ class Settings:
 
 
     def setModelTest(self, name):
-        N_model = int(self.indexModel(name))
+        n_model = int(self.indexModel(name))
 
-        if(N_model == -1):
+        if(n_model == -1):
             print("ERROR - Modelo a testar não existe")
             return
         else:
-            for i in self.model[N_model].nledsControll:
-                self.mT.ledsControll_test.append(LedTest(self.model[N_model].ledsControll[i]))
+            for i in self.model[n_model].nledsControll:
+                self.mT.ledsControll_test.append(LedTest(self.model[n_model].ledsControll[i]))
 
-            for i in self.model[N_model].nledsAlarm:
-                self.mT.ledsAlarm_test.append(LedTest(self.model[N_model].ledsAlarm[i]))
+            for i in self.model[n_model].nledsAlarm:
+                self.mT.ledsAlarm_test.append(LedTest(self.model[n_model].ledsAlarm[i]))
 
-            for i in self.model[N_model].nledsButtons:
-                self.mT.ledsButtons_test.append(LedTest(self.model[N_model].ledsButtons[i]))
+            for i in self.model[n_model].nledsButtons:
+                self.mT.ledsButtons_test.append(LedTest(self.model[n_model].ledsButtons[i]))
 
-            for i in self.model[N_model].nbuttonsModel:
-                self.mT.buttonsModel_test.append(ButtonTest(self.model[N_model].buttonsModel[i]))
+            for i in self.model[n_model].nbuttonsModel:
+                self.mT.buttonsModel_test.append(ButtonTest(self.model[n_model].buttonsModel[i]))
 
-            for i in self.model[N_model].nspecialButtons:
-                self.mT.specialButtons_test.append(ButtonTest(self.model[N_model].specialButtons[i]))   
+            for i in self.model[n_model].nspecialButtons:
+                self.mT.specialButtons_test.append(ButtonTest(self.model[n_model].specialButtons[i]))   
 
-            self.mT.display_test= DisplayTest(self.model[N_model].display) 
+            self.mT.display_test= DisplayTest(self.model[n_model].display) 
