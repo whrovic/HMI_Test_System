@@ -1,12 +1,12 @@
 import sys
-sys.path.append('../')
+sys.path.append('c:/Users/filip/Desktop/ES/HMI_Test_System/src/main/python/com/hmi_test_system')
 
 from data.Settings import Settings
 from Library import create_model
 
 M = Settings()
 
-print("Nome do modelo: ")
+print("/nNome do modelo: ")
 name_model = input()
 
 if(M.call_model(name_model) is None):
@@ -16,10 +16,3 @@ else:
     print("MODELO EXISTENTE")
 
 M.set_model_test(name_model)
-
-
-
-
-
-
-

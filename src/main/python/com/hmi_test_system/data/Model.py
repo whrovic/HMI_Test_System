@@ -1,6 +1,6 @@
-from Led import Led
-from Button import Button
-from Display import Display
+from .Led import Led
+from .Button import Button
+from .Display import Display
 
 class Model:
     

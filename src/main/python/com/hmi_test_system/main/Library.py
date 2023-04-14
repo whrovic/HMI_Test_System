@@ -22,8 +22,8 @@ def create_model(M: Settings, name_model):
     print("Pos x dos leds de alarme: ")
     x_alarm = int(input())
     y_alarm = []
-    for i in n_alarm:
-        print("Pos y do led %d de alarme: ", i)
+    for i in range(0, n_alarm):
+        print(f"Pos y do led {i+1} de alarme: ")
         y_alarm.append(int(input()))
     print("Cor 1 do led de alarme: ")
     colour_alarm1 = input()
@@ -34,22 +34,24 @@ def create_model(M: Settings, name_model):
     #leds dos botões
     x_buttons = []
     y_buttons = []
-    for i in n_buttons_model:
-        print("Pos x do led de botão %d: ", i)
+    for i in range(0, n_buttons_model*2):
+        print(f"Pos x do led de botão {i+1}: ")
         x_buttons.append(int(input()))
-        print("Pos y do led de botão %d: ", i)
+        print(f"Pos y do led de botão {i+1}: ")
         y_buttons.append(int(input()))
     print("Cor 1 do led de botão: ")
     colour_button1 = input()
     print("Cor 2 do led de botão: ")
     colour_button2 = input()
 
+    print('x_buttons: ', len(x_buttons))
+    print('y_buttons: ', len(y_buttons))
 
     #leds de controlo
     x_control = []
-    for i in n_control:
-        print("Pos x do led de controlo %d: ", i)
-        x_control.append(int(input))
+    for i in range(0, n_control):
+        print(f"Pos x do led de controlo {i+1}: ")
+        x_control.append(int(input()))
     print("Pos y dos leds de controlo: ")
     y_controll = int(input())
     print("Cor 1 do led de controlo: ")
@@ -81,30 +83,30 @@ def create_model(M: Settings, name_model):
     index = M.index_model(name_model)
     
     if(index != -1):
-        for i in n_alarm:
-            led = Led('LA'+str(i), 2, x_alarm, y_alarm[i])
+        for i in range(0, n_alarm):
+            led = Led('LA'+str(i+1), 2, x_alarm, y_alarm[i])
             led.new_colour(colour_alarm1)
             led.new_colour(colour_alarm2)
             M.model[int(index)].set_led_alarm(led)
 
-        for i in n_control:
-            led = Led('LC'+str(i), 2, x_control[i], y_controll)
+        for i in range(0, n_control):
+            led = Led('LC'+str(i+1), 2, x_control[i], y_controll)
             led.new_colour(colour_control1)
             led.new_colour(colour_control2)
             M.model[int(index)].set_led_control(led)
 
-        for i in n_buttons_model*2:
-            led = Led('LB'+str(i), 1, x_buttons[i], y_buttons[i])
+        for i in range(0, n_buttons_model*2):
+            led = Led('LB'+str(i+1), 1, x_buttons[i], y_buttons[i])
             if(i%2):
                 led.new_colour(colour_button1)
             else:
                 led.new_colour(colour_button2)
             M.model[int(index)].set_led_buttons(led)
 
-        for i in n_buttons_model:
-            M.model[int(index)].set_button_model(Button('BM'+str(i), 0, 0))
+        for i in range(0, n_buttons_model):
+            M.model[int(index)].set_button_model(Button('BM'+str(i+1), 0, 0))
 
-        for i in n_special_buttons:
+        for i in range(0, n_special_buttons):
             M.model[int(index)].set_special_button(Button('SB'+str(i), 0, 0))
     else:
         print("ERROR - Modelo mal criado")

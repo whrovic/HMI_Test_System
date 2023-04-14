@@ -1,4 +1,4 @@
-from PosCenter import PosCenter
+from .PosCenter import PosCenter
 
 
 class Led(PosCenter):
@@ -15,9 +15,9 @@ class Led(PosCenter):
         return self.name
     
     #vetor das cores associadas ao led
-    def new_colour(self, colour):
-        if(len(self.colours) < self.nColour):
-            self.colours.append[colour]
+    def new_colour(self, colour: str):
+        if(len(self.colours) < self.n_Colour):
+            self.colours.append(colour)
         else: 
             print("ERROR")
 

@@ -1,4 +1,4 @@
-from test.Test import Test
+#from test.Test import Test
 
 class SequenceTest:
     pass
