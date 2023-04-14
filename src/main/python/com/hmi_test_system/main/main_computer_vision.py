@@ -1,5 +1,5 @@
-#import sys
-#sys.path.append('../')
+import sys
+sys.path.append('../')
 import cv2
 import time
 
@@ -69,6 +69,6 @@ def test_list_cameras():
 
 if (__name__ == "__main__"):
     #test_image_files()
-    test_video_file()
-    #test_camera()
+    #test_video_file()
+    test_camera()
     #test_list_cameras()
