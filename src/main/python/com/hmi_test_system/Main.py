@@ -4,12 +4,13 @@
 
 from data.Settings import Settings
 from Library import create_model
+#from LibraryFile import create_model_file
 
 M = Settings()
 
 print("Nome do modelo: ")
 name_model = input()
-#Test File = "../data/m1.txt"
+#test_File = "/data/m1.txt"
 
 if(M.call_model(name_model) is None):
     print("MODELO NOVO")
