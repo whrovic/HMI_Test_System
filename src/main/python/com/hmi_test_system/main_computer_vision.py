@@ -1,6 +1,15 @@
-from __future__ import print_function
-import sys
-sys.path.append('../')
+'''
+Make cd to /hmi_test_system.
+
+Then, to execute this file type
+
+> py main_computer_vision.py
+
+To execute a file inside a class
+
+> py -m folder.class_name
+
+'''
 
 import cv2
 import time
@@ -48,10 +57,14 @@ def test_video_file():
         frame = video.get_image()
         i += 1
 
+def test_list_cameras():
+    print(VideoCapture.list_available_cameras())
+
 def test_camera():
+    from time import sleep
     camera = Camera()
     camera.start_capture()
-    time.sleep(2)
+    sleep(2)
     camera.stop_capture()
 
     frame = camera.get_image()
@@ -62,11 +75,6 @@ def test_camera():
         cv2.waitKey(0)
         frame = camera.get_image()
         i += 1
-
-def test_list_cameras():
-    print(VideoCapture.list_available_cameras())
-
-
 
 if (__name__ == "__main__"):
     #test_image_files()

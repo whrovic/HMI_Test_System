@@ -1,4 +1,4 @@
-from video.video_capture import VideoCapture
+from .video_capture import VideoCapture
 from abc import ABC, abstractmethod
 from threading import Thread
 from time import sleep, time

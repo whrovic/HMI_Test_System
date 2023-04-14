@@ -1,4 +1,4 @@
-from video.video_device import VideoDevice
+from .video_device import VideoDevice
 import cv2
 
 class Camera(VideoDevice):
