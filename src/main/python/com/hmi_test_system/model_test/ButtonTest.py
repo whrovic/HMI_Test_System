@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../')
 from data.Button import Button
 
 class ButtonTest:

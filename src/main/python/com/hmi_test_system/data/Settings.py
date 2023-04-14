@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../')
 from Model import Model
 from SequenceTest import SequenceTest
 from model_test.ModelTest import ModelTest
