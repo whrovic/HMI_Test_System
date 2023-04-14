@@ -1,4 +1,6 @@
-from hmi_test_system.data.Display import Display
+import sys
+sys.path.append('../')
+from data.Display import Display
 
 class DisplayTest:
     RGB: bool          

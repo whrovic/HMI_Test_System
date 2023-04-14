@@ -1,4 +1,6 @@
-from hmi_test_system.test.Test import Test
+import sys
+sys.path.append('../')
+from test.Test import Test
 
 class SequenceTest:
     pass

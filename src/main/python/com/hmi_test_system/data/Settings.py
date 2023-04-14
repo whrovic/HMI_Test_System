@@ -1,9 +1,11 @@
+import sys
+sys.path.append('../')
 from Model import Model
 from SequenceTest import SequenceTest
-from hmi_test_system.model_test.ModelTest import ModelTest
-from hmi_test_system.model_test.LedTest import LedTest
-from hmi_test_system.model_test.ButtonTest import ButtonTest
-from hmi_test_system.model_test.DisplayTest import DisplayTest
+from model_test.ModelTest import ModelTest
+from model_test.LedTest import LedTest
+from model_test.ButtonTest import ButtonTest
+from model_test.DisplayTest import DisplayTest
 from Display import Display
 from typing import List
 

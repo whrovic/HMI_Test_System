@@ -1,4 +1,6 @@
-from hmi_test_system.data.Led import Led
+import sys
+sys.path.append('../')
+from data.Led import Led
 
 
 class LedTest:

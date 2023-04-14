@@ -1,7 +1,9 @@
-from hmi_test_system.data.Led import Led
-from hmi_test_system.data.Button import Button
-from hmi_test_system.data.Display import Display
-from hmi_test_system.data.Settings import Settings
+import sys
+sys.path.append('../')
+from data.Led import Led
+from data.Button import Button
+from data.Display import Display
+from data.Settings import Settings
 
 def create_model(M: Settings, name_model):
     

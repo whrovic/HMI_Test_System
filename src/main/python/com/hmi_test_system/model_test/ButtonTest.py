@@ -1,4 +1,6 @@
-from hmi_test_system.data.Button import Button
+import sys
+sys.path.append('../')
+from data.Button import Button
 
 class ButtonTest:
     def __init__(self, button: Button):
