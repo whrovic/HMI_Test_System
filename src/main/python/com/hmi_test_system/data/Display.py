@@ -1,19 +1,19 @@
 class Display:
-    def __init__(self, name, posInc_x, posInc_y, dim_x, dim_y):
+    def __init__(self, name, pos_init_x, pos_init_y, dim_x, dim_y):
         self.name = name
-        self.posInc_x = posInc_x
-        self.posInc_y = posInc_y
+        self.pos_init_x = pos_init_x
+        self.pos_init_y = pos_init_y
         self.dim_x = dim_x
         self.dim_y = dim_y
     
-    def setName(self, name):
+    def set_name(self, name):
         self.name = name
     
-    def getName(self):
+    def get_name(self):
         return self.name
     
-    def newPos(self, posInc_x, posInc_y, dim_x, dim_y):
-        self.posInc_x = posInc_x
-        self.posInc_y = posInc_y
+    def new_pos(self, pos_init_x, pos_init_y, dim_x, dim_y):
+        self.posInc_x = pos_init_x
+        self.posInc_y = pos_init_y
         self.dim_x = dim_x
         self.dim_y = dim_y

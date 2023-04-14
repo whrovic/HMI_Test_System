@@ -5,10 +5,10 @@ class Button(PosCenter):
         super().__init__(x, y)
         self.name = name
     
-    def setName(self, name):
+    def set_name(self, name):
         self.name = name
     
-    def getName(self):
+    def get_name(self):
         return self.name
 
     

@@ -1,18 +1,20 @@
-from hmi_test_system.data.Settings import Settings
-from Library import createModel
+import sys
+sys.path.append('../')
+from data.Settings import Settings
+from Library import create_model
 
 M = Settings()
 
 print("Nome do modelo: ")
 name_model = input()
 
-if(M.callModel(name_model) is None):
+if(M.call_model(name_model) is None):
     print("MODELO NOVO")
-    createModel(M, name_model)
+    create_model(M, name_model)
 else:
     print("MODELO EXISTENTE")
 
-M.setModelTest(name_model)
+M.set_model_test(name_model)
 
 
 

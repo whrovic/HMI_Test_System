@@ -13,10 +13,10 @@ class LedTest:
     def colour_test(self, colour):
         self.colours_cv.append(colour)
 
-    def getColourResult(self):
+    def get_colour_result(self):
         return self.colours_cv
     
-    def testLed(self):
+    def test_Led(self):
         if(self.colours_cv == self.led.colours):
             return 1
         else:

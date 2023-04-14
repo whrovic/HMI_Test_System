@@ -10,15 +10,15 @@ class ButtonTest:
         self.button = button
 
     #valor detetado pelo CV ao premir o botão
-    def press_test_display(self, pressCV):
-        self.pressed_display = pressCV
+    def press_test_display(self, press_CV):
+        self.pressed_display = press_CV
         
     def test_button_display(self):
         return self.pressed_display
     
     #valor detetado pelo Serial Port ao premir o botão
-    def press_test_SP(self, pressSP):
-        self.pressed_serial_port = pressSP
+    def press_test_SP(self, press_SP):
+        self.pressed_serial_port = press_SP
         
     def test_button_SP(self):
         return self.pressed_serial_port

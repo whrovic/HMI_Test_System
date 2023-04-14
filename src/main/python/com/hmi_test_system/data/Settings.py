@@ -11,15 +11,15 @@ class Settings:
         
     def __init__(self):
         self.model:List[Model] = []
-        self.mT = ModelTest()
+        self.model_test = ModelTest()
         self.sequence_test = SequenceTest
 
 
-    def newModel(self, name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display: Display, version):
-        self.model.append(Model(name, nledsControll, nledsAlarm, nledsButtons, nbuttonsModel, nspecialButtons, display, version))
+    def new_model(self, name, n_leds_control, n_leds_alarm, n_leds_buttons, n_buttons_model, n_special_buttons, display: Display, version):
+        self.model.append(Model(name, n_leds_control, n_leds_alarm, n_leds_buttons, n_buttons_model, n_special_buttons, display, version))
 
     
-    def callModel(self, name):
+    def call_model(self, name):
         for i in len(self.model):
             if(name == self.model[int(i)].name):
                 return self.model[i]
@@ -28,7 +28,7 @@ class Settings:
         return None
 
     
-    def indexModel(self, name):
+    def index_model(self, name):
         for i in len(self.model):
             if(name == self.model[int(i)].name):
                 return i
@@ -36,35 +36,35 @@ class Settings:
         #nao encontra o modelo
         return -1
     
-    def deleteModel(self, name):
-        N_model = int(self.indexModel(name))
+    def delete_model(self, name):
+        n_model = int(self.index_model(name))
 
-        if(N_model == -1):
+        if(n_model == -1):
             print("ERROR - Modelo a eliminar não existe")
         else:
-            self.model.remove(N_model)
+            self.model.remove(n_model)
 
 
-    def setModelTest(self, name):
-        n_model = int(self.indexModel(name))
+    def set_model_test(self, name):
+        n_model = int(self.index_model(name))
 
         if(n_model == -1):
             print("ERROR - Modelo a testar não existe")
             return
         else:
-            for i in self.model[n_model].nledsControll:
-                self.mT.ledsControll_test.append(LedTest(self.model[n_model].ledsControll[i]))
+            for i in self.model[n_model].n_leds_control:
+                self.model_test.leds_control_test.append(LedTest(self.model[n_model].leds_control[i]))
 
-            for i in self.model[n_model].nledsAlarm:
-                self.mT.ledsAlarm_test.append(LedTest(self.model[n_model].ledsAlarm[i]))
+            for i in self.model[n_model].n_leds_alarm:
+                self.model_test.leds_alarm_test.append(LedTest(self.model[n_model].leds_alarm[i]))
 
-            for i in self.model[n_model].nledsButtons:
-                self.mT.ledsButtons_test.append(LedTest(self.model[n_model].ledsButtons[i]))
+            for i in self.model[n_model].n_leds_buttons:
+                self.model_test.leds_buttons_test.append(LedTest(self.model[n_model].leds_buttons[i]))
 
-            for i in self.model[n_model].nbuttonsModel:
-                self.mT.buttonsModel_test.append(ButtonTest(self.model[n_model].buttonsModel[i]))
+            for i in self.model[n_model].n_buttons_model:
+                self.model_test.buttons_model_test.append(ButtonTest(self.model[n_model].buttons_model[i]))
 
-            for i in self.model[n_model].nspecialButtons:
-                self.mT.specialButtons_test.append(ButtonTest(self.model[n_model].specialButtons[i]))   
+            for i in self.model[n_model].n_special_buttons:
+                self.model_test.special_buttons_test.append(ButtonTest(self.model[n_model].special_buttons[i]))   
 
-            self.mT.display_test= DisplayTest(self.model[n_model].display) 
+            self.model_test.display_test= DisplayTest(self.model[n_model].display) 

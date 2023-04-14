@@ -2,8 +2,8 @@ from hmi_test_system.data.Display import Display
 
 class DisplayTest:
     RGB: bool          
-    Pixel: bool          
-    Characters: bool
+    pixel: bool          
+    characters: bool
 
     def __init__(self, display: Display):
         self.display = display
@@ -18,16 +18,16 @@ class DisplayTest:
         
 
     # Pixel screen detetado por CV
-    def Pixel_CV(self, Pixel):
-        self.Pixel = Pixel
+    def pixel_CV(self, pixel):
+        self.pixel = pixel
     
-    def testPixel(self):
-        return self.Pixel
+    def test_pixel(self):
+        return self.pixel
     
 
     # Characters screen detetado por CV
-    def Characters_CV(self, Characters):
-        self.Characters = Characters
+    def characters_CV(self, characters):
+        self.characters = characters
             
-    def testCharacters(self):
-        return self.Characters
+    def test_characters(self):
+        return self.characters
