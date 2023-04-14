@@ -6,7 +6,7 @@ from Library import create_model
 
 M = Settings()
 
-print("/nNome do modelo: ")
+print("Nome do modelo: ")
 name_model = input()
 
 if(M.call_model(name_model) is None):
