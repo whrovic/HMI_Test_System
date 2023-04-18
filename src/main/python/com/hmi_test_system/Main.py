@@ -6,30 +6,36 @@ M = Settings()
 
 while(1):
     os.system('cls') 
-    print("\*-*-*-*-*-*-*-*-*Menu-*-*-*-*-*-*-*-*\n\n\n")
-    print("1- add model         2- test model")
-    print("\n\n\n\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
+    print("---------------Menu---------------\n\n")
+    print("1- Add model         2- Test model\n")
+    print("             3- Exit")
+    print("\n\n----------------------------------\n")
     c = input()
 
     if (c== '1'):
         n = 1
     elif (c== '2'):
         n = 2
+    elif(c=='3'):
+        os.system('cls')
+        break
+    else:
+        continue
 
 
     while(n==1):
         os.system('cls') 
-        print("*-*-*-*-*-*-*-*-*Add Model-*-*-*-*-*-*-*-*\n\n\n")
-        print("1- add model         2- Menu")
-        print("\n\n\n\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n")
+        print("------------Add Model------------\n\n")
+        print("1- Add new model         2- Menu")
+        print("\n\n---------------------------------\n")
         c = input()
 
         #------------------------------------ADICIONAR NOVO MODELO------------------------------------#
         if(c == '1'):
             while(1):
                 os.system('cls') 
-                print("\nInsira o nome do modelo a adicionar\n" )
-                print("(para voltar ao menu  Add Modeldigite b)\n" )
+                print("\nInsira o nome do modelo a adicionar:" )
+                print("(para voltar ao menu digite b)\n" )
                 name_model = input()
                 
                 if(name_model == 'b'):
@@ -59,14 +65,14 @@ while(1):
     #------------------------------------TESTAR MODELO------------------------------------#
     while(n==2):
         os.system('cls') 
-        print("*-*-*-*-*-*-*-*-*Test model-*-*-*-*-*-*-*-*\n\n\n")
+        print("-----------Test Model-----------\n\n")
         print("1- Test model         2- Menu")
-        print("\n\n\n\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
+        print("\n\n--------------------------------\n")
         c = input()
         if(c == '1'):
             os.system('cls') 
             print('\nQue modelo quer testar?')
-            print("(para voltar ao menu Test Model digite b)\n" )
+            print("(para voltar ao menu digite b)\n" )
             name_model = input()
             if(M.call_model(name_model) is None):
                 os.system('cls') 
