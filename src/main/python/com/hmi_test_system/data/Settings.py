@@ -15,8 +15,8 @@ class Settings:
         self.sequence_test = SequenceTest
 
 
-    def new_model(self, name, n_leds_control, n_leds_alarm, n_leds_buttons, n_buttons_model, n_special_buttons, display: Display, version):
-        self.model.append(Model(name, n_leds_control, n_leds_alarm, n_leds_buttons, n_buttons_model, n_special_buttons, display, version))
+    def new_model(self, name, n_leds, n_buttons, display: Display, version):
+        self.model.append(Model(name, n_leds, n_buttons, display, version))
 
     
     def call_model(self, name):
@@ -52,20 +52,11 @@ class Settings:
             print("ERROR - Modelo a testar não existe")
             return
         else:
-            for i in range(0, self.model[n_model].n_leds_control):
-                self.model_test.leds_control_test.append(LedTest(self.model[n_model].leds_control[i]))
+            for i in range(0, self.model[n_model].n_leds):
+                self.model_test.leds_test.append(LedTest(self.model[n_model].leds[i]))
 
-            for i in range(0, self.model[n_model].n_leds_alarm):
-                self.model_test.leds_alarm_test.append(LedTest(self.model[n_model].leds_alarm[i]))
-
-            for i in range(0, self.model[n_model].n_leds_buttons):
-                self.model_test.leds_buttons_test.append(LedTest(self.model[n_model].leds_buttons[i]))
-
-            for i in range(0, self.model[n_model].n_buttons_model):
-                self.model_test.buttons_model_test.append(ButtonTest(self.model[n_model].buttons_model[i]))
-
-            for i in range(0, self.model[n_model].n_special_buttons):
-                self.model_test.special_buttons_test.append(ButtonTest(self.model[n_model].special_buttons[i]))   
+            for i in range(0, self.model[n_model].n_buttons):
+                self.model_test.buttons_test.append(ButtonTest(self.model[n_model].buttons[i]))  
 
             self.model_test.display_test= DisplayTest(self.model[n_model].display) 
 

@@ -79,10 +79,30 @@ while(1):
             os.system('cls')
             os.system('cls') 
             print("---------------Menu---------------\n\n")
-            print("1- Add model         2- Test model\n")
-            print("             3- Exit")
+            print("1- Led test         2- Button test\n")
+            print("3- LCD test         4- Menu")
             print("\n\n----------------------------------\n")
             c = input()
+            if (c== '1'):
+                n = 1
+            elif (c== '2'):
+                n = 2
+            elif (c== '3'):
+                n=3
+            elif(c=='4'):
+                break
+            else:
+                continue
+
+            #------------------------------------TESTAR MODELO------------------------------------#
+            while(n==1):
+                os.system('cls')
+                print("What led do you want to test?\n")
+                led_name = input()
+                if()
+            
+            
+
 
             
         
