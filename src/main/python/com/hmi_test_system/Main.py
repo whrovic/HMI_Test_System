@@ -292,11 +292,3 @@ while(1):
 
                     else:
                         continue
-
-                    
-
-
-
-
-            
-        
