@@ -30,9 +30,9 @@ class VideoCapture(ABC):
             cap = cv2.VideoCapture(i)
             if (cap is not None and cap.isOpened()):
                 cameras.append((i, cap.get(cv2.CAP_PROP_BACKEND)))
+                i += 1
             else:
                 break
-            i += 1
 
         return cameras
         
