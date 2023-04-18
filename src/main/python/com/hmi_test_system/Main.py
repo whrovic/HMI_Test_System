@@ -18,3 +18,6 @@ else:
     print("MODELO EXISTENTE")
 
 M.set_model_test(name_model)
+
+
+print("MODELO okoko0")
