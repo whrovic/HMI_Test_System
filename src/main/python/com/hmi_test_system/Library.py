@@ -41,7 +41,8 @@ def create_model(M: Settings, name_model):
             led = Led(led_name, n_colours, pos_vector[0], pos_vector[1])
             for j in range(0, n_colours):
                 print(f"Colour {j+1} of led {i+1}:")
-                led.new_colour(input())
+                new_colour = input()
+                led.new_colour(new_colour)
 
             M.model[int(index)].set_led(led)
 
