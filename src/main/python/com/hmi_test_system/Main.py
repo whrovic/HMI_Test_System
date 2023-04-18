@@ -23,70 +23,66 @@ while(1):
         continue
 
 
+    #------------------------------------ADICIONAR NOVO MODELO------------------------------------#
     while(n==1):
         os.system('cls') 
-        print("------------Add Model------------\n\n")
-        print("1- Add new model         2- Menu")
-        print("\n\n---------------------------------\n")
-        c = input()
-
-        #------------------------------------ADICIONAR NOVO MODELO------------------------------------#
-        if(c == '1'):
-            while(1):
-                os.system('cls') 
-                print("\nInsira o nome do modelo a adicionar:" )
-                print("(para voltar ao menu digite b)\n" )
-                name_model = input()
-                
-                if(name_model == 'b'):
-                    break
-                if(M.call_model(name_model) is None):
-                    os.system('cls') 
-                    print("\n\nMODELO NAO EXISTE\n")
-                    print("\n\n----------------------CONFIGURAÇAO DO NOVO MODELO----------------------\n")
-
-                    create_model(M, name_model)
-                    os.system('cls') 
-                    print("\n\nMODELO ADICIONADO\n")
-                else:
-                    os.system('cls') 
-                    print("\n\nMODELO JA EXISTE\n")
-                
+        print("Insert the name of the new model:" )
+        print("(to go to the menu insert b)\n" )
+        name_model = input()
+        
+        if(name_model == 'b'):
             break
+        elif(M.call_model(name_model) is None):
+            os.system('cls') 
+            print(f"                       MODEL {name_model} DOESN'T EXIST\n")
+            print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
-        elif(c == '2'):
+            create_model(M, name_model)
+
+            os.system('cls') 
+            print(f"MODEL {name_model} IS ADDED \n\n")
+            print("To go to the menu insert anything\n")
+            c = input()
             break
-
         else:
-            continue
+            os.system('cls') 
+            print("MODEL ALREADY EXISTS\n\n")
+            print("To go to the menu insert anything\n")
+            c = input()
+            break
+        
 
             
 
     #------------------------------------TESTAR MODELO------------------------------------#
     while(n==2):
         os.system('cls') 
-        print("-----------Test Model-----------\n\n")
-        print("1- Test model         2- Menu")
-        print("\n\n--------------------------------\n")
-        c = input()
-        if(c == '1'):
-            os.system('cls') 
-            print('\nQue modelo quer testar?')
-            print("(para voltar ao menu digite b)\n" )
-            name_model = input()
-            if(M.call_model(name_model) is None):
-                os.system('cls') 
-                print("\n\nMODELO NAO EXISTE\n")
-                continue
-            elif(name_model == 'b'):
-                break
-            else:
-                M.set_model_test(name_model)
-                os.system('cls') 
-                print("\nMODELO PRONTO A TESTAR\n")
-                break
-        elif(c == '2'):
+        print('What model do you want to test?')
+        print("(to go to the menu insert b)\n" )
+        name_model = input()
+        
+        if(name_model == 'b'):
             break
+        elif(M.call_model(name_model) is None):
+            os.system('cls') 
+            print(f"MODEL {name_model} DOESN'T EXIST\n")
+            print("To go to the menu insert anything\n")
+            c = input()
+            break
+
         else:
-            c = None
-            continue
+            M.set_model_test(name_model)
+            os.system('cls') 
+            print(f"MODEL {name_model} IS READY TO TEST\n")
+            print("To start the test insert anything\n")
+            c = input()
+            os.system('cls')
+            os.system('cls') 
+            print("---------------Menu---------------\n\n")
+            print("1- Add model         2- Test model\n")
+            print("             3- Exit")
+            print("\n\n----------------------------------\n")
+            c = input()
+
+            
+        

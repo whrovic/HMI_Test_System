@@ -68,3 +68,6 @@ class Settings:
                 self.model_test.special_buttons_test.append(ButtonTest(self.model[n_model].special_buttons[i]))   
 
             self.model_test.display_test= DisplayTest(self.model[n_model].display) 
+
+    def reset_model_test(self):
+        self.model_test = ModelTest()

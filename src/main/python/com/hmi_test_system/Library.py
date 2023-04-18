@@ -19,12 +19,12 @@ def create_model(M: Settings, name_model):
 
 
     #leds dos alarmes
-    print("Pos x dos leds de alarme: ")
-    x_alarm = int(input())
+    x_alarm = []
     y_alarm = []
     for i in range(0, n_alarm):
-        print(f"Pos y do led {i+1} de alarme: ")
-        y_alarm.append(int(input()))
+        print(f"Pos do led {i+1} de alarme: ")
+        x_alarm.append()
+        y_alarm.append()
     print("Cor 1 do led de alarme: ")
     colour_alarm1 = input()
     print("Cor 2 do led de alarme: ")
@@ -35,10 +35,10 @@ def create_model(M: Settings, name_model):
     x_buttons = []
     y_buttons = []
     for i in range(0, n_buttons_model*2):
-        print(f"Pos x do led de botão {i+1}: ")
-        x_buttons.append(int(input()))
-        print(f"Pos y do led de botão {i+1}: ")
-        y_buttons.append(int(input()))
+        print(f"Pos do led de botão {i+1}: ")
+        vector = 'FUNCAO CV'
+        x_alarm.append(vector[0])
+        y_alarm.append(vector[1])
     print("Cor 1 do led de botão: ")
     colour_button1 = input()
     print("Cor 2 do led de botão: ")
@@ -79,6 +79,7 @@ def create_model(M: Settings, name_model):
 
     #Adciona o modelo
     M.new_model(name_model, n_control, n_alarm, n_buttons_model*2, n_buttons_model, n_special_buttons, display, version)
+
 
     index = M.index_model(name_model)
     

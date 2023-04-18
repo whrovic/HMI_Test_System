@@ -8,4 +8,5 @@ class ModelTest:
         self.buttons_model_test = []
         self.special_buttons_test = []
         self.display_test: Display
+
         
