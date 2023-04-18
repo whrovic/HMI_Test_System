@@ -23,7 +23,7 @@ while(1):
         continue
 
 
-    #------------------------------------ADICIONAR NOVO MODELO------------------------------------#
+    #------------------------------------ADD NEW MODEL------------------------------------#
     while(n==1):
         os.system('cls') 
         print("Insert the name of the new model:" )
@@ -34,13 +34,13 @@ while(1):
             break
         elif(M.call_model(name_model) is None):
             os.system('cls') 
-            print(f"                       MODEL {name_model} DOESN'T EXIST\n")
+            print(f"                            {name_model} DOESN'T EXIST\n")
             print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
             create_model(M, name_model)
 
             os.system('cls') 
-            print(f"MODEL {name_model} IS ADDED \n\n")
+            print(f"{name_model} IS ADDED \n\n")
             print("To go to the menu insert anything\n")
             c = input()
             break
@@ -54,7 +54,7 @@ while(1):
 
             
 
-    #------------------------------------TESTAR MODELO------------------------------------#
+    #------------------------------------MODEL TEST------------------------------------#
     while(n==2):
         os.system('cls') 
         print('What model do you want to test?')
@@ -65,7 +65,7 @@ while(1):
             break
         elif(M.call_model(name_model) is None):
             os.system('cls') 
-            print(f"MODEL {name_model} DOESN'T EXIST\n")
+            print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
             c = input()
             break
@@ -94,13 +94,32 @@ while(1):
             else:
                 continue
 
-            #------------------------------------TESTAR MODELO------------------------------------#
+            #------------------------------------LED TEST------------------------------------#
             while(n==1):
                 os.system('cls')
                 print("What led do you want to test?\n")
                 led_name = input()
-                if()
-            
+                index_led = M.index_led(led_name)
+                if(index_led is None):
+                    print(f"{led_name} DOESN'T EXIST")
+                else:
+                    pass
+                
+
+            #------------------------------------BUTTON TEST------------------------------------#
+            while(n==2):
+                os.system('cls')
+                print("What button do you want to test?\n")
+                button_name = input()
+                index_button = M.index_led(button_name)
+                if(index_button is None):
+                    print(f"{button_name} DOESN'T EXIST")
+                else:
+                    pass
+                
+            #------------------------------------BUTTON TEST------------------------------------#
+            while(n==3):
+                pass
             
 
 

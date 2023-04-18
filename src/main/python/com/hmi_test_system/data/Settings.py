@@ -15,6 +15,7 @@ class Settings:
         self.sequence_test = SequenceTest
 
 
+    #------------------------------------Model------------------------------------#
     def new_model(self, name, n_leds, n_buttons, display: Display, version):
         self.model.append(Model(name, n_leds, n_buttons, display, version))
 
@@ -36,6 +37,7 @@ class Settings:
         #nao encontra o modelo
         return -1
     
+    
     def delete_model(self, name):
         n_model = int(self.index_model(name))
 
@@ -45,6 +47,8 @@ class Settings:
             self.model.remove(n_model)
 
 
+
+    #------------------------------------Model test------------------------------------#
     def set_model_test(self, name):
         n_model = int(self.index_model(name))
 
@@ -62,3 +66,19 @@ class Settings:
 
     def reset_model_test(self):
         self.model_test = ModelTest()
+
+
+    def index_led(self, led_name):
+        for i in range(0, len(self.model_test.leds_test)):
+            if(self.model_test.leds_test[i] == led_name):
+                return i
+        
+        return None
+
+
+    def index_button(self, button_name):
+        for i in range(0, len(self.model_test.buttons_test)):
+            if(self.model_test.buttons_test[i] == button_name):
+                return i
+        
+        return None

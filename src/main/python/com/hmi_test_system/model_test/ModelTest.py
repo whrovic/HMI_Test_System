@@ -5,5 +5,3 @@ class ModelTest:
         self.leds_test = []
         self.buttons_test = []
         self.display_test: Display
-
-        
