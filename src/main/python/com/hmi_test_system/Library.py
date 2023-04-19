@@ -8,22 +8,12 @@ def create_model(M: Settings, name_model):
     
     print("Number of buttons: ")
     n_buttons = int(input())   # number of buttons of model
-    """ while(n_buttons is not int):
-        print("Please write a number")
-        n_buttons = input() """
     
     print("Number of leds: ")
-    n_leds= int(input())
-    """ while(n_leds is not int):
-        print("Please write a number")
-        n_leds = input()   """     # number of leds of model
-
+    n_leds= int(input())        # number of leds of model
     
     print("Model version: ")
-    version = int(input())
-    """ while(version is not int):
-        print("Please write a number")
-        version = input()    """  # version of model
+    version = int(input())      # version of model
 
     # LCD configuration
     print("\n\nLCD CONFIGURATION\n")
@@ -46,7 +36,7 @@ def create_model(M: Settings, name_model):
         # leds configuration
         print("\n\nLEDS CONFIGURATION\n")
         for i in range(0, n_leds):
-            print(f"Led {i+1} name: ")
+            print(f"\nLed {i+1} name: ")
             led_name = input()
             print(f"How many colours have the led {i+1}?")
             n_colours = int(input())
@@ -63,7 +53,7 @@ def create_model(M: Settings, name_model):
         # buttons configuration
         print("\n\nBUTTONS CONFIGURATION\n")
         for i in range(0, n_buttons):
-            print(f"Button {i+1} name: ")
+            print(f"\nButton {i+1} name: ")
             button_name = input()
             print(f"Select the button {i+1} central position")
             pos_vector = [0, 0]
@@ -80,29 +70,28 @@ def create_xml(M: Settings, name_model):
 
     index = M.index_model(name_model)
 
-
     # create an XML representation of the object
-    root = ET.Element(f'Model {M.model[index].name}')
-    name = ET.SubElement(root, 'name')
+    model = ET.Element(f'Model {M.model[index].name}')
+    name = ET.SubElement(model, 'name')
     name.text = str(M.model[index].name)
-    n_leds = ET.SubElement(root, 'n_leds')
+    n_leds = ET.SubElement(model, 'n_leds')
     n_leds.text = str(M.model[index].n_leds)
-    n_buttons = ET.SubElement(root, 'n_buttons')
+    n_buttons = ET.SubElement(model, 'n_buttons')
     n_buttons.text = str(M.model[index].n_buttons)
-    version = ET.SubElement(root, 'version')
+    version = ET.SubElement(model, 'version')
     version.text = str(M.model[index].version)
-    display = ET.SubElement(root, 'display')
+    display = ET.SubElement(model, 'display')
     display_name = ET.SubElement(display, 'display')
     display_name.text = str(M.model[index].display.name)
     display_x = ET.SubElement(display, 'display_x')
-    display_x.text = str(M.model[index].display.x)
+    display_x.text = str(M.model[index].display.pos_init_x)
     display_y = ET.SubElement(display, 'display_y')
-    display_y.text = str(M.model[index].display.y)
+    display_y.text = str(M.model[index].display.pos_init_y)
     display_dimx = ET.SubElement(display, 'display_dimx')
     display_dimx.text = str(M.model[index].display.dim_x)
     display_dimy = ET.SubElement(display, 'display_dimy')
     display_dimy.text = str(M.model[index].display.dim_y) 
-    leds = ET.SubElement(root, 'leds')
+    leds = ET.SubElement(model, 'leds')
     for i in range(0, M.model[index].n_leds):
         led_name = ET.SubElement(leds, f'led{i+1}_name')
         led_name.text = str(M.model[index].leds[i].name)
@@ -112,11 +101,11 @@ def create_xml(M: Settings, name_model):
         led_x.text = str(M.model[index].leds[i].x)
         led_y = ET.SubElement(leds, f'led{i+1}_y')
         led_y.text = str(M.model[index].leds[i].y)
-        leds_colours = ET.SubElement(root, f'led{i+1}_colours')
+        leds_colours = ET.SubElement(leds, f'led{i+1}_colours')
         for j in range(0, M.model[index].leds[i].n_Colour):
             led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
             led_colour.text = str(M.model[index].leds[i].colours[j])
-    buttons = ET.SubElement(root, 'buttons')
+    buttons = ET.SubElement(model, 'buttons')
     for i in range(0, M.model[index].n_buttons):
         button_name = ET.SubElement(buttons, f'button{i+1}_name')
         button_name.text = str(M.model[index].buttons[i].name)
@@ -127,7 +116,7 @@ def create_xml(M: Settings, name_model):
 
 
     # Create the XML document and write it to a file
-    tree = ET.ElementTree(root)
+    tree = ET.ElementTree(model)
     tree.write(f"{name_model}.xml")
 
 

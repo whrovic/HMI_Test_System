@@ -2,8 +2,32 @@ from data.Settings import Settings
 from Library import create_model
 from Library import create_xml
 import os
+import xml.etree.ElementTree as ET
 
 M = Settings()
+
+# Define the directory to search
+directory = "/path/to/directory"
+
+i = 0
+# List all the files in the directory
+for filename in os.listdir(directory):
+    # Check if the file's extension is ".xml"
+    if filename.endswith(".xml"):
+        # Do something with the XML file
+        xml_file = os.path.join(directory, filename)
+        tree = ET.parse(xml_file)
+        model = tree.getroot()
+        M.model.append(model)
+        for child in model:
+            if(child.tag == 'name'):
+                M.model[i].name = child.text
+            elif(child.tag == 'n_leds'):
+                M.model[i].n_leds = int(child.text)
+            elif(child.tag ==)
+        
+    
+
 
 
 #------------------------------------MENU------------------------------------#
