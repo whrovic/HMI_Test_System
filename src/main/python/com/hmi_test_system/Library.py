@@ -126,12 +126,9 @@ def create_xml(M: Settings, name_model):
         button_y.text = str(M.model[index].buttons[i].y)
 
 
-
-
-
     # Create the XML document and write it to a file
     tree = ET.ElementTree(root)
-    tree.write("output.xml")
+    tree.write(f"{name_model}.xml")
 
 
     
