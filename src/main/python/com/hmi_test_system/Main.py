@@ -1,32 +1,14 @@
 from data.Settings import Settings
-from Library import create_model
+from Library import create_model_manual
+from Library import open_model_xml
 from Library import create_xml
 import os
+from data.Led import Led
+from data.Button import Button
+from data.Display import Display
 import xml.etree.ElementTree as ET
 
 M = Settings()
-
-# Define the directory to search
-directory = "/path/to/directory"
-
-i = 0
-# List all the files in the directory
-for filename in os.listdir(directory):
-    # Check if the file's extension is ".xml"
-    if filename.endswith(".xml"):
-        # Do something with the XML file
-        xml_file = os.path.join(directory, filename)
-        tree = ET.parse(xml_file)
-        model = tree.getroot()
-        M.model.append(model)
-        for child in model:
-            if(child.tag == 'name'):
-                M.model[i].name = child.text
-            elif(child.tag == 'n_leds'):
-                M.model[i].n_leds = int(child.text)
-            elif(child.tag ==)
-        
-    
 
 
 
@@ -68,14 +50,14 @@ while(1):
         # back to menu
         if(name_model == 'q'):
             break
-
+        
         # model doesn't exist -> new configuration
-        elif(M.call_model(name_model) is None):
+        elif(open_model_xml(M, name_model) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
-            create_model(M, name_model)
+            create_model_manual(M, name_model)
             create_xml(M, name_model)
 
             os.system('cls') 
@@ -107,7 +89,7 @@ while(1):
             break
         
         # model doesn't exist
-        elif(M.call_model(name_model) is None):
+        elif(open_model_xml(M, name_model) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
