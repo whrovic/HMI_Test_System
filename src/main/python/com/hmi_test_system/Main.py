@@ -1,5 +1,6 @@
 from data.Settings import Settings
 from Library import create_model
+from Library import create_xml
 import os
 
 M = Settings()
@@ -51,6 +52,7 @@ while(1):
             print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
             create_model(M, name_model)
+            create_xml(M, name_model)
 
             os.system('cls') 
             print(f"{name_model} IS ADDED \n\n")
