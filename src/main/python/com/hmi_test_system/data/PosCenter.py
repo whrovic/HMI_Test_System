@@ -7,5 +7,8 @@ class PosCenter:
         self.x = new_x
         self.y = new_y
     
-    def get_pos(self):
-        return {self.x, self.y}
+    def get_pos_x(self):
+        return self.x
+    
+    def get_pos_y(self):
+        return self.y

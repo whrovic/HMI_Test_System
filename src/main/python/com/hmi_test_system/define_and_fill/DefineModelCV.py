@@ -28,10 +28,10 @@ class DefineModelCV():
         cv2.imshow("HMI", image)
         cv2.waitKey(0)
         
-#image = cv2.imread("HMI.png")
+image = cv2.imread("HMI.png")
 
-#coordenadas = DefineModelCV.detectPosLed(image)
+coordenadas = DefineModelCV.detectPosLed(image)
 
-#print(coordenadas)
+print(coordenadas)
 
-#DefineModelCV.printLed(image, coordenadas)
+DefineModelCV.printLed(image, coordenadas)
