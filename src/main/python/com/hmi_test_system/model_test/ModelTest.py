@@ -1,11 +1,11 @@
-from data.Display import Display
+
+from model_test.ButtonTest import ButtonTest
+from model_test.LedTest import LedTest
+from model_test.DisplayTest import DisplayTest
 
 class ModelTest:
-    def __init__(self):
-        self.leds_control_test = []
-        self.leds_alarm_test = []
-        self.leds_buttons_test = []
-        self.buttons_model_test = []
-        self.special_buttons_test = []
-        self.display_test: Display
+    def __init__(self, leds, buttons, display):
+        self.leds_test : leds
+        self.buttons_test : buttons
+        self.display_test : display
         
