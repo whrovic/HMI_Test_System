@@ -18,7 +18,7 @@ while(1):
     print("---------------Menu---------------\n\n")
     print("1- Add model         2- Test model\n")
     print("             3- Exit")
-    print("\n\n----------------------------------\n")
+    print("\n\n----------------------------------\n")        
     c = input()
 
     # add model

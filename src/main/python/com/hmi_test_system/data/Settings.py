@@ -62,7 +62,7 @@ class Settings:
             for i in range(0, self.model[n_model].n_buttons):
                 self.model_test.buttons_test.append(ButtonTest(self.model[n_model].buttons[i]))  
 
-            self.model_test.display_test= DisplayTest(self.model[n_model].display) 
+            self.model_test.display_test = DisplayTest(self.model[n_model].display) 
 
     def reset_model_test(self):
         self.model_test = ModelTest()
