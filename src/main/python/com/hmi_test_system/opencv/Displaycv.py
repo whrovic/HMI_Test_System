@@ -1,8 +1,9 @@
 import cv2, pytesseract
 
 class Displaycv:
-
-    def read_char(self, lcd):
+    
+    @staticmethod
+    def read_char(lcd):
         # Setup tesseract
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
@@ -24,7 +25,8 @@ class Displaycv:
         # Return characters pattern
         return char_pattern
     
-    def get_color_pattern(self, lcd):
+    @staticmethod
+    def get_color_pattern(lcd):
         # Resize LCD image
         lcd = cv2.resize(lcd, (680, 512))
 
@@ -48,25 +50,10 @@ class Displaycv:
         # Return the color pattern
         return colors
 
-    def cut_lcd(self, img):
-        # Convert image to grayscale
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-        # Convert to binary
-        binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)[1]
-
-        # Find contours
-        contours = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-        
-        # Detect and cut LCD
-        lcd = None
-        for contour in contours:
-            if cv2.contourArea(contour) > 50000 and cv2.contourArea(contour) < 336700:
-                x, y, w, h = cv2.boundingRect(contour)
-                lcd = img[y:y+h, x:x+w]
-        if lcd is None:
-            print("\nError: could not find LCD\n")
-            return None
+    @staticmethod
+    def cut_lcd(img, x, y, w, h):
+        # Cut LCD
+        lcd = img[y:y+h, x:x+w]
         
         # Resize LCD image
         lcd = cv2.resize(lcd, (701, 530))
