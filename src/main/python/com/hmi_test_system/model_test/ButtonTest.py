@@ -1,4 +1,4 @@
-from data.Button import Button
+from data.model.Button import Button
 
 class ButtonTest:
     def __init__(self, button: Button):

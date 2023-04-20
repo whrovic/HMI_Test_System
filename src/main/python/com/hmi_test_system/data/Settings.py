@@ -1,10 +1,10 @@
-from .Model import Model
+from .model.Model import Model
 from .SequenceTest import SequenceTest
 from model_test.ModelTest import ModelTest
 from model_test.LedTest import LedTest
 from model_test.ButtonTest import ButtonTest
 from model_test.DisplayTest import DisplayTest
-from .Display import Display
+from .model.Display import Display
 from typing import List
 
 class Settings:
@@ -14,10 +14,17 @@ class Settings:
         self.model_test = ModelTest()
         self.sequence_test = SequenceTest
 
-
     #------------------------------------Model------------------------------------#
-    def new_model(self, name, n_leds, n_buttons, display: Display, version):
+    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
         self.model.append(Model(name, n_leds, n_buttons, display, version))
+    '''if not isinstance(name, str):
+        #    raise TypeError("name must be a string.")
+        if not isinstance(n_leds, int):
+            raise TypeError("n_leds must be an integer.")
+        if not isinstance(n_buttons, int):
+            raise TypeError("n_buttons must be an integer.")
+        if not isinstance(display, Display):
+            raise TypeError("display must be an Display.")'''
 
     
     def call_model(self, name):
@@ -31,7 +38,7 @@ class Settings:
     
     def index_model(self, name):
         for i in range(len(self.model)):
-            if(name == self.model[int(i)].name):
+            if(name == self.model[int(i)].get_name):
                 return i
         
         #nao encontra o modelo
@@ -42,9 +49,10 @@ class Settings:
         n_model = int(self.index_model(name))
 
         if(n_model == -1):
-            print("ERROR - Modelo a eliminar não existe")
+            return -1
         else:
             self.model.remove(n_model)
+            return 0
 
 
 

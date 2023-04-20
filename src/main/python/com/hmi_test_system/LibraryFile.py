@@ -1,6 +1,6 @@
-from data.Led import Led
-from data.Button import Button
-from data.Display import Display
+from data.model.Led import Led
+from data.model.Button import Button
+from data.model.Display import Display
 from data.Settings import Settings
 import sys
 

@@ -1,4 +1,4 @@
-from data.Display import Display
+from data.model.Display import Display
 
 class ModelTest:
     def __init__(self):

@@ -2,10 +2,6 @@ from data.Settings import Settings
 from LibrarySettings import add_models
 from LibraryTest import model_menu
 import os
-from data.Led import Led
-from data.Button import Button
-from data.Display import Display
-import xml.etree.ElementTree as ET
 from main.MenuPrints import MenuPrints as MP
 
 NTIMEOUT = 5

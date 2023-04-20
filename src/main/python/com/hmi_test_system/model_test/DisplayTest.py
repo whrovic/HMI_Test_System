@@ -1,4 +1,4 @@
-from data.Display import Display
+from data.model.Display import Display
 
 class DisplayTest:
     RGB: bool          

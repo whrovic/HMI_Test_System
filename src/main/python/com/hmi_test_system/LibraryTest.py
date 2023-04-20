@@ -1,8 +1,12 @@
 from data.Settings import Settings
-from Library import open_model_xml
+from data.DefineAndFillModel import DefineAndFillModel as df
 import os
 
 def model_menu(M: Settings):
+    
+    #directory = "/path/to/directory"
+    directory = r"C:\Users\asus\ES\HMI_Test_System"
+    
     #------------------------------------MODEL TEST------------------------------------#
     while True:
         os.system('cls') 
@@ -15,7 +19,7 @@ def model_menu(M: Settings):
             break
         
         # model doesn't exist
-        elif(open_model_xml(M, name_model) is None):
+        elif(df.open_model_xml(M, name_model, directory) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
