@@ -10,7 +10,7 @@ from typing import List
 class Settings:
         
     def __init__(self):
-        self.model:List[Model] = []
+        self.model: List[Model] = []
         self.model_test = ModelTest()
         self.sequence_test = SequenceTest
 

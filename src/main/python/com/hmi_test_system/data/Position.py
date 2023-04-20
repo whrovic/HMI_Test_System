@@ -1,9 +1,9 @@
-class PosCenter:
-    def __init__(self, x, y):
+class Position:
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
     
-    def set_pos(self, new_x, new_y):
+    def set_pos(self, new_x: int, new_y: int):
         self.x = new_x
         self.y = new_y
     
