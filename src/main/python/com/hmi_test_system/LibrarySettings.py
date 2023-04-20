@@ -1,9 +1,10 @@
+from data.Settings import Settings
 from Library import open_model_xml
 from Library import create_model_manual
 from Library import create_xml
 import os
 
-def add_models(M):
+def add_models(M: Settings):
     #------------------------------------ADD NEW MODEL------------------------------------#
     try:
         while True:

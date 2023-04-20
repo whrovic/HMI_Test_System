@@ -14,7 +14,7 @@ def create_model_file(M: Settings, name_model, filename):
         n_leds = int(f.readline())
 
         # read model version from file
-        version = int(f.readline())
+        version = f.readline()
 
         # LCD configuration
         print("\n\nLCD CONFIGURATION\n")
@@ -71,5 +71,5 @@ def create_model_file(M: Settings, name_model, filename):
 
 M = Settings()
 
-create_model_file(M,"M1", 'c:/Users/asus/ES/HMI_Test_System/src/main/python/com/hmi_test_system/m1.txt')
+create_model_file(M,"TPUs430", 'c:/Users/asus/ES/HMI_Test_System/src/main/python/com/hmi_test_system/m1.txt')
   

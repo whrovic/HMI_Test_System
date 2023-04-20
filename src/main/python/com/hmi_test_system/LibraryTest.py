@@ -1,7 +1,8 @@
+from data.Settings import Settings
 from Library import open_model_xml
 import os
 
-def menu_model_test(M):
+def model_menu(M: Settings):
     #------------------------------------MODEL TEST------------------------------------#
     while True:
         os.system('cls') 

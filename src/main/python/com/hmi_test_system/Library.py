@@ -14,7 +14,7 @@ def create_model_manual(M: Settings, name_model):
     n_leds= int(input())        # number of leds of model
     
     print("Model version: ")
-    version = int(input())      # version of model
+    version = input()      # version of model
 
     # LCD configuration
     print("\n\nLCD CONFIGURATION\n")
@@ -67,7 +67,8 @@ def create_model_manual(M: Settings, name_model):
 
 def open_model_xml(M: Settings, name_model):
     # Define the directory to search
-    directory = "/path/to/directory"
+    #directory = "/path/to/directory"
+    directory = r"C:\Users\asus\ES\HMI_Test_System"
 
     # List all the files in the directory
     for filename in os.listdir(directory):
