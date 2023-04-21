@@ -4,6 +4,8 @@ import numpy as np
 class DefineModelCV():
 
     '''
+    (Ricardo)
+
     Se conseguires fazer com que não seja preciso o user carregar no ENTER top.
     Mais tarde vamos ter de alterar um pouco, para mostrar ao user só a placa dos leds
     e não a imagem toda, mas isso fica para depois.
@@ -25,6 +27,8 @@ class DefineModelCV():
         print('Fim')
 
     '''
+    (Ricardo)
+
     É fazer a mesma coisa do de cima, mas para o display. O user carrega no ponto inicial e no final
     e retornas as coordenadas iniciais e as dimensões do display (x, y, largura, altura).
     '''
@@ -33,6 +37,8 @@ class DefineModelCV():
         pass
 
     '''
+    (Ricardo)
+
     É igual literalmente igual ao dos leds
     '''
     @staticmethod
@@ -40,16 +46,22 @@ class DefineModelCV():
         pass
 
     '''
+    (Ricardo)
+
     Recebe uma imagem e retorna um vetor de coordenadas com todos os leds automaticamente detetados.
     Podes assumir que a imagem já vem recortada e só recebes a parte da placa dos leds
     (o recorte depois vai ter de ser feito aqui, mas ainda é preciso definir outras classes antes).
     Se for mais fácil, podes assumir que os leds estão todos ligados.
+
+    O objetivo por agora será pesquisar soluções e tentar implementá-las.
     '''
     @staticmethod
     def detect_pos_leds(image):
         pass
 
     '''
+    (Pedro)
+
     Mais tarde talvez tenhamos de alterar para inicialmente cortar a imagem para obter só a parte da placa do lcd,
     mas fica para depois.
     '''
@@ -86,7 +98,9 @@ class DefineModelCV():
     def detect_pos_buttons(image):
         pass
 
-
+    '''
+    (Ricardo)
+    '''
     @staticmethod
     def print_pos_led(image, coordenadas):
 
@@ -100,6 +114,9 @@ class DefineModelCV():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+    '''
+    (Ricardo)
+    '''
     @staticmethod
     def click_pos_led(image):
 

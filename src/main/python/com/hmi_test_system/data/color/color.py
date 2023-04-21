@@ -1,4 +1,6 @@
 '''
+(Mariana)
+
 A class color deve ter um nome(string) e todas as propriedades (ranges hsv) que precisares para
 a função de leitura dos leds.
 Esta classe só precisa de ser definida e adicionar getters e setters

@@ -3,6 +3,9 @@ from data.model.Display import Display
 
 class Displaycv:
     
+    '''
+    (Pedro)
+    '''
     @staticmethod
     def read_char(lcd):
         # Setup tesseract
@@ -25,6 +28,9 @@ class Displaycv:
         # Return characters pattern
         return char_pattern
     
+    '''
+    (Pedro)
+    '''
     @staticmethod
     def get_color_pattern(lcd):
         # Resize LCD image
@@ -50,6 +56,9 @@ class Displaycv:
         # Return the color pattern
         return colors
     
+    '''
+    (Pedro)
+    '''
     @staticmethod
     def cut_lcd(img, lcd: Display):
         x, y, w, h = lcd.get_pos_x(), lcd.get_pos_y(), lcd.get_dim_x(), lcd.get_dim_y()

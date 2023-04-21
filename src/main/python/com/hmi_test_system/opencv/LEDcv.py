@@ -5,11 +5,16 @@ from data.model.Led import Led
 
 class LEDcv:
     
+    '''
+    (Ricardo)
+    '''
     def cut_led(image, led: Led):
         return image[led.get_pos_y()-2:led.get_pos_y()+2, led.get_pos_x()-2:led.get_pos_x()+2]
 
 
     '''
+    (Mariana)
+    
     Novo formato:
     def read_color(image) -> Color
 
