@@ -8,10 +8,14 @@ NTIMEOUT = 5
 count = 0
 M = Settings()
 
-# Directory where you want to save your model files
-directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+# directory where you want to save your model files
+xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
 
-def new_model(M: Settings, directory):
+# directory where you want to save your reports
+report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+
+
+def new_model(M: Settings, xml_directory):
     count = 0
     while True:
         MP.new_model_print()        
@@ -20,7 +24,7 @@ def new_model(M: Settings, directory):
         # manually
         if (menu_choice == '1'):
             count = 0
-            add_models(M, directory)
+            add_models(M, xml_directory)
 
         # automatic
         elif (menu_choice == '2'):
@@ -59,7 +63,7 @@ def new_model(M: Settings, directory):
                 return -1
             continue
 
-def settings_menu(M: Settings, directory):
+def settings_menu(M: Settings, xml_directory):
     count = 0
     while True:
         MP.settings_menu_print()        
@@ -68,7 +72,7 @@ def settings_menu(M: Settings, directory):
         # add model
         if (menu_choice == '1'):
             count = 0
-            if ( new_model(M, directory) == -1 ):
+            if ( new_model(M, xml_directory) == -1 ):
                 return -1
 
         # new sequence
@@ -116,16 +120,16 @@ while(1):
     # Menu Settings
     if (menu_choice == '1'):
         count = 0
-        if ( settings_menu(M, directory) == -1 ):
+        if ( settings_menu(M, xml_directory) == -1 ):
             break
 
     # Test model    
     elif (menu_choice == '2'):
         count = 0
-        model_menu(M, directory) == -1 
+        model_menu(M, xml_directory, report_directory) == -1 
 
     # Turn off the program    
-    elif(menu_choice =='3'):
+    elif(menu_choice == '3'):
         os.system('cls')
         break
 

@@ -1,8 +1,11 @@
 from data.Settings import Settings
 from data.DefineAndFillModel import DefineAndFillModel as df
 import os
+from reportlab.pdfgen import canvas
+from datetime import datetime
 
-def model_menu(M: Settings, directory):
+
+def model_menu(M: Settings, xml_directory, report_directory):
     
     #------------------------------------MODEL TEST------------------------------------#
     while True:
@@ -16,7 +19,7 @@ def model_menu(M: Settings, directory):
             break
         
         # model doesn't exist
-        elif(df.open_model_xml(M, name_model, directory) is None):
+        elif(df.open_model_xml(M, name_model, xml_directory) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
@@ -36,7 +39,8 @@ def model_menu(M: Settings, directory):
                 os.system('cls') 
                 print("------------Test Menu-------------\n\n")
                 print("1- Led test         2- Button test\n")
-                print("3- LCD test         4- Menu")
+                print("3- LCD test         4- Generate report\n")
+                print("            5- Menu")
                 print("\n\n----------------------------------\n")
                 c = input()
                 
@@ -52,8 +56,12 @@ def model_menu(M: Settings, directory):
                 elif (c== '3'):
                     n2 = 3
 
-                # back to menu
+                # report
                 elif(c== '4'):
+                    n2 = 4
+                
+                # back to menu
+                elif(c== '5'):
                     n = 0
                     break
 
@@ -63,6 +71,8 @@ def model_menu(M: Settings, directory):
                 led_test(M, n2)
                 button_test(M, n2)
                 display_test(n2)
+                generate_report(n2, name_model, report_directory)
+
 
 #------------------------------------LED TEST------------------------------------#
 def led_test(M: Settings, n2):
@@ -228,3 +238,30 @@ def display_test(n2):
 
         else:
             continue
+
+##------------------------------------REPORT------------------------------------#
+def generate_report(n2, name_model, report_directory):
+    while(n2==4):
+        
+        # get the current date and time
+        now = datetime.now()
+
+        # format the date string
+        date_str = now.strftime("%d-%m-%Y")
+        hour_str = now.strftime("%H:%M:%S")
+
+        # specify the path and filename of the PDF file with the date string in the title
+        report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+
+        # add some text to the PDF
+        report.drawString(100, 750, f"Report generated on the day {date_str} at {hour_str}")
+
+        # save the PDF file
+        report.save()
+
+        os.system('cls')
+        print("Report is generated\n")
+        print("To go to the Test Menu insert anything\n")
+        c = input()
+
+        n2 = 0
