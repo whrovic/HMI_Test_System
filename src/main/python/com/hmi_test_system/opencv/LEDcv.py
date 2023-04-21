@@ -1,12 +1,12 @@
 
 import cv2
 import numpy as np
-
+from ..data.Led import Led
 
 class LEDcv:
     
-    def cut_led(image, led):
-        return image[led.get_pos_y-2:led.get_pos_y+2, led.get_pos_x-2:led.get_pos_x+2]
+    def cut_led(image, led: Led):
+        return image[led.get_pos_y()-2:led.get_pos_y()+2, led.get_pos_x()-2:led.get_pos_x()+2]
 
 
     def read_led_color(self, image, ledTest):
