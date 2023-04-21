@@ -11,7 +11,7 @@ class LEDcv:
 
     '''
     Novo formato:
-    def read_led_color(image) -> Color
+    def read_color(image) -> Color
 
     Os parâmetros desta função passaram a ser só a imagem e a única função dela é analisar a cor de uma imagem.
     A imagem já vem recortada e é só ver a cor.
@@ -24,7 +24,9 @@ class LEDcv:
     (aqui se conseguires, verifica antes de retornar OffColor que o led está garantidamente apagado,
     senão retorna UnknownColor - se não der não tem mal)
     '''
-    def read_led_color(image, ledTest):
+    def read_color(image):
+        return "deve retornar a cor da class Color"
+    
         colors = []
 
         for led in ledTest:
@@ -72,14 +74,3 @@ class LEDcv:
                     colors[i] = "Unknown"
         
         return colors
-    
-
-
-
-
-
-
-
-
-
-

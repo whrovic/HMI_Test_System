@@ -3,52 +3,56 @@ import numpy as np
 
 class DefineModelCV():
 
+    '''
+    Se conseguires fazer com que não seja preciso o user carregar no ENTER top.
+    Mais tarde vamos ter de alterar um pouco, para mostrar ao user só a placa dos leds
+    e não a imagem toda, mas isso fica para depois.
+    '''
     @staticmethod
-    def definePosLed(image):
+    def select_pos_led(image):
 
         print('Click in the LED and press ENTER')
-        coordenadas = DefineModelCV.clickPosLed(image)
+        coordenadas = DefineModelCV.click_pos_led(image)
         print('Check the position and press ENTER')
-        DefineModelCV.printPosLed(image, coordenadas)
+        DefineModelCV.print_pos_led(image, coordenadas)
 
         while (input('Is that the correct position? [Y/N]') != 'Y'):
             print('Click in the LED and press ENTER')
-            coordenadas = DefineModelCV.clickPosLed(image)
+            coordenadas = DefineModelCV.click_pos_led(image)
             print('Check the position and press ENTER')
-            DefineModelCV.printPosLed(image, coordenadas)
+            DefineModelCV.print_pos_led(image, coordenadas)
 
         print('Fim')
 
+    '''
+    É fazer a mesma coisa do de cima, mas para o display. O user carrega no ponto inicial e no final
+    e retornas as coordenadas iniciais e as dimensões do display (x, y, largura, altura).
+    '''
     @staticmethod
-    def clickPosLed(image):
+    def select_pos_display(image):
+        pass
 
-        coordenadas = [0, 0]
-
-        def callback(event, x, y, flags, params):
-            if(event == cv2.EVENT_LBUTTONDOWN):
-                coordenadas[0] = x
-                coordenadas[1] = y
-                
-        cv2.imshow("HMI", image)
-        cv2.setMouseCallback("HMI", callback)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-        return coordenadas
-    
+    '''
+    É igual literalmente igual ao dos leds
+    '''
     @staticmethod
-    def printPosLed(image, coordenadas):
+    def select_pos_button(image):
+        pass
 
-        part = np.copy(image)
+    '''
+    Recebe uma imagem e retorna um vetor de coordenadas com todos os leds automaticamente detetados.
+    Podes assumir que a imagem já vem recortada e só recebes a parte da placa dos leds
+    (o recorte depois vai ter de ser feito aqui, mas ainda é preciso definir outras classes antes).
+    Se for mais fácil, podes assumir que os leds estão todos ligados.
+    '''
+    @staticmethod
+    def detect_pos_leds(image):
+        pass
 
-        for i in range(coordenadas[1] - 2, coordenadas[1] + 2):
-            for j in range(coordenadas[0] - 2, coordenadas[0] + 2):
-                part[i][j] = (0,0,0)
-
-        cv2.imshow("HMI", part)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-    
+    '''
+    Mais tarde talvez tenhamos de alterar para inicialmente cortar a imagem para obter só a parte da placa do lcd,
+    mas fica para depois.
+    '''
     @staticmethod
     def detect_pos_display(image):
         # Convert image to grayscale
@@ -71,7 +75,48 @@ class DefineModelCV():
         
         # Return LCD position
         return x, y, w, h
+    
+    '''
+    Recebe uma imagem e retorna um vetor de coordenadas com todos os botões automaticamente detetados.
+    Assume-se que a imagem já vem recortada e só recebe a parte da placa dos leds e botões
+    (o recorte depois vai ter de ser feito aqui, mas ainda é preciso definir outras classes antes).
+    No futuro, talvez também seja útil ler o texto que está dentro do botão.
+    '''
+    @staticmethod
+    def detect_pos_buttons(image):
+        pass
+
+
+    @staticmethod
+    def print_pos_led(image, coordenadas):
+
+        part = np.copy(image)
+
+        for i in range(coordenadas[1] - 2, coordenadas[1] + 2):
+            for j in range(coordenadas[0] - 2, coordenadas[0] + 2):
+                part[i][j] = (0,0,0)
+
+        cv2.imshow("HMI", part)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    @staticmethod
+    def click_pos_led(image):
+
+        coordenadas = [0, 0]
+
+        def callback(event, x, y, flags, params):
+            if(event == cv2.EVENT_LBUTTONDOWN):
+                coordenadas[0] = x
+                coordenadas[1] = y
+                
+        cv2.imshow("HMI", image)
+        cv2.setMouseCallback("HMI", callback)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+        return coordenadas
 
 if(__name__ == "__main__"):
     image = cv2.imread("HMI.png")
-    coordenadas = DefineModelCV.definePosLed(image)
+    coordenadas = DefineModelCV.select_pos_led(image)

@@ -1,4 +1,5 @@
 import cv2, pytesseract
+from data.model.Display import Display
 
 class Displaycv:
     
@@ -16,8 +17,7 @@ class Displaycv:
         # Read characters on LCD
         char_pattern = pytesseract.image_to_string(binary, lang='eng', config='--psm 6') # psm 6 --> Assume a single uniform block of text
         if char_pattern is None:
-            print("\nError: could not detect any character\n")
-            return None
+            return ""
         
         # Remove unnecessary whitespaces and new lines
         char_pattern = char_pattern.replace(" ", "").replace("\n\n", "\n")
@@ -49,14 +49,8 @@ class Displaycv:
 
         # Return the color pattern
         return colors
-
+    
     @staticmethod
-    def cut_lcd(img, x, y, w, h):
-        # Cut LCD
-        lcd = img[y:y+h, x:x+w]
-        
-        # Resize LCD image
-        lcd = cv2.resize(lcd, (701, 530))
-
-        # Return LCD
-        return lcd
+    def cut_lcd(img, lcd: Display):
+        x, y, w, h = lcd.get_pos_x(), lcd.get_pos_y(), lcd.get_dim_x(), lcd.get_dim_y()
+        return img[y:y+h, x:x+w]
