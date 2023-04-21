@@ -23,3 +23,22 @@ class Display(Position):
         super().set_pos(pos_init_x, pos_init_y)
         self._dim_x = dim_x
         self._dim_y = dim_y
+
+    def get_char(self):
+        test =  '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGH\n' \
+                'IJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnop\n' \
+                'qrstuvwxyz{|}~!"#$%&\'()*+,-./0123456789:\n' \
+                ';<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`ab\n' \
+                'cdefghijklmnopqrstuvwxyz{]}~!"#$%&\'()*+,\n' \
+                '-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRST\n' \
+                'UVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|\n' \
+                '}~!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEF\n' \
+                'GHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn\n' \
+                'opqrstuvwxyz{|}~!"#$%&\'()*+,-./012345678\n' \
+                '9:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^-`\n' \
+                'abcdefghijklmnopqrstuvwxyz{|}~!"#$%&\'()*\n' \
+                '+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQR\n' \
+                'STUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz\n' \
+                '{|}~!"#S%&\'()*+,-./0123456789:;<=>?@ABCD\n' \
+                'EFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijkl\n'
+        return test

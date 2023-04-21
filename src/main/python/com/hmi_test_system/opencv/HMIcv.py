@@ -23,7 +23,8 @@ class HMIcv():
     '''
     Esta função recebe a imagem do sistema inteiro e o display a testar.
     Deve recortar a imagem (cut_lcd), ler os caracteres que lá estão (chamar a função read_char),
-    comparar com o esperado, que vem dentro do lcd (lcd.get_char())
+    comparar com o esperado, que vem dentro do lcd (lcd.get_char()).
+    A função lcd.get_char() retorna uma string com o que é suposto resultar do teste.
     '''
     def display_characters_test(img, lcd):
         return False
