@@ -16,8 +16,7 @@ def model_menu(M: Settings, directory):
             break
         
         # model doesn't exist
-        #elif(df.open_model_xml(M, name_model, directory) is None):
-        elif(M.call_model(name_model) is None):
+        elif(df.open_model_xml(M, name_model, directory) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")

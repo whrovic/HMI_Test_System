@@ -8,12 +8,26 @@ import os
 
 def create_model_manual(M: Settings, name_model):
     
-    print("Number of buttons: ")
-    n_buttons = int(input())   # number of buttons of model
     
-    print("Number of leds: ")
-    n_leds= int(input())        # number of leds of model
+    while True:
+        print("Number of buttons: ")
+        n_buttons = input()    # number of buttons of model
+        if n_buttons.isdigit():
+            n_buttons = int(n_buttons)
+            break
+        else: 
+            continue  
     
+    while True:
+        print("Number of leds: ")
+        n_leds = input()        # number of leds of model
+        if n_leds.isdigit():
+            n_leds = int(n_leds)
+            break
+        else: 
+            continue  
+
+
     print("Model version: ")
     version = input()      # version of model
 
@@ -33,8 +47,6 @@ def create_model_manual(M: Settings, name_model):
 
     index = M.index_model(name_model)
 
-    print(f"index= {index}")
-
     # model exists 
     if(index != -1):
 
@@ -43,8 +55,14 @@ def create_model_manual(M: Settings, name_model):
         for i in range(0, n_leds):
             print(f"\nLed {i+1} name: ")
             led_name = input()
-            print(f"How many colours have the led {i+1}?")
-            n_colours = int(input())
+            while True:
+                print(f"How many colours have the led {i+1}?")
+                n_colours = input()
+                if n_colours.isdigit():
+                    n_colours = int(n_colours)
+                    break
+                else: 
+                    continue
             print(f"Select the led {i+1} central position")
             pos_vector = [0, 0]
             led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
@@ -74,7 +92,7 @@ def create_model_manual(M: Settings, name_model):
         return -1
 
 
-def add_models(M: Settings):
+def add_models(M: Settings, directory):
     #------------------------------------ADD NEW MODEL------------------------------------#
     #try:
         while True:
@@ -84,21 +102,18 @@ def add_models(M: Settings):
             name_model = input()
             
             
-            #directory = r"C:/Users/filip/Desktop/ES/Models"
-            
             # back to menu
             if(name_model == 'q'):
                 break
             
             # model doesn't exist -> new configuration
-            #elif(df.open_model_xml(M, name_model, directory) is None):
-            elif(M.call_model(name_model) is None):
+            elif(df.open_model_xml(M, name_model, directory) is None):
                 os.system('cls') 
                 print(f"{name_model} DOESN'T EXIST\n")
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
                 if ( create_model_manual(M, name_model) == 0):
-                    #df.create_xml(M, name_model)
+                    df.create_xml(M, name_model, directory)
 
                     os.system('cls') 
                     print(f"{name_model} IS ADDED \n\n")
@@ -114,7 +129,7 @@ def add_models(M: Settings):
             # model already exists
             else:
                 os.system('cls') 
-                print("MODEL ALREADY EXISTS\n\n")
+                print(f"{name_model} ALREADY EXISTS\n\n")
                 print("To go to the menu insert anything\n")
                 c = input()
                 break

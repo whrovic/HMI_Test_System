@@ -8,7 +8,10 @@ NTIMEOUT = 5
 count = 0
 M = Settings()
 
-def new_model(M: Settings):
+# Directory where you want to save your model files
+directory = "C:/Users/filip/Desktop/ES/Models"
+
+def new_model(M: Settings, directory):
     count = 0
     while True:
         MP.new_model_print()        
@@ -17,7 +20,7 @@ def new_model(M: Settings):
         # manually
         if (menu_choice == '1'):
             count = 0
-            add_models(M)
+            add_models(M, directory)
 
         # automatic
         elif (menu_choice == '2'):
@@ -56,7 +59,7 @@ def new_model(M: Settings):
                 return -1
             continue
 
-def settings_menu(M: Settings):
+def settings_menu(M: Settings, directory):
     count = 0
     while True:
         MP.settings_menu_print()        
@@ -65,7 +68,7 @@ def settings_menu(M: Settings):
         # add model
         if (menu_choice == '1'):
             count = 0
-            if ( new_model(M) == -1 ):
+            if ( new_model(M, directory) == -1 ):
                 return -1
 
         # new sequence
@@ -109,14 +112,11 @@ def settings_menu(M: Settings):
 while(1):
     MP.main_menu_print()        
     menu_choice = input()
-
-    #To change the directory if not may not work
-    directory = r"C:/Users/filip/Desktop/ES/Models"
     
     # Menu Settings
     if (menu_choice == '1'):
         count = 0
-        if ( settings_menu(M) == -1 ):
+        if ( settings_menu(M, directory) == -1 ):
             break
 
     # Test model    
