@@ -10,9 +10,12 @@ class LEDcv:
 
 
     '''
+    Novo formato:
+    def read_led_color(image) -> Color
+
     Os parâmetros desta função passaram a ser só a imagem e a única função dela é analisar a cor de uma imagem.
-    A imagem vem inteira e só tens de a retortar, chamando a função cut_led (como já está feito).
-    Basicamente tens de apagar aquele for e retornas so 1 cor.
+    A imagem já vem recortada e é só ver a cor.
+    Basicamente tens de apagar aquele for e o cut_led e retornas so 1 cor.
 
     Também é preciso adaptar a função para, ao invés de ter aqui definidas as cores,
     percorre o vetor da classe ListOfColors e verifica cada cor. Se a percentagem de "match"
