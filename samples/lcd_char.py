@@ -52,14 +52,14 @@ else:
     print(lcd_text)
 
 # Validation
-test = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGH\n' \
+test =  '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGH\n' \
         'IJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnop\n' \
         'qrstuvwxyz{|}~!"#$%&\'()*+,-./0123456789:\n' \
         ';<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`ab\n' \
         'cdefghijklmnopqrstuvwxyz{]}~!"#$%&\'()*+,\n' \
         '-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRST\n' \
-        'UVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}\n' \
-        '~!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEF\n' \
+        'UVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|\n' \
+        '}~!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEF\n' \
         'GHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn\n' \
         'opqrstuvwxyz{|}~!"#$%&\'()*+,-./012345678\n' \
         '9:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^-`\n' \

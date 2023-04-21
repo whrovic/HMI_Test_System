@@ -25,27 +25,13 @@ class VideoDevice(VideoCapture, ABC):
         self._thread.join()
 
     def capture_loop(self):
-        t = []
-        N = 0
         
-        while self._is_capturing:
-            last_frame = time()
-            
+        while self._is_capturing:            
             frame = self.get_frame()
             if (frame is not None):
                 self._frame_queue.put(frame)
-                N += 1
-            
-            sleep(self._interval) 
-            t.append(time() - last_frame)
 
-        print(t)
-        media = sum(t) / N
-        max_ = max(t)
-        min_ = min(t)
-        print("Média de intervalo = ", media)
-        print("Máximo de intervalo = ", max_)
-        print("Mínimo de intervalo = ", min_)
+            sleep(self._interval) 
     
     @abstractmethod
     def get_frame(self):
