@@ -11,6 +11,7 @@ class HMIcv():
     def led_test(img, led) -> Color
 
     Esta função recebe a foto inteira e apenas 1 led. É só recortar, chamar a função read_led_color e retornar a cor lida.
+    (Alta prioridade)
     '''
     def led_test(img, led):
         return OffColor() # deve retornar a cor

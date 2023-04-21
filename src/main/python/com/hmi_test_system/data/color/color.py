@@ -3,7 +3,7 @@
 
 A class color deve ter um nome(string) e todas as propriedades (ranges hsv) que precisares para
 a função de leitura dos leds.
-Esta classe só precisa de ser definida e adicionar getters e setters
+Esta classe só precisa de adicionar getters e setters
 '''
 class Color:
 
@@ -14,11 +14,7 @@ class Color:
         self._hsv_min2 = hsv_min2
         self._hsv_max2 = hsv_max2 
         
-    
 
-'''
-Estas duas classes são cores "especiais", devem ter todos os attributos a None (ou vazios) e o nome como "Off" e "Unknown"
-'''
 class OffColor(Color):
 
     def __init__(self):

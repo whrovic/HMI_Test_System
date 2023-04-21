@@ -8,8 +8,8 @@ lê todas as cores e as propriedades desse ficheiro.
 
 Devem haver funções para criar nova cor ou remover.
 
-As funções de ler e escrever para o ficheiro deixa para último. Primeiro, no __init__ crias um vetor vazio e 
-adiciona-se sempre manualmente com a função add_color todas as cores.
+As funções de ler e escrever para o ficheiro deixa para último.
+Primeiro adiciona-se sempre manualmente com a função add_color todas as cores.
 A prioridade é integrar estas novas classes com as funções de teste dos leds.
 '''
 
@@ -37,6 +37,7 @@ class ListOfColors:
     
     '''
     Remove a cor com este nome
+    Baixa prioridade
     '''
     @staticmethod
     def remove_color(name):
@@ -44,6 +45,7 @@ class ListOfColors:
 
     '''
     Guarda o vetor de cores, todas as cores e as propriedades para um ficheiro (.txt, .xml, .json, whatever)
+    Baixa prioridade
     '''
     @staticmethod
     def save_to_file(filename):
@@ -51,6 +53,7 @@ class ListOfColors:
 
     '''
     Lê o ficheiro e recupera o vetor com todas as cores
+    Baixa prioridade
     '''
     @staticmethod
     def read_from_file(filename):

@@ -28,6 +28,8 @@ class LEDcv:
     Se chegar ao fim do ciclo e nenhuma cor for detetada retorna a class OffColor.
     (aqui se conseguires, verifica antes de retornar OffColor que o led está garantidamente apagado,
     senão retorna UnknownColor - se não der não tem mal)
+
+    (Alta prioridade)
     '''
     def read_color(image):
         return "deve retornar a cor da class Color"

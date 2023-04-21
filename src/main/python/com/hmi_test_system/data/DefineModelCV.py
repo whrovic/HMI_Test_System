@@ -31,6 +31,8 @@ class DefineModelCV():
 
     É fazer a mesma coisa do de cima, mas para o display. O user carrega no ponto inicial e no final
     e retornas as coordenadas iniciais e as dimensões do display (x, y, largura, altura).
+    Tenta aproveitar as funções que já criaste.
+    (Alta prioridade)
     '''
     @staticmethod
     def select_pos_display(image):
@@ -54,6 +56,7 @@ class DefineModelCV():
     Se for mais fácil, podes assumir que os leds estão todos ligados.
 
     O objetivo por agora será pesquisar soluções e tentar implementá-las.
+    (Baixa prioridade)
     '''
     @staticmethod
     def detect_pos_leds(image):
