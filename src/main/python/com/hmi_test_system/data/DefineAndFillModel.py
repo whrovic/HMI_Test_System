@@ -1,4 +1,3 @@
-
 import xml.etree.ElementTree as ET
 from .Settings import Settings
 from .model.Display import Display
