@@ -1,7 +1,7 @@
 
 import cv2
 import numpy as np
-from ..data.Led import Led
+from data.model.Led import Led
 
 class LEDcv:
     
