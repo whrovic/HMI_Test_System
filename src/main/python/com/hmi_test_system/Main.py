@@ -110,6 +110,10 @@ while(1):
     MP.main_menu_print()        
     menu_choice = input()
 
+    #To change the directory if not may not work
+    #directory = "/path/to/directory"
+    directory = r"C:\Users\asus\ES\HMI_Test_System"
+    
     # add model
     if (menu_choice == '1'):
         count = 0
@@ -119,7 +123,7 @@ while(1):
     # test model    
     elif (menu_choice == '2'):
         count = 0
-        model_menu(M) == -1 
+        model_menu(M, directory) == -1 
 
     # turn off the program    
     elif(menu_choice =='3'):
