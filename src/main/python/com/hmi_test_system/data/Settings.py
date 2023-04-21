@@ -17,6 +17,7 @@ class Settings:
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
         self.model.append(Model(name, n_leds, n_buttons, display, version))
+    
     '''if not isinstance(name, str):
         #    raise TypeError("name must be a string.")
         if not isinstance(n_leds, int):
@@ -29,7 +30,7 @@ class Settings:
     
     def call_model(self, name):
         for i in range(0, len(self.model)):
-            if(name == self.model[int(i)].name):
+            if(name == self.model[int(i)].get_name()):
                 return self.model[i]
         
         #nao encontra o modelo
@@ -38,7 +39,7 @@ class Settings:
     
     def index_model(self, name):
         for i in range(len(self.model)):
-            if(name == self.model[int(i)].get_name):
+            if(name == self.model[int(i)].get_name()):
                 return i
         
         #nao encontra o modelo
@@ -64,13 +65,13 @@ class Settings:
             print("ERROR - Modelo a testar não existe")
             return
         else:
-            for i in range(0, self.model[n_model].n_leds):
-                self.model_test.leds_test.append(LedTest(self.model[n_model].leds[i]))
+            for i in range(0, self.model[n_model]._n_leds):
+                self.model_test.leds_test.append(LedTest(self.model[n_model]._leds[i]))
 
-            for i in range(0, self.model[n_model].n_buttons):
-                self.model_test.buttons_test.append(ButtonTest(self.model[n_model].buttons[i]))  
+            for i in range(0, self.model[n_model]._n_buttons):
+                self.model_test.buttons_test.append(ButtonTest(self.model[n_model]._buttons[i]))  
 
-            self.model_test.display_test = DisplayTest(self.model[n_model].display) 
+            self.model_test.display_test = DisplayTest(self.model[n_model]._display) 
 
     def reset_model_test(self):
         self.model_test = ModelTest()

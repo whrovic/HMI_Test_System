@@ -16,7 +16,8 @@ def model_menu(M: Settings, directory):
             break
         
         # model doesn't exist
-        elif(df.open_model_xml(M, name_model, directory) is None):
+        #elif(df.open_model_xml(M, name_model, directory) is None):
+        elif(M.call_model(name_model) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
@@ -65,7 +66,7 @@ def model_menu(M: Settings, directory):
                 display_test(n2)
 
 #------------------------------------LED TEST------------------------------------#
-def led_test(M, n2):
+def led_test(M: Settings, n2):
     while(n2==1):
         os.system('cls')
         print("What led do you want to test?\n")
@@ -108,7 +109,7 @@ def led_test(M, n2):
                     continue
 
 #------------------------------------BUTTON TEST------------------------------------#
-def button_test(M, n2):
+def button_test(M:Settings, n2):
     while(n2==2):
         os.system('cls')
         print("What button do you want to test?\n")
@@ -121,7 +122,7 @@ def button_test(M, n2):
                     
                     # test a specific button
         else:
-            index_button = M.index_led(button_name)
+            index_button = M.index_button(button_name)
 
                          # button doesn't exist
             if(index_button is None):

@@ -39,7 +39,7 @@ class Model:
     
     #vetor dos leds 
     def set_led(self, led: Led):
-        if(len(self._leds) < self.n_leds):
+        if(len(self._leds) < self._n_leds):
             self._leds.append(led)
             return 0
         else:
@@ -50,7 +50,7 @@ class Model:
 
     #vetor dos botoes
     def set_button(self, button: Button):
-        if(len(self._buttons) < self.n_buttons):
+        if(len(self._buttons) < self._n_buttons):
             self._buttons.append(button)
             return 0
         else:

@@ -111,21 +111,20 @@ while(1):
     menu_choice = input()
 
     #To change the directory if not may not work
-    #directory = "/path/to/directory"
-    directory = r"C:\Users\asus\ES\HMI_Test_System"
+    directory = r"C:/Users/filip/Desktop/ES/Models"
     
-    # add model
+    # Menu Settings
     if (menu_choice == '1'):
         count = 0
         if ( settings_menu(M) == -1 ):
             break
 
-    # test model    
+    # Test model    
     elif (menu_choice == '2'):
         count = 0
         model_menu(M, directory) == -1 
 
-    # turn off the program    
+    # Turn off the program    
     elif(menu_choice =='3'):
         os.system('cls')
         break

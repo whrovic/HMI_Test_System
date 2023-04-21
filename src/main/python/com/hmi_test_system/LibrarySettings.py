@@ -33,6 +33,8 @@ def create_model_manual(M: Settings, name_model):
 
     index = M.index_model(name_model)
 
+    print(f"index= {index}")
+
     # model exists 
     if(index != -1):
 
@@ -50,8 +52,9 @@ def create_model_manual(M: Settings, name_model):
                 print(f"Colour {j+1} of led {i+1}:")
                 new_colour = input()
                 led.new_colour(new_colour)
+             
+            M.model[int(index)].set_led(led) 
 
-            M.model[int(index)].set_led(led)
 
         # buttons configuration
         print("\n\nBUTTONS CONFIGURATION\n")
@@ -81,21 +84,21 @@ def add_models(M: Settings):
             name_model = input()
             
             
-            #directory = "/path/to/directory"
-            directory = r"C:\Users\asus\ES\HMI_Test_System"
+            #directory = r"C:/Users/filip/Desktop/ES/Models"
             
             # back to menu
             if(name_model == 'q'):
                 break
             
             # model doesn't exist -> new configuration
-            elif(df.open_model_xml(M, name_model,directory) is None):
+            #elif(df.open_model_xml(M, name_model, directory) is None):
+            elif(M.call_model(name_model) is None):
                 os.system('cls') 
                 print(f"{name_model} DOESN'T EXIST\n")
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
                 if ( create_model_manual(M, name_model) == 0):
-                    df.create_xml(M, name_model)
+                    #df.create_xml(M, name_model)
 
                     os.system('cls') 
                     print(f"{name_model} IS ADDED \n\n")
@@ -104,7 +107,7 @@ def add_models(M: Settings):
                     break
                 else:
                     os.system('cls') 
-                    print(f"{name_model} Model Not Add \n\n")
+                    print(f"{name_model} IS NOT ADDED \n\n")
                     print("To go to the menu insert anything\n")
                     c = input()
                     break
@@ -115,6 +118,7 @@ def add_models(M: Settings):
                 print("To go to the menu insert anything\n")
                 c = input()
                 break
+
     #except:
 '''    print("error")
         print("Do you want to repeat [y|n]")
