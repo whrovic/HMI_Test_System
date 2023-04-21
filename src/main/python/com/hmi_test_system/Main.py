@@ -9,7 +9,7 @@ count = 0
 M = Settings()
 
 # Directory where you want to save your model files
-directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml.files"
+directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
 
 def new_model(M: Settings, directory):
     count = 0
