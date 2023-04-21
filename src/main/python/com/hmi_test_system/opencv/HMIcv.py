@@ -3,7 +3,8 @@ from LEDcv import LEDcv
 
 class HMIcv():
 
-    def led_test(img, leds, expected):
+    def led_test(img, led):
+        return False
         #get the colors read on the led imagd
         led_colors = LEDcv.read_led_color(img, leds)
         #compare the colors obtained with the expected ones
