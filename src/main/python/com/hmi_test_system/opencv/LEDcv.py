@@ -9,11 +9,23 @@ class LEDcv:
         return image[led.get_pos_y()-2:led.get_pos_y()+2, led.get_pos_x()-2:led.get_pos_x()+2]
 
 
-    def read_led_color(self, image, ledTest):
+    '''
+    Os parâmetros desta função passaram a ser só a imagem e a única função dela é analisar a cor de uma imagem.
+    A imagem vem inteira e só tens de a retortar, chamando a função cut_led (como já está feito).
+    Basicamente tens de apagar aquele for e retornas so 1 cor.
+
+    Também é preciso adaptar a função para, ao invés de ter aqui definidas as cores,
+    percorre o vetor da classe ListOfColors e verifica cada cor. Se a percentagem de "match"
+    for acima de 50% (ou um threshold que podemos definir depois) retorna.
+    Se chegar ao fim do ciclo e nenhuma cor for detetada retorna a class OffColor.
+    (aqui se conseguires, verifica antes de retornar OffColor que o led está garantidamente apagado,
+    senão retorna UnknownColor - se não der não tem mal)
+    '''
+    def read_led_color(image, ledTest):
         colors = []
 
         for led in ledTest:
-            img = self.cut_led(image, led)
+            img = LEDcv.cut_led(image, led)
 
             # Convert the image from BGR to HSV color space
             hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
