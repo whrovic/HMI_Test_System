@@ -49,6 +49,8 @@ class HMIcv():
     Também podemos guardar essas informações dentro de um ficheiro, associado ao display e liamos o ficheiro
     (esta parte da leitura pode estar fora desta função).
     Procura o que achas ser a melhor maneira para isto.
+
+    Se conseguires começar a implementar top.
     '''
     def display_color_pattern_test(img, lcd):
         return False
