@@ -9,6 +9,8 @@ To execute a file inside a class
 
 > py -m folder.class_name
 
+If py gives an error try python or python3 instead
+
 '''
 
 import cv2
