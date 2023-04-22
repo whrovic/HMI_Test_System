@@ -29,6 +29,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
         
         # set model ready to test
         else:
+            M.reset_model_test()
             M.set_model_test(name_model)
             os.system('cls') 
             print(f"{name_model} IS READY TO TEST\n")
