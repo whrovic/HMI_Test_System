@@ -30,7 +30,8 @@ class Settings:
     
     def call_model(self, name):
         for i in range(0, len(self.model)):
-            if(name == self.model[int(i)].get_name()):
+            model_name = self.model[int(i)].get_name()
+            if(name == model_name):
                 return self.model[i]
         
         #nao encontra o modelo
@@ -39,11 +40,32 @@ class Settings:
     
     def index_model(self, name):
         for i in range(len(self.model)):
-            if(name == self.model[int(i)].get_name()):
+            model_name = self.model[int(i)].get_name()
+            if(name == model_name):
                 return i
         
         #nao encontra o modelo
         return -1
+    
+
+    def index_led_model(self, name_model, led_name):
+        index = self.index_model(name_model)
+
+        for i in range(0, len(self.model[index]._leds)):
+            if(self.model[index]._leds[i]._name == led_name):
+                return i
+        
+        return None
+    
+    
+    def index_button_model(self, name_model, button_name):
+        index = self.index_model(name_model)
+
+        for i in range(0, len(self.model[index]._buttons)):
+            if(self.model[index]._buttons[i]._name == button_name):
+                return i
+        
+        return None
     
     
     def delete_model(self, name):
@@ -76,18 +98,19 @@ class Settings:
     def reset_model_test(self):
         self.model_test = ModelTest()
 
-
     def index_led(self, led_name):
         for i in range(0, len(self.model_test.leds_test)):
-            if(self.model_test.leds_test[i] == led_name):
+            name = self.model_test.leds_test[i].led.get_name()
+            if(name == led_name):
                 return i
         
         return None
 
-
     def index_button(self, button_name):
+
         for i in range(0, len(self.model_test.buttons_test)):
-            if(self.model_test.buttons_test[i] == button_name):
+            name = self.model_test.buttons_test[i].button.get_name()
+            if(name == button_name):
                 return i
         
         return None

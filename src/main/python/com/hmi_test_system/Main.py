@@ -1,5 +1,6 @@
 from data.Settings import Settings
 from LibrarySettings import add_models
+from LibrarySettings import edit_model
 from LibraryTest import model_menu
 import os
 from main.MenuPrints import MenuPrints as MP
@@ -86,9 +87,8 @@ def settings_menu(M: Settings):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            edit_model(M, xml_directory)
+
 
         # edit video    
         elif (menu_choice == '4'):
@@ -112,6 +112,7 @@ def settings_menu(M: Settings):
             if (count > NTIMEOUT):
                 return -1
             continue
+
 
 #------------------------------------CODE BEGIN------------------------------------#
 while(1):
