@@ -7,8 +7,9 @@ from datetime import datetime
 
 def model_menu(M: Settings, xml_directory, report_directory):
     
+    n = 1  
     #------------------------------------MODEL TEST------------------------------------#
-    while True:
+    while n:
         os.system('cls') 
         print('What model do you want to test?')
         print("(to go to the menu insert q)\n" )
@@ -35,9 +36,9 @@ def model_menu(M: Settings, xml_directory, report_directory):
             c = input()
 
             #------------------------------------TEST MENU------------------------------------#
-            while(1):
+            while True:
                 os.system('cls') 
-                print("------------Test Menu-------------\n\n")
+                print("-------------Test Menu-------------\n\n")
                 print("1- Led test         2- Button test\n")
                 print("3- LCD test         4- Generate report\n")
                 print("            5- Menu")
@@ -70,7 +71,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
 
                 led_test(M, n2)
                 button_test(M, n2)
-                display_test(n2)
+                display_test(M, n2)
                 generate_report(n2, name_model, report_directory)
 
 
@@ -162,7 +163,7 @@ def button_test(M:Settings, n2):
                     continue
 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(n2):
+def display_test(M:Settings, n2):
     while(n2==3):
         os.system('cls')
         print("-----------LCD Test Menu-----------\n\n")
@@ -265,3 +266,4 @@ def generate_report(n2, name_model, report_directory):
         c = input()
 
         n2 = 0
+        break

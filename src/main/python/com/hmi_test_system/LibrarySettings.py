@@ -141,3 +141,99 @@ def add_models(M: Settings, directory):
         if(answer == 'y'):
             add_models(M)'''
         
+def edit_model(M: Settings, directory):
+
+    n=1
+    #------------------------------------EDIT MENU------------------------------------#
+    while n:
+            os.system('cls') 
+            print("What model do you want to edit?" )
+            print("(to go to the menu insert q)\n" )
+            name_model = input()
+            
+            
+            # back to menu
+            if(name_model == 'q'):
+                break
+
+            # model doesn't exist -> new configuration
+            elif(df.open_model_xml(M, name_model, directory) is None):
+                os.system('cls') 
+                print(f"{name_model} DOESN'T EXIST\n")
+                print("To go to the menu insert anything\n" )
+                c = input()
+            
+            # model  exists
+            else:
+                while True:
+                    os.system('cls') 
+                    print("-------------Edit Menu-------------\n\n")
+                    print("1- Edit led          2- Edit button\n")
+                    print("3- Edit LCD          4- Menu settings")
+                    print("\n\n----------------------------------\n")
+                
+                    c= input()
+
+                    # edit led
+                    if c == '1':
+                        n2 = 1
+                    
+                    # edit LCD
+                    elif c == '2':
+                        n2 = 2
+                    
+                    # edit button
+                    elif c == '3':
+                        n2 = 3
+                    
+                    # menu settings
+                    elif c == '4':
+                        n = 0
+                        break
+                    
+                    else:
+                        continue
+                    
+                    edit_led(M, n2, name_model)
+                    edit_button(M, n2, name_model)
+                    edit_display(n2, name_model)
+
+
+def edit_led(M: Settings, n2, name_model):
+    
+    index = M.index_model(name_model)
+
+    if(index == -1):
+        return -1
+
+    while n2==1:
+
+        print("What led do you want to edit?")
+        print("(to go to the menu insert q)\n" )
+        led_name = input()
+
+        # back to menu
+        if(led_name == 'q'):
+            n2 = 0
+            break
+        
+        else:
+            index_led = M.index_led(led_name) 
+            
+            if (index_led is None):
+                print(f"{led_name} DOESN'T EXIST")
+                print("To edit another one or go to the test menu insert anything\n")
+                c = input()
+                continue
+
+            else:
+                
+        
+         
+         
+
+def edit_button(M: Settings, n2, name_model):
+    pass
+
+def edit_display(M: Settings, n2, name_model):
+    pass

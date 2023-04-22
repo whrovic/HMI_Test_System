@@ -11,7 +11,7 @@ class MenuPrints:
 
     def settings_menu_print():
         os.system('cls') 
-        print("----------Menu Settings-----------\n\n")
+        print("-----------Menu Settings-----------\n\n")
         print("1- New model         2- New Sequence\n")
         print("3- Edit model        4- Video Settings\n")
         print("5- Back              6- Exit\n")
@@ -19,7 +19,7 @@ class MenuPrints:
     
     def new_model_print():
         os.system('cls') 
-        print("------------New Model-------------\n\n")
+        print("-------------New Model-------------\n\n")
         print("1- Manually          2- Automatic\n")
         print("3- TextFile          4- XML\n")
         print("5- Back              6- Exit\n")
