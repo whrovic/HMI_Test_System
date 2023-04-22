@@ -4,6 +4,14 @@ from LibraryTest import model_menu
 import os
 from main.MenuPrints import MenuPrints as MP
 
+'''from tkinter import Tk
+from tkinter.filedialog import askdirectory
+
+Tk().withdraw() # Isto torna oculto a janela principal
+filename = askdirectory() # Isto te permite selecionar um arquivo
+print(filename) # printa o arquivo selecionado      
+menu_choice = input()'''
+
 NTIMEOUT = 5
 count = 0
 M = Settings()
