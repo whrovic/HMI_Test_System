@@ -1,10 +1,11 @@
 import numpy as np
 from LEDcv import LEDcv
+from data.color.color import OffColor
 
 class HMIcv():
 
     def led_test(img, led):
-        return False
+        return OffColor()
         #get the colors read on the led imagd
         led_colors = LEDcv.read_led_color(img, leds)
         #compare the colors obtained with the expected ones
