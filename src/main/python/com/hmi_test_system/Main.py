@@ -1,12 +1,28 @@
 from data.Settings import Settings
 from LibrarySettings import add_models
+from LibrarySettings import edit_model
 from LibraryTest import model_menu
 import os
 from main.MenuPrints import MenuPrints as MP
 
+'''from tkinter import Tk
+from tkinter.filedialog import askdirectory
+
+Tk().withdraw() # Isto torna oculto a janela principal
+filename = askdirectory() # Isto te permite selecionar um arquivo
+print(filename) # printa o arquivo selecionado      
+menu_choice = input()'''
+
 NTIMEOUT = 5
 count = 0
 M = Settings()
+
+# directory where you want to save your model files
+xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+
+# directory where you want to save your reports
+report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+
 
 def new_model(M: Settings):
     count = 0
@@ -17,7 +33,7 @@ def new_model(M: Settings):
         # manually
         if (menu_choice == '1'):
             count = 0
-            add_models(M)
+            add_models(M, xml_directory)
 
         # automatic
         elif (menu_choice == '2'):
@@ -56,6 +72,7 @@ def new_model(M: Settings):
                 return -1
             continue
 
+
 def settings_menu(M: Settings):
     count = 0
     while True:
@@ -78,9 +95,8 @@ def settings_menu(M: Settings):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            edit_model(M, xml_directory)
+
 
         # edit video    
         elif (menu_choice == '4'):
@@ -105,13 +121,11 @@ def settings_menu(M: Settings):
                 return -1
             continue
 
+
 #------------------------------------CODE BEGIN------------------------------------#
 while(1):
     MP.main_menu_print()        
     menu_choice = input()
-
-    #To change the directory if not may not work
-    directory = r"C:/Users/filip/Desktop/ES/Models"
     
     # Menu Settings
     if (menu_choice == '1'):
@@ -122,10 +136,10 @@ while(1):
     # Test model    
     elif (menu_choice == '2'):
         count = 0
-        model_menu(M, directory) == -1 
+        model_menu(M, xml_directory, report_directory) == -1 
 
     # Turn off the program    
-    elif(menu_choice =='3'):
+    elif(menu_choice == '3'):
         os.system('cls')
         break
 

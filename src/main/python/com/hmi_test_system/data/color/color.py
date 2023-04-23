@@ -14,7 +14,6 @@ class Color:
         self._hsv_min2 = hsv_min2
         self._hsv_max2 = hsv_max2 
         
-
 class OffColor(Color):
 
     def __init__(self):
