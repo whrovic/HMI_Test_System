@@ -129,3 +129,14 @@ class DefineAndFillModel:
         tree = ET.ElementTree(model)
         tree.write(f"{directory}/{name_model}.xml")
 
+    def delete_xml(name_model, directory):
+        
+        file_path = f"{directory}/{name_model}.xml"
+
+        # check if the file exists
+        if os.path.exists(file_path):
+            # delete the file
+            os.remove(file_path)
+            return 1
+        else:
+            return -1

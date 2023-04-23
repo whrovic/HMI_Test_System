@@ -1,5 +1,6 @@
 from data.Settings import Settings
 from LibrarySettings import add_models
+from LibrarySettings import edit_model
 from LibraryTest import model_menu
 import os
 from main.MenuPrints import MenuPrints as MP
@@ -23,7 +24,7 @@ xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
 report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
 
 
-def new_model(M: Settings, xml_directory):
+def new_model(M: Settings):
     count = 0
     while True:
         MP.new_model_print()        
@@ -71,7 +72,8 @@ def new_model(M: Settings, xml_directory):
                 return -1
             continue
 
-def settings_menu(M: Settings, xml_directory):
+
+def settings_menu(M: Settings):
     count = 0
     while True:
         MP.settings_menu_print()        
@@ -80,7 +82,7 @@ def settings_menu(M: Settings, xml_directory):
         # add model
         if (menu_choice == '1'):
             count = 0
-            if ( new_model(M, xml_directory) == -1 ):
+            if ( new_model(M) == -1 ):
                 return -1
 
         # new sequence
@@ -93,9 +95,8 @@ def settings_menu(M: Settings, xml_directory):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            edit_model(M, xml_directory)
+
 
         # edit video    
         elif (menu_choice == '4'):
@@ -120,6 +121,7 @@ def settings_menu(M: Settings, xml_directory):
                 return -1
             continue
 
+
 #------------------------------------CODE BEGIN------------------------------------#
 while(1):
     MP.main_menu_print()        
@@ -128,7 +130,7 @@ while(1):
     # Menu Settings
     if (menu_choice == '1'):
         count = 0
-        if ( settings_menu(M, xml_directory) == -1 ):
+        if ( settings_menu(M) == -1 ):
             break
 
     # Test model    

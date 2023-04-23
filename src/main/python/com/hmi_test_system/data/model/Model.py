@@ -37,6 +37,9 @@ class Model:
     def get_version(self):
         return self._version
     
+    def set_version(self, version):
+        self._version = version
+    
     #vetor dos leds 
     def set_led(self, led: Led):
         if(len(self._leds) < self._n_leds):
