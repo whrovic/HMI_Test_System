@@ -9,6 +9,8 @@ To execute a file inside a class
 
 > py -m folder.class_name
 
+If py gives an error try python or python3 instead
+
 '''
 
 import cv2
@@ -64,7 +66,7 @@ def test_camera():
     from time import sleep
     camera = Camera()
     camera.start_capture()
-    sleep(2)
+    sleep(3)
     camera.stop_capture()
 
     frame = camera.get_image()
@@ -79,6 +81,6 @@ def test_camera():
 if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
-    test_camera()
+    #test_camera()
     #test_list_cameras()
     pass
