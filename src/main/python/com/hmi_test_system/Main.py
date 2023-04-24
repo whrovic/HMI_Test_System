@@ -18,10 +18,12 @@ count = 0
 M = Settings()
 
 # directory where you want to save your model files
-xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+#xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+xml_directory = "C:/Users/asus/ES/HMI_Test_System/xml_files"
 
 # directory where you want to save your reports
-report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+#report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+report_directory = "C:/Users/asus/ES/HMI_Test_System/reports"
 
 
 def new_model(M: Settings):
