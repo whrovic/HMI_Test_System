@@ -6,7 +6,7 @@ from data.model.Led import Led
 class LedTest:
     def __init__(self, led: Led):
         self.led = led
-        self.colours_cv: list[string] = []
+        self.colours_cv: list[str] = []
 
     def set_led(self, led):
         self.led = led

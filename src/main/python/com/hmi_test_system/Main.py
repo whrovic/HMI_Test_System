@@ -25,12 +25,6 @@ xml_directory = "C:/Users/asus/ES/HMI_Test_System/xml_files"
 #report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
 report_directory = "C:/Users/asus/ES/HMI_Test_System/reports"
 
-<<<<<<< HEAD
-M.set_model_test(name_model)
-
-
-print("MODELO okoko0")
-=======
 
 def new_model(M: Settings):
     count = 0
@@ -156,4 +150,3 @@ while(1):
         if (count > NTIMEOUT):
             break
         continue
->>>>>>> process_data

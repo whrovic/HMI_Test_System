@@ -1,20 +1,6 @@
-<<<<<<< HEAD
-
-from model_test.ButtonTest import ButtonTest
-from model_test.LedTest import LedTest
-from model_test.DisplayTest import DisplayTest
-
-class ModelTest:
-    def __init__(self, leds, buttons, display):
-        self.leds_test : leds
-        self.buttons_test : buttons
-        self.display_test : display
-        
-=======
 from .DisplayTest import DisplayTest
 from .ButtonTest import ButtonTest
 from .LedTest import LedTest
-
 
 class ModelTest:
     def __init__(self):
@@ -30,4 +16,9 @@ class ModelTest:
         for i in range(0, len(self.leds_test)):
             self.leds_test[i].clear_colour()
 
->>>>>>> process_data
+
+
+
+
+
+
