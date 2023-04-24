@@ -4,9 +4,9 @@ from model_test.ButtonTest import ButtonTest
 from model_test.LedTest import LedTest
 from model_test.DisplayTest import DisplayTest
 
-from data.Led import Led
-from data.Button import Button
-from data.Display import Display
+from data.model.Led import Led
+from data.model.Button import Button
+from data.model.Display import Display
 
 
 class ReportTerminal:
@@ -22,17 +22,17 @@ class ReportTerminal:
             self.model_test.buttons_test    
 
     def LedTerminal(self):
-        
-     Led.result_press_display()
+        pass
+        #Led.result_press_display()
         
 
     def DisplayTerminal(self):    
-        
+        pass
 
 #####################################################################
 
-leds = [Led('L1','red',1,2), Led('L2','red',3,5), Led('L3','ok',5,7)]
-#buttons = [Button((2, 3)), Button((4,5)), Button((7,9))]
+'''leds = [Led('L1','red',1,2), Led('L2','red',3,5), Led('L3','ok',5,7)]
+buttons = [Button((2, 3)), Button((4,5)), Button((7,9))]
 display = Display('d1',5,7,10,20)
 
 mt = ModelTest(leds, display)
@@ -41,4 +41,4 @@ report = ReportTerminal(mt)
 
 
 report.LedTerminal()
-
+'''
