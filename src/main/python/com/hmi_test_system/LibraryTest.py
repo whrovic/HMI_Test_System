@@ -252,8 +252,18 @@ def generate_report(n2, name_model, report_directory):
         date_str = now.strftime("%d-%m-%Y")
         hour_str = now.strftime("%H:%M:%S")
 
-        # specify the path and filename of the PDF file with the date string in the title
-        report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+        while True:
+            try: 
+                # specify the path and filename of the PDF file with the date string in the title
+                report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+                break
+            except:
+                print("Error path don't exist")
+                print("Do you want to repeat [y|n]")
+                answer = input()
+                if not (answer == 'y'):
+                    return -1
+        
 
         # add some text to the PDF
         report.drawString(100, 750, f"Report generated on the day {date_str} at {hour_str}")
