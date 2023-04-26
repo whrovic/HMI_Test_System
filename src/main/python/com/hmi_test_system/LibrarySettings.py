@@ -3,12 +3,28 @@ from data.DefineAndFillModel import DefineAndFillModel as df
 from data.model.Button import Button
 from data.model.Display import Display
 from data.model.Led import Led
-from data.Settings import Settings
+from data.DefineModelCV import DefineModelCV
+from video.image_files import ImageFiles
 import os
+import cv2
+
 
 def create_model_manual(M: Settings, name_model):
-    
-    
+
+    '''
+    img = "test_images/HMI.png"
+
+    image = ImageFiles([img])
+
+    image.start_capture()
+
+    image.stop_capture()
+
+    image = image.get_image()
+    '''
+
+    image = cv2.imread("HMI.png")
+
     while True:
         print("Number of buttons: ")
         n_buttons = input()    # number of buttons of model
@@ -69,8 +85,17 @@ def create_model_manual(M: Settings, name_model):
                     break
                 else: 
                     continue
+
             print(f"Select the led {i+1} central position")
-            pos_vector = [0, 0]
+            pos_vector = DefineModelCV.clickPosLed(image)
+            print('Check the position and press ENTER')
+            DefineModelCV.printPosLed(image, pos_vector)
+            while (input('Is that the correct position? [Y/N]') != 'Y'):
+                print(f"Select the led {i+1} central position")
+                pos_vector = DefineModelCV.clickPosLed(image)
+                print('Check the position and press ENTER')
+                DefineModelCV.printPosLed(image, pos_vector)
+
             led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
             for j in range(0, n_colours):
                 print(f"Colour {j+1} of led {i+1}:")
