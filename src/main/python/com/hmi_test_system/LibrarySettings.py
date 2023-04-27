@@ -55,10 +55,26 @@ def create_model_manual(M: Settings, name_model):
 
     # LCD configuration
     print("\n\nLCD CONFIGURATION\n")
+    
     print("Select the LCD initial position")
-    pos_vector_init = [0, 0]
+    pos_vector_init = DefineModelCV.clickPosLed(image)
+    print('Check the position and press ENTER')
+    DefineModelCV.printPosLed(image, pos_vector_init)
+    while (input('Is that the correct position? [Y/N]') != 'Y'):
+        print("Select the LCD initial position")
+        pos_vector = DefineModelCV.clickPosLed(image)
+        print('Check the position and press ENTER')
+        DefineModelCV.printPosLed(image, pos_vector_init)
+
     print("Select the LCD final position")
-    pos_vector_final = [0, 0]
+    pos_vector_final = DefineModelCV.clickPosLed(image)
+    print('Check the position and press ENTER')
+    DefineModelCV.printPosLed(image, pos_vector_final)
+    while (input('Is that the correct position? [Y/N]') != 'Y'):
+        print("Select the LCD final position")
+        pos_vector = DefineModelCV.clickPosLed(image)
+        print('Check the position and press ENTER')
+        DefineModelCV.printPosLed(image, pos_vector_final)
     
     dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
     dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
