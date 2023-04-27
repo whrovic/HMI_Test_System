@@ -56,21 +56,35 @@ def create_model_manual(M: Settings, name_model):
     pos_vector_init = DefineModelCV.click_pos_led(image)
     print('Check the position and press ENTER')
     DefineModelCV.print_pos_led(image, pos_vector_init)
-    while (input('Is that the correct position? [Y/N]') != 'Y'):
-        print("Select the LCD initial position")
-        pos_vector = DefineModelCV.click_pos_led(image)
-        print('Check the position and press ENTER')
-        DefineModelCV.print_pos_led(image, pos_vector_init)
+    while True:
+        print("Is that the correct position? [y/n]")
+        c = input()
+        if(c == 'y'):
+            break
+        elif(c == 'n'):
+            print("Select the LCD initial position")
+            pos_vector = DefineModelCV.click_pos_led(image)
+            print('Check the position and press ENTER')
+            DefineModelCV.print_pos_led(image, pos_vector_init)
+        else:
+            continue
 
     print("Select the LCD final position")
     pos_vector_final = DefineModelCV.click_pos_led(image)
     print('Check the position and press ENTER')
     DefineModelCV.print_pos_led(image, pos_vector_final)
-    while (input('Is that the correct position? [Y/N]') != 'Y'):
-        print("Select the LCD final position")
-        pos_vector = DefineModelCV.click_pos_led(image)
-        print('Check the position and press ENTER')
-        DefineModelCV.print_pos_led(image, pos_vector_final)
+    while True:
+        print("Is that the correct position? [y/n]")
+        c = input()
+        if(c == 'y'):
+            break
+        elif(c == 'n'):
+            print("Select the LCD final position")
+            pos_vector = DefineModelCV.click_pos_led(image)
+            print('Check the position and press ENTER')
+            DefineModelCV.print_pos_led(image, pos_vector_final)
+        else:
+            continue
     
     dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
     dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
@@ -102,11 +116,19 @@ def create_model_manual(M: Settings, name_model):
             pos_vector = DefineModelCV.click_pos_led(image)
             print('Check the position and press ENTER')
             DefineModelCV.print_pos_led(image, pos_vector)
-            while (input('Is that the correct position? [Y/N]') != 'Y'):
-                print(f"Select the led {i+1} central position")
-                pos_vector = DefineModelCV.click_pos_led(image)
-                print('Check the position and press ENTER')
-                DefineModelCV.print_pos_led(image, pos_vector)
+            while True:
+                print("Is that the correct position? [y/n]")
+                c = input()
+                if(c == 'y'):
+                    break
+                elif(c == 'n'):
+                    print(f"Select the led {i+1} central position")
+                    pos_vector = DefineModelCV.click_pos_led(image)
+                    print('Check the position and press ENTER')
+                    DefineModelCV.print_pos_led(image, pos_vector)
+                else:
+                    continue
+                
 
             led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
             for j in range(0, n_colours):
@@ -123,7 +145,22 @@ def create_model_manual(M: Settings, name_model):
             print(f"\nButton {i+1} name: ")
             button_name = input()
             print(f"Select the button {i+1} central position")
-            pos_vector = [0, 0]
+            pos_vector = DefineModelCV.click_pos_led(image)
+            print('Check the position and press ENTER')
+            DefineModelCV.print_pos_led(image, pos_vector)
+            while True:
+                print("Is that the correct position? [y/n]")
+                c = input()
+                if(c == 'y'):
+                    break
+                elif(c == 'n'):
+                    print(f"Select the button {i+1} central position")
+                    pos_vector = DefineModelCV.click_pos_led(image)
+                    print('Check the position and press ENTER')
+                    DefineModelCV.print_pos_led(image, pos_vector)
+                else:
+                    continue
+
             M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
         
         return 0
