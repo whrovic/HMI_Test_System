@@ -3,13 +3,13 @@ Make cd to /hmi_test_system.
 
 Then, to execute this file type
 
-> py main_computer_vision.py
+> python main_computer_vision.py
 
 To execute a file inside a class
 
-> py -m folder.class_name
+> python -m folder.class_name
 
-If py gives an error try python or python3 instead
+If py gives an error try py or python3 instead
 
 '''
 
@@ -78,9 +78,33 @@ def test_camera():
         frame = camera.get_image()
         i += 1
 
+def test_read_color_pattern():
+
+    import cv2
+    from opencv.Displaycv import Displaycv
+
+    img_path = "test_images/char_test.png"
+    cap = ImageFiles([img_path,])
+    cap.start_capture()
+
+    img = cap.get_image()
+
+    cap.stop_capture()
+    cap.clear_queue()
+
+    color_pat = Displaycv.get_color_pattern(img)
+
+    print(type(color_pat))
+    print(len(color_pat))
+
+    print(type(color_pat[0]))
+    print(len(color_pat[0]))
+
+
 if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
     #test_camera()
     #test_list_cameras()
+    test_read_color_pattern()
     pass
