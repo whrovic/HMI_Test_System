@@ -138,7 +138,7 @@ while(1):
     # Menu Settings
     if (menu_choice == '1'):
         count = 0
-        if ( settings_menu(M) == -1 ):
+        if (settings_menu(M) == -1 ):
             break
 
     # Test model    
