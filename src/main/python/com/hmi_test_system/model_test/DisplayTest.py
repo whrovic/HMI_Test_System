@@ -36,3 +36,5 @@ class DisplayTest:
     def test_characters(self, result):
         if result:
             self.characters_test = True
+    
+        
