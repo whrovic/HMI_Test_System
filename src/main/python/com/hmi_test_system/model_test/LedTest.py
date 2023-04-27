@@ -1,6 +1,6 @@
 import string
 
-from data.model.Led import Led
+from ..data.model.Led import Led
 
 
 class LedTest:
@@ -10,6 +10,10 @@ class LedTest:
 
     def set_led(self, led):
         self.led = led
+
+    def get_led(self):
+        return self.led
+
 
     # vetor de cores detetas por cv
     def test_colour(self, colour):
