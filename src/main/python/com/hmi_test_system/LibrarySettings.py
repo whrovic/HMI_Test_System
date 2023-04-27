@@ -185,7 +185,7 @@ def edit_model(M: Settings, directory):
             
             # back to menu
             if(name_model == 'q'):
-                break
+                return 0
 
             # model doesn't exist
             elif(df.open_model_xml(M, name_model, directory) is None):
@@ -208,6 +208,7 @@ def edit_model(M: Settings, directory):
                     print("1- Edit name model   2- Edit led\n")
                     print("3- Edit button       4- Edit LCD\n")
                     print("             5- Save")
+                    print("6- Back              7- Exit\n")
                     print("\n\n----------------------------------\n")
                 
                     c= input()
@@ -242,6 +243,14 @@ def edit_model(M: Settings, directory):
                         df.create_xml(M, name_model, directory)
                         n = 0
                         break
+                    
+                    #back
+                    elif c == '6':
+                        return 0
+                    
+                    #exist
+                    elif c == '7':
+                        return -1
                     
                     else:
                         continue

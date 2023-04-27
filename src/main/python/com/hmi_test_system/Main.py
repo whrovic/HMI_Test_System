@@ -98,7 +98,8 @@ def settings_menu(M: Settings):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            edit_model(M, xml_directory)
+            if ( edit_model(M, xml_directory) == -1 ):
+                return -1
 
 
         # edit video    
