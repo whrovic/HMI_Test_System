@@ -47,21 +47,40 @@ class Test:
             result_blacklight = HMIcv.display_backlight_test(cam_value.get_image(), display.display)
             if result_blacklight:
                 display.test_blacklight(result_blacklight)
+                return 0
+            else:
+                return -1
+
         elif test == 2:
             result_color = HMIcv.display_color_pattern_test(cam_value.get_image(), display.display)
             if result_color:
                 display.test_color(result_color)
+                return 0
+            else:
+                return -1
+
         elif test == 3:
             result_character = HMIcv.display_characters_test(cam_value.get_image(), display.display)
             if result_character:
                 display.test_characters(result_character)
+                return 0
+            else:
+                return -1
+
         elif test == 4:
             result_blacklight = HMIcv.display_backlight_test(cam_value.get_image(), display.display)
             result_color = HMIcv.display_color_pattern_test(cam_value.get_image(), display.display)
             result_character = HMIcv.display_characters_test(cam_value.get_image(), display.display)
             if result_blacklight:
                 display.test_blacklight(result_blacklight)
+            else:
+                return -1
             if result_color:
                 display.test_color(result_color)
+            else:
+                return -1
             if result_character:
                 display.test_characters(result_character)
+                return 0
+            else:
+                return -1
