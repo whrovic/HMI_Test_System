@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import datetime
 
 
+
 def model_menu(M: Settings):
      
     #------------------------------------MODEL TEST------------------------------------#
@@ -82,6 +83,8 @@ def automatic_test(M: Settings, name_model):
 #------------------------------------Manual TEST------------------------------------#
 def manual_test(M: Settings, name_model):
 
+    M.test.start_test()
+
     #------------------------------------TEST MENU------------------------------------#
     while True:
         os.system('cls') 
@@ -98,7 +101,10 @@ def manual_test(M: Settings, name_model):
 
         # button test  
         elif (c== '2'):
-            button_test(M)
+            print("In construction")
+            print("  Come later")
+            c = input()
+            #button_test(M)
 
         # lcd test    
         elif (c== '3'):
@@ -110,9 +116,9 @@ def manual_test(M: Settings, name_model):
 
         # back to menu
         elif(c== '5'):
-            n = 0
+            M.test.end_test()
             break
-
+        
         else:
             continue
 
@@ -141,7 +147,7 @@ def led_test(M: Settings):
                         
                         # led exists
             else:
-                result_test = 'FUNCAO'
+                result_test = M.test.test_led(M.model_test.leds_test)
 
                             # test sucess
                 if(result_test == -1):
@@ -208,16 +214,36 @@ def display_test(M:Settings):
     while True:
         os.system('cls')
         print("-----------LCD Test Menu-----------\n\n")
-        print("1- RGB test         2- Pixel test\n")
+        print("1- Pixel test       2- RGB test\n")
         print("3- Char test        4- Test menu")
         print("\n\n-----------------------------------\n")
         c = input()
 
-                    # RGB test
+                    # Pixel test
         if (c== '1'):
-            result_test = 'FUNCAO'
+            result_test = M.test.test_display(M.model_test.display_test, int(c))
+
+                        # test failed
+            if(result_test == -1):
+                os.system('cls')
+                print("Pixel TEST FAILED\n")
+                print("To test another thing or go to the test menu insert anything\n")
+                c = input()
+                continue
 
                         # test sucess
+            else:
+                os.system('cls')
+                print("Pixel TEST IS DONE\n")
+                print("To test another thing or go to the test menu insert anything\n")
+                c = input()
+                continue
+
+                    # RGB test
+        elif (c== '2'):
+            result_test = M.test.test_display(M.model_test.display_test, int(c))
+
+                        # test failed
             if(result_test == -1):
                 os.system('cls')
                 print("RGB TEST FAILED\n")
@@ -225,7 +251,7 @@ def display_test(M:Settings):
                 c = input()
                 continue
 
-                        # test failed
+                        # test sucess
             else:
                 os.system('cls')
                 print("RGB TEST IS DONE\n")
@@ -233,31 +259,11 @@ def display_test(M:Settings):
                 c = input()
                 continue
 
-                    # Pixel test
-        elif (c== '2'):
-            result_test = 'FUNCAO'
-
-                        # test sucess
-            if(result_test == -1):
-                os.system('cls')
-                print("PIXEL TEST FAILED\n")
-                print("To test another thing or go to the test menu insert anything\n")
-                c = input()
-                continue
-
-                        # test failed
-            else:
-                os.system('cls')
-                print("PIXEL TEST IS DONE\n")
-                print("To test another thing or go to the test menu insert anything\n")
-                c = input()
-                continue
-
                     # Char test
         elif (c== '3'):
-            result_test = 'FUNCAO'
+            result_test = M.test.test_display(M.model_test.display_test, int(c))
 
-                        # test sucess
+                        # test failed
             if(result_test == -1):
                 os.system('cls')
                 print("CHAR TEST FAILED\n")
@@ -265,7 +271,7 @@ def display_test(M:Settings):
                 c = input()
                 continue
 
-                        # test failed
+                        # test sucess
             else:
                 os.system('cls')
                 print("CHAR TEST IS DONE\n")

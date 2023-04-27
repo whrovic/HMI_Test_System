@@ -7,6 +7,7 @@ from ..model_test.DisplayTest import DisplayTest
 from .model.Display import Display
 from typing import List
 from .path import path
+from test.Test import Test
 
 class Settings:
         
@@ -15,6 +16,7 @@ class Settings:
         self.model_test = ModelTest()
         self.sequence_test = SequenceTest
         self.path = path()
+        self.test = Test()
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
