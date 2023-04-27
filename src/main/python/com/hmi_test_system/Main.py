@@ -5,6 +5,8 @@ from LibraryTest import model_menu
 import os
 from main.MenuPrints import MenuPrints as MP
 
+from data.color.list_of_colors import ListOfColors
+
 '''from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
@@ -16,6 +18,10 @@ menu_choice = input()'''
 NTIMEOUT = 5
 count = 0
 M = Settings()
+
+ListOfColors.add_color("Red", [0, 50, 50], [10, 255, 255], [170, 50, 50], [180, 255, 255])
+ListOfColors.add_color("Yellow", [20, 50, 50], [45, 255, 255])
+ListOfColors.add_color("Green", [60, 50, 50], [90, 255, 255])
 
 # directory where you want to save your model files
 #xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"

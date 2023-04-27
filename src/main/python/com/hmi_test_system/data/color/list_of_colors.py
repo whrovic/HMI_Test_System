@@ -1,3 +1,5 @@
+from .color import Color
+
 '''
 (Mariana)
 
@@ -12,7 +14,6 @@ As funções de ler e escrever para o ficheiro deixa para último.
 Primeiro adiciona-se sempre manualmente com a função add_color todas as cores.
 A prioridade é integrar estas novas classes com as funções de teste dos leds.
 '''
-
 class ListOfColors:
     
     _list_of_colors = []
@@ -34,13 +35,11 @@ class ListOfColors:
         # Check if color already exists
         color = ListOfColors.get_color(name)
         if color is not None:
-            print(f"Color {name} already exists!")
             return
 
         # Create new color object and add to list
-        new_color = color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
+        new_color = Color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
         ListOfColors._list_of_colors.append(new_color)
-        print(f"Color {name} added successfully!")
     
     '''
     Remove a cor com este nome
