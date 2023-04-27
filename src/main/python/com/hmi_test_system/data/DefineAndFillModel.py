@@ -119,8 +119,6 @@ class DefineAndFillModel:
             for j in range(0, aux2._n_Colour):
                 aux3 = aux._leds[i].get_colour()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
-                print(type(aux3))
-                print(type(aux3[j]))
                 led_colour.text = str(aux3[j].get_name())
         
 
