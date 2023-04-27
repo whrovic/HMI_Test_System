@@ -100,12 +100,12 @@ def create_model_manual(M: Settings, name_model):
                     new_colour = input()
                     if new_colour.isdigit():
                         new_colour = int(new_colour)
-                        led.new_colour(ListOfColors.get_color(new_colour-1))
+                        led.new_colour(ListOfColors.get_color_index(new_colour-1))
                         break
                     else:
                         continue
                 
-             
+            
             M.model[int(index)].set_led(led) 
 
 
