@@ -17,7 +17,7 @@ class Led(Position):
     def get_n_Colour(self):
         return self._n_Colour
     
-    #vetor das cores associadas ao led
+    #vetor of colors associate to the led
     def new_colour(self, colour):
         if(len(self._colours) < self._n_Colour):
             self._colours.append(colour)

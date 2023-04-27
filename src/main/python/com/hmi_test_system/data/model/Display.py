@@ -6,6 +6,7 @@ class Display(Position):
         self._name = name
         self._dim_x = dim_x
         self._dim_y = dim_y
+        self._vector_test: list = []
     
     def set_name(self, name: str):
         self._name = name
@@ -42,3 +43,14 @@ class Display(Position):
                 '{|}~!"#S%&\'()*+,-./0123456789:;<=>?@ABCD\n' \
                 'EFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijkl\n'
         return test
+    
+    def get_n_test_vector(self):
+        return len(self._vector_test)
+    
+    def get_test_pos(self, pos):
+        if len(self._vector_test) > pos:
+            return self._vector_test[pos]
+        return None
+    
+    def get_test(self):
+        return self._vector_test
