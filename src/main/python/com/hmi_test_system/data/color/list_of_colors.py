@@ -21,19 +21,26 @@ class ListOfColors:
     def get_list_of_colors():
         return ListOfColors._list_of_colors
 
-    '''
-    Deve percorrer o vetor e retornar a cor com o nome indicado (ou None se nao encontrar)
-    '''
+
     @staticmethod
     def get_color(name):
+        for color in ListOfColors._list_of_colors:
+            if color.get_name() == name:
+                return color
         return None
 
-    '''
-    Deve verificar se a cor existe. Se não existir adiciona uma nova cor
-    '''
     @staticmethod
     def add_color(name, hsv_min1, hsv_max1, hsv_min2=None, hsv_max2=None):
-        pass
+        # Check if color already exists
+        color = ListOfColors.get_color(name)
+        if color is not None:
+            print(f"Color {name} already exists!")
+            return
+
+        # Create new color object and add to list
+        new_color = color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
+        ListOfColors._list_of_colors.append(new_color)
+        print(f"Color {name} added successfully!")
     
     '''
     Remove a cor com este nome
@@ -41,7 +48,11 @@ class ListOfColors:
     '''
     @staticmethod
     def remove_color(name):
-        pass
+        for color in ListOfColors._list_of_colors:
+            if color.get_name() == name:
+                ListOfColors._list_of_colors.remove(color)
+                return True
+        return False
 
     '''
     Guarda o vetor de cores, todas as cores e as propriedades para um ficheiro (.txt, .xml, .json, whatever)
