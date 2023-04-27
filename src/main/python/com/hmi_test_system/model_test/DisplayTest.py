@@ -1,5 +1,5 @@
-from ..data.model.Display import Display
-
+from data.model.Display import Display
+import copy
 
 class DisplayTest:
     color_test: bool
@@ -7,8 +7,8 @@ class DisplayTest:
     characters_test: bool
 
     def __init__(self, display: Display):
-        self.display = display
-
+        self.display = copy.deepcopy(display)
+         
     def result_color(self):
         return self.color_test
 
@@ -29,3 +29,5 @@ class DisplayTest:
     def test_characters(self, result):
         if result:
             self.characters_test = True
+    
+        

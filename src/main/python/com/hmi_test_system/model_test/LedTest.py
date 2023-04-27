@@ -1,12 +1,13 @@
-import string
+from data.model.Led import Led
+from data.color.color import Color
+import copy
 
-from ..data.model.Led import Led
 
 
 class LedTest:
     def __init__(self, led: Led):
-        self.led = led
-        self.colours_cv: list[string] = []
+        self.led = copy.deepcopy(led)
+        self.colours_cv: list[Color] = []
 
     def set_led(self, led):
         self.led = led

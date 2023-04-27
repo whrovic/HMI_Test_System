@@ -1,8 +1,9 @@
-from ..data.model.Button import Button
+from data.model.Button import Button
+import copy
 
 class ButtonTest:
     def __init__(self, button: Button):
-        self.button = button
+        self.button = copy.deepcopy(button)
         self.pressed_display = False
         self.pressed_serial_port = False
         
