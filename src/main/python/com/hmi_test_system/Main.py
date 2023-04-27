@@ -18,10 +18,13 @@ count = 0
 M = Settings()
 
 # directory where you want to save your model files
-xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+#xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+xml_directory = "C:/Users/asus/ES/HMI_Test_System/xml_files"
+#xml_directory = "C:/Users/prica/FEUP/ES/HMI_Test_System/xml_files"
 
 # directory where you want to save your reports
-report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+#report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+report_directory = "C:/Users/asus/ES/HMI_Test_System/reports"
 
 
 def new_model(M: Settings):
@@ -95,7 +98,8 @@ def settings_menu(M: Settings):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            edit_model(M, xml_directory)
+            if ( edit_model(M, xml_directory) == -1 ):
+                return -1
 
 
         # edit video    
@@ -124,6 +128,8 @@ def settings_menu(M: Settings):
 
 #------------------------------------CODE BEGIN------------------------------------#
 while(1):
+    M.path.set_xml_direcory(xml_directory)
+    M.path.set_report_direcory(report_directory)
     MP.main_menu_print()        
     menu_choice = input()
     
@@ -136,7 +142,7 @@ while(1):
     # Test model    
     elif (menu_choice == '2'):
         count = 0
-        model_menu(M, xml_directory, report_directory) == -1 
+        model_menu(M) == -1 
 
     # Turn off the program    
     elif(menu_choice == '3'):

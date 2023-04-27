@@ -2,11 +2,11 @@ from data.model.Led import Led
 from data.model.Button import Button
 from data.model.Display import Display
 from data.Settings import Settings
-import sys
 
 def create_model_file(M: Settings, name_model, filename):
     
     with open(filename) as f:
+        name = f.readline()
         # read number of buttons from file
         n_buttons = int(f.readline())
 
@@ -68,8 +68,9 @@ def create_model_file(M: Settings, name_model, filename):
     # close the file
     f.close()
 
+    print("Model creation")
 
-M = Settings()
+#M = Settings()
 
-create_model_file(M,"TPUs430", 'c:/Users/asus/ES/HMI_Test_System/src/main/python/com/hmi_test_system/m1.txt')
+#create_model_file(M,"TPUs430", 'c:/Users/asus/ES/HMI_Test_System/src/main/python/com/hmi_test_system/m1.txt')
   

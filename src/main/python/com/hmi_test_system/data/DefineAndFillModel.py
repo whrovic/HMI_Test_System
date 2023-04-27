@@ -8,8 +8,17 @@ import os
 class DefineAndFillModel:
     def open_model_xml(M: Settings, name_model, directory):
 
-        files = os.listdir(directory)                                   # files in directory
-
+        while True:
+            try:
+                files = os.listdir(directory)   # files in directory
+                break
+            except:
+                print("Error path don't exist")
+                print("Do you want to repeat [y|n]")
+                answer = input()
+                if not (answer == 'y'):
+                    return -1
+                
         xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
 
 

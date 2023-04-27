@@ -5,7 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import datetime
 
 
-def model_menu(M: Settings, xml_directory, report_directory):
+def model_menu(M: Settings):
     
     n = 1  
     #------------------------------------MODEL TEST------------------------------------#
@@ -20,7 +20,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
             break
         
         # model doesn't exist
-        elif(df.open_model_xml(M, name_model, xml_directory) is None):
+        elif(df.open_model_xml(M, name_model, M.path.get_xml_directory) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
@@ -73,7 +73,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
                 led_test(M, n2)
                 button_test(M, n2)
                 display_test(M, n2)
-                generate_report(n2, name_model, report_directory)
+                generate_report(n2, name_model, M.path.get_report_directory)
 
 
 #------------------------------------LED TEST------------------------------------#
@@ -252,8 +252,18 @@ def generate_report(n2, name_model, report_directory):
         date_str = now.strftime("%d-%m-%Y")
         hour_str = now.strftime("%H:%M:%S")
 
-        # specify the path and filename of the PDF file with the date string in the title
-        report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+        while True:
+            try: 
+                # specify the path and filename of the PDF file with the date string in the title
+                report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+                break
+            except:
+                print("Error path don't exist")
+                print("Do you want to repeat [y|n]")
+                answer = input()
+                if not (answer == 'y'):
+                    return -1
+        
 
         # add some text to the PDF
         report.drawString(100, 750, f"Report generated on the day {date_str} at {hour_str}")
