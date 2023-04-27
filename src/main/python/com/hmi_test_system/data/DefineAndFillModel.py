@@ -135,6 +135,7 @@ class DefineAndFillModel:
 
         # Create the XML document and write it to a file
         tree = ET.ElementTree(model)
+        ET.indent(tree, '  ')
         tree.write(f"{directory}/{name_model}.xml")
 
     def delete_xml(name_model, directory):
