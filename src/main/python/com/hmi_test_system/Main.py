@@ -24,15 +24,15 @@ ListOfColors.add_color("Yellow", [20, 50, 50], [45, 255, 255])
 ListOfColors.add_color("Green", [60, 50, 50], [90, 255, 255])
 
 # directory where you want to save your model files
-#xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
 #xml_directory = "C:/Users/asus/ES/HMI_Test_System/xml_files"
-xml_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/Codigo/HMI_Test_System/xml_files"
+#xml_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/Codigo/HMI_Test_System/xml_files"
 #xml_directory = "C:/Users/prica/FEUP/ES/HMI_Test_System/xml_files"
 
 # directory where you want to save your reports
-#report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
 #report_directory = "C:/Users/asus/ES/HMI_Test_System/reports"
-report_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/Codigo/HMI_Test_System/reports"
+#report_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/Codigo/HMI_Test_System/reports"
 
 
 def new_model(M: Settings):
@@ -44,7 +44,7 @@ def new_model(M: Settings):
         # manually
         if (menu_choice == '1'):
             count = 0
-            add_models(M, xml_directory)
+            add_models(M)
 
         # automatic
         elif (menu_choice == '2'):
@@ -106,7 +106,7 @@ def settings_menu(M: Settings):
         # edit model    
         elif (menu_choice == '3'):
             count = 0
-            if ( edit_model(M, xml_directory) == -1 ):
+            if ( edit_model(M) == -1 ):
                 return -1
 
 

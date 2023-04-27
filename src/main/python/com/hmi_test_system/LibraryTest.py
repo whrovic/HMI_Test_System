@@ -28,7 +28,7 @@ def model_menu(M: Settings):
                 break
             
             # model doesn't exist
-            elif(df.open_model_xml(M, name_model, M.path.get_xml_directory()) is None):
+            elif(df.open_model_xml(M, name_model) is None):
                 os.system('cls') 
                 print(f"{name_model} DOESN'T EXIST\n")
                 print("To go to the menu insert anything\n")
@@ -46,18 +46,42 @@ def model_menu(M: Settings):
         
         # Manual test
         elif(c == '2'):
-            manual_test(M, name_model)
+            if(len(M.model_test.leds_test) == 0):
+                print('Choose a model to test first')
+                print("To go to the test menu insert anything\n")
+                c = input()
+                continue
+            else:  
+                manual_test(M, name_model)
 
         # Automatic test
         elif(c == '3'):
-            print("In construction")
-            print("  Come later")
-            c = input()
+            if(len(M.model_test.leds_test) == 0):
+                print('Choose a model to test first')
+                print("To go to the test menu insert anything\n")
+                c = input()
+                continue
+            else:  
+                automatic_test(M, name_model)
+            
+
+        # Menu
+        elif(c == '4'):
+            break
+
+        else:
+            continue
 
 
+#------------------------------------Automatic TEST------------------------------------#
+def automatic_test(M: Settings, name_model):
+    print("In construction")
+    print("  Come later")
+    c = input()
 
 #------------------------------------Manual TEST------------------------------------#
 def manual_test(M: Settings, name_model):
+
     #------------------------------------TEST MENU------------------------------------#
     while True:
         os.system('cls') 
@@ -82,7 +106,7 @@ def manual_test(M: Settings, name_model):
 
         # report
         elif(c== '4'):
-            generate_report(name_model, M.path.get_report_directory())
+            generate_report(name_model)
 
         # back to menu
         elif(c== '5'):

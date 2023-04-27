@@ -16,12 +16,20 @@ A prioridade é integrar estas novas classes com as funções de teste dos leds.
 '''
 class ListOfColors:
     
-    _list_of_colors = []
+    _list_of_colors: list[Color]= []
+
+    @staticmethod
+    def get_n_colors():
+        return len(ListOfColors._list_of_colors)
 
     @staticmethod
     def get_list_of_colors():
         return ListOfColors._list_of_colors
-
+    
+    @staticmethod
+    def get_color_index(index: int):
+        return ListOfColors._list_of_colors[index]
+        
 
     @staticmethod
     def get_color(name):

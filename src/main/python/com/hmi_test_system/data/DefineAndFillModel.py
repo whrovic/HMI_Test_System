@@ -4,20 +4,21 @@ from .model.Display import Display
 from .model.Led import Led
 from .model.Button import Button
 import os
+from data.color.list_of_colors import ListOfColors
+
 
 class DefineAndFillModel:
-    def open_model_xml(M: Settings, name_model, directory):
+    def open_model_xml(M: Settings, name_model):
 
         while True:
             try:
-                files = os.listdir(directory)   # files in directory
+                files = os.listdir(M.path.get_xml_directory())   # files in directory
                 break
             except:
                 print("Error path don't exist")
-                print("Do you want to repeat [y|n]")
-                answer = input()
-                if not (answer == 'y'):
-                    return -1
+                print("To go to the menu insert anything\n")
+                c = input()
+                return -1
                 
         xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
 
@@ -26,7 +27,7 @@ class DefineAndFillModel:
             # check if it is the asked file
             if filename == f'{name_model}.xml':
                 # make a model with the xml file
-                xml_file = os.path.join(directory, filename)
+                xml_file = os.path.join(M.path.get_xml_directory(), filename)
                 tree = ET.parse(xml_file)
                 model = tree.getroot()
                 name = model.find('name')
@@ -54,7 +55,7 @@ class DefineAndFillModel:
                     leds_colours = leds.find(f'led{i+1}_colours')
                     for j in range(0, int(led_nColour.text)):   
                         led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
-                        led.new_colour(led_colour.text)
+                        led.new_colour(ListOfColors.get_color(led_colour.text))
                     M.model[index].set_led(led) 
 
                 buttons = model.find('buttons')
@@ -73,7 +74,7 @@ class DefineAndFillModel:
         
         return None
 
-    def create_xml(M: Settings, name_model, directory):
+    def create_xml(M: Settings, name_model):
 
         index = M.index_model(name_model)
         aux = M.model[index]
@@ -118,7 +119,9 @@ class DefineAndFillModel:
             for j in range(0, aux2._n_Colour):
                 aux3 = aux._leds[i].get_colour()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
-                led_colour.text = str(aux3[j])
+                print(type(aux3))
+                print(type(aux3[j]))
+                led_colour.text = str(aux3[j].get_name())
         
 
         buttons = ET.SubElement(model, 'buttons')
@@ -136,11 +139,11 @@ class DefineAndFillModel:
         # Create the XML document and write it to a file
         tree = ET.ElementTree(model)
         ET.indent(tree, '  ')
-        tree.write(f"{directory}/{name_model}.xml")
+        tree.write(f"{M.path.get_xml_directory()}/{name_model}.xml")
 
-    def delete_xml(name_model, directory):
+    def delete_xml(M: Settings, name_model):
         
-        file_path = f"{directory}/{name_model}.xml"
+        file_path = f"{M.path.get_xml_directory()}/{name_model}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):

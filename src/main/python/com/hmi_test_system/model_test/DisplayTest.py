@@ -1,4 +1,5 @@
 from data.model.Display import Display
+import copy
 
 class DisplayTest:
     RGB: bool          
@@ -6,7 +7,7 @@ class DisplayTest:
     characters: bool
 
     def __init__(self, display: Display):
-        self.display = display
+        self.display = copy.deepcopy(display)
          
     
     # RGB screen detetado por CV
