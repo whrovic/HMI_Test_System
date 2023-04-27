@@ -2,7 +2,6 @@ from data.model.Led import Led
 from data.model.Button import Button
 from data.model.Display import Display
 from data.Settings import Settings
-import sys
 
 def create_model_file(M: Settings, name_model, filename):
     

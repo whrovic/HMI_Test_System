@@ -20,7 +20,7 @@ class VideoFile(VideoDevice):
 
     def set_path(self, path):
         cwd = Path.cwd().parent
-        resources_path = (cwd / "../../../resources").resolve()
+        resources_path = (cwd / "../../resources").resolve()
 
         pth = (resources_path / path).resolve()
 

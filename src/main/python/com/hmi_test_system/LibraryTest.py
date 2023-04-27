@@ -5,80 +5,120 @@ from reportlab.pdfgen import canvas
 from datetime import datetime
 
 
-def model_menu(M: Settings, xml_directory, report_directory):
-    
-    n = 1  
+def model_menu(M: Settings):
+     
     #------------------------------------MODEL TEST------------------------------------#
-    while n:
+    while True:
         os.system('cls') 
-        print('What model do you want to test?')
-        print("(to go to the menu insert q)\n" )
-        name_model = input()
+        print("-------------Test Menu-------------\n\n")
+        print("1- Choose model      2- Manual test\n")
+        print("3- Automatic test    4- Menu")
+        print("\n\n-----------------------------------\n")
+        c = input()
         
-        # back to menu
-        if(name_model == 'q'):
-            break
-        
-        # model doesn't exist
-        elif(df.open_model_xml(M, name_model, xml_directory) is None):
+        # set model test
+        if(c == '1'):
             os.system('cls') 
-            print(f"{name_model} DOESN'T EXIST\n")
-            print("To go to the menu insert anything\n")
-            c = input()
-            break
-        
-        # set model ready to test
-        else:
-            M.reset_model_test()
-            M.set_model_test(name_model)
-            os.system('cls') 
-            print(f"{name_model} IS READY TO TEST\n")
-            print("To start the test insert anything\n")
-            c = input()
-
-            #------------------------------------TEST MENU------------------------------------#
-            while True:
+            print('What model do you want to test?')
+            print("(to go to the Test Menu insert q)\n" )
+            name_model = input()
+            
+            # back to menu
+            if(name_model == 'q'):
+                break
+            
+            # model doesn't exist
+            elif(df.open_model_xml(M, name_model) is None):
                 os.system('cls') 
-                print("-------------Test Menu-------------\n\n")
-                print("1- Led test         2- Button test\n")
-                print("3- LCD test         4- Generate report\n")
-                print("            5- Menu")
-                print("\n\n----------------------------------\n")
+                print(f"{name_model} DOESN'T EXIST\n")
+                print("To go to the menu insert anything\n")
                 c = input()
-                
-                # led test
-                if (c== '1'):
-                    n2 = 1
+                continue
+            
+            # set model ready to test
+            else:
+                M.reset_model_test()
+                M.set_model_test(name_model)
+                os.system('cls') 
+                print(f"{name_model} IS READY TO TEST\n")
+                print("To start the test insert anything\n")
+                c = input()
+        
+        # Manual test
+        elif(c == '2'):
+            if(len(M.model_test.leds_test) == 0):
+                print('Choose a model to test first')
+                print("To go to the test menu insert anything\n")
+                c = input()
+                continue
+            else:  
+                manual_test(M, name_model)
 
-                # button test  
-                elif (c== '2'):
-                    n2 = 2
+        # Automatic test
+        elif(c == '3'):
+            if(len(M.model_test.leds_test) == 0):
+                print('Choose a model to test first')
+                print("To go to the test menu insert anything\n")
+                c = input()
+                continue
+            else:  
+                automatic_test(M, name_model)
+            
 
-                # lcd test    
-                elif (c== '3'):
-                    n2 = 3
+        # Menu
+        elif(c == '4'):
+            break
 
-                # report
-                elif(c== '4'):
-                    n2 = 4
-                
-                # back to menu
-                elif(c== '5'):
-                    n = 0
-                    break
+        else:
+            continue
 
-                else:
-                    continue
 
-                led_test(M, n2)
-                button_test(M, n2)
-                display_test(M, n2)
-                generate_report(n2, name_model, report_directory)
+#------------------------------------Automatic TEST------------------------------------#
+def automatic_test(M: Settings, name_model):
+    print("In construction")
+    print("  Come later")
+    c = input()
 
+#------------------------------------Manual TEST------------------------------------#
+def manual_test(M: Settings, name_model):
+
+    #------------------------------------TEST MENU------------------------------------#
+    while True:
+        os.system('cls') 
+        print("-------------Manual Test-------------\n\n")
+        print("1- Led test         2- Button test\n")
+        print("3- LCD test         4- Generate report\n")
+        print("            5- Menu")
+        print("\n\n-------------------------------------\n")
+        c = input()
+
+        # led test
+        if (c== '1'):
+            led_test(M)
+
+        # button test  
+        elif (c== '2'):
+            button_test(M)
+
+        # lcd test    
+        elif (c== '3'):
+            display_test(M)
+
+        # report
+        elif(c== '4'):
+            generate_report(name_model)
+
+        # back to menu
+        elif(c== '5'):
+            n = 0
+            break
+
+        else:
+            continue
 
 #------------------------------------LED TEST------------------------------------#
-def led_test(M: Settings, n2):
-    while(n2==1):
+def led_test(M: Settings):
+    while True:
         os.system('cls')
         print("What led do you want to test?\n")
         print("(to go to the menu insert q)\n" )
@@ -120,8 +160,8 @@ def led_test(M: Settings, n2):
                     continue
 
 #------------------------------------BUTTON TEST------------------------------------#
-def button_test(M:Settings, n2):
-    while(n2==2):
+def button_test(M:Settings):
+    while True:
         os.system('cls')
         print("What button do you want to test?\n")
         print("(to go to the test menu insert q)\n" )
@@ -164,8 +204,8 @@ def button_test(M:Settings, n2):
                     continue
 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(M:Settings, n2):
-    while(n2==3):
+def display_test(M:Settings):
+    while True:
         os.system('cls')
         print("-----------LCD Test Menu-----------\n\n")
         print("1- RGB test         2- Pixel test\n")
@@ -235,15 +275,14 @@ def display_test(M:Settings, n2):
 
                     # Back to test menu
         elif(c== '4'):
-            n2 = 0
             break
 
         else:
             continue
 
 ##------------------------------------REPORT------------------------------------#
-def generate_report(n2, name_model, report_directory):
-    while(n2==4):
+def generate_report(M: Settings, name_model):
+    while True:
         
         # get the current date and time
         now = datetime.now()
@@ -252,8 +291,17 @@ def generate_report(n2, name_model, report_directory):
         date_str = now.strftime("%d-%m-%Y")
         hour_str = now.strftime("%H:%M:%S")
 
-        # specify the path and filename of the PDF file with the date string in the title
-        report = canvas.Canvas(f'{report_directory}/Report of {name_model}.pdf')
+        while True:
+            try: 
+                # specify the path and filename of the PDF file with the date string in the title
+                report = canvas.Canvas(f'{M.path.get_report_directory}/Report of {name_model}.pdf')
+                break
+            except:
+                print("Error path don't exist")
+                print("To go to the Test Menu insert anything\n")
+                c = input()
+                return -1
+        
 
         # add some text to the PDF
         report.drawString(100, 750, f"Report generated on the day {date_str} at {hour_str}")
@@ -266,5 +314,4 @@ def generate_report(n2, name_model, report_directory):
         print("To go to the Test Menu insert anything\n")
         c = input()
 
-        n2 = 0
-        break
+        return 0

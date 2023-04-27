@@ -17,8 +17,3 @@ class ModelTest:
             self.leds_test[i].clear_colour()
 
 
-
-
-
-
-
