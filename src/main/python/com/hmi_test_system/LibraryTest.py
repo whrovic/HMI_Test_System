@@ -5,7 +5,7 @@ from reportlab.pdfgen import canvas
 from datetime import datetime
 
 
-def model_menu(M: Settings, xml_directory, report_directory):
+def model_menu(M: Settings):
     
     n = 1  
     #------------------------------------MODEL TEST------------------------------------#
@@ -20,7 +20,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
             break
         
         # model doesn't exist
-        elif(df.open_model_xml(M, name_model, xml_directory) is None):
+        elif(df.open_model_xml(M, name_model, M.path.get_xml_directory) is None):
             os.system('cls') 
             print(f"{name_model} DOESN'T EXIST\n")
             print("To go to the menu insert anything\n")
@@ -73,7 +73,7 @@ def model_menu(M: Settings, xml_directory, report_directory):
                 led_test(M, n2)
                 button_test(M, n2)
                 display_test(M, n2)
-                generate_report(n2, name_model, report_directory)
+                generate_report(n2, name_model, M.path.get_report_directory)
 
 
 #------------------------------------LED TEST------------------------------------#
