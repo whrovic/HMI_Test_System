@@ -1,5 +1,5 @@
-<model_2>
-  <name>model_2</name>
+<model_21>
+  <name>model_21</name>
   <n_leds>2</n_leds>
   <n_buttons>3</n_buttons>
   <display>
@@ -9,7 +9,7 @@
     <display_dimx>0</display_dimx>
     <display_dimy>0</display_dimy>
   </display>
-  <version>1</version>
+  <version>2</version>
   <leds>
     <led1_name>l1</led1_name>
     <led1_nColour>1</led1_nColour>
@@ -38,4 +38,4 @@
     <button3_x>0</button3_x>
     <button3_y>0</button3_y>
   </buttons>
-</model_2>
+</model_21>

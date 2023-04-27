@@ -45,11 +45,11 @@ def create_model_manual(M: Settings, name_model):
 
     while True:
         print("Model version:")
-        version = input()       # version of model
-        if version.isdigit():
-            version = int(version)
+        version = str(input())       # version of model
+        version = version.strip()
+        if (len(version) > 0):
             break
-        else: 
+        else:
             continue
  
 
@@ -57,24 +57,24 @@ def create_model_manual(M: Settings, name_model):
     print("\n\nLCD CONFIGURATION\n")
     
     print("Select the LCD initial position")
-    pos_vector_init = DefineModelCV.clickPosLed(image)
+    pos_vector_init = DefineModelCV.click_pos_led(image)
     print('Check the position and press ENTER')
-    DefineModelCV.printPosLed(image, pos_vector_init)
+    DefineModelCV.print_pos_led(image, pos_vector_init)
     while (input('Is that the correct position? [Y/N]') != 'Y'):
         print("Select the LCD initial position")
-        pos_vector = DefineModelCV.clickPosLed(image)
+        pos_vector = DefineModelCV.click_pos_led(image)
         print('Check the position and press ENTER')
-        DefineModelCV.printPosLed(image, pos_vector_init)
+        DefineModelCV.print_pos_led(image, pos_vector_init)
 
     print("Select the LCD final position")
-    pos_vector_final = DefineModelCV.clickPosLed(image)
+    pos_vector_final = DefineModelCV.click_pos_led(image)
     print('Check the position and press ENTER')
-    DefineModelCV.printPosLed(image, pos_vector_final)
+    DefineModelCV.print_pos_led(image, pos_vector_final)
     while (input('Is that the correct position? [Y/N]') != 'Y'):
         print("Select the LCD final position")
-        pos_vector = DefineModelCV.clickPosLed(image)
+        pos_vector = DefineModelCV.click_pos_led(image)
         print('Check the position and press ENTER')
-        DefineModelCV.printPosLed(image, pos_vector_final)
+        DefineModelCV.print_pos_led(image, pos_vector_final)
     
     dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
     dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
@@ -103,14 +103,14 @@ def create_model_manual(M: Settings, name_model):
                     continue
 
             print(f"Select the led {i+1} central position")
-            pos_vector = DefineModelCV.clickPosLed(image)
+            pos_vector = DefineModelCV.click_pos_led(image)
             print('Check the position and press ENTER')
-            DefineModelCV.printPosLed(image, pos_vector)
+            DefineModelCV.print_pos_led(image, pos_vector)
             while (input('Is that the correct position? [Y/N]') != 'Y'):
                 print(f"Select the led {i+1} central position")
-                pos_vector = DefineModelCV.clickPosLed(image)
+                pos_vector = DefineModelCV.click_pos_led(image)
                 print('Check the position and press ENTER')
-                DefineModelCV.printPosLed(image, pos_vector)
+                DefineModelCV.print_pos_led(image, pos_vector)
 
             led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
             for j in range(0, n_colours):
@@ -190,7 +190,6 @@ def add_models(M: Settings, directory):
         
 def edit_model(M: Settings, directory):
 
-    n=1
     #------------------------------------EDIT MENU------------------------------------#
     while n:
             os.system('cls') 
@@ -212,11 +211,13 @@ def edit_model(M: Settings, directory):
             
             # model  exists
             else:
-                df.delete_xml(name_model, directory) # Delete the xml file
+                #df.delete_xml(name_model, directory) # Delete the xml file
                 index = M.index_model(name_model)
 
                 if(index == -1):
                     return -1
+
+                name_model = M.model[index].get_name()
 
                 while True:
                     os.system('cls') 
@@ -231,19 +232,20 @@ def edit_model(M: Settings, directory):
 
                     # edit name model
                     if c == '1':
-                        n2 = 1
+                        edit_name_model(M, index)
+                        name_model = M.model[index].get_name()
                             
                     # edit led
                     elif c == '2':
-                        n2 = 2
+                        edit_led(M, name_model, index)
                     
                     # edit button
                     elif c == '3':
-                        n2 = 3
+                        edit_button(M, name_model, index)
                     
                     # edit LCD
                     elif c == '4':
-                        n2 = 4
+                        edit_display(M, index)
                     
                     # save
                     elif c == '5':
@@ -262,43 +264,39 @@ def edit_model(M: Settings, directory):
                     
                     #back
                     elif c == '6':
+                        resp = input("Do you want to save the changes before leaving (Y/N)? ")
+                        if (resp == "Y"):
+                            df.create_xml(M, name_model, directory)
+                        
                         return 0
                     
-                    #exist
+                    #exit
                     elif c == '7':
+                        resp = input("Do you want to save the changes before leaving (Y/N)? ")
+                        if (resp == "Y"):
+                            df.create_xml(M, name_model, directory)
+
                         return -1
                     
-                    else:
-                        continue
-                    
-                    
-                    edit_name_model(M, n2, index)
-                    edit_led(M, n2, name_model, index)
-                    edit_button(M, n2, name_model, index)
-                    edit_display(M, n2, index)
-
-                    name_model = M.model[index].get_name()
                     
 
 #------------------------------------EDIT NAME MODEL------------------------------------#
-def edit_name_model(M: Settings, n2, index: int):
+def edit_name_model(M: Settings, index: int):
 
-    if n2==1:
-        os.system('cls')
-        print("What is the new name model?\n")
-        name_model = input()
-        M.model[index].set_name(name_model)
-        
-        os.system('cls')
-        print("NAME CHANGED\n")
-        print("To go to the edit menu insert anything\n")
-        c = input()
-        n2 = 0 
+    os.system('cls')
+    print("What is the new name model?\n")
+    name_model = input()
+    M.model[index].set_name(name_model)
+    
+    os.system('cls')
+    print("NAME CHANGED\n")
+    print("To go to the edit menu insert anything\n")
+    c = input()
 
 #------------------------------------EDIT LED------------------------------------#
-def edit_led(M: Settings, n2, name_model, index: int):
+def edit_led(M: Settings, name_model, index: int):
     
-    while n2==2:
+    while True:
 
         os.system('cls')
         print("What led do you want to edit?")
@@ -307,82 +305,84 @@ def edit_led(M: Settings, n2, name_model, index: int):
 
         # back to menu
         if(led_name == 'q'):
-            n2 = 0
             break
         
+        index_led = M.index_led_model(name_model, led_name)
+        
+        if (index_led is None):
+            os.system('cls')
+            print(f"{led_name} DOESN'T EXIST")
+            print("To edit another one or go to the edit menu insert anything\n")
+            c = input()
+            continue
+
         else:
-            index_led = M.index_led_model(name_model, led_name)
+            edit_led_settings(M, index, index_led)
+
+'''
+TODO: Alterar seleção dos leds
+'''
+def edit_led_settings(M: Settings, index: int, index_led: int):
+    
+    while True:
+        os.system('cls') 
+        print("-------------Edit Led-------------\n\n")
+        print("1- Name          2- Colours\n")
+        print("3- Position      4- Edit menu")
+        print("\n\n----------------------------------\n")
+        c = input()
+
+        # edit name
+        if c=='1':
+            os.system('cls') 
+            print("What is the new led name?\n")
+            led_name = input().strip()
+            M.model[index]._leds[index_led].set_name(led_name)
+
+            os.system('cls')
+            print("LED NAME CHANGED")
+            print("To continue insert anything\n")
+            c= input()                   
+        
+        # edit colours
+        elif c=='2':
+            M.model[index]._leds[index_led].delete_colour()
+            os.system('cls')
+
+            while True:
+                print("How many colours have the led?\n")
+                n_colours = input()
+                if n_colours.isdigit():
+                    n_colours = int(n_colours)
+                    break
             
-            if (index_led is None):
-                os.system('cls')
-                print(f"{led_name} DOESN'T EXIST")
-                print("To edit another one or go to the edit menu insert anything\n")
-                c = input()
-                continue
+            for i in range(0, n_colours):
+                print(f"Colour {i+1} of led:")
+                new_colour = input()
+                M.model[index]._leds[index_led].new_colour(new_colour)
+            
+            os.system('cls')
+            print("LED COLOURS CHANGED")
+            print("To continue insert anything\n")
+            c= input()
 
-            else:
-                while True:
-                    os.system('cls') 
-                    print("-------------Edit Led-------------\n\n")
-                    print("1- Name          2- Colours\n")
-                    print("3- Position      4- Edit menu")
-                    print("\n\n----------------------------------\n")
-                    c = input()
+        # edit position 
+        elif c=='3':
+            os.system('cls') 
+            print(f"Select the led central position")
+            pos_vector = [0, 0]
+            M.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
 
-                    # edit name
-                    if c=='1':
-                        os.system('cls') 
-                        print("What is the new led name?\n")
-                        led_name = input()
-                        M.model[index]._leds[index_led].set_name(led_name)
-
-                        os.system('cls')
-                        print("LED NAME CHANGED")
-                        print("To continue insert anything\n")
-                        c= input()
-                        continue
+            os.system('cls')
+            print("LED POSITION CHANGED")
+            print("To continue insert anything\n")
+            c= input()
                     
-                    # edit colours
-                    elif c=='2':
-                        M.model[index]._leds[index_led].delete_colour()
-                        os.system('cls') 
-                        while True:
-                            print("How many colours have the led?\n")
-                            n_colours = input() 
-                            if n_colours.isdigit():
-                                n_colours = int(n_colours)
-                                break
-                            else: 
-                                continue 
-                        for i in range(0, n_colours):
-                            print(f"Colour {i+1} of led:")
-                            new_colour = input()
-                            M.model[index]._leds[index_led].new_colour(new_colour)
-                        
-                        os.system('cls')
-                        print("LED COLOURS CHANGED")
-                        print("To continue insert anything\n")
-                        c= input()
+        # back to menu
+        elif c == '4':
+            break
 
-                    # edit position 
-                    elif c=='3':
-                        os.system('cls') 
-                        print(f"Select the led central position")
-                        pos_vector = [0, 0]
-                        M.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
-
-                        os.system('cls')
-                        print("LED POSITION CHANGED")
-                        print("To continue insert anything\n")
-                        c= input()
-                    
-                    # back to menu
-                    elif c == '4':
-                        n2=0
-                        break
-                    
-                    else: 
-                        continue
+#TODO:
 
 #------------------------------------EDIT BUTTON------------------------------------#
 def edit_button(M: Settings, n2, name_model, index: int):
