@@ -32,7 +32,7 @@ report_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/
 def new_model(M: Settings):
     count = 0
     while True:
-        MP.new_model_print()        
+        MP.new_model_print()
         menu_choice = input()
         
         # manually

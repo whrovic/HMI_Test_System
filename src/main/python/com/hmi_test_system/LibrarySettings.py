@@ -6,24 +6,20 @@ from data.model.Led import Led
 from data.DefineModelCV import DefineModelCV
 from video.image_files import ImageFiles
 import os
-import cv2
 
 
 def create_model_manual(M: Settings, name_model):
 
-    '''
-    img = "test_images/HMI.png"
+    img_path = "test_images/HMI.png"
 
-    image = ImageFiles([img])
+    cap = ImageFiles([img_path])
 
-    image.start_capture()
+    cap.start_capture()
 
-    image.stop_capture()
+    image = cap.get_image()
 
-    image = image.get_image()
-    '''
-
-    image = cv2.imread("HMI.png")
+    cap.stop_capture()
+    cap.clear_queue()
 
     while True:
         print("Number of buttons: ")
@@ -191,7 +187,7 @@ def add_models(M: Settings, directory):
 def edit_model(M: Settings, directory):
 
     #------------------------------------EDIT MENU------------------------------------#
-    while n:
+    while True:
             os.system('cls') 
             print("What model do you want to edit?" )
             print("(to go to the menu insert q)\n" )
@@ -382,12 +378,10 @@ def edit_led_settings(M: Settings, index: int, index_led: int):
         elif c == '4':
             break
 
-#TODO:
-
 #------------------------------------EDIT BUTTON------------------------------------#
-def edit_button(M: Settings, n2, name_model, index: int):
+def edit_button(M: Settings, name_model, index: int):
 
-    while n2==3:
+    while True:
 
         os.system('cls')
         print("What button do you want to edit?")
@@ -396,78 +390,71 @@ def edit_button(M: Settings, n2, name_model, index: int):
 
         # back to menu
         if(button_name == 'q'):
-            n2 = 0
             break
         
+        index_button = M.index_button_model(name_model, button_name) 
+        
+        if (index_button is None):
+            os.system('cls')
+            print(f"{button_name} DOESN'T EXIST")
+            print("To edit another one or go to the edit menu insert anything\n")
+            c = input()
+            continue
+
         else:
-            index_button = M.index_button_model(name_model, button_name) 
-            
-            if (index_button is None):
-                os.system('cls')
-                print(f"{button_name} DOESN'T EXIST")
-                print("To edit another one or go to the edit menu insert anything\n")
+            while True:
+                os.system('cls') 
+                print("-------------Edit button-------------\n\n")
+                print("1- Name          2- Position\n")
+                print("      3- Edit menu")
+                print("\n\n----------------------------------\n")
                 c = input()
-                continue
 
-            else:
-                while True:
+                # edit name
+                if c=='1':
                     os.system('cls') 
-                    print("-------------Edit button-------------\n\n")
-                    print("1- Name          2- Position\n")
-                    print("      3- Edit menu")
-                    print("\n\n----------------------------------\n")
-                    c = input()
+                    print("What is the new button name?\n")
+                    button_name = input()
+                    M.model[index]._buttons[index_button].set_name(button_name)
 
-                    # edit name
-                    if c=='1':
-                        os.system('cls') 
-                        print("What is the new button name?\n")
-                        button_name = input()
-                        M.model[index]._buttons[index_button].set_name(button_name)
+                    os.system('cls')
+                    print("BUTTON NAME CHANGED")
+                    print("To continue insert anything\n")
+                    c= input()
+                    continue
 
-                        os.system('cls')
-                        print("BUTTON NAME CHANGED")
-                        print("To continue insert anything\n")
-                        c= input()
-                        continue
+                # edit position 
+                elif c=='2':
+                    os.system('cls') 
+                    print(f"Select the button central position")
+                    pos_vector = [0, 0]
+                    M.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
 
-                    # edit position 
-                    elif c=='2':
-                        os.system('cls') 
-                        print(f"Select the button central position")
-                        pos_vector = [0, 0]
-                        M.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
+                    os.system('cls')
+                    print("BUTTON POSTION CHANGED")
+                    print("To continue insert anything\n")
+                    c= input()
+                
+                # back to menu
+                elif c == '3':
+                    break
 
-                        os.system('cls')
-                        print("BUTTON POSTION CHANGED")
-                        print("To continue insert anything\n")
-                        c= input()
-                    
-                    # back to menu
-                    elif c == '3':
-                        n2=0
-                        break
-                    
-                    else: 
-                        continue
 
 #------------------------------------EDIT LCD------------------------------------#
-def edit_display(M: Settings, n2, index: int):
+def edit_display(M: Settings, index: int):
 
-    if n2==4:
-        os.system('cls')
-        print("Select the LCD initial position")
-        pos_vector_init = [0, 0]
-        print("Select the LCD final position")
-        pos_vector_final = [0, 0]
-        
-        dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
-        dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
-        
-        M.model[index]._display.new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
+    os.system('cls')
+    print("Select the LCD initial position")
+    pos_vector_init = [0, 0]
+    print("Select the LCD final position")
+    pos_vector_final = [0, 0]
+    
+    dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
+    dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
+    
+    M.model[index]._display.new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
 
-        os.system('cls')
-        print("LCD POSITION CHANGED\n")
-        print("To go to the edit menu insert anything\n")
-        c = input()
-        n2 = 0 
+    os.system('cls')
+    print("LCD POSITION CHANGED\n")
+    print("To go to the edit menu insert anything\n")
+    c = input()
