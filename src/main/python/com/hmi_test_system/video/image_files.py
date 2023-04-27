@@ -14,7 +14,7 @@ class ImageFiles(VideoCapture):
 
     def set_path(self, path):
         cwd = Path.cwd().parent
-        resources_path = (cwd / "../../../resources").resolve()
+        resources_path = (cwd / "../../resources").resolve()
 
         self._path = [(resources_path / p).resolve() for p in path]
 
