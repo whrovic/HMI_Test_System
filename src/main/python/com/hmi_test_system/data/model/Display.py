@@ -1,6 +1,6 @@
 from .Position import Position
 
-
+'''
 '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGH\n' \
 'IJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnop\n' \
 'qrstuvwxyz{|}~!"#$%&\'()*+,-./0123456789:\n' \
@@ -17,7 +17,7 @@ from .Position import Position
 'STUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz\n' \
 '{|}~!"#S%&\'()*+,-./0123456789:;<=>?@ABCD\n' \
 'EFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijkl\n'
-
+'''
 
 class Display(Position):
     def __init__(self, name: str, pos_init_x: int, pos_init_y: int, dim_x: int, dim_y: int, str = None):
@@ -56,6 +56,3 @@ class Display(Position):
 
     def get_char(self):
         return self.characters_str
-    
-
-        
