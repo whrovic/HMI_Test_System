@@ -1,5 +1,5 @@
 import numpy as np
-from LEDcv import LEDcv
+from .LEDcv import LEDcv
 from data.color.color import OffColor
 
 class HMIcv():
