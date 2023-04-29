@@ -370,7 +370,7 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
                 for i , color in enumerate(ListOfColors.get_list_of_colors()):
                     print(f'{i+1} - {color.get_name()}')
                 while True:
-                    print('type the number you want')
+                    print('Type which number you want')
                     new_colour = input()
                     if new_colour.isdigit():
                         new_colour = int(new_colour)
