@@ -1,12 +1,34 @@
+'''
+(Mariana)
+
+Esta classe deve guardar todas as classes que sejam necessárias. Não é para guardar OffColor e UnknownColor.
+
+As cores devem ser guardadas num ficheiro (.txt, .properties, whatever) e quando a classe é criada (no __init__),
+lê todas as cores e as propriedades desse ficheiro.
+
+Devem haver funções para criar nova cor ou remover.
+
+As funções de ler e escrever para o ficheiro deixa para último.
+Primeiro adiciona-se sempre manualmente com a função add_color todas as cores.
+A prioridade é integrar estas novas classes com as funções de teste dos leds.
+'''
 
 class ListOfColors:
     
-    _list_of_colors = []
+    _list_of_colors: list[Color]= []
+
+    @staticmethod
+    def get_n_colors():
+        return len(ListOfColors._list_of_colors)
 
     @staticmethod
     def get_list_of_colors():
         return ListOfColors._list_of_colors
-
+    
+    @staticmethod
+    def get_color_index(index: int):
+        return ListOfColors._list_of_colors[index]
+        
 
     @staticmethod
     def get_color(name):
@@ -20,13 +42,11 @@ class ListOfColors:
         # Check if color already exists
         color = ListOfColors.get_color(name)
         if color is not None:
-            print(f"Color {name} already exists!")
             return
 
         # Create new color object and add to list
-        new_color = color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
+        new_color = Color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
         ListOfColors._list_of_colors.append(new_color)
-        print(f"Color {name} added successfully!")
     
 
     @staticmethod

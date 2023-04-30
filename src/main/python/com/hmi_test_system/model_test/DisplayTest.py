@@ -1,13 +1,13 @@
 from data.model.Display import Display
+import copy
 
 class DisplayTest:
-    RGB: bool          
-    pixel: bool          
-    characters: bool
+    color_test: bool
+    blacklight_test: bool
+    characters_test: bool
 
     def __init__(self, display: Display):
-        self.display = display
-         
+        self.display = copy.deepcopy(display)
     
     # RGB screen detetado por CV
     def RGB_CV(self, RGB):
@@ -15,19 +15,26 @@ class DisplayTest:
        
     def test_RGB(self):
         return self.RGB
+
+    def result_color(self):
+        return self.color_test
+
+    def test_color(self, result):
+        if result:
+            self.color_test = True
+
+    def result_blacklight(self):
+        return self.blacklight_test
+
+    def test_blacklight(self, result):
+        if result:
+            self.blacklight_test_test = True
+
+    def result_characters(self):
+        return self.characters_test
+
+    def test_characters(self, result):
+        if result:
+            self.characters_test = True
+    
         
-
-    # Pixel screen detetado por CV
-    def pixel_CV(self, pixel):
-        self.pixel = pixel
-    
-    def test_pixel(self):
-        return self.pixel
-    
-
-    # Characters screen detetado por CV
-    def characters_CV(self, characters):
-        self.characters = characters
-            
-    def test_characters(self):
-        return self.characters
