@@ -64,7 +64,7 @@ def test_list_cameras():
 
 def test_camera():
     from time import sleep
-    camera = Camera()
+    camera = Camera(1)
     camera.start_capture()
     sleep(3)
     camera.stop_capture()
@@ -80,7 +80,6 @@ def test_camera():
 
 def test_read_color_pattern():
 
-    import cv2
     from opencv.Displaycv import Displaycv
 
     img_path = "test_images/char_test.png"
