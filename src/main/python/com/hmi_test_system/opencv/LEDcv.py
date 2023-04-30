@@ -43,5 +43,5 @@ class LEDcv:
         if color_percentage >= 50:
             return color.get_name()
         
-    # If no color is found with a match of more than 50%, return UnknownColor
+    # If no color is found with a match less than 50%, return UnknownColor
         return UnknownColor().get_name()
