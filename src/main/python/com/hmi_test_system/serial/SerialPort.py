@@ -3,8 +3,9 @@ import queue
 
 class SerialPort:
 
-    thread : Thread
     is_receiving : bool
+    thread : Thread
+    port_queue : queue    
     
     def __init__(self):
         self.is_receiving = False
