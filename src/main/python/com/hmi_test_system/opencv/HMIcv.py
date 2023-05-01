@@ -1,6 +1,4 @@
-import numpy as np
-from LEDcv import LEDcv
-from data.color.color import OffColor
+from .LEDcv import LEDcv
 
 class HMIcv():
 
@@ -10,7 +8,7 @@ class HMIcv():
         img = LEDcv.cut_led(img, led)
 
         #get the colors read on the led image
-        led_color = LEDcv.read_led_color(img, led)
+        led_color = LEDcv.read_color(img, led)
 
         return led_color 
         
