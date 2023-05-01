@@ -24,8 +24,8 @@ class LEDcv:
 
         # Check each color in the ListOfColor to see if it matches the image
         for color in colors:
-            hsv_min_1 = color.get_hsv_min_1()
-            hsv_max_1 = color.get_hsv_max_1()
+            hsv_min_1 = color.get_hsv_min1()
+            hsv_max_1 = color.get_hsv_max1()
             hsv_min_2 = color.get_hsv_min2()
             hsv_max_2 = color.get_hsv_max2()
 

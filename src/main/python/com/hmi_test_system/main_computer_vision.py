@@ -99,11 +99,32 @@ def test_read_color_pattern():
     print(type(color_pat[0]))
     print(len(color_pat[0]))
 
+def test_find_folder():
+    import os
+    
+    def find_folder(name):
+        # Get the directory of the script file
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Go up the directory tree until the folder with the specified name is found
+        while script_dir != os.path.dirname(script_dir):
+            for file_or_dir in os.listdir(script_dir):
+                if file_or_dir == name and os.path.isdir(os.path.join(script_dir, file_or_dir)):
+                    return os.path.join(script_dir, file_or_dir)
+            script_dir = os.path.dirname(script_dir)
+
+        # Return None if the folder was not found
+        return None
+    
+    folder_path = find_folder("HMI_Test_System")
+    print(repr(folder_path))
+
 
 if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
     #test_camera()
     #test_list_cameras()
-    test_read_color_pattern()
+    #test_read_color_pattern()
     pass
+    
