@@ -17,7 +17,6 @@ class ListOfColors:
     @staticmethod
     def get_color_index(index: int):
         return ListOfColors._list_of_colors[index]
-        
 
     @staticmethod
     def get_color(name):
@@ -36,7 +35,6 @@ class ListOfColors:
         # Create new color object and add to list
         new_color = Color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
         ListOfColors._list_of_colors.append(new_color)
-    
 
     @staticmethod
     def remove_color(name):
@@ -59,7 +57,7 @@ class ListOfColors:
             })
 
         with open(filename, 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, indent=4)
 
     
     @staticmethod
@@ -67,10 +65,14 @@ class ListOfColors:
         with open(filename, 'r') as f:
             data = json.load(f)
         
-        for color_data in data:
-            name = color_data['name']
-            hsv_min1 = tuple(color_data['hsv_min1'])
-            hsv_max1 = tuple(color_data['hsv_max1'])
-            hsv_min2 = tuple(color_data.get('hsv_min2', (0, 0, 0)))
-            hsv_max2 = tuple(color_data.get('hsv_max2', (0, 0, 0)))
-            ListOfColors.add_color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
+            for color_data in data:
+                name = color_data['name']
+                hsv_min1 = tuple(color_data['hsv_min1'])
+                hsv_max1 = tuple(color_data['hsv_max1'])
+                hsv_min2 = color_data['hsv_min2']
+                if (hsv_min2 is not None):
+                    hsv_min2 = tuple(hsv_min2)
+                hsv_max2 = color_data['hsv_max2']
+                if (hsv_max2 is not None):
+                    hsv_max2 = tuple(hsv_max2)
+                ListOfColors.add_color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
