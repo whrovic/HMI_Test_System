@@ -49,7 +49,7 @@ class Displaycv:
                 x = i * width
                 y = j * height
                 # Extract the color of the rectangle by taking the average color value
-                color = cv2.mean(lcd[y:y+height, x:x+width])
+                color = cv2.mean(lcd[y:y+height, x:x+width])[:3]
                 # Add the color to the list of colors
                 colors.append(color)
 
