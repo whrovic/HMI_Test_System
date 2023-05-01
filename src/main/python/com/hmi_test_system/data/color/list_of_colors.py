@@ -1,3 +1,4 @@
+import json
 from .color import Color
 from typing import List
 
@@ -45,18 +46,31 @@ class ListOfColors:
                 return True
         return False
 
-    '''
-    Guarda o vetor de cores, todas as cores e as propriedades para um ficheiro (.txt, .xml, .json, whatever)
-    Baixa prioridade
-    '''
     @staticmethod
     def save_to_file(filename):
-        pass
+        data = []
+        for color in ListOfColors._list_of_colors:
+            data.append({
+                "name": color.get_name(),
+                "hsv_min1": color.get_hsv_min1(),
+                "hsv_max1": color.get_hsv_max1(),
+                "hsv_min2": color.get_hsv_min2(),
+                "hsv_max2": color.get_hsv_max2()
+            })
 
-    '''
-    Lê o ficheiro e recupera o vetor com todas as cores
-    Baixa prioridade
-    '''
+        with open(filename, 'w') as f:
+            json.dump(data, f)
+
+    
     @staticmethod
     def read_from_file(filename):
-        pass
+        with open(filename, 'r') as f:
+            data = json.load(f)
+        
+        for color_data in data:
+            name = color_data['name']
+            hsv_min1 = tuple(color_data['hsv_min1'])
+            hsv_max1 = tuple(color_data['hsv_max1'])
+            hsv_min2 = tuple(color_data.get('hsv_min2', (0, 0, 0)))
+            hsv_max2 = tuple(color_data.get('hsv_max2', (0, 0, 0)))
+            ListOfColors.add_color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
