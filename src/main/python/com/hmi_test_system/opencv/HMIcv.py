@@ -5,14 +5,16 @@ from data.color.color import OffColor
 class HMIcv():
 
     def led_test(img, led):
-        return OffColor()
-        #get the colors read on the led imagd
-        led_colors = LEDcv.read_led_color(img, leds)
-        #compare the colors obtained with the expected ones
-        if np.array_equal(led_colors, expected):
-            return True
-        else:
-            return False
+
+        #cut the image wanted
+        img = LEDcv.cut_led(img, led)
+
+        #get the colors read on the led image
+        led_color = LEDcv.read_led_color(img, led)
+
+        return led_color 
+        
+       
     
     def display_characters_test(img, lcd):
         return False
