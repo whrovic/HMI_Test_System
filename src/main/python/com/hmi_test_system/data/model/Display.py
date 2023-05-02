@@ -25,8 +25,8 @@ class Display(Position):
         self._name = name
         self._dim_x = dim_x
         self._dim_y = dim_y
-        self.color_vector = []
-        self.characters_str = str
+        self._color_vector = []
+        self._characters_str = str
     
     def set_name(self, name: str):
         self._name = name
@@ -46,13 +46,13 @@ class Display(Position):
         self._dim_y = dim_y
 
     def set_color_vector(self, vector):
-        self.color_vector = vector
+        self._color_vector = vector
 
     def get_color_vector(self):
-        return self.color_vector
+        return self._color_vector
     
     def set_char(self, str):
-        self.characters_str = str
+        self._characters_str = str
 
     def get_char(self):
-        return self.characters_str
+        return self._characters_str

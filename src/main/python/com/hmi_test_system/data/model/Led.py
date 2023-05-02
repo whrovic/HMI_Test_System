@@ -3,10 +3,10 @@ from data.color.color import Color
 
 
 class Led(Position):
-    def __init__(self, name: str, n_Colour, x: int, y: int):
+    def __init__(self, name: str, n_colour, x: int, y: int):
         super().__init__(x, y)
         self._name = name
-        self._n_Colour = n_Colour
+        self._n_colour = n_colour
         self._colours: list[Color] = []
     
     def set_name(self, name: str):
@@ -16,11 +16,11 @@ class Led(Position):
         return self._name
     
     def get_n_Colour(self):
-        return self._n_Colour
+        return self._n_colour
     
     #vetor das cores associadas ao led
     def new_colour(self, colour: Color):
-        if(len(self._colours) < self._n_Colour):
+        if(len(self._colours) < self._n_colour):
             self._colours.append(colour)
             return 0
         else: 
