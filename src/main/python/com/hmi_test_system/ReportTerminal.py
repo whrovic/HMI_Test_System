@@ -1,8 +1,8 @@
 
 from model_test.ModelTest import ModelTest
-from model_test.ButtonTest import ButtonTest
-from model_test.LedTest import LedTest
-from model_test.DisplayTest import DisplayTest
+from model_test.ButtonTest import ButtonTest as B
+from model_test.LedTest import LedTest as L
+from model_test.DisplayTest import DisplayTest as Dp
 
 from data.model.Led import Led
 from data.model.Button import Button
@@ -22,12 +22,20 @@ class ReportTerminal:
             self.model_test.buttons_test    
 
     def LedTerminal(self):
-        pass
-        #Led.result_press_display()
         
+        #Led.result_press_display()
+        rgbvalue = L.get_led(self)
+        aux = L.get_colour_result()
+    
 
-    def DisplayTerminal(self):    
-        pass
+    def DisplayTerminal(self):   
+        print(self.rgbvalue) 
+
+        resultcolor = Dp.result_blacklight(self)
+        dfg = Dp.result_color()
+b = ModelTest()
+a = ReportTerminal(b)
+a.LedTerminal()
 
 #####################################################################
 
