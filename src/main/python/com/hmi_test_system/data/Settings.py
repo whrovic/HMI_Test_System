@@ -9,6 +9,7 @@ from typing import List
 from .path import Path
 from test.test import Test
 
+
 class Settings:
 
     def __init__(self):
