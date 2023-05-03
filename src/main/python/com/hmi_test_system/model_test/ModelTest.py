@@ -2,7 +2,6 @@ from .DisplayTest import DisplayTest
 from .ButtonTest import ButtonTest
 from .LedTest import LedTest
 
-
 class ModelTest:
     def __init__(self):
         self.leds_test: list[LedTest] = []
