@@ -6,7 +6,6 @@ from .model.button import Button
 import os
 from data.color.list_of_colors import ListOfColors
 
-
 class DefineAndFillModel:
     def open_model_xml(M: Settings, name_model):
 

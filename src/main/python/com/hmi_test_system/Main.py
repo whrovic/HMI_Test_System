@@ -1,9 +1,10 @@
 from data.settings import Settings
-from main.library_settings import add_models
-from main.library_settings import edit_model
 from main.library_test import model_menu
+from main.menus import settings_menu
 import os
+import sys
 from main.menu_prints import MenuPrints as MP
+
 
 from data.color.list_of_colors import ListOfColors
 
@@ -27,106 +28,20 @@ ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
 
 
 
-def new_model(M: Settings):
-    count = 0
-    while True:
-        MP.new_model_print()
-        menu_choice = input()
-        
-        # manually
-        if (menu_choice == '1'):
-            count = 0
-            add_models(M)
-
-        # automatic
-        elif (menu_choice == '2'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
-    
-        # textfile   
-        elif (menu_choice == '3'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
-
-        # XML  
-        elif (menu_choice == '4'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
-        
-        # back  
-        elif(menu_choice == '5'):
-            os.system('cls')
-            return 0
-
-        # turn off the program    
-        elif(menu_choice == '6'):
-            os.system('cls')
-            return -1
-        
-        else:
-            count = count + 1
-            if (count > NTIMEOUT):
-                return -1
-            continue
-
-
-def settings_menu(M: Settings):
-    count = 0
-    while True:
-        MP.settings_menu_print()        
-        menu_choice = input()
-        
-        # add model
-        if (menu_choice == '1'):
-            count = 0
-            if ( new_model(M) == -1 ):
-                return -1
-
-        # new sequence
-        elif (menu_choice == '2'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
-    
-        # edit model    
-        elif (menu_choice == '3'):
-            count = 0
-            if ( edit_model(M) == -1 ):
-                return -1
-
-
-        # edit video    
-        elif (menu_choice == '4'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
-        
-        # back  
-        elif(menu_choice == '5'):
-            os.system('cls')
-            return 0
-
-        # turn off the program    
-        elif(menu_choice == '6'):
-            os.system('cls')
-            return -1
-        
-        else:
-            count = count + 1
-            if (count > NTIMEOUT):
-                return -1
-            continue
-
-
 #------------------------------------CODE BEGIN------------------------------------#
+if len(sys.argv) < 2:
+    print("Usage: main.py test [name_model] [type_test] [timeOut]")
+    sys.exit()
+
+value = sys.argv[1]
+
+if value == "test":
+    print("The value is 'test'")
+elif value == "settings":
+    print("The value is 'settings'")
+else:
+    print(f"The value '{value}' is not 'test' or 'settings'")
+    
 while(1):
     MP.main_menu_print()        
     menu_choice = input()

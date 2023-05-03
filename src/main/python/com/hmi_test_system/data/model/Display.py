@@ -56,3 +56,4 @@ class Display(Position):
 
     def get_char(self):
         return self._characters_str
+

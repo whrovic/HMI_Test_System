@@ -7,7 +7,7 @@ from model_test.display_test import DisplayTest
 from .model.display import Display
 from typing import List
 from .path import Path
-from test.Test import Test
+from test.test import Test
 
 class Settings:
         
@@ -109,3 +109,4 @@ class Settings:
     def reset_model_test(self):
         self.model_test.clear_model_test()
         #self.model_test = ModelTest()
+
