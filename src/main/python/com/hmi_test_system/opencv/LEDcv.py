@@ -1,83 +1,47 @@
-
 import cv2
 import numpy as np
 from data.model.Led import Led
+from data.color.color import OffColor, UnknownColor
+from data.color.list_of_colors import ListOfColors
 
 class LEDcv:
     
-    '''
-    (Ricardo)
-    '''
     def cut_led(image, led: Led):
         return image[led.get_pos_y()-2:led.get_pos_y()+2, led.get_pos_x()-2:led.get_pos_x()+2]
 
 
-    '''
-    (Mariana)
-    
-    Novo formato:
-    def read_color(image) -> Color
-
-    Os parâmetros desta função passaram a ser só a imagem e a única função dela é analisar a cor de uma imagem.
-    A imagem já vem recortada e é só ver a cor.
-    Basicamente tens de apagar aquele for e o cut_led e retornas so 1 cor.
-
-    Também é preciso adaptar a função para, ao invés de ter aqui definidas as cores,
-    percorre o vetor da classe ListOfColors e verifica cada cor. Se a percentagem de "match"
-    for acima de 50% (ou um threshold que podemos definir depois) retorna.
-    Se chegar ao fim do ciclo e nenhuma cor for detetada retorna a class OffColor.
-    (aqui se conseguires, verifica antes de retornar OffColor que o led está garantidamente apagado,
-    senão retorna UnknownColor - se não der não tem mal)
-
-    (Alta prioridade)
-    '''
     def read_color(image):
-        return "deve retornar a cor da class Color"
-    
-        colors = []
 
-        for led in ledTest:
-            img = LEDcv.cut_led(image, led)
+        # Convert the image from RGB to HSV 
+        hsv_img = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-            # Convert the image from BGR to HSV color space
-            hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        # Get the list of colors
+        colors = ListOfColors.get_list_of_colors()
 
-            # Define the color ranges to detect
-            # (red is a more complex color to detect
-            # because it can vary significantly in hue 
-            # depending on the lighting conditions so it
-            # has 4 ranges)
-            lower_red1 = np.array([0, 50, 50])
-            upper_red1 = np.array([10, 255, 255])
-            lower_red2 = np.array([170, 50, 50])
-            upper_red2 = np.array([180, 255, 255])
-            lower_yellow = np.array([20, 50, 50])
-            upper_yellow = np.array([45, 255, 255])
-            lower_green = np.array([60, 50, 50])
-            upper_green = np.array([90, 255, 255])
+        # Check if the LED is off ( if the image is completely black)
+        if cv2.countNonZero(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)) == 0:
+            return OffColor()
 
-            # Threshold the image to isolate the dominant color
-            mask_red1 = cv2.inRange(hsv_img, lower_red1, upper_red1)
-            mask_red2 = cv2.inRange(hsv_img, lower_red2, upper_red2)
-            mask_red = cv2.bitwise_or(mask_red1, mask_red2)
-            mask_yellow = cv2.inRange(hsv_img, lower_yellow, upper_yellow)
-            mask_green = cv2.inRange(hsv_img, lower_green, upper_green)
+        # Check each color in the ListOfColor to see if it matches the image
+        for color in colors:
+            hsv_min_1 = color.get_hsv_min1()
+            hsv_max_1 = color.get_hsv_max1()
+            hsv_min_2 = color.get_hsv_min2()
+            hsv_max_2 = color.get_hsv_max2()
 
-            # Calculate the number of pixels for each color
-            red_pixels = cv2.countNonZero(mask_red)
-            yellow_pixels = cv2.countNonZero(mask_yellow)
-            green_pixels = cv2.countNonZero(mask_green)
+            # Check if the color range matches the image
+            #(color range for some colors may not be representable by a single range in the HSV color space)
+            mask1 = cv2.inRange(hsv_img, np.array([hsv_min_1[0], hsv_min_1[1], hsv_min_1[2]]), np.array([hsv_max_1[0], hsv_max_1[1], hsv_max_1[2]]))
+            if hsv_min_2 is not None and hsv_max_2 is not None:
+                mask2 = cv2.inRange(hsv_img, np.array([hsv_min_2[0], hsv_min_2[1], hsv_min_2[2]]), np.array([hsv_max_2[0], hsv_max_2[1], hsv_max_2[2]]))
+                mask1 = cv2.bitwise_or(mask1, mask2)
+            pixels = cv2.countNonZero(mask1)
+            total_pixels = hsv_img.shape[0] * hsv_img.shape[1]
+            color_percentage = (pixels / total_pixels) * 100
 
-            for i in colors:
-
-                # Determine the dominant color
-                if red_pixels > yellow_pixels and red_pixels > green_pixels:
-                    colors[i] = "Red"
-                elif yellow_pixels > red_pixels and yellow_pixels > green_pixels:
-                    colors[i] = "Yellow"
-                elif green_pixels > red_pixels and green_pixels > yellow_pixels:
-                    colors[i] = "Green"
-                else:
-                    colors[i] = "Unknown"
+            # If the color is found with a match of more than 50%, return the color name
+            if color_percentage >= 50:
+                return color
         
-        return colors
+        # If no color is found with a match less than 50%, return UnknownColor
+        return UnknownColor()

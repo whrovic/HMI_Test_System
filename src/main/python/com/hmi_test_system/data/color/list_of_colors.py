@@ -1,22 +1,10 @@
+import json
 from .color import Color
+from typing import List
 
-'''
-(Mariana)
-
-Esta classe deve guardar todas as classes que sejam necessárias. Não é para guardar OffColor e UnknownColor.
-
-As cores devem ser guardadas num ficheiro (.txt, .properties, whatever) e quando a classe é criada (no __init__),
-lê todas as cores e as propriedades desse ficheiro.
-
-Devem haver funções para criar nova cor ou remover.
-
-As funções de ler e escrever para o ficheiro deixa para último.
-Primeiro adiciona-se sempre manualmente com a função add_color todas as cores.
-A prioridade é integrar estas novas classes com as funções de teste dos leds.
-'''
 class ListOfColors:
     
-    _list_of_colors: list[Color]= []
+    _list_of_colors: List[Color]= []
 
     @staticmethod
     def get_n_colors():
@@ -29,7 +17,6 @@ class ListOfColors:
     @staticmethod
     def get_color_index(index: int):
         return ListOfColors._list_of_colors[index]
-        
 
     @staticmethod
     def get_color(name):
@@ -48,11 +35,7 @@ class ListOfColors:
         # Create new color object and add to list
         new_color = Color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
         ListOfColors._list_of_colors.append(new_color)
-    
-    '''
-    Remove a cor com este nome
-    Baixa prioridade
-    '''
+
     @staticmethod
     def remove_color(name):
         for color in ListOfColors._list_of_colors:
@@ -61,18 +44,35 @@ class ListOfColors:
                 return True
         return False
 
-    '''
-    Guarda o vetor de cores, todas as cores e as propriedades para um ficheiro (.txt, .xml, .json, whatever)
-    Baixa prioridade
-    '''
     @staticmethod
     def save_to_file(filename):
-        pass
+        data = []
+        for color in ListOfColors._list_of_colors:
+            data.append({
+                "name": color.get_name(),
+                "hsv_min1": color.get_hsv_min1(),
+                "hsv_max1": color.get_hsv_max1(),
+                "hsv_min2": color.get_hsv_min2(),
+                "hsv_max2": color.get_hsv_max2()
+            })
 
-    '''
-    Lê o ficheiro e recupera o vetor com todas as cores
-    Baixa prioridade
-    '''
+        with open(filename, 'w') as f:
+            json.dump(data, f, indent=4)
+
+    
     @staticmethod
     def read_from_file(filename):
-        pass
+        with open(filename, 'r') as f:
+            data = json.load(f)
+        
+            for color_data in data:
+                name = color_data['name']
+                hsv_min1 = tuple(color_data['hsv_min1'])
+                hsv_max1 = tuple(color_data['hsv_max1'])
+                hsv_min2 = color_data['hsv_min2']
+                if (hsv_min2 is not None):
+                    hsv_min2 = tuple(hsv_min2)
+                hsv_max2 = color_data['hsv_max2']
+                if (hsv_max2 is not None):
+                    hsv_max2 = tuple(hsv_max2)
+                ListOfColors.add_color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
