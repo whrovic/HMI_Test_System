@@ -79,16 +79,15 @@ class DefineModelCV():
         # Find contours
         contours = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
         
-        # Get LCD position
-        lcd = None
+        # Get display position
         for contour in contours:
             if cv2.contourArea(contour) > 50000 and cv2.contourArea(contour) < 336700:
                 x, y, w, h = cv2.boundingRect(contour)
-        if not x or  not y or not w or not h:
-            print("\nError: could not find LCD\n")
-            return None
+        if not x or not y or not w or not h:
+            print("\nError: could not find display\n")
+            return None, None, None, None
         
-        # Return LCD position
+        # Return display position
         return x, y, w, h
     
     '''
