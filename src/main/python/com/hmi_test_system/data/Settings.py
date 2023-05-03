@@ -6,7 +6,7 @@ from model_test.ButtonTest import ButtonTest
 from model_test.DisplayTest import DisplayTest
 from .model.Display import Display
 from typing import List
-from .path import path
+from .path import Path
 from test.Test import Test
 
 class Settings:
@@ -15,22 +15,12 @@ class Settings:
         self.model: List[Model] = []
         self.model_test = ModelTest()
         self.seq_test = SequenceTest()
-        self.path = path()
+        self.path = Path()
         self.test = Test()
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
         self.model.append(Model(name, n_leds, n_buttons, display, version))
-    
-    '''if not isinstance(name, str):
-        #    raise TypeError("name must be a string.")
-        if not isinstance(n_leds, int):
-            raise TypeError("n_leds must be an integer.")
-        if not isinstance(n_buttons, int):
-            raise TypeError("n_buttons must be an integer.")
-        if not isinstance(display, Display):
-            raise TypeError("display must be an Display.")'''
-
     
     def call_model(self, name):
         for i in range(0, len(self.model)):
@@ -38,7 +28,7 @@ class Settings:
             if(name == model_name):
                 return self.model[i]
         
-        #nao encontra o modelo
+        # Model not found
         return None
 
     
@@ -48,7 +38,7 @@ class Settings:
             if(name == model_name):
                 return i
         
-        #nao encontra o modelo
+        # Model not found
         return -1
     
     

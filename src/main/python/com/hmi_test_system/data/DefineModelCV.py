@@ -123,24 +123,26 @@ class DefineModelCV():
     @staticmethod
     def click_pos_led(image):
 
-        coordenadas = [0, 0]
+        coordenadas = [0, 0, False]
         cv2.namedWindow("HMI")
 
         def callback(event, x, y, flags, params):
             if(event == cv2.EVENT_LBUTTONDOWN):
                 coordenadas[0] = x
                 coordenadas[1] = y
+                coordenadas[2] = True
 
                 img_aux = np.copy(image)
                 img_aux[y-2:y+2, x-2:x+2] = (0,0,0)
                 cv2.imshow("HMI", img_aux)
 
-        cv2.imshow("HMI", image)
-        cv2.setMouseCallback("HMI", callback)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        while(not coordenadas[2]):
+            cv2.imshow("HMI", image)
+            cv2.setMouseCallback("HMI", callback)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
-        return coordenadas
+        return coordenadas[:2]
 
 if(__name__ == "__main__"):
     image = cv2.imread("HMI.png")

@@ -1,6 +1,7 @@
 from video.video_device import VideoDevice
-from pathlib import Path
+from data.path import Path
 import cv2
+import os
 
 class VideoFile(VideoDevice):
 
@@ -19,14 +20,9 @@ class VideoFile(VideoDevice):
         self._current_frame = 0
 
     def set_path(self, path):
-        cwd = Path.cwd().parent
-        resources_path = (cwd / "../../resources").resolve()
-
-        pth = (resources_path / path).resolve()
-
-        assert Path.exists(pth), "The file doesn't exist"
         
-        self._path = str(pth)
+        resources_path = Path.get_resources_directory()
+        self._path = os.path.join(resources_path, path)
         self._cap = cv2.VideoCapture(self._path)
 
     def get_frame(self):

@@ -1,7 +1,8 @@
 from video.video_capture import VideoCapture
 import cv2
-from pathlib import Path
+from data.path import Path
 import numpy as np
+import os
 
 class ImageFiles(VideoCapture):
 
@@ -13,10 +14,8 @@ class ImageFiles(VideoCapture):
         self.set_path(path)
 
     def set_path(self, path):
-        cwd = Path.cwd().parent
-        resources_path = (cwd / "../../resources").resolve()
-
-        self._path = [(resources_path / p).resolve() for p in path]
+        resources_path = Path.get_resources_directory()
+        self._path = [os.path.join(resources_path, p) for p in path]
 
     def start_capture(self):
         
