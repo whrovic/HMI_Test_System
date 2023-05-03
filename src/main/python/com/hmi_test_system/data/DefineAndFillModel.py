@@ -116,7 +116,7 @@ class DefineAndFillModel:
             led_y = ET.SubElement(leds, f'led{i+1}_y')
             led_y.text = str(aux2.get_pos_y())
             leds_colours = ET.SubElement(leds, f'led{i+1}_colours')
-            for j in range(0, aux2._n_Colour):
+            for j in range(0, aux2._n_colour):
                 aux3 = aux._leds[i].get_colour()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
                 led_colour.text = str(aux3[j].get_name())

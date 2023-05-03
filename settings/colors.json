@@ -1,0 +1,55 @@
+[
+    {
+        "name": "Red",
+        "hsv_min1": [
+            0,
+            50,
+            50
+        ],
+        "hsv_max1": [
+            10,
+            255,
+            255
+        ],
+        "hsv_min2": [
+            170,
+            50,
+            50
+        ],
+        "hsv_max2": [
+            180,
+            255,
+            255
+        ]
+    },
+    {
+        "name": "Yellow",
+        "hsv_min1": [
+            20,
+            50,
+            50
+        ],
+        "hsv_max1": [
+            45,
+            255,
+            255
+        ],
+        "hsv_min2": null,
+        "hsv_max2": null
+    },
+    {
+        "name": "Green",
+        "hsv_min1": [
+            60,
+            50,
+            50
+        ],
+        "hsv_max1": [
+            90,
+            255,
+            255
+        ],
+        "hsv_min2": null,
+        "hsv_max2": null
+    }
+]
