@@ -21,7 +21,7 @@ class ReportTerminal:
         else :
             self.model_test.buttons_test    
 
-    def LedTerminal(self):
+    def LedTerminal(self, led:L):
         
         #Led.result_press_display()
         rgbvalue = L.get_led(self)
