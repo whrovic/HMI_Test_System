@@ -3,6 +3,7 @@ from data.define_and_fill_model import DefineAndFillModel as df
 import os
 from reportlab.pdfgen import canvas
 from datetime import datetime
+import sys
 
 
 def test_menu(M: Settings, name_model, test_type):
@@ -10,15 +11,15 @@ def test_menu(M: Settings, name_model, test_type):
     if isinstance(name_model, str):
         pass
     else:
-        return 3    # invalid argument
+        sys.exit(3)    # invalid argument
     
     if (test_type != 'LCD' or test_type != 'LED' or test_type != 'BUTTON' or test_type is not None)
-        return 3    # invalid argument
+        sys.exit(3)    # invalid argument
 
     # model doesn't exist
     if(df.open_model_xml(M, name_model) is None):
         print(f"{name_model} DOESN'T EXIST\n")
-        return 2
+        sys.exit(2)
     
     # set model ready to test
     else:
@@ -30,25 +31,25 @@ def test_menu(M: Settings, name_model, test_type):
         if(test_type == "LED"):       
             result_led =led_test(M)
             if(result_led == 0):
-                return 0    # test passed
+                sys.exit(0)     # test passed
             elif(result_led == -1): 
-                return 8   # led test failed
+                sys.exit(8)     # led test failed
             
         # lcd test
         elif(test_type == "LCD"):       
             result_display =  display_test(M, 4) # 1 - pixel | 2 - rgb | 3- char | 4 - all 
             if(result_display == 0):
-                return 0    # test passed
+                sys.exit(0)     # test passed
             elif(result_display == -1): 
-                return 9   # led test failed  
+                sys.exit(9)     # led test failed  
 
         # button test
         elif(test_type == "BUTTON"):    
             result_button = button_test(M)
             if(result_button == 0):
-                return 0    # test passed
+                sys.exit(0)     # test passed
             elif(result_button == -1): 
-                return 10   # led test failed
+                sys.exit(10)    # led test failed
 
 
         # default - test all
@@ -58,13 +59,13 @@ def test_menu(M: Settings, name_model, test_type):
             result_button = button_test(M)
 
             if(result_led + result_display + result_button == 0):
-                return 0    # all tests passed
+                sys.exit(0)     # all tests passed
             elif(result_led == -1): 
-                return 8   # led test failed
+                sys.exit(8)     # led test failed
             elif(result_display== -1): 
-                return 9   # display test failed 
+                sys.exit(9)     # display test failed 
             elif(result_button == -1): 
-                return 10  # button test failed  
+                sys.exit(10)    # button test failed  
 
 
 #------------------------------------LED TEST------------------------------------#
