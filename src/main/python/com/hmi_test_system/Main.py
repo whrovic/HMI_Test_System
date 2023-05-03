@@ -24,13 +24,18 @@ ListOfColors.add_color("Yellow", [20, 50, 50], [45, 255, 255])
 ListOfColors.add_color("Green", [60, 50, 50], [90, 255, 255])
 
 # directory where you want to save your model files
-xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
+#xml_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/xml_files"
 #xml_directory = "C:/Users/asus/ES/HMI_Test_System/xml_files"
 #xml_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/HMI_Test_System/xml_files"
 #xml_directory = "C:/Users/prica/FEUP/ES/HMI_Test_System/xml_files"
 
+file_path = os.path.dirname(__file__)
+
+xml_directory = os.path.join(file_path, '../../../../../xml_files')
+report_directory = os.path.join(file_path, '../../../../../reports')
+
 # directory where you want to save your reports
-report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
+#report_directory = "C:/Users/filip/Desktop/ES/HMI_Test_System/reports"
 #report_directory = "C:/Users/asus/ES/HMI_Test_System/reports"
 #report_directory = "C:/Users/Drago/OneDrive/Ambiente de Trabalho/Escola/4Ano/2S/ES - Engenharia de Sistemas/2. Projeto/HMI_Test_System/reports"
 
