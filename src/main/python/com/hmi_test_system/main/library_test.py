@@ -13,7 +13,7 @@ def test_menu(M: Settings, name_model, test_type):
     else:
         sys.exit(3)    # invalid argument
     
-    if (test_type != 'LCD' or test_type != 'LED' or test_type != 'BUTTON' or test_type is not None)
+    if (test_type != 'LCD' or test_type != 'LED' or test_type != 'BUTTON' or test_type is not None):
         sys.exit(3)    # invalid argument
 
     # model doesn't exist
