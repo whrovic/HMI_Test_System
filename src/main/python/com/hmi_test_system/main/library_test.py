@@ -1,5 +1,5 @@
-from data.Settings import Settings
-from data.DefineAndFillModel import DefineAndFillModel as df
+from data.settings import Settings
+from data.define_and_fill_model import DefineAndFillModel as df
 import os
 from reportlab.pdfgen import canvas
 from datetime import datetime

@@ -1,9 +1,9 @@
-from data.Settings import Settings
-from data.DefineAndFillModel import DefineAndFillModel as df
-from data.model.Button import Button
-from data.model.Display import Display
-from data.model.Led import Led
-from data.DefineModelCV import DefineModelCV
+from data.settings import Settings
+from data.define_and_fill_model import DefineAndFillModel as df
+from data.model.button import Button
+from data.model.display import Display
+from data.model.led import Led
+from data.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 import os
 from data.color.list_of_colors import ListOfColors

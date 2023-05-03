@@ -1,4 +1,4 @@
-from .Position import Position
+from .position import Position
 
 class Button(Position):
     def __init__(self, name: str, x: int, y: int):

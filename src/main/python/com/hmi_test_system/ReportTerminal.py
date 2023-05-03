@@ -1,12 +1,12 @@
 
-from model_test.ModelTest import ModelTest
-from model_test.ButtonTest import ButtonTest as B
-from model_test.LedTest import LedTest as L
-from model_test.DisplayTest import DisplayTest as Dp
+from model_test.model_test import ModelTest
+from model_test.button_test import ButtonTest as B
+from model_test.led_test import LedTest as L
+from model_test.display_test import DisplayTest as Dp
 
-from data.model.Led import Led
-from data.model.Button import Button
-from data.model.Display import Display
+from data.model.led import Led
+from data.model.button import Button
+from data.model.display import Display
 
 
 class ReportTerminal:

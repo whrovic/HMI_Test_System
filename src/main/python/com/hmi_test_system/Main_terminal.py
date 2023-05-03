@@ -1,5 +1,5 @@
-from LibraryFile import create_model_file
-from data.Settings import Settings
+from main.library_file import create_model_file
+from data.settings import Settings
 
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename

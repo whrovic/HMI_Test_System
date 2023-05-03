@@ -1,7 +1,7 @@
-from data.model.Led import Led
-from data.model.Button import Button
-from data.model.Display import Display
-from data.Settings import Settings
+from data.model.led import Led
+from data.model.button import Button
+from data.model.display import Display
+from data.settings import Settings
 
 def create_model_file(M: Settings, name_model, filename):
     

@@ -1,4 +1,4 @@
-from .Position import Position
+from .position import Position
 from data.color.color import Color
 
 

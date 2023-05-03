@@ -1,4 +1,4 @@
-from data.model.Display import Display
+from data.model.display import Display
 import copy
 
 class DisplayTest:

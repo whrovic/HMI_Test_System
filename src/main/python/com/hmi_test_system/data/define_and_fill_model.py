@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
-from .Settings import Settings
-from .model.Display import Display
-from .model.Led import Led
-from .model.Button import Button
+from .settings import Settings
+from .model.display import Display
+from .model.led import Led
+from .model.button import Button
 import os
 from data.color.list_of_colors import ListOfColors
 

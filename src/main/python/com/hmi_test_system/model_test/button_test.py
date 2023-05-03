@@ -1,4 +1,4 @@
-from data.model.Button import Button
+from data.model.button import Button
 import copy 
 
 class ButtonTest:

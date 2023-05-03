@@ -1,4 +1,4 @@
-from data.model.Position import Position
+from data.model.position import Position
 
 class Rectangle:
     def __init__(self, x, y, w, h):

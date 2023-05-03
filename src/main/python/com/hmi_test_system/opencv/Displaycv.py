@@ -1,5 +1,5 @@
 import cv2, pytesseract
-from data.model.Display import Display
+from data.model.display import Display
 
 class Displaycv:
     

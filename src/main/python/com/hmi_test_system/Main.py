@@ -1,9 +1,9 @@
-from data.Settings import Settings
-from LibrarySettings import add_models
-from LibrarySettings import edit_model
-from LibraryTest import model_menu
+from data.settings import Settings
+from main.library_settings import add_models
+from main.library_settings import edit_model
+from main.library_test import model_menu
 import os
-from main.MenuPrints import MenuPrints as MP
+from main.menu_prints import MenuPrints as MP
 
 from data.color.list_of_colors import ListOfColors
 

@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from data.model.Led import Led
+from data.model.led import Led
 from data.color.color import OffColor, UnknownColor
 from data.color.list_of_colors import ListOfColors
 

@@ -1,6 +1,6 @@
-from .DisplayTest import DisplayTest
-from .ButtonTest import ButtonTest
-from .LedTest import LedTest
+from .display_test import DisplayTest
+from .button_test import ButtonTest
+from .led_test import LedTest
 
 class ModelTest:
     def __init__(self):
