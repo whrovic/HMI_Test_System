@@ -4,8 +4,6 @@ from main.menus import settings_menu
 import os
 import sys
 from main.menu_prints import MenuPrints as MP
-
-
 from data.color.list_of_colors import ListOfColors
 
 '''from tkinter import Tk
@@ -21,12 +19,6 @@ count = 0
 M = Settings()
 
 ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
-
-#ListOfColors.add_color("Red", [0, 50, 50], [10, 255, 255], [170, 50, 50], [180, 255, 255])
-#ListOfColors.add_color("Yellow", [20, 50, 50], [45, 255, 255])
-#ListOfColors.add_color("Green", [60, 50, 50], [90, 255, 255])
-
-
 
 #------------------------------------CODE BEGIN------------------------------------#
 if len(sys.argv) < 2:
