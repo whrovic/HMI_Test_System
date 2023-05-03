@@ -10,7 +10,7 @@ from .path import Path
 from test.test import Test
 
 class Settings:
-        
+
     def __init__(self):
         self.model: List[Model] = []
         self.model_test = ModelTest()

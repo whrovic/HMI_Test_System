@@ -51,9 +51,9 @@ class Display(Position):
     def get_color_vector(self):
         return self._color_vector
     
-    def get_char(self):
-        return self._characters_str
     def set_char(self, str):
         self._characters_str = str
 
+    def get_char(self):
+        return self._characters_str
 

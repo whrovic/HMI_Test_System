@@ -12,6 +12,7 @@ from video.camera import Camera
 
 cam_value: Camera
 
+
 class Test:
 
     @staticmethod
