@@ -79,7 +79,7 @@ def test_camera():
     i = 0
 
     while(frame is not None):
-        cv2.imshow("cam"+str(i), frame)
+        cv2.imshow("cam"+str(i+1), frame)
         cv2.waitKey(0)
         frame = camera.get_image()
         i += 1
