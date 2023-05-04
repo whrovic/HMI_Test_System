@@ -1,4 +1,4 @@
-from data.Settings import Settings
+from data.settings import Settings
 from data.define_and_fill_model import DefineAndFillModel as df
 import os
 from reportlab.pdfgen import canvas

@@ -1,13 +1,13 @@
-from .model.Model import Model
+from .model.model import Model
 from .sequence_test import SequenceTest
 from model_test.model_test import ModelTest
 from model_test.led_test import LedTest
 from model_test.button_test import ButtonTest
 from model_test.display_test import DisplayTest
-from .model.Display import Display
+from .model.display import Display
 from typing import List
 from .path import Path
-from test.Test import Test
+from test.test import Test
 
 
 class Settings:
