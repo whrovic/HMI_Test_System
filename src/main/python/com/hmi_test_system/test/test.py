@@ -2,12 +2,11 @@ import dis
 from tkinter import Image
 
 from data.model.model import Model
-from data.sequence_test import SequenceTest
 from model_test.model_test import ModelTest
 from model_test.led_test import LedTest
 from model_test.button_test import ButtonTest
 from model_test.display_test import DisplayTest
-from opencv.hmicv import HMIcv
+#from opencv.hmicv import HMIcv
 from video.camera import Camera
 
 cam_value: Camera

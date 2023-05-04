@@ -1,5 +1,5 @@
 from .model.model import Model
-from .sequence_test import SequenceTest
+#from ..test.sequence_test import SequenceTest
 from model_test.model_test import ModelTest
 from model_test.led_test import LedTest
 from model_test.button_test import ButtonTest
@@ -15,7 +15,7 @@ class Settings:
     def __init__(self):
         self.model: List[Model] = []
         self.model_test = ModelTest()
-        self.seq_test = SequenceTest()
+        #self.seq_test = SequenceTest()
         self.path = Path()
         self.test = Test()
 
