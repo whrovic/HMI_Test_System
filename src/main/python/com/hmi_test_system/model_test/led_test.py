@@ -21,7 +21,7 @@ class LedTest:
     def get_colour_result(self):
         return self.colours_cv
 
-    def result_test_Led(self):
+    def result_test_led(self):
         if self.colours_cv == self.led._colours:
             return 1
         else:

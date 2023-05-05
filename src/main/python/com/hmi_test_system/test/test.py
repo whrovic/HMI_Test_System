@@ -1,15 +1,19 @@
 import dis
 from tkinter import Image
 
-from data.model.model import Model
-from model_test.model_test import ModelTest
-from model_test.led_test import LedTest
-from model_test.button_test import ButtonTest
-from model_test.display_test import DisplayTest
-#from opencv.hmicv import HMIcv
-from video.camera import Camera
+from ..data.model.model import Model
+from ..model_test.model_test import ModelTest
+from ..model_test.led_test import LedTest
+from ..model_test.button_test import ButtonTest
+from ..model_test.display_test import DisplayTest
+from ..opencv.hmicv import HMIcv
+from ..video.camera import Camera
+from ..data.color.color import Color
 
 cam_value: Camera
+vet_cor: [37]
+vet_cor_bef: [37]
+
 
 class Test:
 
@@ -35,10 +39,48 @@ class Test:
         self.test_button_serial_port()
 
     def test_led(self, leds_test: list[LedTest]):
-        for i in range(0, len(leds_test)):
-            result = HMIcv.led_test(cam_value.get_image(), leds_test[i].get_led())
-            if result is not None:
-                leds_test[i].test_colour(result)
+        state = 0
+        aux = 0
+        while 1:
+            cam = cam_value.get_image()
+            for i in range(0, len(leds_test)):
+                vet_cor[i] = HMIcv.led_test(cam, leds_test[i].get_led())
+            if state == 0:
+                aux = 0
+                for i in range(0, len(leds_test)):
+                    if vet_cor[i] is not None:
+                        aux = aux + 1
+                if aux == len(leds_test):
+                    state = 1
+                else:
+                    # fazer funçao de escrever no terminal
+                    return -1
+            if state == 1:
+                aux = 0
+                for i in range(0, len(leds_test)):
+                    if vet_cor[i] is None:
+                        aux = aux + 1
+                if aux == len(leds_test):
+                    state = 2
+                else:
+                    # fazer funçao de escrever no terminal
+                    return -1
+            if state == 2:
+                aux = 0
+                for i in range(0, len(leds_test)):
+                    if vet_cor[i] is not None:
+                        aux = aux + 1
+                if aux == len(leds_test):
+                    state = 3
+                else:
+                    # fazer funçao de escrever no terminal
+                    return -1
+            if state == 3:
+                aux = 0
+                #for i in range(0, len(leds_test)):
+                if vet_cor[0].get_name() == 'green' and vet_cor[0].get_name() != vet_cor_bef[0].get_name():
+
+
 
     def test_display(self, display: DisplayTest, test):
         if test == 1:
