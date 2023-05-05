@@ -4,7 +4,7 @@ from .display import Display
 
 class Model:
     
-    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
+    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, version: str):
         self._name = name
         self._n_leds = n_leds
         self._leds: list[Led] = []

@@ -4,6 +4,8 @@ import os
 from reportlab.pdfgen import canvas
 from datetime import datetime
 import sys
+from data.model.led import Led 
+from data.model.display import Display
 
 
 def test_menu(M: Settings, name_model, test_type):
@@ -21,23 +23,23 @@ def test_menu(M: Settings, name_model, test_type):
         print(f"{name_model} DOESN'T EXIST\n")
         sys.exit(2)
     
-    # set model ready to test
+    # model ready to test
     else:
-        M.reset_model_test()
-        M.set_model_test(name_model)
-        print(f"{name_model} IS READY TO TEST\n")
+        model = M.call_model(name_model)
 
         # led test
-        if(test_type == "LED"):       
-            result_led =led_test(M)
+        if(test_type == "LED"): 
+            leds = model.get_leds()      
+            result_led =led_test(M, leds)
             if(result_led == 0):
                 sys.exit(0)     # test passed
             elif(result_led == -1): 
                 sys.exit(8)     # led test failed
             
         # lcd test
-        elif(test_type == "LCD"):       
-            result_display =  display_test(M, 4) # 1 - pixel | 2 - rgb | 3- char | 4 - all 
+        elif(test_type == "LCD"):   
+            display = model.get_display()    
+            result_display =  display_test(M, display, 4) # 1 - pixel | 2 - rgb | 3- char | 4 - all 
             if(result_display == 0):
                 sys.exit(0)     # test passed
             elif(result_display == -1): 
@@ -69,14 +71,14 @@ def test_menu(M: Settings, name_model, test_type):
 
 
 #------------------------------------LED TEST------------------------------------#
-def led_test(M: Settings):
+def led_test(M: Settings, leds: list[Led] = []):
 
-    M.test.test_led(M.model_test.leds_test)
+    M.test.test_led(leds)
     result: list[bool] = []
-    for i in len(M.model_test.leds_test):
-        led_result = M.model_test.leds_test[int(i)].result_test_Led()
+    for i in len(leds):
+        led_result = leds[int(i)].result_test_Led()
         result.append(led_result)
-        print(f"{M.model_test.leds_test[int(i)].get_led().get_name()} test: ")
+        print(f"{leds[int(i)].get_name()} test: ")
         print("ok" if led_result==1 else "not ok")     
 
     if sum(result) == len(result): 
@@ -91,8 +93,8 @@ def button_test(M:Settings):
                         
                 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(M:Settings, code: int):
-    result = M.test.test_display(M.model_test.display_test, code)
+def display_test(M:Settings, display: Display, code: int):
+    result = M.test.test_display(display, code)
     print("LCD test:")
     print("ok" if result == 0 else "not ok")
     return result   # 0 is sucess | -1 is failure

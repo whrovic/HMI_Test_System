@@ -26,7 +26,9 @@ class Display(Position):
         self._dim_x = dim_x
         self._dim_y = dim_y
         self._color_vector = []
-        self._characters_str = str
+        self.blacklight_test: bool
+        self.characters_test: bool
+
     
     def set_name(self, name: str):
         self._name = name
@@ -56,4 +58,35 @@ class Display(Position):
 
     def get_char(self):
         return self._characters_str
+    
+
+    #---------------------test---------------------#
+    
+    # RGB screen detetado por CV
+    def RGB_CV(self, RGB):
+        self.RGB = RGB
+       
+    def test_RGB(self):
+        return self.RGB
+
+    def result_color(self):
+        return self.color_test
+
+    def test_color(self, result):
+        if result:
+            self.color_test = True
+
+    def result_blacklight(self):
+        return self.blacklight_test
+
+    def test_blacklight(self, result):
+        if result:
+            self.blacklight_test_test = True
+
+    def result_characters(self):
+        return self.characters_test
+
+    def test_characters(self, result):
+        if result:
+            self.characters_test = True
     
