@@ -8,6 +8,7 @@ from .model.display import Display
 from typing import List
 from .path import Path
 from test.test import Test
+from test.sequence_test import SequenceTest
 
 
 class Settings:
@@ -17,7 +18,7 @@ class Settings:
         self.model_test = ModelTest()
         #self.seq_test = SequenceTest()
         self.path = Path()
-        self.test = Test()
+        self.test = SequenceTest()
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):

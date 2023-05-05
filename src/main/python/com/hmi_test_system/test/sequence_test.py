@@ -4,11 +4,12 @@ from data.model.led import Led
 from data.model.display import Display
 
 class SequenceTest:
-    def seq_button(buttons_test: list[Button], sp: bool, dsp: bool):
+
+    def seq_button(self, buttons_test: list[Button], sp: bool, dsp: bool):
         pass
     
-    def seq_led(leds_test: list[Led]):
+    def seq_led(self, leds_test: list[Led]):
         pass
     
-    def seq_display(dsp: Display, black: bool, char: bool, rgb: bool):
+    def seq_display(self, dsp: Display, black: bool, char: bool, rgb: bool):
         pass
