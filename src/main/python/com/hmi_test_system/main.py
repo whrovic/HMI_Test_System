@@ -1,5 +1,5 @@
 from data.settings import Settings
-from main.library_test import model_menu
+#from main.library_test import model_menu
 from main.menus import settings_menu
 import os
 import sys
@@ -28,12 +28,13 @@ if len(sys.argv) < 2:
 value = sys.argv[1]
 
 if value == "test":
-    print("The value is 'test'")
+    print("The value is 'test'") 
 elif value == "settings":
     print("The value is 'settings'")
 else:
     print(f"The value '{value}' is not 'test' or 'settings'")
-    
+        
+menu_choice = input('Press Enter')
 while(1):
     MP.main_menu_print()        
     menu_choice = input()
@@ -47,7 +48,9 @@ while(1):
     # Test model    
     elif (menu_choice == '2'):
         count = 0
-        model_menu(M) == -1 
+        print("Not working anymore :(")
+        menu_choice = input('Press Enter')
+        #model_menu(M) == -1 
 
     # Turn off the program    
     elif(menu_choice == '3'):
