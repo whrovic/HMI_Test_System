@@ -1,6 +1,5 @@
 import numpy as np
 from .ledcv import LEDcv
-from data.color.color import OffColor
 from data.model.display import Display
 from .displaycv import Displaycv
 
