@@ -5,10 +5,10 @@ from data.model.display import Display
 
 class SequenceTest:
 
-    def seq_button(self, buttons_test: list[Button], sp: bool, dsp: bool):
+    def seq_button(self, buttons_test: list[str], sp: bool, dsp: bool):
         pass
     
-    def seq_led(self, leds_test: list[Led]):
+    def seq_led(self, leds_test: list[str]):
         pass
     
     def seq_display(self, dsp: Display, black: bool, char: bool, rgb: bool):
