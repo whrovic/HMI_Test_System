@@ -29,6 +29,8 @@ class SerialPort:
         while self.is_receiving:
             self.read_port()
 
+    # acrescentar time.time()
+    # a fila tem dois valores (usar tupla) [0]->informação, [1]->tempo
     def read_port(self):
         if self.serial.in_waiting() != 0:
             self.port_queue.put(self.serial.readline().decode())
