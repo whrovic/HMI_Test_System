@@ -11,18 +11,33 @@ from ..video.camera import Camera
 from ..data.color.color import Color
 
 cam_value: Camera
-vet_cor: [37]
-vet_cor_bef: [37]
+vet_cor: list [37]
+vet_cor_bef: list [37]
 
+
+#TODO: complet the start_test and end_test 
+# whith the right functions
 
 class Test:
 
     @staticmethod
-    def start_test():
+    def start_test(cam_leds: bool, cam_display: bool, serial_port: bool):
+        if cam_leds:
+            pass
+        elif cam_display:
+            pass
+        elif serial_port:
+            pass
         cam_value.start_capture()
 
     @staticmethod
-    def end_test():
+    def end_test(cam_leds: bool, cam_display: bool, serial_port: bool):
+        if cam_leds:
+            pass
+        elif cam_display:
+            pass
+        elif serial_port:
+            pass
         cam_value.stop_capture()
 
     def test_button_display(self, buttons_test: list[ButtonTest]):
@@ -79,8 +94,6 @@ class Test:
                 aux = 0
                 #for i in range(0, len(leds_test)):
                 if vet_cor[0].get_name() == 'green' and vet_cor[0].get_name() != vet_cor_bef[0].get_name():
-
-
 
     def test_display(self, display: DisplayTest, test):
         if test == 1:
