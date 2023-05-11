@@ -54,11 +54,11 @@ def create_model_manual(M: Settings, name_model):
     print("\n\nLCD CONFIGURATION\n")
     
     print("Select the LCD initial position and press ENTER")
-    pos_vector_init = DefineModelCV.click_pos_led(image)
+    pos_vector_init = DefineModelCV.click_pos(image)
     
 
     print("Select the LCD final position and press ENTER")
-    pos_vector_final= DefineModelCV.click_pos_led(image)
+    pos_vector_final= DefineModelCV.click_pos(image)
     
     dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
     dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
@@ -87,7 +87,7 @@ def create_model_manual(M: Settings, name_model):
                     continue
 
             print(f"Select the led {i+1} central position and press ENTER")
-            pos_vector= DefineModelCV.click_pos_led(image)
+            pos_vector= DefineModelCV.click_pos(image)
                 
 
             led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
@@ -115,7 +115,7 @@ def create_model_manual(M: Settings, name_model):
             print(f"\nButton {i+1} name: ")
             button_name = input()
             print(f"Select the button {i+1} central position and press ENTER")
-            pos_vector= DefineModelCV.click_pos_led(image)
+            pos_vector= DefineModelCV.click_pos(image)
 
             M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
         
@@ -389,7 +389,7 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
         elif c=='3':
             os.system('cls') 
             print("Select the led central position and press ENTER")
-            pos_vector= DefineModelCV.click_pos_led(image)
+            pos_vector= DefineModelCV.click_pos(image)
 
             M.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
 
@@ -451,7 +451,7 @@ def edit_button(M: Settings, name_model, index: int, image):
                 elif c=='2':
                     os.system('cls') 
                     print(f"Select the button central position and press ENTER")
-                    pos_vector= DefineModelCV.click_pos_led(image)
+                    pos_vector= DefineModelCV.click_pos(image)
 
                     M.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
 
@@ -469,10 +469,10 @@ def edit_display(M: Settings, index: int, image):
 
     os.system('cls')
     print("Select the LCD initial position and press ENTER")
-    pos_vector_init= DefineModelCV.click_pos_led(image)
+    pos_vector_init= DefineModelCV.click_pos(image)
     
     print("Select the LCD final position")
-    pos_vector_final= DefineModelCV.click_pos_led(image)
+    pos_vector_final= DefineModelCV.click_pos(image)
     
     dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
     dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])

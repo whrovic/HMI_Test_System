@@ -20,7 +20,6 @@ class ImageFiles(VideoCapture):
     def start_capture(self):
         
         for p in self._path:
-            #img = cv2.imread(i)
             img = cv2.imdecode(np.fromfile(p, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
             self._frame_queue.put(img)
             
