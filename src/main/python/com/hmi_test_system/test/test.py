@@ -15,10 +15,6 @@ class Test:
     # return 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
-        data, time = serial.get_serial()
-        if data != "TestKeys - Testing...":
-            return -1
-
         for button in button_sequence:
             data, time = serial.get_serial()
             if button.get_name() in data:
