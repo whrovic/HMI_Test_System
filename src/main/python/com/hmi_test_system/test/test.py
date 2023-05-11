@@ -17,7 +17,7 @@ class Test:
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
         for button in button_sequence:
             data, time = serial.get_serial()
-            if button.get_name() in data:
+            if data.endswith(button.get_name):
                 serial.get_serial()
                 continue
             return -1
