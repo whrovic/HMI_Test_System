@@ -17,6 +17,7 @@ class Test:
     # return 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
+        
         for button in button_sequence:
             data, time = serial.get_serial()
             if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name):
@@ -37,8 +38,11 @@ class Test:
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
-        # Start receiving from the serial port   
-        serial.start_receive() 
+        
+        ''' 
+        Não é preciso iniciar/fechar o serial port, pq isso vai ser feito na classe SequenceTest
+        O tempo do serial port e do frame vem no get_serial/get_image
+        '''
 
         test_name = None
         test_start_time = None
@@ -47,76 +51,90 @@ class Test:
         while True:
 
             # Get the data from the serial port
-            data, _ = serial.get_serial() 
+            data, data_time = serial.get_serial()
             
             # Check if the data is related to the display test
             if data is not None:
-                if "TestDisplay - Testing..." in data: # Check if the data is related to the display test
-                    # Determine which type of test is being performed
-                    if "Test PIX" in data:
-                        test_name = "PIX"
-                        test_start_time = float(data.split(":")[1])
-                        print("Starting PIX Test")
+                
+                # Determine which type of test is being performed
+                if "Test PIX" in data:
+                    test_name = "PIX"
+                    test_start_time = data_time
+                    print("Starting PIX Test")
 
-                    elif "Test CHR" in data:
-                        test_name = "CHR"
-                        test_start_time = float(data.split(":")[1])
-                        print("Starting CHR Test")
+                elif "Test CHR" in data:
+                    test_name = "CHR"
+                    test_start_time = data_time
+                    print("Starting CHR Test")
 
-                    elif "Test PAL" in data:
-                        test_name = "PAL"
-                        test_start_time = float(data.split(":")[1])
-                        print("Starting PAL Test")
+                elif "Test PAL" in data:
+                    test_name = "PAL"
+                    test_start_time = data_time
+                    print("Starting PAL Test")
 
-                    elif "Cancel" in data:
-                        # If the test was canceled, reset the test variables
-                        if test_name is not None:
-                            print("TestDisplay Canceled")
-                        test_name = None
-                        test_start_time = None
+                elif "CANCEL" in data:
+                    # If the test was canceled, reset the test variables
+                    if test_name is not None:
+                        print("TestDisplay Canceled")
+                    test_name = None
+                    test_start_time = None
 
-                    elif "TestDisplay - Pressed: ENTER" in data:
-                        if test_name is not None:
-                            print("TestDisplay Finished")
-                        break
+                elif "TestDisplay - Pressed: ENTER" in data:
+                    if test_name is not None:
+                        print("TestDisplay Finished")
+                    break
 
             # If a test is currently running
             if test_name is not None:
-                frame_time = time.time()
-                frame = cam.get_frame()
+                
+                frame, frame_time = cam.get_image()
 
+                ''' Faltava esta parte para ignorar imagens antigas, que não interessam '''
+                # If the frame is older than the beginning of the test, ignore the frame
+                if frame_time < test_start_time:
+                    continue
+                
                 # If the test duration has elapsed, the test has passed
-                if frame_time >= test_start_time:
+                elif frame_time >= test_start_time:
+                    ''' 
+                    Esta condição será sempre true, pq o tempo da imagem é sempre maior que o tempo de começo do teste.
+                    Acho que o que querias era verificar se esta imagem é relativa ao próximo teste.
+                    
+                    Para fazeres isso podes, em cima, criar outras 2 variáveis, chamadas new_test_name e new_test_start_time que
+                    guardam o proximo teste e caso o tempo da imagem seja superior ao tempo do proximo teste, o teste atual
+                    falhou e começa o próximo teste (test_name = new_test_name, test_start_time = new_test_start_time). Nos ifs de cima,
+                    ao invés de ser test_name = ..., passaria a ser new_test_name =...
+                    '''
                     print(f"{test_name} Test Passed")
                     test_name = None
                     test_start_time = None
 
                 # If the data is related to a different test, the current test has failed
                 elif data is not None and "TestDisplay" in data and test_name != data.split()[1]:
+                    '''
+                    Esta condição acho que seria a condição acima
+                    '''
                     print(f"{test_name} Test Not Passed")
                     test_failed = True
                     test_name = None
                     test_start_time = None
                 
                 # Perform the appropriate test based on the current test type
-                elif HMIcv.display_backlight_test(frame, display) and test_name == "PIX":
+                elif test_name == "PIX" and HMIcv.display_backlight_test(frame, display):
                     print(f"{test_name} Test Passed")
                     test_name = None
                     test_start_time = None
 
-                elif HMIcv.display_characters_test(frame, display) and test_name == "CHR":
+                elif test_name == "CHR" and HMIcv.display_characters_test(frame, display):
                     print(f"{test_name} Test Passed")
                     test_name = None
                     test_start_time = None
 
-                elif HMIcv.display_color_pattern_test(frame, display) and test_name == "PAL":
+                elif test_name == "PAL" and HMIcv.display_color_pattern_test(frame, display):
                     print(f"{test_name} Test Passed")
                     test_name = None
                     test_start_time = None
         
-        # Stop receiving from the serial port
-        serial.stop_receive() 
-
         # Return 0 if all tests passed, -1 if any test failed
         if test_failed:
             return -1
