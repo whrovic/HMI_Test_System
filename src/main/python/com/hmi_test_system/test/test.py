@@ -1,3 +1,4 @@
+from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from serial.serial_port import SerialPort
@@ -48,6 +49,9 @@ class Test:
         new_test_name = None
         new_test_start_time = None
 
+        # Debug
+        log_display = LogDisplay()
+
         while True:
             # Get the data from the serial port with a timeout
             data, data_time = serial.get_serial(timeout=0.1)
@@ -58,14 +62,17 @@ class Test:
                 if "Test PIX" in data:
                     new_test_name = "PIX"
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
                 elif "Test CHR" in data:
                     new_test_name = "CHR"
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
                 elif "Test PAL" in data:
                     new_test_name = "PAL"
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
                 elif "CANCEL" in data:
                     # If the test was canceled, reset the test variables
@@ -73,8 +80,10 @@ class Test:
                     test_name = None
                     test_start_time = None
                     new_test_start_time = None
+                    log_display.test_canceled()
 
                 elif "TestDisplay - Pressed: ENTER" in data:
+                    log_display.test_finished()
                     break
 
             # Start the first test
@@ -93,17 +102,18 @@ class Test:
                     continue
                 elif frame_time >= new_test_start_time:
                     # Start the next test
-                    print(f"{test_name} Test Failed")
+                    log_display.test_failed(test_name)
                     test_failed = True
                     test_name = new_test_name
                     test_start_time = new_test_start_time
                     if test_name is None:
                         break
+                    log_display.start_test(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == "PIX":
                         if HMIcv.display_backlight_test(frame, display):
-                            print(f"{test_name} Test Passed")
+                            log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
@@ -111,7 +121,7 @@ class Test:
 
                     elif test_name == "CHR":
                         if HMIcv.display_characters_test(frame, display):
-                            print(f"{test_name} Test Passed")
+                            log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
@@ -119,7 +129,7 @@ class Test:
                         
                     elif test_name == "PAL":
                         if HMIcv.display_color_pattern_test(frame, display):
-                            print(f"{test_name} Test Passed")
+                            log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
