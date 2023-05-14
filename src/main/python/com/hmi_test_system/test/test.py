@@ -77,6 +77,13 @@ class Test:
                 elif "TestDisplay - Pressed: ENTER" in data:
                     break
 
+            # Start the first test
+            if test_name is None and new_test_name is not None:
+                test_name = new_test_name
+                test_start_time = new_test_start_time
+                new_test_name = None
+                new_test_start_time = None
+
             # If a test is currently running
             if test_name is not None:
                 frame, frame_time = cam.get_image()
