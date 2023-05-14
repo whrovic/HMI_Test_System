@@ -38,6 +38,7 @@ class Test:
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
+
         # Initializing the test variables
         test_name = None
         test_start_time = None
@@ -57,18 +58,22 @@ class Test:
                 if "Test PIX" in data:
                     new_test_name = "PIX"
                     new_test_start_time = data_time
+
                 elif "Test CHR" in data:
                     new_test_name = "CHR"
                     new_test_start_time = data_time
+
                 elif "Test PAL" in data:
                     new_test_name = "PAL"
                     new_test_start_time = data_time
+
                 elif "CANCEL" in data:
                     # If the test was canceled, reset the test variables
                     new_test_name = None
                     test_name = None
                     test_start_time = None
                     new_test_start_time = None
+
                 elif "TestDisplay - Pressed: ENTER" in data:
                     break
 
@@ -96,6 +101,7 @@ class Test:
                             test_start_time = None
                         else:
                             continue
+
                     elif test_name == "CHR":
                         if HMIcv.display_characters_test(frame, display):
                             print(f"{test_name} Test Passed")
@@ -103,6 +109,7 @@ class Test:
                             test_start_time = None
                         else:
                             continue
+                        
                     elif test_name == "PAL":
                         if HMIcv.display_color_pattern_test(frame, display):
                             print(f"{test_name} Test Passed")
