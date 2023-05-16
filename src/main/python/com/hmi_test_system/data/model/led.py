@@ -15,6 +15,7 @@ class Led(Position):
     def get_name(self):
         return self._name
     
+    
     def get_n_Colour(self):
         return self._n_colour
     
@@ -33,22 +34,6 @@ class Led(Position):
         return self._colours
     
 
-    #---------------------test---------------------#
-        
-    # vetor de cores detetas por cv
-    def test_colour(self, colour):
-        self.colours_cv.append(colour)
 
-    def get_colour_result(self):
-        return self.colours_cv
-
-    def result_test_Led(self):
-        if self.colours_cv == self._colours:
-            return 1
-        else:
-            return 0
-
-    def clear_colour(self):
-        self.colours_cv.clear()
     
     

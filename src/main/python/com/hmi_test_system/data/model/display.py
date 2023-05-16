@@ -60,33 +60,4 @@ class Display(Position):
         return self._characters_str
     
 
-    #---------------------test---------------------#
-    
-    # RGB screen detetado por CV
-    def RGB_CV(self, RGB):
-        self.RGB = RGB
-       
-    def test_RGB(self):
-        return self.RGB
-
-    def result_color(self):
-        return self.color_test
-
-    def test_color(self, result):
-        if result:
-            self.color_test = True
-
-    def result_blacklight(self):
-        return self.blacklight_test
-
-    def test_blacklight(self, result):
-        if result:
-            self.blacklight_test_test = True
-
-    def result_characters(self):
-        return self.characters_test
-
-    def test_characters(self, result):
-        if result:
-            self.characters_test = True
     
