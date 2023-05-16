@@ -245,8 +245,9 @@ class Test:
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if vet_cor_bef[i][j] != "OFF":
-                                leds_on[i] = vet_cor_bef[i][j]
-                                vet_cor_bef[i][j] = "OFF"
+                                if leds_on[i] is None:
+                                    leds_on[i] = vet_cor_bef[i][j]
+                                    vet_cor_bef[i][j] = "OFF"
 
                     for i in range(0,56):
                         for j in range(0, len(leds_test)):
