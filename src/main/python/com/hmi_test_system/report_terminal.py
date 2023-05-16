@@ -21,11 +21,11 @@ class ReportTerminal:
         else :
             self.model_test.buttons_test    
 
-    def LedTerminal(self):
+    def LedTerminal(self, led:L):
         
         #Led.result_press_display()
-        rgbvalue = L.get_led(self)
-        aux = L.get_colour_result()
+        rgbvalue = led.get_led(self)
+        aux = led.get_colour_result()
     
 
     def DisplayTerminal(self):   
@@ -37,13 +37,11 @@ b = ModelTest()
 a = ReportTerminal(b)
 a.LedTerminal()
 
-#####################################################################
 
-'''leds = [Led('L1','red',1,2), Led('L2','red',3,5), Led('L3','ok',5,7)]
-buttons = [Button((2, 3)), Button((4,5)), Button((7,9))]
-display = Display('d1',5,7,10,20)
 
-mt = ModelTest(leds, display)
+
+
+'''mt = ModelTest(leds, display)
 
 report = ReportTerminal(mt)
 
