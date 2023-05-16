@@ -1,16 +1,18 @@
-from report.log_display import LogDisplay
-from opencv.hmicv import HMIcv
-from video.camera import Camera
-from serial.serial_port import SerialPort
+from .. import serial
+from ..report.log_display import LogDisplay
+from ..opencv.hmicv import HMIcv
+from ..video.camera import Camera
+from ..serial.serial_port import SerialPort
 import time
-from ..data.model.led import Led
+
 from ..data.model.button import Button
 from ..data.model.display import Display
+from ..data.model.led import Led
 from ..data.model.model import Model
 from ..model_test.model_test import ModelTest
 #from ..model_test.led_test import LedTest
 #from ..model_test.button_test import ButtonTest
-#from ..model_test.display_test import DisplayTest
+from ..model_test.display_test import DisplayTest
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color
@@ -18,6 +20,7 @@ from ..data.color.color import Color
 cam_value: Camera
 vet_cor: list[37]
 vet_cor_bef: list[56][37]
+leds_on : list[56]
 
 
 
@@ -179,9 +182,8 @@ class Test:
         self.test_button_display()
         self.test_button_serial_port()'''
 
-    def test_led(self, leds_test: list[Led]):
+    def test_led(self, leds_test: list[Led], seriall: SerialPort):
         state = 0
-        aux = 0
         while 1:
             cam = cam_value.get_image()
 
@@ -224,22 +226,44 @@ class Test:
                     return -1
 
             if state == 3:
-                aux = 0
+                errors =[]
+                error_counter = 0
                 cam_bef = None
-                for i in range(0, 56):
-                    for j in range(0, len(leds_test)):
-                        if cam != cam_bef:
-                            vet_cor_bef[i][j] = HMIcv.led_test(cam, leds_test[i])
-                    cam_bef = cam
-                    cam = cam_value.get_image()
-                for i in range(0, 56):
-                    for j in range(0, len(leds_test)):
-                        for k in range(0, len(leds_test[j].get_colour())):
-                            if vet_cor_bef[i][j] == leds_test[j].get_colour()[k]:
-                                aux = aux + 1
-                            elif vet_cor_bef[i][j] != leds_test[j].get_colour()[k]:
+                chegada = None
+                chegada_serial, chegada_time = None, None
+                while(chegada_serial != "TestLeds - Test OK") and (chegada_time != chegada):
+                    for i in range(0, 56):
+                        for j in range(0, len(leds_test)):
+                            if cam != cam_bef:
+                                vet_cor_bef[i][j] = HMIcv.led_test(cam, leds_test[i])
+                        cam_bef = cam
+                        chegada_bef = chegada
+                        cam, chegada = cam_value.get_image()
+                        if chegada_serial != "TestLeds - Test OK":
+                            chegada_serial, chegada_time = seriall.get_serial()
 
-    def test_display(self, display: DisplayTest, test):
+                    for i in range(0, 56):
+                        for j in range(0, len(leds_test)):
+                            if vet_cor_bef[i][j] != "OFF":
+                                leds_on[i] = vet_cor_bef[i][j]
+                                vet_cor_bef[i][j] = "OFF"
+
+                    for i in range(0,56):
+                        for j in range(0, len(leds_test)):
+                            if vet_cor_bef[i][j] != "OFF":
+                                errors[error_counter] = j
+                                error_counter = error_counter + 1
+
+                    for i in range(0, 56):
+
+                            '''for k in range(0, len(leds_test[j].get_colour())):
+                                if vet_cor_bef[i][j] == leds_test[j].get_colour()[k]:
+                                    aux = aux + 1
+                                    break
+                                elif vet_cor_bef[i][j] != leds_test[j].get_colour()[k]:'''
+
+
+    '''def test_display(self, display: DisplayTest, test):
         if test == 1:
             result_blacklight = HMIcv.display_backlight_test(cam_value.get_image(), display.display)
             if result_blacklight:
@@ -281,7 +305,7 @@ class Test:
                 return 0
             else:
                 return -1
-
+'''
 def led_test_error_terminal(code):
     if code == 0 or code == 2:
         print("Error on turned on LED's\n")
