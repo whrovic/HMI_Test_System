@@ -1,0 +1,2 @@
+class LogLeds:
+    pass

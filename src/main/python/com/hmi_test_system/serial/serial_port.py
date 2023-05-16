@@ -1,17 +1,25 @@
 from threading import Thread
 import serial
 import queue
+import time
 
 class SerialPort:
 
     is_receiving : bool
     thread : Thread
     
-    def __init__(self):
+    def __init__(self, port):
         self.is_receiving = False
         self.thread = Thread(target = self.thread_loop)
-        self.port_queue = queue.Queue()
-        self.serial = serial.Serial(port = 'COM1', baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, flowcontrol = False)
+        self.serial = serial.Serial(port = port, baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, xonxoff=False)
+        self.port_queue_data = queue.Queue()
+        self.port_queue_time = queue.Queue()
+
+    def get_serial(self):
+        if self.port_queue_data.empty():
+            return None, None
+        else:
+            return self.port_queue_data.get(), self.port_queue_time.get()
 
     def start_receive(self):
         self.is_receiving = True
@@ -27,10 +35,18 @@ class SerialPort:
 
     def read_port(self):
         if self.serial.in_waiting() != 0:
-            self.port_queue.put(self.serial.readline().decode())
+            data = self.serial.readline().decode()
+            current_time = time.time()
+            if data != '\n':
+                self.port_queue_data.put(data)
+                self.port_queue_time.put(current_time)
+
+    def write_port(self, data):
+        self.serial.write(data.encode('utf-8'))
 
     def clear_queue(self):
-        self.port_queue.queue.clear()
+        self.port_queue_data.queue.clear()
+        self.port_queue_time.queue.clear()
 
 
     

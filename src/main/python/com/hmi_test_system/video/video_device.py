@@ -1,7 +1,7 @@
 from .video_capture import VideoCapture
 from abc import ABC, abstractmethod
 from threading import Thread
-from time import sleep
+import time
 
 class VideoDevice(VideoCapture, ABC):
     
@@ -29,9 +29,9 @@ class VideoDevice(VideoCapture, ABC):
         while self._is_capturing:            
             frame = self.get_frame()
             if (frame is not None):
-                self._frame_queue.put(frame)
+                self._frame_queue.put((frame, time.time()))
 
-            sleep(self._interval) 
+            time.sleep(self._interval) 
     
     @abstractmethod
     def get_frame(self):
