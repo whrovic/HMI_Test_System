@@ -236,7 +236,10 @@ if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
     #test_list_cameras()
-
+    
+    from data.path import Path
+    Path()
+    
     test_camera()
     input()
     test_char()
