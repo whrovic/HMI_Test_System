@@ -1,5 +1,5 @@
 from threading import Thread
-import serial
+from serial import Serial, PARITY_NONE
 import queue
 import time
 from .constants import *
@@ -12,7 +12,7 @@ class SerialPort:
     def __init__(self, port):
         self.is_receiving = False
         self.thread = Thread(target = self.thread_loop)
-        self.serial = serial.Serial(port = port, baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, xonxoff=False)
+        self.serial = Serial(port = port, baudrate = 115200, bytesize = 8, parity = PARITY_NONE, stopbits = 1, xonxoff=False)
         self.port_queue_data = queue.Queue()
         self.port_queue_time = queue.Queue()
 
@@ -35,14 +35,15 @@ class SerialPort:
             self.read_port()
 
     def read_port(self):
-        if self.serial.in_waiting() != 0:
+        if self.serial.in_waiting != 0:
             data = self.serial.readline().decode()
             current_time = time.time()
-            if data != '\n':
+            data = data.strip()
+            if len(data) > 0:
                 self.port_queue_data.put(data)
                 self.port_queue_time.put(current_time)
 
-    def write_port(self, data):
+    def write_port(self, data: str):
         self.serial.write(data.encode('utf-8'))
 
     def clear_queue(self):

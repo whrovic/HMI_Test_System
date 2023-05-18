@@ -16,7 +16,7 @@ from ..data.color.color import Color'''
 from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
-from serial.serial_port import SerialPort
+from serial_port.serial_port import SerialPort
 
 from data.model.button import Button
 from data.model.display import Display
@@ -24,7 +24,7 @@ from data.model.led import Led
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from data.color.color import Color
-from serial.constants import *
+from serial_port.constants import *
 
 
 cam_value: Camera
@@ -55,11 +55,17 @@ class Test:
     # return: 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
-        
+
         for button in button_sequence:
-            data, time = serial.get_serial()
-            if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name):
-                serial.get_serial()
+            data = None
+            while data is None:
+                data, time = serial.get_serial()
+
+            data = str(data)
+            if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name()):
+                d = None
+                while d is None:
+                    d, _ = serial.get_serial()
                 continue
             return -1
         

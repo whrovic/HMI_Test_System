@@ -163,7 +163,7 @@ def test_menu(M: Settings):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
-                    buttons = [b.get_name() for b in buttons]
+                    buttons_name = [b.get_name() for b in buttons]
                     
                 result_button = button_test(M, model, 1, buttons_name) # 1 - sp | 2 - dsp | 3- all
                 
