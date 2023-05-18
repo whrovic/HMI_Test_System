@@ -19,11 +19,13 @@ NTIMEOUT = 5
 count = 0
 M = Settings()
 
+# Read all the colors from the local file
 ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
 
 #------------------------------------CODE BEGIN------------------------------------#
+
 if len(sys.argv) < 2:
-    print("Usage: main.py test [name_model] [type_test] [timeOut]")
+    print("Usage: main.py test [name_model] [(optional)type_test] [optionals]")
     sys.exit()
 
 value = sys.argv[1]
@@ -32,14 +34,15 @@ settings = False
 if value == "test":
     print("The value is 'test'") 
     menu_choice = input('Press Enter')
-    test_menu(M)    
+    exit_code = test_menu(M)
+    print("Test Exit Code =", exit_code)
 elif value == "set":
     print("The value is 'set'")
     settings = True
 else:
     print(f"The value '{value}' is not 'test' or 'set'")
     menu_choice = input('Press Enter')
-        
+    
 while(settings):
     MP.main_menu_print()        
     menu_choice = input()

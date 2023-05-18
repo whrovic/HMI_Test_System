@@ -53,16 +53,14 @@ class Model:
         return self._leds
     
     def get_led(self, name: str):
-        for i in len(self._leds):
-            led_name = self._leds[int(i)].get_name()
+        for i in range(len(self._leds)):
+            led_name = self._leds[i].get_name()
             if(led_name == name):
-                return self._leds[int(i)]
-    
+                return self._leds[i]
     
     #Delete all the list of leds
     def delete_leds(self):
         self._leds = []
-
 
     def get_n_buttons(self):
         return self._n_buttons
@@ -79,7 +77,7 @@ class Model:
         return self._buttons
     
     def get_button(self, name):
-        for i in len(self._buttons):
+        for i in range(len(self._buttons)):
             button_name = self._buttons[int(i)].get_name()
             if(button_name == name):
                 return self._buttons[int(i)]

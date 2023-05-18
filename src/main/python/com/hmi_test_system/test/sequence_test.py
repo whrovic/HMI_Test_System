@@ -7,10 +7,10 @@ from data.model.model import Model
 class SequenceTest:
 
     def seq_button(self, model: Model, buttons_test: list[str], sp: bool, dsp: bool):
-        pass
+        return 0
     
     def seq_led(self, model: Model, leds_test: list[str]):
-        pass
+        return 0
     
-    def seq_display(self, model: Model, dsp: Display, black: bool, char: bool, rgb: bool):
-        pass
+    def seq_display(self, model: Model, dsp: Display):
+        return 0

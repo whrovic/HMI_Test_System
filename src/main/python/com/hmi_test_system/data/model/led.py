@@ -15,7 +15,6 @@ class Led(Position):
     def get_name(self):
         return self._name
     
-    
     def get_n_Colour(self):
         return self._n_colour
     
