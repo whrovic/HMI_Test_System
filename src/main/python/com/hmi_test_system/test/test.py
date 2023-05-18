@@ -1,4 +1,4 @@
-'''from .. import serial
+from .. import serial
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
@@ -11,9 +11,10 @@ from ..data.model.led import Led
 from ..data.model.model import Model
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
-from ..data.color.color import Color'''
+from ..data.color.color import Color
+from ..serial.constants import *
 
-from report.log_display import LogDisplay
+'''from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from serial.serial_port import SerialPort
@@ -25,21 +26,21 @@ from opencv.hmicv import HMIcv
 from video.camera import Camera
 from data.color.color import Color
 from serial.constants import *
-
+'''
 
 cam_value: Camera
 
 N = 37
 vet_cor: list[N]
-#vet_cor_bef: list[56][N]
-leds_on : list[N]
+vet_cor_bef: list[56][N]
+leds_on: list[N]
 
 
 # TODO: complet the start_test and end_test
 # with the right functions
 
 class Test:
-    
+
     @staticmethod
     def start_test():
         cam_value.start_capture()
@@ -55,24 +56,23 @@ class Test:
     # return: 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
-        
+
         for button in button_sequence:
             data, time = serial.get_serial()
             if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name):
                 serial.get_serial()
                 continue
             return -1
-        
+
         data, time = serial.get_serial()
         if data != "TestKeys - Test OK":
             return -1
-        
+
         return 0
 
     @staticmethod
-    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP = True, DP = False):
+    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP=True, DP=False):
         return Test.test_button_serial_port(serial, button_sequence)
-
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
@@ -163,7 +163,7 @@ class Test:
                             test_start_time = None
                         else:
                             continue
-                        
+
                     elif test_name == "PAL":
                         if HMIcv.display_color_pattern_test(frame, display):
                             log_display.test_passed(test_name)
@@ -177,7 +177,6 @@ class Test:
             return -1
         else:
             return 0
-        
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
         state = 0
@@ -222,13 +221,14 @@ class Test:
                     led_test_error_terminal(state)
                     return -1
 
-            '''if state == 3:
-                errors =[]
+            if state == 3:
+                aux = 0
+                errors = []
                 error_counter = 0
                 cam_bef = None
                 chegada = None
                 chegada_serial, chegada_time = None, None
-                while(chegada_serial != "TestLeds - Test OK") and (chegada_time != chegada):
+                while (chegada_serial != TEST_LEDS_OK) and (chegada_time != chegada):
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if cam != cam_bef:
@@ -236,7 +236,7 @@ class Test:
                         cam_bef = cam
                         chegada_bef = chegada
                         cam, chegada = cam_value.get_image()
-                        if chegada_serial != "TestLeds - Test OK":
+                        if chegada_serial != TEST_LEDS_OK:
                             chegada_serial, chegada_time = seriall.get_serial()
 
                     for i in range(0, 56):
@@ -246,31 +246,51 @@ class Test:
                                     leds_on[i] = vet_cor_bef[i][j]
                                     vet_cor_bef[i][j] = "OFF"
 
-                    for i in range(0,56):
+                    for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if vet_cor_bef[i][j] != "OFF":
                                 errors[error_counter] = j
                                 error_counter = error_counter + 1
 
-                    for i in range(0, 56):
-                            for k in range(0, len(leds_test[j].get_colour())):
-                                if vet_cor_bef[i][j] == leds_test[j].get_colour()[k]:
-                                    aux = aux + 1
-                                    break
-                                elif vet_cor_bef[i][j] != leds_test[j].get_colour()[k]:'''
-                        
+                    if error_counter != 0:
+                        led_test_error_terminal(4)
+                        return -1
+                    else:
+                        led_test_pass_terminal(4)
+
+                    for j in range(0, 56):
+                        for k in range(0, len(leds_test[j].get_colours())):
+                            if leds_on[j] == leds_test[j].get_colours()[k] and k == 0:
+                                aux = aux + 1
+                                break
+                            elif leds_on[j] == leds_test[j].get_colours()[k] and k == 1:
+                                aux = aux + 1
+                                break
+                    if aux == 56:
+                        led_test_pass_terminal(3)
+                        return 0
+                    else:
+                        led_test_error_terminal(3)
+                        return -1
 
 
-    
 def led_test_error_terminal(code):
     if code == 0 or code == 2:
         print("Error on turned on LED's\n")
     elif code == 1:
         print("Error on turned off LED's\n")
+    elif code == 3:
+        print("Error in sequence LED's test\n")
+    elif code == 4:
+        print("Error: LED ON when OFF\n")
 
 
 def led_test_pass_terminal(code):
     if code == 0 or code == 2:
-        print("All the leds Turn ON")
+        print("All the LED's Turn ON\n")
     elif code == 1:
-        print("All the leds Turn OFF")
+        print("All the LED's Turn OFF\n")
+    elif code == 3:
+        print("Sequence LED test passed\n")
+    elif code == 4:
+        print("All LED's OFF when OFF\n")
