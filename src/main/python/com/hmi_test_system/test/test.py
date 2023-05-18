@@ -9,10 +9,6 @@ from ..data.model.button import Button
 from ..data.model.display import Display
 from ..data.model.led import Led
 from ..data.model.model import Model
-from ..model_test.model_test import ModelTest
-#from ..model_test.led_test import LedTest
-#from ..model_test.button_test import ButtonTest
-from ..model_test.display_test import DisplayTest
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color'''
@@ -21,16 +17,10 @@ from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from serial.serial_port import SerialPort
-import time
 
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
-from data.model.model import Model
-#from model_test.model_test import ModelTest
-#from ..model_test.led_test import LedTest
-#from ..model_test.button_test import ButtonTest
-from model_test.display_test import DisplayTest
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from data.color.color import Color

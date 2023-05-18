@@ -1,6 +1,5 @@
 from data.settings import Settings
 from data.define_and_fill_model import DefineAndFillModel as df
-import os
 import sys
 from data.model.model import Model
 from data.model.led import Led 
