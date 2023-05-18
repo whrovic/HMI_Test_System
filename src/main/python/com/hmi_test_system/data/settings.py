@@ -7,8 +7,6 @@ class Settings:
 
     def __init__(self):
         self.model: list[Model] = []
-        #self.model_test = ModelTest()
-        #self.seq_test = SequenceTest()
         self.path = Path()
         self.test = SequenceTest()
 
@@ -46,7 +44,7 @@ class Settings:
             return 0
 
 
-    def index_led_model(self, name_model, led_name):
+    def index_led(self, name_model, led_name):
         index = self.index_model(name_model)
 
         for i in range(0, len(self.model[index]._leds)):
@@ -56,15 +54,7 @@ class Settings:
         return None
     
     
-    def index_led(self, led_name):
-        for i in range(0, len(self.model_test.leds_test)):
-            name = self.model_test.leds_test[i].led.get_name()
-            if(name == led_name):
-                return i
-        
-        return None
-    
-    def index_button_model(self, name_model, button_name):
+    def index_button(self, name_model, button_name):
         index = self.index_model(name_model)
 
         for i in range(0, len(self.model[index]._buttons)):
@@ -72,35 +62,5 @@ class Settings:
                 return i
         
         return None
-    
-    def index_button(self, button_name):
 
-        for i in range(0, len(self.model_test.buttons_test)):
-            name = self.model_test.buttons_test[i].button.get_name()
-            if(name == button_name):
-                return i
-        
-        return None
-
-
-
-    # #------------------------------------Model test------------------------------------#
-    # def set_model_test(self, name):
-    #     n_model = int(self.index_model(name))
-
-    #     if(n_model == -1):
-    #         print("ERROR - Modelo a testar não existe")
-    #         return
-    #     else:
-    #         for i in range(0, self.model[n_model]._n_leds):
-    #             self.model_test.leds_test.append(LedTest(self.model[n_model]._leds[i]))
-
-    #         for i in range(0, self.model[n_model]._n_buttons):
-    #             self.model_test.buttons_test.append(ButtonTest(self.model[n_model]._buttons[i]))  
-
-    #         self.model_test.display_test = DisplayTest(self.model[n_model]._display) 
-
-    # def reset_model_test(self):
-    #     self.model_test.clear_model_test()
-    #     #self.model_test = ModelTest()
 

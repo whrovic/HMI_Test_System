@@ -27,6 +27,7 @@ class SequenceTest:
         # Waits for serial port TestKeys begin
         while True:
             d, _ = serial1.get_serial()
+            d = str(d)
             if d is not None and d.startswith('TestKeys'):
                 break
 

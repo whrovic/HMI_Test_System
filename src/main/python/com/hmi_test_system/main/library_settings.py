@@ -69,58 +69,67 @@ def create_model_manual(M: Settings, name_model):
 
     index = M.index_model(name_model)
 
+
     # model exists 
     if(index != -1):
-
+        
         # leds configuration
         print("\n\nLEDS CONFIGURATION\n")
-        for i in range(0, n_leds):
-            print(f"\nLed {i+1} name: ")
-            led_name = input()
-            while True:
-                print(f"How many colours have the led {i+1}?")
-                n_colours = input()
-                if n_colours.isdigit():
-                    n_colours = int(n_colours)
-                    break
-                else: 
-                    continue
-
-            print(f"Select the led {i+1} central position and press ENTER")
-            pos_vector= DefineModelCV.click_pos(image)
-                
-
-            led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
-            for j in range(0, n_colours):
-                print(f"Colour {j+1} of led {i+1}:")
-                for i , color in enumerate(ListOfColors.get_list_of_colors()):
-                    print(f'{i+1} - {color.get_name()}')
+        if(n_leds > 0):
+            for i in range(0, n_leds):
+                print(f"\nLed {i+1} name: ")
+                led_name = input()
                 while True:
-                    print('Type which number you want')
-                    new_colour = input()
-                    if new_colour.isdigit():
-                        new_colour = int(new_colour)
-                        led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                    print(f"How many colours have the led {i+1}?")
+                    n_colours = input()
+                    if n_colours.isdigit():
+                        n_colours = int(n_colours)
                         break
-                    else:
+                    else: 
                         continue
+
+                print(f"Select the led {i+1} central position and press ENTER")
+                pos_vector= DefineModelCV.click_pos(image)
+                    
+
+                led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
+                for j in range(0, n_colours):
+                    print(f"Colour {j+1} of led {i+1}:")
+                    for i , color in enumerate(ListOfColors.get_list_of_colors()):
+                        print(f'{i+1} - {color.get_name()}')
+                    while True:
+                        print('Type which number you want')
+                        new_colour = input()
+                        if new_colour.isdigit():
+                            new_colour = int(new_colour)
+                            led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                            break
+                        else:
+                            continue
+                    
                 
-            
-            M.model[int(index)].set_led(led) 
+                M.model[int(index)].set_led(led)
+        else:
+            print("\nModel doesn't have leds\n")
 
 
         # buttons configuration
         print("\n\nBUTTONS CONFIGURATION\n")
-        for i in range(0, n_buttons):
-            print(f"\nButton {i+1} name: ")
-            button_name = input()
-            print(f"Select the button {i+1} central position and press ENTER")
-            pos_vector= DefineModelCV.click_pos(image)
+        if(n_buttons > 0):
+            for i in range(0, n_buttons):
+                print(f"\nButton {i+1} name: ")
+                button_name = input()
+                print(f"Select the button {i+1} central position and press ENTER")
+                pos_vector= DefineModelCV.click_pos(image)
 
-            M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
+                M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
+        else:
+            print("\nModel doesn't have buttons\n")
+
         
         return 0
     
+
     # model doesn't exist
     else:
         print("ERROR - Model creation failed")
