@@ -5,6 +5,7 @@ import os
 import sys
 from main.menu_prints import MenuPrints as MP
 from data.color.list_of_colors import ListOfColors
+from main.library_test import *
 
 '''from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -26,16 +27,20 @@ if len(sys.argv) < 2:
     sys.exit()
 
 value = sys.argv[1]
+settings = False
 
 if value == "test":
     print("The value is 'test'") 
-elif value == "settings":
-    print("The value is 'settings'")
+    menu_choice = input('Press Enter')
+    test_menu(M)    
+elif value == "set":
+    print("The value is 'set'")
+    settings = True
 else:
-    print(f"The value '{value}' is not 'test' or 'settings'")
+    print(f"The value '{value}' is not 'test' or 'set'")
+    menu_choice = input('Press Enter')
         
-menu_choice = input('Press Enter')
-while(1):
+while(settings):
     MP.main_menu_print()        
     menu_choice = input()
     

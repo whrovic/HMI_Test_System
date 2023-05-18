@@ -2,6 +2,7 @@ from threading import Thread
 import serial
 import queue
 import time
+from constants import *
 
 class SerialPort:
 
