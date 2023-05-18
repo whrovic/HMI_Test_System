@@ -94,7 +94,7 @@ def test_menu(M: Settings):
                             return exit_code
                         leds_name.append(led_name)
             # Buttons test type
-            elif (t_type == '-button'):
+            elif (t_type == '-key'):
 
                 #TODO: Check if the results come from display or serial port
 
@@ -150,8 +150,8 @@ def test_menu(M: Settings):
                     exit_code = 8     # led test failed
 
             # lcd test
-            elif(test_type[i] == "-display"):   
-                
+            elif(test_type[i] == "-display"):
+
                 result_display =  display_test(M, model, display)
                 
                 if(result_display == 0):

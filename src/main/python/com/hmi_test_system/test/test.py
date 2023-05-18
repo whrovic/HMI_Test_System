@@ -17,7 +17,6 @@ from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color'''
 
-import serial
 from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
