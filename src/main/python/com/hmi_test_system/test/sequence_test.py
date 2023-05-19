@@ -5,6 +5,7 @@ from data.model.display import Display
 from data.model.model import Model
 from .test import Test
 from serial_port.serial_port import SerialPort
+from serial_port.constants import *
 
 class SequenceTest:
 
@@ -28,7 +29,7 @@ class SequenceTest:
         while True:
             d, _ = serial1.get_serial()
             d = str(d)
-            if d is not None and d.startswith('TestKeys'):
+            if d is not None and d.startswith(TEST_BUTTONS_BEGIN):
                 break
 
         # Start button test

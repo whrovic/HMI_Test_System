@@ -62,7 +62,7 @@ class Test:
                 data, time = serial.get_serial()
 
             data = str(data)
-            if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name()):
+            if data.startswith(TEST_BUTTONS) and data.endswith(button.get_name()):
                 d = None
                 while d is None:
                     d, _ = serial.get_serial()
@@ -70,7 +70,7 @@ class Test:
             return -1
         
         data, time = serial.get_serial()
-        if data != "TestKeys - Test OK":
+        if data != TEST_BUTTONS_OK:
             return -1
         
         return 0
@@ -103,17 +103,17 @@ class Test:
             if data is not None:
                 # Determine which type of test is being performed
                 if "Test PIX" in data:
-                    new_test_name = "PIX"
+                    new_test_name = PIXEL
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
                 elif "Test CHR" in data:
-                    new_test_name = "CHR"
+                    new_test_name = CHAR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
                 elif "Test PAL" in data:
-                    new_test_name = "PAL"
+                    new_test_name = COLOR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
@@ -125,7 +125,7 @@ class Test:
                     new_test_start_time = None
                     log_display.test_canceled()
 
-                elif "TestDisplay - Pressed: ENTER" in data:
+                elif TEST_DISPLAY_ENTER in data:
                     log_display.test_finished()
                     break
 
@@ -154,7 +154,7 @@ class Test:
                     log_display.start_test(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
-                    if test_name == "PIX":
+                    if test_name == PIXEL:
                         if HMIcv.display_backlight_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
@@ -162,7 +162,7 @@ class Test:
                         else:
                             continue
 
-                    elif test_name == "CHR":
+                    elif test_name == CHAR:
                         if HMIcv.display_characters_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
@@ -170,7 +170,7 @@ class Test:
                         else:
                             continue
                         
-                    elif test_name == "PAL":
+                    elif test_name == COLOR:
                         if HMIcv.display_color_pattern_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
