@@ -53,6 +53,7 @@ def test_menu(M: Settings):
         while len(args) > 0:
             
             t_type = args[0]
+            t_type = str(t_type)
             args.pop(0)
 
             # Check if it's a declaration of a new test
@@ -68,6 +69,7 @@ def test_menu(M: Settings):
                 if len(args) > 0:                
 
                     n_leds = args[0]
+                    n_leds = str(n_leds)
 
                     if not n_leds.isdigit():
                         if len(args) == 1:
@@ -99,6 +101,7 @@ def test_menu(M: Settings):
 
                 if len(args) > 0:
                     n_buttons = args[0]
+                    n_buttons = str(n_buttons)
 
                     if not n_buttons.isdigit():
                         if len(args) == 1:
@@ -163,7 +166,7 @@ def test_menu(M: Settings):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
-                    buttons = [b.get_name() for b in buttons]
+                    buttons_name = [b.get_name() for b in buttons]
                     
                 result_button = button_test(M, model, 1, buttons_name) # 1 - sp | 2 - dsp | 3- all
                 

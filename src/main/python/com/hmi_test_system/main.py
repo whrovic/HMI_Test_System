@@ -25,7 +25,10 @@ ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
 #------------------------------------CODE BEGIN------------------------------------#
 
 if len(sys.argv) < 2:
-    print("Usage: main.py test [name_model] [(optional)type_test] [optionals]")
+    print("Usage: main.py [type]")
+    print("       [type]: set or test")
+    print("Ex: main.py set")
+    print("Ex: main.py test [name_model] [(optional)type_test] [optionals]")
     sys.exit()
 
 value = sys.argv[1]

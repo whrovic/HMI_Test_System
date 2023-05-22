@@ -12,12 +12,12 @@ from ..data.model.model import Model
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color
-from ..serial.constants import *
+from ..serial_port.constants import *
 
 '''from report.log_display import LogDisplay
 from opencv.hmicv import HMIcv
 from video.camera import Camera
-from serial.serial_port import SerialPort
+from serial_port.serial_port import SerialPort
 
 from data.model.button import Button
 from data.model.display import Display
@@ -25,14 +25,15 @@ from data.model.led import Led
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from data.color.color import Color
-from serial.constants import *
-'''
+from serial_port.constants import *'''
+
 
 cam_value: Camera
 
 N = 37
+NN = 56
 vet_cor: list[N]
-vet_cor_bef: list[56][N]
+vet_cor_bef: list[NN][N]
 leds_on: list[N]
 
 
@@ -58,14 +59,20 @@ class Test:
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
 
         for button in button_sequence:
-            data, time = serial.get_serial()
-            if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name):
-                serial.get_serial()
+            data = None
+            while data is None:
+                data, time = serial.get_serial()
+
+            data = str(data)
+            if data.startswith(TEST_BUTTONS) and data.endswith(button.get_name()):
+                d = None
+                while d is None:
+                    d, _ = serial.get_serial()
                 continue
             return -1
 
         data, time = serial.get_serial()
-        if data != "TestKeys - Test OK":
+        if data != TEST_BUTTONS_OK:
             return -1
 
         return 0
@@ -97,17 +104,17 @@ class Test:
             if data is not None:
                 # Determine which type of test is being performed
                 if "Test PIX" in data:
-                    new_test_name = "PIX"
+                    new_test_name = PIXEL
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
                 elif "Test CHR" in data:
-                    new_test_name = "CHR"
+                    new_test_name = CHAR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
                 elif "Test PAL" in data:
-                    new_test_name = "PAL"
+                    new_test_name = COLOR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
@@ -119,7 +126,7 @@ class Test:
                     new_test_start_time = None
                     log_display.test_canceled()
 
-                elif "TestDisplay - Pressed: ENTER" in data:
+                elif TEST_DISPLAY_ENTER in data:
                     log_display.test_finished()
                     break
 
@@ -148,7 +155,7 @@ class Test:
                     log_display.start_test(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
-                    if test_name == "PIX":
+                    if test_name == PIXEL:
                         if HMIcv.display_backlight_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
@@ -156,15 +163,15 @@ class Test:
                         else:
                             continue
 
-                    elif test_name == "CHR":
+                    elif test_name == CHAR:
                         if HMIcv.display_characters_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
                             continue
-
-                    elif test_name == "PAL":
+                        
+                    elif test_name == COLOR:
                         if HMIcv.display_color_pattern_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
@@ -179,12 +186,17 @@ class Test:
             return 0
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
+        #N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons 
+        #NN = 56  - > 3*2 (2 colors) + 16*2 (2 colors) + 18 
+        #TODO: N = len of list leds
         state = 0
         while 1:
             cam = cam_value.get_image()
 
             for i in range(0, len(leds_test)):
                 vet_cor[i] = HMIcv.led_test(cam, leds_test[i])
+                
+            #Test All Leds ON
             if state == 0:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -197,6 +209,7 @@ class Test:
                     led_test_error_terminal(state)
                     return -1
 
+            #Test All Leds OFF
             if state == 1:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -209,6 +222,7 @@ class Test:
                     led_test_error_terminal(state)
                     return -1
 
+            #Test All Leds ON
             if state == 2:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -226,19 +240,23 @@ class Test:
                 errors = []
                 error_counter = 0
                 cam_bef = None
-                chegada = None
-                chegada_serial, chegada_time = None, None
-                while (chegada_serial != TEST_LEDS_OK) and (chegada_time != chegada):
+                chegada = None #bad names XD
+                chegada_serial, chegada_time = None, None #bad names XD
+                while(chegada_serial != "TestLeds - Test OK") and (chegada_time != chegada):
+                    #TODO: for not necessary, better while, while SP_time < dsp_time
+                    #Just update SP when equal to null
+                    #Exit if SP = 'cancel' or timeout
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if cam != cam_bef:
                                 vet_cor_bef[i][j] = HMIcv.led_test(cam, leds_test[i])
-                        cam_bef = cam
+                        cam_bef = cam 
                         chegada_bef = chegada
                         cam, chegada = cam_value.get_image()
                         if chegada_serial != TEST_LEDS_OK:
                             chegada_serial, chegada_time = seriall.get_serial()
 
+                    #Confirm if sequence is right (??)
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if vet_cor_bef[i][j] != "OFF":
