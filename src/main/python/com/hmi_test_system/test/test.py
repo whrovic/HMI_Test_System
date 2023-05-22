@@ -186,12 +186,17 @@ class Test:
         
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
+        #N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons 
+        #NN = 56  - > 3*2 (2 colors) + 16*2 (2 colors) + 18 
+        #TODO: N = len of list leds
         state = 0
         while 1:
             cam = cam_value.get_image()
 
             for i in range(0, len(leds_test)):
                 vet_cor[i] = HMIcv.led_test(cam, leds_test[i])
+                
+            #Test All Leds ON
             if state == 0:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -204,6 +209,7 @@ class Test:
                     led_test_error_terminal(state)
                     return -1
 
+            #Test All Leds OFF
             if state == 1:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -216,6 +222,7 @@ class Test:
                     led_test_error_terminal(state)
                     return -1
 
+            #Test All Leds ON
             if state == 2:
                 aux = 0
                 for i in range(0, len(leds_test)):
@@ -232,19 +239,23 @@ class Test:
                 errors =[]
                 error_counter = 0
                 cam_bef = None
-                chegada = None
-                chegada_serial, chegada_time = None, None
+                chegada = None2 #bad names XD
+                chegada_serial, chegada_time = None, None #bad names XD
                 while(chegada_serial != "TestLeds - Test OK") and (chegada_time != chegada):
+                    #TODO: for not necessary, better while, while SP_time < dsp_time
+                    #Just update SP when equal to null
+                    #Exit if SP = 'cancel' or timeout
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if cam != cam_bef:
                                 vet_cor_bef[i][j] = HMIcv.led_test(cam, leds_test[i])
-                        cam_bef = cam
+                        cam_bef = cam 
                         chegada_bef = chegada
                         cam, chegada = cam_value.get_image()
                         if chegada_serial != "TestLeds - Test OK":
                             chegada_serial, chegada_time = seriall.get_serial()
 
+                    #Confirm if sequence is right (??)
                     for i in range(0, 56):
                         for j in range(0, len(leds_test)):
                             if vet_cor_bef[i][j] != "OFF":
@@ -259,11 +270,11 @@ class Test:
                                 error_counter = error_counter + 1
 
                     for i in range(0, 56):
-                            for k in range(0, len(leds_test[j].get_colour())):
-                                if vet_cor_bef[i][j] == leds_test[j].get_colour()[k]:
-                                    aux = aux + 1
-                                    break
-                                elif vet_cor_bef[i][j] != leds_test[j].get_colour()[k]:'''
+                        for k in range(0, len(leds_test[j].get_colour())):
+                            if vet_cor_bef[i][j] == leds_test[j].get_colour()[k]:
+                                aux = aux + 1
+                                break
+                            elif vet_cor_bef[i][j] != leds_test[j].get_colour()[k]:'''
                         
 
 
