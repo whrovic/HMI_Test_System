@@ -2,7 +2,7 @@ from .. import serial
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
-from ..serial.serial_port import SerialPort
+from ..serial_port.serial_port import SerialPort
 import time
 
 from ..data.model.button import Button
