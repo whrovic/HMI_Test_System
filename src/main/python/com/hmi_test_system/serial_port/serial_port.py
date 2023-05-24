@@ -1,5 +1,5 @@
 from threading import Thread
-from serial import Serial, PARITY_NONE
+import serial
 import queue
 import time
 from .constants import *
@@ -12,7 +12,7 @@ class SerialPort:
     def __init__(self, port):
         self.is_receiving = False
         self.thread = Thread(target = self.thread_loop)
-        self.serial = Serial(port = port, baudrate = 115200, bytesize = 8, parity = PARITY_NONE, stopbits = 1, xonxoff=False)
+        self.serial = serial.Serial(port = port, baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, xonxoff=False)
         self.port_queue_data = queue.Queue()
         self.port_queue_time = queue.Queue()
 

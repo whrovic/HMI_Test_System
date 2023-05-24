@@ -10,6 +10,9 @@ class SequenceTest:
 
     @staticmethod
     def seq_button(model: Model, buttons_test: list[str], sp: bool, dsp: bool):
+        
+        for b in buttons_test:
+            print(b)
 
         button_sequence = []
         for button_name in buttons_test:
@@ -19,10 +22,14 @@ class SequenceTest:
                 return -2
             button_sequence.append(button)
 
+        print("Opening serial port communication")
+
         # TODO: As portas série e camaras não são iniciadas, nem startadas aqui
         # TODO: Isto é código inicial para teste
-        serial1 = SerialPort('COM5')
+        serial1 = SerialPort('COM3')
         serial1.start_receive()
+
+        print("Serial Port communication openned")
 
         # Waits for serial port TestKeys begin
         while True:
@@ -30,8 +37,12 @@ class SequenceTest:
             if d is not None and d.startswith('TestKeys'):
                 break
 
+        print("Buttons Tests started")
+
         # Start button test
         result = Test.test_button(None, serial1, button_sequence, sp, dsp)
+
+        print(result)
 
         # TODO: This has to get away from here
         serial1.stop_receive()

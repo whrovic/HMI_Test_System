@@ -63,10 +63,13 @@ class Test:
 
             data = str(data)
             if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name()):
+                print(button.get_name(), "pressed")
                 d = None
                 while d is None:
                     d, _ = serial.get_serial()
                 continue
+
+            print(button.get_name(), "error")
             return -1
         
         data, time = serial.get_serial()
