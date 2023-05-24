@@ -88,7 +88,7 @@ def test_camera():
 def test_read_color_pattern():
 
     from opencv.displaycv import Displaycv
-    from data.define_model_cv import DefineModelCV
+    from opencv.define_model_cv import DefineModelCV
     from video.image_files import ImageFiles
     import cv2
     import numpy as np

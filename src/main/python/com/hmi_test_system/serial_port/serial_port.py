@@ -15,7 +15,7 @@ class SerialPort:
         self.serial = Serial(port = port, baudrate = 115200, bytesize = 8, parity = PARITY_NONE, stopbits = 1, xonxoff=False)
         self.port_queue_data = queue.Queue()
         self.port_queue_time = queue.Queue()
-
+    
     def get_serial(self):
         if self.port_queue_data.empty():
             return None, None

@@ -6,7 +6,6 @@ class Path:
 
         Path.xml_directory = os.path.join(file_path, '../../../../../../xml_files')
         Path.report_directory = os.path.join(file_path, '../../../../../../reports')
-        Path.resources_directory = os.path.join(file_path, '../../../../resources')
         Path.settings_directory = os.path.join(file_path, '../../../../../../settings')
 
     @staticmethod
@@ -32,11 +31,3 @@ class Path:
     @staticmethod
     def get_xml_directory():
         return Path.xml_directory
-    
-    @staticmethod
-    def set_report_direcory(report_direcory):
-        Path.report_directory = report_direcory
-      
-    @staticmethod
-    def get_report_directory():
-        return Path.report_directory

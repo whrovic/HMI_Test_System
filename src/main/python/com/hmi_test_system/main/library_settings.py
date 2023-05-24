@@ -3,7 +3,7 @@ from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
-from data.define_model_cv import DefineModelCV
+from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 import os
 from data.color.list_of_colors import ListOfColors
