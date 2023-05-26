@@ -2,7 +2,7 @@ from threading import Thread
 from serial import Serial, PARITY_NONE
 import queue
 import time
-from .constants import *
+from .constant_test import *
 
 class SerialPort:
 

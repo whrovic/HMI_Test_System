@@ -1,0 +1,9 @@
+
+__all__ = ['NTIMEOUT_MENUS','CAM_LEDS', 'CAM_DISPLAY']
+
+
+
+NTIMEOUT_MENUS = 5
+
+CAM_LEDS = 'Cam1'
+CAM_DISPLAY = 'Cam2'

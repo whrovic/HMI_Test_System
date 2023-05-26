@@ -24,7 +24,7 @@ from data.model.led import Led
 from opencv.hmicv import HMIcv
 from video.camera import Camera
 from data.color.color import Color
-from serial_port.constants import *
+from serial_port.constant_test import *
 
 
 cam_value: Camera

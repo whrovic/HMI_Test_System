@@ -5,7 +5,7 @@ from data.model.display import Display
 from data.model.model import Model
 from .test import Test
 from serial_port.serial_port import SerialPort
-from serial_port.constants import *
+from serial_port.constant_test import *
 
 class SequenceTest:
 
