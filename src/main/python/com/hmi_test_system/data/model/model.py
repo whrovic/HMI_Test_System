@@ -13,7 +13,7 @@ class Model:
         self._display = display
         self._info = info
     
-    def set_name(self, name: int):
+    def set_name(self, name: str):
         self._name = name
         
     def get_name(self):

@@ -2,6 +2,7 @@ from .model.model import Model
 from .model.display import Display
 from .path import Path
 from test.sequence_test import SequenceTest
+from hardware_settings.camera_settings import CameraSettings
 
 class Settings:
 
@@ -9,6 +10,12 @@ class Settings:
         self.model: list[Model] = []
         self.path = Path()
         self.test = SequenceTest()
+        self.cam1 = CameraSettings()
+        self.cam2 = CameraSettings()
+
+
+    #------------------------------------Camera------------------------------------#
+    
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info):
