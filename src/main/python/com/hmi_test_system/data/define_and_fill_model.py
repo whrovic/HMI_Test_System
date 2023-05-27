@@ -7,6 +7,51 @@ import os
 from data.color.list_of_colors import ListOfColors
 
 class DefineAndFillModel:
+
+    
+#------------------------------------SETTINGS XML------------------------------------#
+
+    """ def open_xml_settings(M: Settings): """
+        while True:
+            try:
+                files = os.listdir(M.path.get_settings_directory())   # files in directory
+                break
+            except:
+                print("Error path don't exist")
+                print("To go to the menu insert anything\n")
+                c = input()
+                return -1
+                
+        xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
+
+
+        for filename in xml_files:
+            # check if it is the asked file
+            if filename == f'{"ADICIONAR"}.xml': 
+                #...
+                pass
+                
+    """ def create_xml_settings(M: Settings): """
+        # Create the XML document and write it to a file
+        tree = ET.ElementTree("")
+        ET.indent(tree, '  ')
+        tree.write(f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml")
+
+    
+    """ def delete_xml_settings(M: Settings): """
+        file_path = f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml"
+
+        # check if the file exists
+        if os.path.exists(file_path):
+            # delete the file
+            os.remove(file_path)
+            return 1
+        else:
+            return -1
+        
+
+#------------------------------------MODEL XML------------------------------------#
+    
     def open_model_xml(M: Settings, name_model):
 
         while True:
@@ -39,8 +84,8 @@ class DefineAndFillModel:
                 display_dimx = display.find('display_dimx')
                 display_dimy = display.find('display_dimy')
                 LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
-                version = model.find('version')
-                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, version.text)
+                info = model.find('info')
+                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, info.text)
                 
                 index = M.index_model(name.text)
 
@@ -98,8 +143,8 @@ class DefineAndFillModel:
         display_dimx.text = str(dsp.get_dim_x())
         display_dimy = ET.SubElement(display, 'display_dimy')
         display_dimy.text = str(dsp.get_dim_y())
-        version = ET.SubElement(model, 'version')
-        version.text = str(aux.get_version())
+        info = ET.SubElement(model, 'info')
+        info.text = str(aux.get_info())
         
 
         leds = ET.SubElement(model, 'leds')
@@ -116,7 +161,7 @@ class DefineAndFillModel:
             led_y.text = str(aux2.get_pos_y())
             leds_colours = ET.SubElement(leds, f'led{i+1}_colours')
             for j in range(0, aux2._n_colour):
-                aux3 = aux._leds[i].get_colour()
+                aux3 = aux._leds[i].get_colours()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
                 led_colour.text = str(aux3[j].get_name())
         

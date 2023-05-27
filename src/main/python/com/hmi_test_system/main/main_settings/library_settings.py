@@ -9,6 +9,12 @@ import os
 from data.color.list_of_colors import ListOfColors
 
 
+def edit_camara_settings(M: Settings):
+    pass
+
+def edit_SP_settings(M: Settings):
+    pass
+
 def create_model_manual(M: Settings, name_model):
 
     img_path = "test_images/HMI.png"
@@ -41,10 +47,10 @@ def create_model_manual(M: Settings, name_model):
             continue  
 
     while True:
-        print("Model version:")
-        version = str(input())       # version of model
-        version = version.strip()
-        if (len(version) > 0):
+        print("Model Info:")
+        info = str(input())       # Info of model
+        info = info.strip()
+        if (len(info) > 0):
             break
         else:
             continue
@@ -65,7 +71,7 @@ def create_model_manual(M: Settings, name_model):
     display = Display('display', int(pos_vector_init[0]) , int(pos_vector_init[1]) , dim_x, dim_y)
 
     # add model 
-    M.new_model(name_model, n_leds, n_buttons, display, version)
+    M.new_model(name_model, n_leds, n_buttons, display, info)
 
     index = M.index_model(name_model)
 
@@ -136,7 +142,6 @@ def create_model_manual(M: Settings, name_model):
         M.delete_model(name_model)
         return -1
 
-
 def add_models(M: Settings):
     #------------------------------------ADD NEW MODEL------------------------------------#
     #try:
@@ -180,11 +185,6 @@ def add_models(M: Settings):
                 break
 
     #except:
-'''    print("error")
-        print("Do you want to repeat [y|n]")
-        answer = input()
-        if(answer == 'y'):
-            add_models(M)'''
         
 def edit_model(M: Settings):
 

@@ -11,8 +11,9 @@ class Settings:
         self.test = SequenceTest()
 
     #------------------------------------Model------------------------------------#
-    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, version):
-        self.model.append(Model(name, n_leds, n_buttons, display, version))
+    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info):
+        self.model.append(Model(name, n_leds, n_buttons, display, info))
+   
     
     def call_model(self, name):
         for i in range(0, len(self.model)):
