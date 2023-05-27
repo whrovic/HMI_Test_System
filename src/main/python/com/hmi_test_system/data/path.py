@@ -5,7 +5,7 @@ class Path:
         file_path = os.path.dirname(__file__)
 
         Path.xml_directory = os.path.join(file_path, '../../../../../../xml_files')
-        Path.report_directory = os.path.join(file_path, '../../../../../../reports')
+        Path.resources_directory = os.path.join(file_path, '../../../../resources')
         Path.settings_directory = os.path.join(file_path, '../../../../../../settings')
 
     @staticmethod
