@@ -39,14 +39,6 @@ leds_on : list[N]
 # with the right functions
 
 class Test:
-    
-    @staticmethod
-    def start_test():
-        cam_value.start_capture()
-
-    @staticmethod
-    def end_test():
-        cam_value.stop_capture()
 
     @staticmethod
     def test_button_display(button_sequence: list[Button]):
@@ -76,9 +68,11 @@ class Test:
         return 0
 
     @staticmethod
-    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP = True, DP = False):
-        return Test.test_button_serial_port(serial, button_sequence)
-
+    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button]):
+        # TODO: Make this for camara as well
+        if serial is not None:
+            return Test.test_button_serial_port(serial, button_sequence)
+        return -1
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
@@ -183,7 +177,19 @@ class Test:
             return -1
         else:
             return 0
-        
+
+    @staticmethod
+    def test_boot_loader_info():
+        return -1
+    
+    @staticmethod
+    def test_board_info():
+        return -1
+    
+    @staticmethod
+    def test_alight():
+        return -1
+
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
         #N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons 
