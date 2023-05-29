@@ -12,3 +12,11 @@ class Camera(VideoDevice):
     def get_frame(self):
         _, frame = self._cap.read()
         return frame
+
+    def closed(self):
+        return ((self._cap is None) or (not self._cap.isOpened()))
+    
+    def close(self):
+        self.stop_capture()
+        if self._cap is not None:
+            self._cap.release()

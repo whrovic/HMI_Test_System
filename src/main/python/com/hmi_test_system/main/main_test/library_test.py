@@ -154,7 +154,7 @@ def test_menu(M: Settings):
             # lcd test
             elif(test_type[i] == "-display"):
 
-                result_display =  display_test(M, model, display)
+                result_display =  display_test(M, model)
                 
                 if(result_display == 0):
                     exit_code = 0     # test passed
@@ -184,7 +184,7 @@ def test_menu(M: Settings):
         buttons_name = [button.get_name() for button in buttons]
 
         result_led = led_test(M, model, None)
-        result_display = display_test(M, model, display)
+        result_display = display_test(M, model)
         result_button = button_test(M, model, 1, buttons_name)
 
         if(result_led + result_display + result_button == 0):
@@ -217,5 +217,5 @@ def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = 
     return result
 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(M:Settings, model: Model, display: Display):
-    return M.test.seq_display(model, display)
+def display_test(M:Settings, model: Model):
+    return M.test.seq_display(model)

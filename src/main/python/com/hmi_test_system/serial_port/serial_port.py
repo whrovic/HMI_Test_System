@@ -28,7 +28,8 @@ class SerialPort:
 
     def stop_receive(self):
         self.is_receiving = False
-        self.thread.join()
+        if self.thread.is_alive():
+            self.thread.join()
 
     def thread_loop(self):
         while self.is_receiving:
@@ -45,10 +46,15 @@ class SerialPort:
 
     def write_port(self, data: str):
         self.serial.write(data.encode('utf-8'))
-
+    
     def clear_queue(self):
         self.port_queue_data.queue.clear()
         self.port_queue_time.queue.clear()
 
+    def close(self):
+        self.stop_receive()
+        if self.serial is not None:
+            self.serial.close()
 
-    
+    def closed(self):
+        return ((self.serial is None) or (not self.serial.is_open()))
