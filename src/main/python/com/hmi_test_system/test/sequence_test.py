@@ -51,7 +51,7 @@ class SequenceTest:
             # TODO: Catch this error
             SetupTest.close()
             return -4
-
+        
         # Start receiving data from serial port and/or display
         if sp:
             serial_port.start_receive()
