@@ -5,6 +5,7 @@ from data.model.display import Display
 from data.model.led import Led
 from data.model.model import Model
 from opencv.displaycv import Displaycv
+from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
 
@@ -31,9 +32,9 @@ class SequenceTest:
         else:
             button_sequence = [model.get_button(button_name) for button_name in buttons_test]
             if None in button_sequence:
-                # TODO: Catch this error
                 # Invalid button names
-                return -2
+                ExitCode.invalid_argument()
+                return -1
 
         # Open the needed connections
         SetupTest.setup(False, dsp, sp, False)
@@ -42,15 +43,15 @@ class SequenceTest:
         serial_port = SetupTest.__sp_main
         if sp and serial_port.closed():
             # Couldn't open serial port connection
-            # TODO: Catch this error
             SetupTest.close()
-            return -3
+            ExitCode.serialport_connection_failure()
+            return -1
         cam = SetupTest.__cam_display
         if dsp and cam.closed():
             # Couldn't open camera connection
-            # TODO: Catch this error
             SetupTest.close()
-            return -4
+            ExitCode.camera_connection_failure()
+            return -1
         
         # Start receiving data from serial port and/or display
         if sp:
@@ -72,13 +73,15 @@ class SequenceTest:
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
-                return -5
+                ExitCode.serialport_timeout_reception()
+                return -1
             # Check if the camara timed out waiting for the first received data
             if (dsp and not received_dsp and (now - begin_waiting_time > TIMEOUT)):
                 # No data was received from the camara
                 # TODO: Catch this error
                 SetupTest.close()
-                return -6
+                ExitCode.camera_timeout_reception()
+                return -1
             
             # Get data from serial port
             if sp and not ready_sp:
