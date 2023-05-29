@@ -34,6 +34,9 @@ def test_menu(M: Settings):
         return exit_code
 
     model = M.call_model(name_model)
+    # TODO: Não deve ir buscar as coisas ao modelo aqui. Isto é feito no sequence test.
+    # Só manda os nomes dos leds e botões conforme os recebe ou se for para testar todos, manda None
+    # A verificação se os leds/botões existem é feita no sequence test.
     leds = model.get_leds()
     buttons = model.get_buttons()
     display = model.get_display()
@@ -200,11 +203,12 @@ def test_menu(M: Settings):
 
 #------------------------------------LED TEST------------------------------------#
 def led_test(M: Settings, model: Model, leds_name: list[str] = []):
+    # TODO: Quando for para testar todos os leds, deve mandar None nem leds_name
     return M.test.seq_led(model, leds_name)
          
 #------------------------------------BUTTON TEST------------------------------------#
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
-
+    #TODO: Quando for para testar todos os botões, deve mandar None em buttons_name
     if code == 1:
         result = M.test.seq_button(model, buttons_name, 1, 0)
 
