@@ -52,6 +52,7 @@ class SerialPort:
 
     def close(self):
         self.stop_receive()
+        self.clear_queue()
         if self._serial is not None:
             self._serial.close()
 

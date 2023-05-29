@@ -18,5 +18,6 @@ class Camera(VideoDevice):
     
     def close(self):
         self.stop_capture()
+        self.clear_queue()
         if self._cap is not None:
             self._cap.release()

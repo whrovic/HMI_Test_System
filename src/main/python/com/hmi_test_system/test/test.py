@@ -76,9 +76,11 @@ class Test:
         return 0
 
     @staticmethod
-    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP = True, DP = False):
-        return Test.test_button_serial_port(serial, button_sequence)
-
+    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button]):
+        # TODO: Make this for camara as well
+        if serial is not None:
+            return Test.test_button_serial_port(serial, button_sequence)
+        return -1
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
