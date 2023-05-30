@@ -1,9 +1,11 @@
-from .. import serial
+from .. import serial_port
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..serial_port.serial_port import SerialPort
 import time
+from ..report.exit_code import ExitCode
+from ..report.log_leds import LogLeds
 
 from ..data.model.button import Button
 from ..data.model.display import Display
@@ -27,14 +29,7 @@ from video.camera import Camera
 from data.color.color import Color
 from serial_port.constants import *'''
 
-
 cam_value: Camera
-
-N = 37
-NN = 56
-vet_cor: list[N]
-vet_cor_bef: list[NN][N]
-leds_on: list[N]
 
 
 # TODO: complet the start_test and end_test
@@ -170,7 +165,7 @@ class Test:
                             test_start_time = None
                         else:
                             continue
-                        
+
                     elif test_name == COLOR:
                         if HMIcv.display_color_pattern_test(frame, display):
                             log_display.test_passed(test_name)
@@ -186,129 +181,139 @@ class Test:
             return 0
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
-        #N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons 
-        #NN = 56  - > 3*2 (2 colors) + 16*2 (2 colors) + 18 
-        #TODO: N = len of list leds
-        state = 0
-        while 1:
-            cam = cam_value.get_image()
+        N = len(leds_test)
+        NN = 56
+        vet_cor: list[N]
+        vet_cor_bef: list[NN][N]
+        leds_on: list[N]
+        matrix_ref: list[NN][N]
+        cam_bef = None
+        error = 0
+        arrive_time_cam = None
+        arrive_serial, arrive_time_serial = None, None
 
-            for i in range(0, len(leds_test)):
+        # N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons
+        # NN = 56  - > 3*2 (2 colors) + 16*2 (2 colors) + 18
+        # TODO: N = len of list leds
+
+        state = 0
+        log_leds = LogLeds()
+
+        while 1:
+            cam, arrive_time_cam = cam_value.get_image()
+
+            for i in range(0, N):
                 vet_cor[i] = HMIcv.led_test(cam, leds_test[i])
-                
-            #Test All Leds ON
+
+            # Test All Leds ON
             if state == 0:
                 aux = 0
-                for i in range(0, len(leds_test)):
+
+                for i in range(0, N):
                     if vet_cor[i] is not None:
                         aux = aux + 1
-                if aux == len(leds_test):
-                    led_test_pass_terminal(state)
+                if aux == N:
+                    log_leds.test_leds_on_passed()
                     state = 1
                 else:
-                    led_test_error_terminal(state)
+                    log_leds.test_failed()
                     return -1
 
-            #Test All Leds OFF
+            # Test All Leds OFF
             if state == 1:
                 aux = 0
-                for i in range(0, len(leds_test)):
+                for i in range(0, N):
                     if vet_cor[i] is None:
                         aux = aux + 1
                 if aux == len(leds_test):
-                    led_test_pass_terminal(state)
+                    log_leds.test_leds_off_passed()
                     state = 2
                 else:
-                    led_test_error_terminal(state)
+                    log_leds.test_failed()
                     return -1
 
-            #Test All Leds ON
+            # Test All Leds ON
             if state == 2:
                 aux = 0
-                for i in range(0, len(leds_test)):
+                for i in range(0, N):
                     if vet_cor[i] is not None:
                         aux = aux + 1
-                if aux == len(leds_test):
-                    led_test_pass_terminal(state)
+                if aux == N:
+                    log_leds.test_leds_on_passed()
                     state = 3
                 else:
-                    led_test_error_terminal(state)
+                    log_leds.test_failed()
                     return -1
 
             if state == 3:
-                aux = 0
-                errors = []
-                error_counter = 0
-                cam_bef = None
-                chegada = None #bad names XD
-                chegada_serial, chegada_time = None, None #bad names XD
-                while(chegada_serial != "TestLeds - Test OK") and (chegada_time != chegada):
-                    #TODO: for not necessary, better while, while SP_time < dsp_time
-                    #Just update SP when equal to null
-                    #Exit if SP = 'cancel' or timeout
-                    for i in range(0, 56):
-                        for j in range(0, len(leds_test)):
-                            if cam != cam_bef:
-                                vet_cor_bef[i][j] = HMIcv.led_test(cam, leds_test[i])
-                        cam_bef = cam 
-                        chegada_bef = chegada
-                        cam, chegada = cam_value.get_image()
-                        if chegada_serial != TEST_LEDS_OK:
-                            chegada_serial, chegada_time = seriall.get_serial()
+                aux_led = 0
+                x = 0
+                y = 0
 
-                    #Confirm if sequence is right (??)
-                    for i in range(0, 56):
-                        for j in range(0, len(leds_test)):
-                            if vet_cor_bef[i][j] != "OFF":
-                                if leds_on[i] is None:
-                                    leds_on[i] = vet_cor_bef[i][j]
-                                    vet_cor_bef[i][j] = "OFF"
+                for i in range(0, NN):
+                    for j in range(0, N):
+                        matrix_ref[i][j] = "OFF"
+                # TODO: for can be upgraded to take in to account more colors in a single LED
+                for i in range(0, NN):
+                    if (aux_led == 0) and (len(leds_test[y].get_colours()) == 2):
+                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
+                        x = x + 1
+                        aux_led = 1
+                    if (aux_led == 1) and (len(leds_test[y].get_colours()) == 2):
+                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
+                        x = x + 1
+                        y = y + 1
+                        aux_led = 0
+                    if (aux_led == 0) and (len(leds_test[y].get_colours()) != 2):
+                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
+                        x = x + 1
+                        y = y + 1
+                        aux_led = 1
 
-                    for i in range(0, 56):
-                        for j in range(0, len(leds_test)):
-                            if vet_cor_bef[i][j] != "OFF":
-                                errors[error_counter] = j
-                                error_counter = error_counter + 1
+                x = 0
+                arrive_serial, arrive_time_serial = seriall.get_serial()
 
-                    if error_counter != 0:
-                        led_test_error_terminal(4)
-                        return -1
-                    else:
-                        led_test_pass_terminal(4)
+                while 1: 
+                    if arrive_serial is None:
+                        arrive_serial, arrive_time_serial = seriall.get_serial()
 
-                    for j in range(0, 56):
-                        for k in range(0, len(leds_test[j].get_colours())):
-                            if leds_on[j] == leds_test[j].get_colours()[k] and k == 0:
-                                aux = aux + 1
-                                break
-                            elif leds_on[j] == leds_test[j].get_colours()[k] and k == 1:
-                                aux = aux + 1
-                                break
-                    if aux == 56:
-                        led_test_pass_terminal(3)
-                        return 0
-                    else:
-                        led_test_error_terminal(3)
+                    for j in range(0, N):
+                        if cam != cam_bef:
+                            vet_cor_bef[x][j] = HMIcv.led_test(cam, leds_test[j])
+                    cam_bef = cam
+                    cam, arrive_time_cam = cam_value.get_image()
+
+                    x = x + 1
+                    if (arrive_serial == TEST_LEDS_OK) and (arrive_time_serial < arrive_time_cam):
+                        break
+                    if arrive_serial == TEST_LEDS_CANCEL:
+                        log_leds.test_canceled()
+                        ExitCode.leds_test_not_passed()
                         return -1
 
+                for i in range(0, NN):
+                    if matrix_ref[i] != vet_cor_bef[i]:
+                        for j in range(0, N):
+                            if matrix_ref[i][j] == "OFF":
+                                if matrix_ref[i][j] != vet_cor_bef[i][j]:
+                                    log_leds.test_leds_sequence_colour_failed(leds_test[j].get_name(), matrix_ref[i][j],
+                                                                              vet_cor_bef[i][j])
+                                    ExitCode.leds_test_colour_sequence_error()
+                                    error = error + 1
+                            else:
+                                if matrix_ref[i][j] != vet_cor_bef[i][j]:
+                                    log_leds.test_leds_sequence_state_failed(leds_test[j].get_name(), matrix_ref[i][j], 
+                                                                             vet_cor_bef[i][j])
+                                    ExitCode.leds_test_state_sequence_error()
+                                    error = error + 1
+                if error == 0:
+                    log_leds.test_leds_sequence_passed()
+                    log_leds.test_finished()
+                    return 0
+                else:
+                    log_leds.test_leds_sequence_failed()
+                    ExitCode.leds_test_not_passed()
+                    return -1
 
-def led_test_error_terminal(code):
-    if code == 0 or code == 2:
-        print("Error on turned on LED's\n")
-    elif code == 1:
-        print("Error on turned off LED's\n")
-    elif code == 3:
-        print("Error in sequence LED's test\n")
-    elif code == 4:
-        print("Error: LED ON when OFF\n")
 
 
-def led_test_pass_terminal(code):
-    if code == 0 or code == 2:
-        print("All the LED's Turn ON\n")
-    elif code == 1:
-        print("All the LED's Turn OFF\n")
-    elif code == 3:
-        print("Sequence LED test passed\n")
-    elif code == 4:
-        print("All LED's OFF when OFF\n")
