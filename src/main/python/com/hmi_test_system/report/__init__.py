@@ -1,4 +1,4 @@
-__all__=['ExitCode']
+__all__=['ExitCode', 'LogButton', 'LogDisplay', 'LogLeds' ]
 
 from .exit_code import ExitCode
 

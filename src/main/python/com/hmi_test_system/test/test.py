@@ -13,17 +13,15 @@ from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color'''
 
-from report.log_display import LogDisplay
+from report import *
 from opencv.hmicv import HMIcv
 from video.camera import Camera
-from serial_port.serial_port import SerialPort
 
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
-from opencv.hmicv import HMIcv
-from video.camera import Camera
 from data.color.color import Color
+from serial_port.serial_port import SerialPort
 from serial_port.constant_test import *
 
 
