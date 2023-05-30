@@ -1,11 +1,11 @@
 import os
 from data.settings import Settings
-from main.library_settings import add_models
-from main.library_settings import edit_model
-from main.menu_prints import MenuPrints as MP
+from main.main_settings.library_settings import add_models
+from main.main_settings.library_settings import edit_model
+from main.main_settings.menu_prints import MenuPrints as MP
+from main.constant_main import *
 
 
-NTIMEOUT = 5
 count = 0
 
 def new_model(M: Settings):
@@ -52,7 +52,7 @@ def new_model(M: Settings):
         
         else:
             count = count + 1
-            if (count > NTIMEOUT):
+            if (count > NTIMEOUT_MENUS):
                 return -1
             continue
 
@@ -102,6 +102,6 @@ def settings_menu(M: Settings):
         
         else:
             count = count + 1
-            if (count > NTIMEOUT):
+            if (count > NTIMEOUT_MENUS):
                 return -1
             continue

@@ -1,11 +1,11 @@
 from data.settings import Settings
-#from main.library_test import model_menu
-from main.menus import settings_menu
+from main.main_settings.menus import *
 import os
 import sys
-from main.menu_prints import MenuPrints as MP
+from main.main_settings.menu_prints import MenuPrints as MP
 from data.color.list_of_colors import ListOfColors
-from main.library_test import *
+from main.main_test.library_test import *
+from main.constant_main import *
 
 '''from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -15,7 +15,6 @@ filename = askdirectory() # Isto te permite selecionar um arquivo
 print(filename) # printa o arquivo selecionado      
 menu_choice = input()'''
 
-NTIMEOUT = 5
 count = 0
 M = Settings()
 
@@ -70,6 +69,6 @@ while(settings):
 
     else:
         count = count + 1
-        if (count > NTIMEOUT):
+        if (count > NTIMEOUT_MENUS):
             break
         continue

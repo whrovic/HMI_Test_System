@@ -34,6 +34,9 @@ def test_menu(M: Settings):
         return exit_code
 
     model = M.call_model(name_model)
+    # TODO: Não deve ir buscar as coisas ao modelo aqui. Isto é feito no sequence test.
+    # Só manda os nomes dos leds e botões conforme os recebe ou se for para testar todos, manda None
+    # A verificação se os leds/botões existem é feita no sequence test.
     leds = model.get_leds()
     buttons = model.get_buttons()
     display = model.get_display()
@@ -154,7 +157,7 @@ def test_menu(M: Settings):
             # lcd test
             elif(test_type[i] == "-display"):
 
-                result_display =  display_test(M, model, display)
+                result_display =  display_test(M, model)
                 
                 if(result_display == 0):
                     exit_code = 0     # test passed
@@ -184,7 +187,7 @@ def test_menu(M: Settings):
         buttons_name = [button.get_name() for button in buttons]
 
         result_led = led_test(M, model, None)
-        result_display = display_test(M, model, display)
+        result_display = display_test(M, model)
         result_button = button_test(M, model, 1, buttons_name)
 
         if(result_led + result_display + result_button == 0):
@@ -200,11 +203,12 @@ def test_menu(M: Settings):
 
 #------------------------------------LED TEST------------------------------------#
 def led_test(M: Settings, model: Model, leds_name: list[str] = []):
+    # TODO: Quando for para testar todos os leds, deve mandar None nem leds_name
     return M.test.seq_led(model, leds_name)
          
 #------------------------------------BUTTON TEST------------------------------------#
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
-
+    #TODO: Quando for para testar todos os botões, deve mandar None em buttons_name
     if code == 1:
         result = M.test.seq_button(model, buttons_name, 1, 0)
 
@@ -217,5 +221,5 @@ def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = 
     return result
 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(M:Settings, model: Model, display: Display):
-    return M.test.seq_display(model, display)
+def display_test(M:Settings, model: Model):
+    return M.test.seq_display(model)

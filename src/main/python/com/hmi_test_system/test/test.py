@@ -1,4 +1,4 @@
-from .. import serial_port
+'''from .. import serial_port
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
@@ -14,20 +14,20 @@ from ..data.model.model import Model
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color
-from ..serial_port.constants import *
+from ..serial_port.constant_test import *'''
 
-'''from report.log_display import LogDisplay
+from report.log_display import LogDisplay
+from report.log_leds import LogLeds
+from report.exit_code import ExitCode
 from opencv.hmicv import HMIcv
 from video.camera import Camera
-from serial_port.serial_port import SerialPort
 
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
-from opencv.hmicv import HMIcv
-from video.camera import Camera
 from data.color.color import Color
-from serial_port.constants import *'''
+from serial_port.constant_test import *
+from serial_port.serial_port import SerialPort
 
 cam_value: Camera
 
@@ -36,14 +36,6 @@ cam_value: Camera
 # with the right functions
 
 class Test:
-
-    @staticmethod
-    def start_test():
-        cam_value.start_capture()
-
-    @staticmethod
-    def end_test():
-        cam_value.stop_capture()
 
     @staticmethod
     def test_button_display(button_sequence: list[Button]):
@@ -73,8 +65,12 @@ class Test:
         return 0
 
     @staticmethod
-    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP=True, DP=False):
-        return Test.test_button_serial_port(serial, button_sequence)
+    def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button], SP = True, DP = False):
+        # TODO: Make this for camara as well
+        if serial is not None:
+            return Test.test_button_serial_port(serial, button_sequence)
+        return -1
+
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
@@ -179,6 +175,19 @@ class Test:
             return -1
         else:
             return 0
+
+    @staticmethod
+    def test_boot_loader_info():
+        return -1
+    
+    @staticmethod
+    def test_board_info():
+        return -1
+    
+    @staticmethod
+    def test_alight():
+        return -1
+
 
     def test_led(self, leds_test: list[Led], seriall: SerialPort):
         N = len(leds_test)
@@ -314,6 +323,7 @@ class Test:
                     log_leds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
+
 
 
 
