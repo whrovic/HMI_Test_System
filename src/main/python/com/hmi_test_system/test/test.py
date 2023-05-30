@@ -1,4 +1,4 @@
-'''from .. import serial_port
+from .. import serial_port
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
@@ -14,9 +14,9 @@ from ..data.model.model import Model
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..data.color.color import Color
-from ..serial_port.constant_test import *'''
+from ..serial_port.constant_test import *
 
-from report.log_display import LogDisplay
+'''from report.log_display import LogDisplay
 from report.log_leds import LogLeds
 from report.exit_code import ExitCode
 from opencv.hmicv import HMIcv
@@ -27,7 +27,7 @@ from data.model.display import Display
 from data.model.led import Led
 from data.color.color import Color
 from serial_port.constant_test import *
-from serial_port.serial_port import SerialPort
+from serial_port.serial_port import SerialPort'''
 
 cam_value: Camera
 
