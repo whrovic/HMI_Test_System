@@ -177,15 +177,15 @@ class Test:
             return 0
 
     @staticmethod
-    def test_boot_loader_info():
+    def test_boot_loader_info(cam, serial, version, date):
         return -1
     
     @staticmethod
-    def test_board_info():
+    def test_board_info(cam, serial, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
         return -1
     
     @staticmethod
-    def test_alight():
+    def test_alight(cam, serial):
         return -1
 
 
@@ -243,6 +243,7 @@ class Test:
                     if vet_cor[i] is None:
                         log_leds.test_failed()
                         ExitCode.leds_test_not_turn_all_off()
+                        #new solution to update the others
                         return -1
                 log_leds.test_leds_off_passed()
                 state = 2

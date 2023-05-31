@@ -4,7 +4,7 @@ from main.main_settings.library_settings import add_models
 from main.main_settings.library_settings import edit_model
 from main.main_settings.menu_prints import MenuPrints as MP
 from main.constant_main import *
-
+__all__=['new_model', 'settings_menu']
 
 count = 0
 
