@@ -189,12 +189,11 @@ class Test:
         return -1
 
 
-    def test_led(self, leds_test: list[Led], seriall: SerialPort):
+    def test_led(self, cam, serial, leds_test: list[Led]):
         n_leds_test = len(leds_test)
-        NN = 56
+        NN = sum([l.get_n_Colour() for l in leds_test])
         vet_cor: list[n_leds_test]
         vet_cor_bef: list[NN][n_leds_test]
-        leds_on: list[n_leds_test]
         matrix_ref: list[NN][n_leds_test]
         cam_bef = None
         error = 0
@@ -314,12 +313,12 @@ class Test:
                 NN=y'''
                 
                 x = 0
-                arrive_serial, arrive_time_serial = seriall.get_serial()
+                arrive_serial, arrive_time_serial = serial.get_serial()
 
                 #Fill a new matrix with the colors read
                 while True: 
                     if arrive_serial is None:
-                        arrive_serial, arrive_time_serial = seriall.get_serial()
+                        arrive_serial, arrive_time_serial = serial.get_serial()
 
                     for j in range(0, n_leds_test):
                         if cam != cam_bef:
@@ -340,7 +339,7 @@ class Test:
                 #   and automaticly do the comparation
                 for i in range(0, NN):
                     if matrix_ref[i] != vet_cor_bef[i]:
-                        for j in range(0, N):
+                        for j in range(0, n_leds_test):
                             if matrix_ref[i][j] == "OFF":
                                 if matrix_ref[i][j] != vet_cor_bef[i][j]:
                                     log_leds.test_leds_sequence_colour_failed(leds_test[j].get_name(), matrix_ref[i][j],
