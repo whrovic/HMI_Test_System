@@ -3,12 +3,13 @@ from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
+from data.model.info import Info
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 import os
 from data.color.list_of_colors import ListOfColors
 __all__=['edit_camara_settings', 'edit_SP_settings', 'create_model_manual', 'add_models', 
-         'edit_model', 'edit_name_model', 'edit_led', 'edit_led', 'edit_led_settings' , 
+         'edit_model', 'edit_model_info', 'edit_led', 'edit_led', 'edit_led_settings' , 
          'edit_button', 'edit_display']
 
 def edit_camara_settings(M: Settings):
@@ -30,6 +31,7 @@ def create_model_manual(M: Settings, name_model):
     cap.stop_capture()
     cap.clear_queue()
 
+
     while True:
         print("Number of buttons: ")
         n_buttons = input()    # number of buttons of model
@@ -48,14 +50,46 @@ def create_model_manual(M: Settings, name_model):
         else: 
             continue  
 
+    # Info configuration
+    print("\n\nINFO CONFIGURATION\n")       
+
     while True:
-        print("Model Info:")
-        info = str(input())       # Info of model
-        info = info.strip()
-        if (len(info) > 0):
+        print("Board:")
+        board = str(input())       # Board of model
+        board = board.strip()
+        if (len(board) > 0):
             break
         else:
             continue
+
+    while True:
+        print("Option:")
+        option = str(input())       # Option of model
+        option = option.strip()
+        if (len(option) > 0):
+            break
+        else:
+            continue
+
+    while True:
+        print("Revision:")
+        revision = str(input())       # Revision of model
+        revision = revision.strip()
+        if (len(revision) > 0):
+            break
+        else:
+            continue
+
+    while True:
+        print("Edition:")
+        edition = str(input())       # Edition of model
+        edition = edition.strip()
+        if (len(edition) > 0):
+            break
+        else:
+            continue
+
+    info = Info(board, option, revision, edition)
  
 
     # LCD configuration
@@ -186,7 +220,6 @@ def add_models(M: Settings):
                 c = input()
                 break
 
-    #except:
         
 def edit_model(M: Settings):
 
@@ -234,7 +267,7 @@ def edit_model(M: Settings):
                 while True:
                     os.system('cls') 
                     print("-------------Edit Menu-------------\n\n")
-                    print("1- Edit name model   2- Edit led\n")
+                    print("1- Edit model info   2- Edit led\n")
                     print("3- Edit button       4- Edit LCD\n")
                     print("             5- Save")
                     print("6- Back              7- Exit\n")
@@ -244,7 +277,7 @@ def edit_model(M: Settings):
 
                     # edit name model
                     if c == '1':
-                        edit_name_model(M, index)
+                        edit_model_info(M, index)
                         name_model = M.model[index].get_name()
                             
                     # edit led
@@ -303,45 +336,73 @@ def edit_model(M: Settings):
                         return -1
                     
                     
-#------------------------------------EDIT NAME MODEL------------------------------------#
-def edit_name_model(M: Settings, index: int):
+#------------------------------------EDIT MODEL INFO------------------------------------#
+def edit_model_info(M: Settings, index: int):
 
-    os.system('cls')
-    print("What is the new name model?\n")
-    name_model = input()
-    M.model[index].set_name(name_model)
+    while True:
+        os.system('cls')
+        print("What is the new name model?\n")
+        name_model = str(input())
+        name_model = name_model.strip()
+        if(len(name_model)>0):
+            M.model[index].set_name(name_model)
+            break
+        else:
+            continue
+    
+
+    while True:
+        os.system('cls')
+        print("What is the new board:")
+        board = str(input())       # Board of model
+        board = board.strip()
+        if (len(board) > 0):
+            break
+        else:
+            continue
+
+
+    while True:
+        os.system('cls')
+        print("What is the new option:")
+        option = str(input())       # Option of model
+        option = option.strip()
+        if (len(option) > 0):
+            break
+        else:
+            continue
+
+    while True:
+        os.system('cls')
+        print("What is the new revision:")
+        revision = str(input())       # Revision of model
+        revision = revision.strip()
+        if (len(revision) > 0):
+            break
+        else:
+            continue
+
+    while True:
+        os.system('cls')
+        print("What is the new edition:")
+        edition = str(input())       # Edition of model
+        edition = edition.strip()
+        if (len(edition) > 0):
+            break
+        else:
+            continue
+
+    info = Info(board, option, revision, edition)
+
+    M.model[index].set_info(info)
     
     os.system('cls')
-    print("NAME CHANGED\n")
+    print("INFO CHANGED\n")
     print("To go to the edit menu insert anything\n")
     c = input()
 
+
 #------------------------------------EDIT LED------------------------------------#
-def edit_led(M: Settings, name_model, index: int, image):
-    
-    while True:
-
-        os.system('cls')
-        print("What led do you want to edit?")
-        print("(to go to the menu insert q)\n" )
-        led_name = input()
-
-        # back to menu
-        if(led_name == 'q'):
-            break
-        
-        index_led = M.index_led_model(name_model, led_name)
-        
-        if (index_led is None):
-            os.system('cls')
-            print(f"{led_name} DOESN'T EXIST")
-            print("To edit another one or go to the edit menu insert anything\n")
-            c = input()
-            continue
-
-        else:
-            edit_led_settings(M, index, index_led, image)
-
 def edit_led_settings(M: Settings, index: int, index_led: int, image):
     
     while True:
@@ -366,7 +427,7 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
         
         # edit colours
         elif c=='2':
-            M.model[index]._leds[index_led].delete_colour()
+            M.model[index]._leds[index_led].delete_colours()
             os.system('cls')
 
             while True:
@@ -413,6 +474,32 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
         elif c == '4':
             break
 
+def edit_led(M: Settings, name_model, index: int, image):
+    
+    while True:
+
+        os.system('cls')
+        print("What led do you want to edit?")
+        print("(to go to the menu insert q)\n" )
+        led_name = input()
+
+        # back to menu
+        if(led_name == 'q'):
+            break
+        
+        index_led = M.index_led(name_model, led_name)
+        
+        if (index_led is None):
+            os.system('cls')
+            print(f"{led_name} DOESN'T EXIST")
+            print("To edit another one or go to the edit menu insert anything\n")
+            c = input()
+            continue
+
+        else:
+            edit_led_settings(M, index, index_led, image)
+
+
 #------------------------------------EDIT BUTTON------------------------------------#
 def edit_button(M: Settings, name_model, index: int, image):
 
@@ -427,7 +514,7 @@ def edit_button(M: Settings, name_model, index: int, image):
         if(button_name == 'q'):
             break
         
-        index_button = M.index_button_model(name_model, button_name) 
+        index_button = M.index_button(name_model, button_name) 
         
         if (index_button is None):
             os.system('cls')
@@ -474,6 +561,7 @@ def edit_button(M: Settings, name_model, index: int, image):
                 # back to menu
                 elif c == '3':
                     break
+
 
 #------------------------------------EDIT LCD------------------------------------#
 def edit_display(M: Settings, index: int, image):

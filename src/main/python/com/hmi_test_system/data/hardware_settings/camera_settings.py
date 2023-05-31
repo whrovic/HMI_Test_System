@@ -1,5 +1,5 @@
-from hardware_settings.dimension import Dimension
-from hardware_settings.parameter import Parameter
+from .dimension import Dimension
+from .parameter import Parameter
 
 class CameraSettings:
 

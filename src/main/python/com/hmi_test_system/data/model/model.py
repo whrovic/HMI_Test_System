@@ -1,17 +1,18 @@
 from .led import Led
 from .button import Button
 from .display import Display
+from .info import Info
 
 class Model:
     
-    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, info: str):
+    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, info: Info):
         self._name = name
         self._n_leds = n_leds
         self._leds: list[Led] = []
         self._n_buttons = n_buttons
         self._buttons: list[Button] = []
         self._display = display
-        self._info = info
+        self._info = Info
     
     def set_name(self, name: str):
         self._name = name
@@ -93,7 +94,7 @@ class Model:
     def get_display(self):
         return self._display
        
-    def set_info(self, info):
+    def set_info(self, info: Info):
         self._info = info
         
     def get_info(self):

@@ -2,20 +2,17 @@ from .model.model import Model
 from .model.display import Display
 from .path import Path
 from test.sequence_test import SequenceTest
-from .hardware_settings.camera_settings import CameraSettings
+from .hardware_settings.test_settings import TestSettings
 
 class Settings:
 
     def __init__(self):
         self.model: list[Model] = []
         self.path = Path()
-        self.test = SequenceTest()
+        self.test = TestSettings()
         #self.cam1 = CameraSettings()
         #self.cam2 = CameraSettings()
 
-
-    #------------------------------------Camera------------------------------------#
-    
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info):
@@ -70,5 +67,6 @@ class Settings:
                 return i
         
         return None
+        
 
 

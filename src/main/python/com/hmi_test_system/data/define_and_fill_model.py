@@ -3,12 +3,12 @@ from .settings import Settings
 from .model.display import Display
 from .model.led import Led
 from .model.button import Button
+from .model.info import Info
 import os
 from data.color.list_of_colors import ListOfColors
 
 class DefineAndFillModel:
 
-    
 #------------------------------------SETTINGS XML------------------------------------#
 
     '''def open_xml_settings(M: Settings): 
@@ -85,7 +85,12 @@ class DefineAndFillModel:
                 display_dimy = display.find('display_dimy')
                 LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
                 info = model.find('info')
-                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, info.text)
+                info_board = info.find('board')
+                info_option = info.find('option')
+                info_revision = info.find('revision')
+                info_edition = info.find('edition')
+                INFO = Info(info_board.text, info_option.text, info_revision.text, info_edition.text)
+                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO)
                 
                 index = M.index_model(name.text)
 
@@ -144,7 +149,15 @@ class DefineAndFillModel:
         display_dimy = ET.SubElement(display, 'display_dimy')
         display_dimy.text = str(dsp.get_dim_y())
         info = ET.SubElement(model, 'info')
-        info.text = str(aux.get_info())
+        inf = aux.get_info()
+        info_board = ET.SubElement(info, 'info_board')
+        info_board.text = str(inf.get_board())
+        info_option = ET.SubElement(info, 'info_option')
+        info_option.text = str(inf.get_option())
+        info_revision = ET.SubElement(info, 'info_revision')
+        info_revision.text = str(inf.get_revision())
+        info_edition = ET.SubElement(info, 'info_edition')
+        info_edition.text = str(inf.get_edition())
         
 
         leds = ET.SubElement(model, 'leds')
