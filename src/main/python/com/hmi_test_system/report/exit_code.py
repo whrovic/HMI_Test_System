@@ -58,6 +58,10 @@ class ExitCode:
         ExitCode.update_value(CAMERA_TIMEOUT_RECEPTION)
 
     @staticmethod
+    def camera_timeout_stopped():
+        ExitCode.update_value(CAMERA_TIMEOUT_STOPPED)
+
+    @staticmethod
     def serialport_connection_failure():
         ExitCode.update_value(SERIALPORT_CONNECTION_FAILURE)
     

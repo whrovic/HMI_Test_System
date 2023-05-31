@@ -16,24 +16,20 @@ from ..video.camera import Camera
 from ..data.color.color import Color
 from ..serial_port.constant_test import *'''
 
-from report.log_display import LogDisplay
-from report.log_leds import LogLeds
-from report.exit_code import ExitCode
-from opencv.hmicv import HMIcv
-from video.camera import Camera
+from time import time
 
+from data.color.color import Color, OffColor
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
-from data.color.color import Color
+from opencv.hmicv import HMIcv
+from report.exit_code import ExitCode
+from report.log_display import LogDisplay
+from report.log_leds import LogLeds
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
+from video.camera import Camera
 
-cam_value: Camera
-
-
-# TODO: complet the start_test and end_test
-# with the right functions
 
 class Test:
 
@@ -188,25 +184,36 @@ class Test:
     def test_alight(cam, serial):
         return -1
 
+    @staticmethod
+    def test_led(cam: Camera, serial: SerialPort, leds_test: list[Led]):
+        
+        # TODO: Take this out of here
+        TIMEOUT = 10
 
-    def test_led(self, img, serial, leds_test: list[Led]):
         # Number of leds
         n_leds_test = len(leds_test)
         # Total number of colours of all the leds
         total_n_colours = sum([l.get_n_Colour() for l in leds_test])
         # Saves the current state of the leds
-        vet_cor: list[n_leds_test]
-        # Saves all the states of the leds in the sequence
-        vet_cor_bef: list[total_n_colours][n_leds_test]
+        vet_cor: list[Color] = [OffColor()] * n_leds_test
         # Saves the expected sequence of colours in each led
-        matrix_ref: list[total_n_colours][n_leds_test]
+        matrix_ref: list[list[Color]] = [[OffColor()] * n_leds_test] * total_n_colours
         
-        # Saves the previous image
-        old_img = None
-        # Stores the current error
-        error = 0
+        # Create the reference matrix
+        for i in range(0, total_n_colours):
+            for j in range(0, n_leds_test):
+                matrix_ref[i][j] = OffColor()
+        pos = 0
+        for i in range(n_leds_test):
+            colours = leds_test[i].get_colours()
+            for j in range(len(colours)):
+                matrix_ref[pos][pos] = colours[j]
+                pos += 1
+
         # Stores the time arrival of the image
         arrive_time_img = None
+        # Stores the time arrival of the previous image
+        old_arrive_time_img = time()
         # Stores the data and the time from the serialport
         serial_data, serial_data_time = None, None
 
@@ -214,163 +221,140 @@ class Test:
         state = 0
         log_leds = LogLeds()
 
+        sequence_state = 0
+
         while True:
 
             # Read new image and call test of colors
             # save the info on a vector
-            img, arrive_time_img = cam_value.get_image()
+            img, arrive_time_img = cam.get_image()
+            if img is None:
+                if time() - old_arrive_time_img > TIMEOUT:
+                    # TODO: add log
+                    ExitCode.camera_timeout_stopped()
+                    return -1
+                else:
+                    continue
+            else:
+                old_arrive_time_img = arrive_time_img
+
             for i in range(0, n_leds_test):
                 vet_cor[i] = HMIcv.led_test(img, leds_test[i])
 
+            # Read from serial port
+            if serial_data is None:
+                serial_data, serial_data_time = serial.get_serial()
+            # Check for the end of the tests
+            if (serial_data == TEST_LEDS_OK) and (serial_data_time < arrive_time_img):
+                log_leds.test_leds_sequence_passed()
+                log_leds.test_finished()
+                return 0
+            elif sequence_state == total_n_colours:
+                log_leds.test_leds_sequence_passed()
+                log_leds.test_finished()
+                return 0
+
             # Test All Leds ON
             if state == 0:
-                aux = 0
-
+                
                 for i in range(0, n_leds_test):
-                    if vet_cor[i] is not None:
-                        aux = aux + 1
-                if aux == n_leds_test:
-                    log_leds.test_leds_on_passed()
-                    state = 1
-                else:
-                    log_leds.test_failed()
-                    return -1
+                    if isinstance(vet_cor[i], OffColor):
+                        # TODO: log the led name
+                        log_leds.test_failed()
+                        ExitCode.leds_test_not_turn_all_on()
+                        return -1
+
+                log_leds.test_leds_on_passed()
+                state = 1
 
             # Test All Leds OFF
-            if state == 1:
-                aux = 0
+            elif state == 1:
+                
+                # Counts the number of leds turned off
+                n_off = 0
                 for i in range(0, n_leds_test):
-                    if vet_cor[i] is None:
-                        log_leds.test_failed()
-                        ExitCode.leds_test_not_turn_all_off()
-                        #new solution to update the others
-                        return -1
-                log_leds.test_leds_off_passed()
-                state = 2
-
-            # Test All Leds ON
-            if state == 2:
-                aux = 0
-                for i in range(0, n_leds_test):
-                    if vet_cor[i] is not None:
-                        aux = aux + 1
-                if aux == n_leds_test:
-                    log_leds.test_leds_on_passed()
-                    state = 3
+                    if isinstance(vet_cor[i], OffColor):
+                        n_off += 1
+                
+                # If the leds still are all turned on, ignore this image and retry
+                if n_off == 0:
+                    continue
+                # If all the leds are off procceed to the next state
+                elif n_off == n_leds_test:
+                    log_leds.test_leds_off_passed()
+                    state = 2
+                # TODO: Add timeout
+                # If at least one led failed, return
                 else:
                     log_leds.test_failed()
+                    ExitCode.leds_test_not_turn_all_off()
+                    return -1
+
+            # Test All Leds ON
+            elif state == 2:
+                
+                n_on = 0
+                for i in range(0, n_leds_test):
+                    if not isinstance(vet_cor[i], OffColor):
+                        n_on += 1
+                
+                # If the leds still are all turned off, ignore this image and retry
+                if n_on == 0:
+                    continue
+                # If all the leds are on procceed to the next state
+                elif n_on == n_leds_test:
+                    log_leds.test_leds_off_passed()
+                    state = 2
+                # TODO: Add timeout
+                # If at least one led failed, return
+                else:
+                    log_leds.test_failed()
+                    ExitCode.leds_test_not_turn_all_on()
                     return -1
 
             # Test the Sequence
-            if state == 3:
-                #To creat a matrix to compare
-                # x - len of n_leds_test
-                # y - number of lines in sequence
-                x = 0
-                y = 0
-                aux_led = 0
-                for i in range(0, total_n_colours):
-                    for j in range(0, n_leds_test):
-                        matrix_ref[i][j] = "OFF"
-                
-                # TODO: for can be upgraded to take in to account more colors in a single LED
-                for i in range(0, total_n_colours):
-                    if (aux_led == 0) and (len(leds_test[y].get_colours()) == 2):
-                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
-                        x = x + 1
-                        aux_led = 1
-                    if (aux_led == 1) and (len(leds_test[y].get_colours()) == 2):
-                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
-                        x = x + 1
-                        y = y + 1
-                        aux_led = 0
-                    if (aux_led == 0) and (len(leds_test[y].get_colours()) != 2):
-                        matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
-                        x = x + 1
-                        y = y + 1
-                        aux_led = 1
+            elif state == 3:
 
-
-                '''
-                #Other solution to fill the ref matix
-                # [ y    x ->
-                    |
-                    V           
-                                ]
-                #Example: in our model x=37, y=56
-                
-                vet_ref: list[n_leds_test]
-                pos = 0
-                matrix_ref_n = []
-                while True:
-                    #Fill a list of one line of the sequence
-                    for i in range(0, n_leds_test):
-                        vet_ref[i] = 'OFF'
-                        if (i==x):
-                            aux_get_color = leds_test[i].get_colours()
-                            vet_ref[i] = aux_get_color[pos]
-                            pos = pos+1
-                            if (pos) == len(aux_get_color):
-                                pos = 0
-                                x = x + 1
-                    #Append the line to the matrix
-                    matrix_ref_n.append(vet_ref)
-                    y = y + 1
-                    if x == n_leds_test:
+                # Check with the current state
+                for i in range(n_leds_test):
+                    if vet_cor[i].get_name() != matrix_ref[sequence_state+1][i].get_name():
                         break
-                NN=y'''
-                
-                x = 0
-                serial_data, serial_data_time = serial.get_serial()
+                else:
+                    # The current img matches the current state, so procceed to the next one
+                    sequence_state += 1
+                    continue
 
-                #Fill a new matrix with the colors read
-                while True: 
-                    if serial_data is None:
-                        serial_data, serial_data_time = serial.get_serial()
-
-                    for j in range(0, n_leds_test):
-                        if img != old_img:
-                            vet_cor_bef[x][j] = HMIcv.led_test(img, leds_test[j])
-                    old_img = img
-                    img, arrive_time_img = cam_value.get_image()
-
-                    x = x + 1
-                    if (serial_data == TEST_LEDS_OK) and (serial_data_time < arrive_time_img):
+                # The new img is diferent from the expected one
+                for i in range(n_leds_test):
+                    if vet_cor[i].get_name() != matrix_ref[sequence_state][i].get_name():
                         break
-                    if serial_data == TEST_LEDS_CANCEL:
-                        log_leds.test_canceled()
-                        ExitCode.leds_test_not_passed()
+                else:
+                    # The current img is still equal to the previous state of the sequence
+                    # TODO: Add timeout
+                    continue
+                
+                # The img is not equal to the current state neither to the previous one
+                for i in range(n_leds_test):
+                    # It was supposed for the led to be turned Off but he is On
+                    if isinstance(matrix_ref[sequence_state][i], OffColor) and not isinstance(vet_cor[i], OffColor):
+                        log_leds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                                                                    vet_cor[i].get_name())
+                        ExitCode.leds_test_state_sequence_error()
                         return -1
-
-                # Compare the both matrix
-                #Ps.maybe not necessary to create a second matrix 
-                #   and automaticly do the comparation
-                for i in range(0, total_n_colours):
-                    if matrix_ref[i] != vet_cor_bef[i]:
-                        for j in range(0, n_leds_test):
-                            if matrix_ref[i][j] == "OFF":
-                                if matrix_ref[i][j] != vet_cor_bef[i][j]:
-                                    log_leds.test_leds_sequence_colour_failed(leds_test[j].get_name(), matrix_ref[i][j],
-                                                                              vet_cor_bef[i][j])
-                                    ExitCode.leds_test_colour_sequence_error()
-                                    error = error + 1
-                            else:
-                                if matrix_ref[i][j] != vet_cor_bef[i][j]:
-                                    log_leds.test_leds_sequence_state_failed(leds_test[j].get_name(), matrix_ref[i][j], 
-                                                                             vet_cor_bef[i][j])
-                                    ExitCode.leds_test_state_sequence_error()
-                                    error = error + 1
-                
-                #Check possible error unknown erros
-                if error == 0:
-                    log_leds.test_leds_sequence_passed()
-                    log_leds.test_finished()
-                    return 0
+                    # It was supposed for the led to be turned On but he is Off
+                    elif not isinstance(matrix_ref[sequence_state][i], OffColor) and isinstance(vet_cor[i], OffColor):
+                        log_leds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                                                                    vet_cor[i].get_name())
+                        ExitCode.leds_test_state_sequence_error()
+                        return -1
+                    # The colour doesn't match with the sequence
+                    elif matrix_ref[sequence_state][i].get_name() != vet_cor[i].get_name():
+                        log_leds.test_leds_sequence_colour_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                                                                    vet_cor[i].get_name())
+                        ExitCode.leds_test_colour_sequence_error()
+                        return -1
                 else:
                     log_leds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
-
-
-
-
+                
