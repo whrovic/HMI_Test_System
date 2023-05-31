@@ -237,6 +237,7 @@ class Test:
                     if vet_cor[i] is None:
                         log_leds.test_failed()
                         ExitCode.leds_test_not_turn_all_off()
+                        #new solution to update the others
                         return -1
                 log_leds.test_leds_off_passed()
                 state = 2
@@ -340,7 +341,7 @@ class Test:
                 #   and automaticly do the comparation
                 for i in range(0, NN):
                     if matrix_ref[i] != vet_cor_bef[i]:
-                        for j in range(0, N):
+                        for j in range(0, n_leds_test):
                             if matrix_ref[i][j] == "OFF":
                                 if matrix_ref[i][j] != vet_cor_bef[i][j]:
                                     log_leds.test_leds_sequence_colour_failed(leds_test[j].get_name(), matrix_ref[i][j],
