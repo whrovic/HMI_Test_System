@@ -210,13 +210,13 @@ def led_test(M: Settings, model: Model, leds_name: list[str] = []):
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
     #TODO: Quando for para testar todos os botões, deve mandar None em buttons_name
     if code == 1:
-        result = M.test.seq_button(model, buttons_name, 1, 0)
+        result = M.test.seq_button(model, buttons_name, 0)
 
     elif code == 2:
-        result = M.test.seq_button(model, buttons_name, 0, 1)
+        result = M.test.seq_button(model, buttons_name, 1)
 
     elif code == 3:
-        result =M.test.seq_button(model, buttons_name, 1, 1)
+        result =M.test.seq_button(model, buttons_name, 1)
 
     return result
 

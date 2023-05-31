@@ -5,7 +5,6 @@ from main.main_settings.library_settings import edit_model
 from main.main_settings.menu_prints import MenuPrints as MP
 from main.constant_main import *
 
-
 count = 0
 
 def new_model(M: Settings):

@@ -1,6 +1,7 @@
 from main.constant_main import *
-from video.camera import Camera
 from serial_port.serial_port import SerialPort
+from video.camera import Camera
+
 
 class SetupTest:
     

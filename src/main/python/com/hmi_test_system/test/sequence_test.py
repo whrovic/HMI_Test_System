@@ -16,11 +16,7 @@ from .test import Test
 class SequenceTest:
 
     @staticmethod
-    def seq_button(model: Model, buttons_test, sp: bool, dsp: bool):
-        
-        # If no test configuration is provided return immediatly
-        if not sp and not dsp:
-            return 0
+    def seq_button(model: Model, buttons_test = None, dsp = False):
 
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
@@ -30,18 +26,22 @@ class SequenceTest:
             # If no button names are provided, get everyone from the model
             button_sequence = model.get_buttons()
         else:
-            button_sequence = [model.get_button(button_name) for button_name in buttons_test]
-            if None in button_sequence:
-                # Invalid button names
-                ExitCode.invalid_argument()
-                return -1
+            button_sequence = []
+            for button_name in buttons_test:
+                button = model.get_button(button_name)
+                if button is None:
+                    # If the button name was not found in the model, return
+                    ExitCode.key_name_not_found()
+                    return -1
+                # Add the button to the sequence
+                button_sequence.append(button)
 
         # Open the needed connections
-        SetupTest.setup(False, dsp, sp, False)
+        SetupTest.setup(False, dsp, True, False)
 
         # Check connections status
         serial_port = SetupTest.__sp_main
-        if sp and serial_port.closed():
+        if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             ExitCode.serialport_connection_failure()
@@ -53,63 +53,38 @@ class SequenceTest:
             ExitCode.camera_connection_failure()
             return -1
         
-        # Start receiving data from serial port and/or display
-        if sp:
-            serial_port.start_receive()
-        if dsp:
-            cam.start_capture()
+        # Start receiving data from serial port
+        serial_port.start_receive()
 
-        # Waits for serial port and/or display TestKeys begin
-        # If both are active, it should only start the tests when both are syncronized
-        # TODO: Also wait for the camara if needed
+        # Waits for serial port TestKeys begin
         begin_waiting_time = time()
-        received_sp = received_dsp = False
-        ready_sp = ready_dsp = False
+        received_sp = False
         while True:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (sp and not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
                 ExitCode.serialport_timeout_reception()
                 return -1
-            # Check if the camara timed out waiting for the first received data
-            if (dsp and not received_dsp and (now - begin_waiting_time > TIMEOUT)):
-                # No data was received from the camara
-                # TODO: Catch this error
-                SetupTest.close()
-                ExitCode.camera_timeout_reception()
-                return -1
             
             # Get data from serial port
-            if sp and not ready_sp:
-                data, _ = serial_port.get_serial()
+            data, _ = serial_port.get_serial()
+
+            if data is not None:
+                received_sp = True
+                
+                data = str(data)
+                if data.startswith(TEST_BUTTONS_BEGIN):
+                    break
             
-                if data is not None:
-                    received_sp = True
-                    
-                    data = str(data)
-                    if data.startswith(TEST_BUTTONS_BEGIN):
-                        ready_sp = True
-            
-            # Get data from camara
-            if dsp and not ready_dsp:
-                img, _ = cam.get_image()
-
-                if img is not None:
-                    received_dsp = True
-
-                    text = Displaycv.read_char(img)
-                    if text is not None and TEST_BUTTONS_BEGIN in text:
-                        ready_dsp = True
-
-            # If the tests have began, stop waiting
-            if (ready_sp == sp and ready_dsp == dsp):
-                break
-
             sleep(0.1)
+
+        # If the test will use both serial port and display, start recording images
+        if dsp:
+            cam.start_capture()
 
         # Start button test
         result = Test.test_button(cam, serial_port, button_sequence)
@@ -121,19 +96,19 @@ class SequenceTest:
         return result
     
     @staticmethod
-    def seq_boot_loader_info(model: Model):
+    def seq_boot_loader_info(model: Model, dsp = False):
         return -1
     
     @staticmethod
-    def seq_board_info(model: Model):
+    def seq_board_info(model: Model, dsp = False):
         return -1
     
     @staticmethod
-    def seq_alight(model: Model):
+    def seq_alight(dsp = False):
         return -1
 
     @staticmethod
-    def seq_led(model: Model, leds_test: list[str]):
+    def seq_led(model: Model, leds_test = None):
         return -1
     
     @staticmethod

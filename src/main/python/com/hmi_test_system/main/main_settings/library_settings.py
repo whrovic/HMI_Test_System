@@ -7,7 +7,9 @@ from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 import os
 from data.color.list_of_colors import ListOfColors
-
+__all__=['edit_camara_settings', 'edit_SP_settings', 'create_model_manual', 'add_models', 
+         'edit_model', 'edit_name_model', 'edit_led', 'edit_led', 'edit_led_settings' , 
+         'edit_button', 'edit_display']
 
 def edit_camara_settings(M: Settings):
     pass
