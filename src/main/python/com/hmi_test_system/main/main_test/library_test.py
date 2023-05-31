@@ -32,9 +32,6 @@ def test_menu(M: Settings):
         return exit_code
 
     model = M.call_model(name_model)
-    leds = model.get_leds()
-    buttons = model.get_buttons()
-    display = model.get_display()
     leds_name = []
     buttons_name = [] 
 
