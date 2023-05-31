@@ -90,28 +90,20 @@ class Test:
             # Check if the data is related to the display test
             if data is not None:
                 # Determine which type of test is being performed
-                if "Test PIX" in data:
+                if PIXEL in data:
                     new_test_name = PIXEL
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
-                elif "Test CHR" in data:
+                elif CHAR in data:
                     new_test_name = CHAR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
 
-                elif "Test PAL" in data:
+                elif COLOR in data:
                     new_test_name = COLOR
                     new_test_start_time = data_time
                     log_display.start_test(new_test_name)
-
-                elif "CANCEL" in data:
-                    # If the test was canceled, reset the test variables
-                    new_test_name = None
-                    test_name = None
-                    test_start_time = None
-                    new_test_start_time = None
-                    log_display.test_canceled()
 
                 elif TEST_DISPLAY_ENTER in data:
                     log_display.test_finished()
