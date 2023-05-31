@@ -5,7 +5,7 @@ import sys
 from main.main_settings.menu_prints import MenuPrints as MP
 from data.color.list_of_colors import ListOfColors
 from main.main_test.library_test import *
-from main.constant_main import *
+from main import *
 
 '''from tkinter import Tk
 from tkinter.filedialog import askdirectory
