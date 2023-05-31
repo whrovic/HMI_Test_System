@@ -16,7 +16,7 @@ from .test import Test
 class SequenceTest:
 
     @staticmethod
-    def seq_button(model: Model, buttons_test, dsp = False):
+    def seq_button(model: Model, buttons_test = None, dsp = False):
 
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
@@ -108,7 +108,7 @@ class SequenceTest:
         return -1
 
     @staticmethod
-    def seq_led(model: Model, leds_test: list[str]):
+    def seq_led(model: Model, leds_test = None):
         return -1
     
     @staticmethod
