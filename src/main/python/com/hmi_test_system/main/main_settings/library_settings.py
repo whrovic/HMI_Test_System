@@ -4,6 +4,7 @@ from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
 from data.model.info import Info
+from data.model.boot_loader_info import BootLoaderInfo
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 import os
@@ -89,7 +90,26 @@ def create_model_manual(M: Settings, name_model):
         else:
             continue
 
+    while True:
+        print("Boot loader version:")
+        boot_version = str(input())       # boot loader boot_version of model
+        boot_version = boot_version.strip()
+        if (len(boot_version) > 0):
+            break
+        else:
+            continue
+
+    while True:
+        print("Boot loader date:")
+        boot_date = str(input())       # boot loader boot_date of model
+        boot_date = boot_date.strip()
+        if (len(boot_date) > 0):
+            break
+        else:
+            continue
+
     info = Info(board, option, revision, edition)
+    boot_info = BootLoaderInfo(boot_version, boot_date)
  
 
     # LCD configuration
@@ -107,7 +127,7 @@ def create_model_manual(M: Settings, name_model):
     display = Display('display', int(pos_vector_init[0]) , int(pos_vector_init[1]) , dim_x, dim_y)
 
     # add model 
-    M.new_model(name_model, n_leds, n_buttons, display, info)
+    M.new_model(name_model, n_leds, n_buttons, display, info, boot_info)
 
     index = M.index_model(name_model)
 
@@ -392,9 +412,30 @@ def edit_model_info(M: Settings, index: int):
         else:
             continue
 
-    info = Info(board, option, revision, edition)
+    while True:
+        print("What is the new boot loader version:")
+        boot_version = str(input())       # boot loader boot_version of model
+        boot_version = boot_version.strip()
+        if (len(boot_version) > 0):
+            break
+        else:
+            continue
 
+    while True:
+        print("What is the new boot loader date:")
+        boot_date = str(input())       # boot loader boot_date of model
+        boot_date = boot_date.strip()
+        if (len(boot_date) > 0):
+            break
+        else:
+            continue
+
+    info = Info(board, option, revision, edition)
     M.model[index].set_info(info)
+
+    boot_info = BootLoaderInfo(boot_version, boot_date)
+    M.model[index].set_boot_loader_info(boot_info)
+
     
     os.system('cls')
     print("INFO CHANGED\n")
