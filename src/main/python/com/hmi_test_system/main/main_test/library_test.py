@@ -8,8 +8,6 @@ from data.model.button import Button
 
 def test_menu(M: Settings):
 
-    # TODO: A verificação dos nomes dos leds e botões deve ser verificado no sequence test
-
     exit_code = 0
 
     if len(sys.argv) < 3:
@@ -34,12 +32,6 @@ def test_menu(M: Settings):
         return exit_code
 
     model = M.call_model(name_model)
-    # TODO: Não deve ir buscar as coisas ao modelo aqui. Isto é feito no sequence test.
-    # Só manda os nomes dos leds e botões conforme os recebe ou se for para testar todos, manda None
-    # A verificação se os leds/botões existem é feita no sequence test.
-    leds = model.get_leds()
-    buttons = model.get_buttons()
-    display = model.get_display()
     leds_name = []
     buttons_name = [] 
 
@@ -91,12 +83,9 @@ def test_menu(M: Settings):
                     for i in range(n_leds):
                         led_name = args[0]
                         args.pop(0)
-
-                        l = model.get_led(led_name)
-                        if l is None:
-                            exit_code = 3  # Invalid argument
-                            return exit_code
                         leds_name.append(led_name)
+            
+
             # Buttons test type
             elif (t_type == '-key'):
 
@@ -124,18 +113,16 @@ def test_menu(M: Settings):
                     for i in range(n_buttons):
                         button_name = args[0]
                         args.pop(0)
-
-                        b = model.get_button(button_name)
-                        if b is None:
-                            exit_code = 3  # Invalid argument
-                            return exit_code
                         buttons_name.append(button_name)
+
+    
             # Display test type
             elif (t_type == '-display'):
                 continue
             else:
                 exit_code = 3      # invalid argument
                 return exit_code
+
 
         # Execute the tests
         for i in range(len(test_type)):
@@ -145,7 +132,7 @@ def test_menu(M: Settings):
 
                 # if user doesnt't choose the leds
                 if(len(leds_name) == 0):
-                    leds_name = [l.get_name() for l in leds]
+                    leds_name = None
 
                 result_led = led_test(M, model, leds_name)
                 
@@ -169,9 +156,9 @@ def test_menu(M: Settings):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
-                    buttons_name = [b.get_name() for b in buttons]
+                    buttons_name = None
                     
-                result_button = button_test(M, model, 1, buttons_name) # 1 - sp | 2 - dsp | 3- all
+                result_button = button_test(M, model, 1, buttons_name)      # dsp test -> 1  | not dsp test -> 0
                 
                 if(result_button == 0):
                     exit_code = 0     # test passed
@@ -180,13 +167,10 @@ def test_menu(M: Settings):
     
     # default -> all tests
     else:
+        leds_name = None
+        buttons_name = None
 
-        # Get all led names
-        leds_name = [led.get_name() for led in leds]
-        # Get all button names
-        buttons_name = [button.get_name() for button in buttons]
-
-        result_led = led_test(M, model, None)
+        result_led = led_test(M, model, leds_name)
         result_display = display_test(M, model)
         result_button = button_test(M, model, 1, buttons_name)
 
@@ -203,22 +187,12 @@ def test_menu(M: Settings):
 
 #------------------------------------LED TEST------------------------------------#
 def led_test(M: Settings, model: Model, leds_name: list[str] = []):
-    # TODO: Quando for para testar todos os leds, deve mandar None nem leds_name
     return M.test.seq_led(model, leds_name)
          
 #------------------------------------BUTTON TEST------------------------------------#
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
-    #TODO: Quando for para testar todos os botões, deve mandar None em buttons_name
-    if code == 1:
-        result = M.test.seq_button(model, buttons_name, 0)
+    return M.test.seq_button(model, buttons_name, code)     # dsp test -> code = 1  | not dsp test -> code = 0
 
-    elif code == 2:
-        result = M.test.seq_button(model, buttons_name, 1)
-
-    elif code == 3:
-        result =M.test.seq_button(model, buttons_name, 1)
-
-    return result
 
 #------------------------------------LCD TEST------------------------------------#
 def display_test(M:Settings, model: Model):
