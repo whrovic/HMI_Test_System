@@ -189,21 +189,28 @@ class Test:
         return -1
 
 
-    def test_led(self, cam, serial, leds_test: list[Led]):
+    def test_led(self, img, serial, leds_test: list[Led]):
+        # Number of leds
         n_leds_test = len(leds_test)
-        NN = sum([l.get_n_Colour() for l in leds_test])
+        # Total number of colours of all the leds
+        total_n_colours = sum([l.get_n_Colour() for l in leds_test])
+        # Saves the current state of the leds
         vet_cor: list[n_leds_test]
-        vet_cor_bef: list[NN][n_leds_test]
-        matrix_ref: list[NN][n_leds_test]
-        cam_bef = None
+        # Saves all the states of the leds in the sequence
+        vet_cor_bef: list[total_n_colours][n_leds_test]
+        # Saves the expected sequence of colours in each led
+        matrix_ref: list[total_n_colours][n_leds_test]
+        
+        # Saves the previous image
+        old_img = None
+        # Stores the current error
         error = 0
-        arrive_time_cam = None
-        arrive_serial, arrive_time_serial = None, None
+        # Stores the time arrival of the image
+        arrive_time_img = None
+        # Stores the data and the time from the serialport
+        serial_data, serial_data_time = None, None
 
-        # N = 37   - > 3 leds control + 16 leds alarms + 9*2 leds buttons
-        # NN = 56  - > 3*2 (2 colors) + 16*2 (2 colors) + 18
-        # TODO: N = len of list leds
-
+        # Current state of the FSM
         state = 0
         log_leds = LogLeds()
 
@@ -211,9 +218,9 @@ class Test:
 
             # Read new image and call test of colors
             # save the info on a vector
-            cam, arrive_time_cam = cam_value.get_image()
+            img, arrive_time_img = cam_value.get_image()
             for i in range(0, n_leds_test):
-                vet_cor[i] = HMIcv.led_test(cam, leds_test[i])
+                vet_cor[i] = HMIcv.led_test(img, leds_test[i])
 
             # Test All Leds ON
             if state == 0:
@@ -261,12 +268,12 @@ class Test:
                 x = 0
                 y = 0
                 aux_led = 0
-                for i in range(0, NN):
+                for i in range(0, total_n_colours):
                     for j in range(0, n_leds_test):
                         matrix_ref[i][j] = "OFF"
                 
                 # TODO: for can be upgraded to take in to account more colors in a single LED
-                for i in range(0, NN):
+                for i in range(0, total_n_colours):
                     if (aux_led == 0) and (len(leds_test[y].get_colours()) == 2):
                         matrix_ref[x][y] = leds_test[y].get_colours()[aux_led]
                         x = x + 1
@@ -313,23 +320,23 @@ class Test:
                 NN=y'''
                 
                 x = 0
-                arrive_serial, arrive_time_serial = serial.get_serial()
+                serial_data, serial_data_time = serial.get_serial()
 
                 #Fill a new matrix with the colors read
                 while True: 
-                    if arrive_serial is None:
-                        arrive_serial, arrive_time_serial = serial.get_serial()
+                    if serial_data is None:
+                        serial_data, serial_data_time = serial.get_serial()
 
                     for j in range(0, n_leds_test):
-                        if cam != cam_bef:
-                            vet_cor_bef[x][j] = HMIcv.led_test(cam, leds_test[j])
-                    cam_bef = cam
-                    cam, arrive_time_cam = cam_value.get_image()
+                        if img != old_img:
+                            vet_cor_bef[x][j] = HMIcv.led_test(img, leds_test[j])
+                    old_img = img
+                    img, arrive_time_img = cam_value.get_image()
 
                     x = x + 1
-                    if (arrive_serial == TEST_LEDS_OK) and (arrive_time_serial < arrive_time_cam):
+                    if (serial_data == TEST_LEDS_OK) and (serial_data_time < arrive_time_img):
                         break
-                    if arrive_serial == TEST_LEDS_CANCEL:
+                    if serial_data == TEST_LEDS_CANCEL:
                         log_leds.test_canceled()
                         ExitCode.leds_test_not_passed()
                         return -1
@@ -337,7 +344,7 @@ class Test:
                 # Compare the both matrix
                 #Ps.maybe not necessary to create a second matrix 
                 #   and automaticly do the comparation
-                for i in range(0, NN):
+                for i in range(0, total_n_colours):
                     if matrix_ref[i] != vet_cor_bef[i]:
                         for j in range(0, n_leds_test):
                             if matrix_ref[i][j] == "OFF":
