@@ -11,7 +11,7 @@ class DefineAndFillModel:
     
 #------------------------------------SETTINGS XML------------------------------------#
 
-    """ def open_xml_settings(M: Settings): """
+    '''def open_xml_settings(M: Settings): 
         while True:
             try:
                 files = os.listdir(M.path.get_settings_directory())   # files in directory
@@ -31,14 +31,14 @@ class DefineAndFillModel:
                 #...
                 pass
                 
-    """ def create_xml_settings(M: Settings): """
+    def create_xml_settings(M: Settings):
         # Create the XML document and write it to a file
         tree = ET.ElementTree("")
         ET.indent(tree, '  ')
         tree.write(f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml")
 
     
-    """ def delete_xml_settings(M: Settings): """
+    def delete_xml_settings(M: Settings):
         file_path = f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml"
 
         # check if the file exists
@@ -47,7 +47,7 @@ class DefineAndFillModel:
             os.remove(file_path)
             return 1
         else:
-            return -1
+            return -1'''
         
 
 #------------------------------------MODEL XML------------------------------------#
