@@ -14,7 +14,7 @@ class LogDisplay:
         self.logger.addHandler(self.handler)
 
     def start_test(self, test_name):
-        self.logger.info(f"Starting {test_name} Test")
+        self.logger.info(f"Starting {test_name}")
 
     def test_failed(self, test_name):
         self.logger.warning(f"{test_name} Test Failed")
