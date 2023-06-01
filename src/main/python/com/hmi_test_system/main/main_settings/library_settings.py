@@ -1,6 +1,4 @@
-import os
-
-from data.color.list_of_colors import ListOfColors
+'''from data.color.list_of_colors import ListOfColors
 from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.boot_loader_info import BootLoaderInfo
 from data.model.button import Button
@@ -8,6 +6,12 @@ from data.model.display import Display
 from data.model.info import Info
 from data.model.led import Led
 from data.settings import Settings
+'''
+import os
+
+from data import *
+from main.constant_main import *
+from main_settings import *
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 
@@ -17,6 +21,45 @@ def edit_camara_settings(M: Settings):
 
 def edit_SP_settings(M: Settings):
     pass
+
+
+def add_models(M: Settings):
+    #------------------------------------ADD NEW MODEL------------------------------------#
+    while True:
+        os.system('cls') 
+        print("Insert the name of the new model:" )
+        #print("(to go to the menu insert q)\n" )
+        name_model = input('Write \'q\' to back to menu')
+        
+        # back to menu
+        if(name_model == 'q'):
+            break
+        
+        # model doesn't exist -> new configuration
+        elif(df.open_model_xml(M, name_model) is None):
+            os.system('cls') 
+            print(f"{name_model} DOESN'T EXIST\n")
+            print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
+
+            if ( create_model_manual(M, name_model) == 0):
+                df.create_xml(M, name_model)
+                os.system('cls') 
+                print(f"{name_model} IS ADDED \n\n")
+                #print("To go to the menu insert anything\n")
+                #c = input()
+                c = input('Press Enter')
+                break
+            else:
+                os.system('cls') 
+                print(f"{name_model} IS NOT ADDED \n\n")
+                c = input('Press Enter')
+                break
+        # model already exists
+        else:
+            os.system('cls') 
+            print(f"{name_model} ALREADY EXISTS\n\n")
+            c = input('Press Enter')
+            break
 
 def create_model_manual(M: Settings, name_model):
 
@@ -31,81 +74,23 @@ def create_model_manual(M: Settings, name_model):
     cap.stop_capture()
     cap.clear_queue()
 
-
-    while True:
-        print("Number of buttons: ")
-        n_buttons = input()    # number of buttons of model
-        if n_buttons.isdigit():
-            n_buttons = int(n_buttons)
-            break
-        else: 
-            continue  
+    n_buttons = _until_find_int("Number of buttons: ")
+    if (n_buttons) == -1:
+        return -1
     
-    while True:
-        print("Number of leds: ")
-        n_leds = input()        # number of leds of model
-        if n_leds.isdigit():
-            n_leds = int(n_leds)
-            break
-        else: 
-            continue  
+    n_leds = _until_find_int("Number of leds: ")
+    if (n_leds) == -1:
+        return -1
 
     # Info configuration
     print("\n\nINFO CONFIGURATION\n")       
 
-    while True:
-        print("Board:")
-        board = str(input())       # Board of model
-        board = board.strip()
-        if (len(board) > 0):
-            break
-        else:
-            continue
-
-    while True:
-        print("Option:")
-        option = str(input())       # Option of model
-        option = option.strip()
-        if (len(option) > 0):
-            break
-        else:
-            continue
-
-    while True:
-        print("Revision:")
-        revision = str(input())       # Revision of model
-        revision = revision.strip()
-        if (len(revision) > 0):
-            break
-        else:
-            continue
-
-    while True:
-        print("Edition:")
-        edition = str(input())       # Edition of model
-        edition = edition.strip()
-        if (len(edition) > 0):
-            break
-        else:
-            continue
-
-    while True:
-        print("Boot loader version:")
-        boot_version = str(input())       # boot loader boot_version of model
-        boot_version = boot_version.strip()
-        if (len(boot_version) > 0):
-            break
-        else:
-            continue
-
-    while True:
-        print("Boot loader date:")
-        boot_date = str(input())       # boot loader boot_date of model
-        boot_date = boot_date.strip()
-        if (len(boot_date) > 0):
-            break
-        else:
-            continue
+    board = _until_find_str("Board:")
+    option = _until_find_str("Option:")
+    revision = _until_find_str("Revision:")
+    edition = _until_find_str("Edition:")
+    boot_version = _until_find_str("Boot loader version:")
+    boot_date = _until_find_str("Boot loader date:")
 
     info = Info(board, option, revision, edition)
     boot_info = BootLoaderInfo(boot_version, boot_date)
@@ -197,49 +182,33 @@ def create_model_manual(M: Settings, name_model):
         M.delete_model(name_model)
         return -1
 
-def add_models(M: Settings):
-    #------------------------------------ADD NEW MODEL------------------------------------#
-    #try:
-        while True:
-            os.system('cls') 
-            print("Insert the name of the new model:" )
-            print("(to go to the menu insert q)\n" )
-            name_model = input()
-            
-            
-            # back to menu
-            if(name_model == 'q'):
-                break
-            
-            # model doesn't exist -> new configuration
-            elif(df.open_model_xml(M, name_model) is None):
-                os.system('cls') 
-                print(f"{name_model} DOESN'T EXIST\n")
-                print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
+def _until_find_str(print_str: str):
+    while True:
+        print(print_str)
+        board = str(input()) 
+        board = board.strip()
+        if (len(board) > MIN_LEN_STRING):
+            break
+        else:
+            continue
+    return board
 
-                if ( create_model_manual(M, name_model) == 0):
-                    df.create_xml(M, name_model)
+def _until_find_int(print_str: str):
+    while True:
+        count = 0
+        print(print_str)
+        value_input = input()    
+        if value_input.isdigit():
+            value_input = int(value_input)
+            break
+        elif (count > NTIMEOUT_LIBRARY_SETTINGS):
+            return -1
+        else: 
+            count +=1
+            continue
+    return value_input
 
-                    os.system('cls') 
-                    print(f"{name_model} IS ADDED \n\n")
-                    print("To go to the menu insert anything\n")
-                    c = input()
-                    break
-                else:
-                    os.system('cls') 
-                    print(f"{name_model} IS NOT ADDED \n\n")
-                    print("To go to the menu insert anything\n")
-                    c = input()
-                    break
-            # model already exists
-            else:
-                os.system('cls') 
-                print(f"{name_model} ALREADY EXISTS\n\n")
-                print("To go to the menu insert anything\n")
-                c = input()
-                break
 
-        
 def edit_model(M: Settings):
 
     img_path = "test_images/HMI.png"
@@ -255,12 +224,11 @@ def edit_model(M: Settings):
 
     #------------------------------------EDIT MENU------------------------------------#
     while True:
-        
             os.system('cls') 
             print("What model do you want to edit?" )
-            print("(to go to the menu insert q)\n" )
-            name_model = input()
-            
+            #print("(to go to the menu insert q)\n" )
+            #name_model = input()
+            name_model = input('Write \'q\' to back to menu')
             
             # back to menu
             if(name_model == 'q'):

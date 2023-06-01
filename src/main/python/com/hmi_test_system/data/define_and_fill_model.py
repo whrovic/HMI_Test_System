@@ -61,8 +61,9 @@ class DefineAndFillModel:
                 break
             except:
                 print("Error path don't exist")
-                print("To go to the menu insert anything\n")
-                c = input()
+                #print("To go to the menu insert anything\n")
+                #c = input()
+                c = input('Write \'q\' to back to menu')
                 return -1
                 
         xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory

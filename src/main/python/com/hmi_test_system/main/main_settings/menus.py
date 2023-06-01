@@ -4,12 +4,12 @@ from data.settings import Settings
 from main.constant_main import *
 from main.main_settings import *
 
-count = 0
+#count = 0
 
 def new_model(M: Settings):
     count = 0
     while True:
-        MP.new_model_print()
+        MP.new_model()
         menu_choice = input()
         
         # manually
@@ -21,30 +21,21 @@ def new_model(M: Settings):
         elif (menu_choice == '2'):
             count = 0
             print("In construction")
-            print("  Come later")
-            menu_choice = input()
-    
-        # textfile   
+            menu_choice = input('Press Enter')
+
+        # XML  
         elif (menu_choice == '3'):
             count = 0
             print("In construction")
-            print("  Come later")
-            menu_choice = input()
-
-        # XML  
-        elif (menu_choice == '4'):
-            count = 0
-            print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            menu_choice = input('Press Enter')
         
         # back  
-        elif(menu_choice == '5'):
+        elif(menu_choice == '4'):
             os.system('cls')
             return 0
 
-        # turn off the program    
-        elif(menu_choice == '6'):
+        # exit  
+        elif(menu_choice == '5'):
             os.system('cls')
             return -1
         
@@ -58,21 +49,20 @@ def new_model(M: Settings):
 def settings_menu(M: Settings):
     count = 0
     while True:
-        MP.settings_menu_print()        
+        MP.settings()        
         menu_choice = input()
         
-        # add model
+        # new model
         if (menu_choice == '1'):
             count = 0
             if ( new_model(M) == -1 ):
                 return -1
 
-        # new sequence
+        # color
         elif (menu_choice == '2'):
             count = 0
             print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            menu_choice = input('Press Enter')
     
         # edit model    
         elif (menu_choice == '3'):
@@ -80,23 +70,21 @@ def settings_menu(M: Settings):
             if ( edit_model(M) == -1 ):
                 return -1
 
-
-        # edit video    
+        # test settings   
         elif (menu_choice == '4'):
             count = 0
             print("In construction")
-            print("  Come later")
-            menu_choice = input()
+            menu_choice = input('Press Enter')
         
-        # back  
+        # directory
         elif(menu_choice == '5'):
-            os.system('cls')
-            return 0
+            print("In construction")
+            menu_choice = input('Press Enter')
 
-        # turn off the program    
+        # exit 
         elif(menu_choice == '6'):
             os.system('cls')
-            return -1
+            return 0
         
         else:
             count = count + 1
