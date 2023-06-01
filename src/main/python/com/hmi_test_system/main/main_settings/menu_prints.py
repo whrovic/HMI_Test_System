@@ -37,3 +37,28 @@ class MenuPrints:
         print("1- Camera            2- Serial Port\n")
         print("3- Back              4- Exit\n")
         print("\n\n----------------------------------\n")
+        
+    def edit_menu():
+        os.system('cls')         
+        print("-------------Edit Menu-------------\n\n")
+        print("1- Edit model info   2- Edit led\n")
+        print("3- Edit button       4- Edit LCD\n")
+        print("             5- Save")
+        print("6- Back              7- Exit\n")
+        print("\n\n----------------------------------\n")
+
+    def edit_led():
+        os.system('cls') 
+        print("-------------Edit Led-------------\n\n")
+        print("1- Name          2- Colours\n")
+        print("3- Position      4- Edit menu")
+        print("\n\n----------------------------------\n")
+        
+    def edit_button():
+        os.system('cls') 
+        print("-------------Edit button-------------\n\n")
+        print("1- Name          2- Position\n")
+        print("      3- Edit menu")
+        print("\n\n----------------------------------\n")
+        
+                

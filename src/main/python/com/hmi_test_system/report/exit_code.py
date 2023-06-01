@@ -13,6 +13,9 @@ class ExitCode:
     def __init__(self):
         ExitCode.exit_code = OK
     
+    def get_current_value():
+        return ExitCode.exit_code
+    
     @staticmethod
     def aborted():
         ExitCode.update_value(ABORTED)
