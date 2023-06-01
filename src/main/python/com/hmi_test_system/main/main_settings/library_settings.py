@@ -10,10 +10,10 @@ from data.settings import Settings
 import os
 
 from data import *
-from main.constant_main import *
-from main_settings import *
+from .menu_prints import MenuPrints as MP
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
+from main.constant_main import *
 
 
 def edit_camara_settings(M: Settings):
@@ -29,7 +29,7 @@ def add_models(M: Settings):
         os.system('cls') 
         print("Insert the name of the new model:" )
         #print("(to go to the menu insert q)\n" )
-        name_model = input('Write \'q\' to back to menu')
+        name_model = input('Write \'q\' to back to menu  ')
         
         # back to menu
         if(name_model == 'q'):
@@ -228,7 +228,7 @@ def edit_model(M: Settings):
             print("What model do you want to edit?" )
             #print("(to go to the menu insert q)\n" )
             #name_model = input()
-            name_model = input('Write \'q\' to back to menu')
+            name_model = input('Write \'q\' to back to menu  ')
             
             # back to menu
             if(name_model == 'q'):
@@ -251,36 +251,30 @@ def edit_model(M: Settings):
 
                 name_model = M.model[index].get_name()
 
+                #TODO: not good pratic while inside while
                 while True:
-                    os.system('cls') 
-                    print("-------------Edit Menu-------------\n\n")
-                    print("1- Edit model info   2- Edit led\n")
-                    print("3- Edit button       4- Edit LCD\n")
-                    print("             5- Save")
-                    print("6- Back              7- Exit\n")
-                    print("\n\n----------------------------------\n")
-                
-                    c= input()
+                    MP.edit_menu()                
+                    menu_choice = input()
 
                     # edit name model
-                    if c == '1':
+                    if menu_choice == '1':
                         edit_model_info(M, index)
                         name_model = M.model[index].get_name()
                             
                     # edit led
-                    elif c == '2':
+                    elif menu_choice == '2':
                         edit_led(M, name_model, index, image)
                     
                     # edit button
-                    elif c == '3':
+                    elif menu_choice == '3':
                         edit_button(M, name_model, index, image)
                     
                     # edit LCD
-                    elif c == '4':
+                    elif menu_choice == '4':
                         edit_display(M, index, image)
                     
                     # save
-                    elif c == '5':
+                    elif menu_choice == '5':
                         while True:
                             print("What version is this?\n")
                             version = input() 
@@ -295,7 +289,7 @@ def edit_model(M: Settings):
                         break
                     
                     #back
-                    elif c == '6':
+                    elif menu_choice == '6':
                         while True:
                             resp = input("Do you want to save the changes before leaving? [y/n]")
                             if (resp == 'y'):
@@ -412,17 +406,12 @@ def edit_model_info(M: Settings, index: int):
 
 #------------------------------------EDIT LED------------------------------------#
 def edit_led_settings(M: Settings, index: int, index_led: int, image):
-    
     while True:
-        os.system('cls') 
-        print("-------------Edit Led-------------\n\n")
-        print("1- Name          2- Colours\n")
-        print("3- Position      4- Edit menu")
-        print("\n\n----------------------------------\n")
-        c = input()
+        MP.edit_led()
+        menu_choice = input()
 
         # edit name
-        if c=='1':
+        if menu_choice == '1':
             os.system('cls') 
             print("What is the new led name?\n")
             led_name = input().strip()
@@ -431,10 +420,10 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
             os.system('cls')
             print("LED NAME CHANGED")
             print("To continue insert anything\n")
-            c= input()                   
+            menu_choice = input()                   
         
         # edit colours
-        elif c=='2':
+        elif menu_choice == '2':
             M.model[index]._leds[index_led].delete_colours()
             os.system('cls')
 
@@ -463,10 +452,10 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
             os.system('cls')
             print("LED COLOURS CHANGED")
             print("To continue insert anything\n")
-            c= input()
+            menu_choice = input()
 
         # edit position 
-        elif c=='3':
+        elif menu_choice =='3':
             os.system('cls') 
             print("Select the led central position and press ENTER")
             pos_vector= DefineModelCV.click_pos(image)
@@ -476,10 +465,10 @@ def edit_led_settings(M: Settings, index: int, index_led: int, image):
             os.system('cls')
             print("LED POSITION CHANGED")
             print("To continue insert anything\n")
-            c= input()
+            menu_choice = input()
                     
         # back to menu
-        elif c == '4':
+        elif menu_choice == '4':
             break
 
 def edit_led(M: Settings, name_model, index: int, image):
@@ -533,11 +522,7 @@ def edit_button(M: Settings, name_model, index: int, image):
 
         else:
             while True:
-                os.system('cls') 
-                print("-------------Edit button-------------\n\n")
-                print("1- Name          2- Position\n")
-                print("      3- Edit menu")
-                print("\n\n----------------------------------\n")
+                MP.edit_button()
                 c = input()
 
                 # edit name

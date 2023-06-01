@@ -2,7 +2,11 @@ import os
 
 from data.settings import Settings
 from main.constant_main import *
-from main.main_settings import *
+from .library_settings import (add_models, create_model_manual, edit_button,
+                               edit_camara_settings, edit_display, edit_led,
+                               edit_led_settings, edit_model, edit_model_info,
+                               edit_SP_settings)
+from .menu_prints import MenuPrints as MP
 
 #count = 0
 
