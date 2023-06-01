@@ -105,7 +105,7 @@ def test_menu(M: Settings):
                     args.pop(0)
 
                     n_buttons = int(n_buttons)
-                    if len(args) < n_buttons:
+                    if len(args) < n_buttons-1:
                         exit_code = 4      # Invalid number of arguments
                         return exit_code
 
@@ -114,6 +114,12 @@ def test_menu(M: Settings):
                         button_name = args[0]
                         args.pop(0)
                         buttons_name.append(button_name)
+                    
+                    if(args[0] == '-sp'):
+                        args.pop(0)
+                        key_code = 0    # only serial port test
+                    else:
+                        key_code = 1    # serial port and display test
 
     
             # Display test type
@@ -156,14 +162,16 @@ def test_menu(M: Settings):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
-                    buttons_name = None
-                    
-                result_button = button_test(M, model, 1, buttons_name)      # dsp test -> 1  | not dsp test -> 0
+                    buttons_name = None 
+
+                # w/ dsp test -> key_code = 1  | only sp test -> key_code = 0                
+                result_button = button_test(M, model, key_code, buttons_name)      
                 
                 if(result_button == 0):
                     exit_code = 0     # test passed
                 elif(result_button == -1): 
                     exit_code = 10    # button test failed
+                    
     
     # default -> all tests
     else:
@@ -191,8 +199,7 @@ def led_test(M: Settings, model: Model, leds_name: list[str] = []):
          
 #------------------------------------BUTTON TEST------------------------------------#
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
-    return M.test.seq_button(model, buttons_name, code)     # dsp test -> code = 1  | not dsp test -> code = 0
-
+    return M.test.seq_button(model, buttons_name, code)     # w/ dsp test -> code = 1  | only sp test -> code = 0
 
 #------------------------------------LCD TEST------------------------------------#
 def display_test(M:Settings, model: Model):

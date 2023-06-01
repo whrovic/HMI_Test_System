@@ -1,7 +1,7 @@
-from hardware_settings.serial_port_settings import SerialPortSettings
-from hardware_settings.camera_settings import CameraSettings
-from hardware_settings.dimension import Dimension
-from hardware_settings.parameter import Parameter
+from .serial_port_settings import SerialPortSettings
+from .camera_settings import CameraSettings
+from .dimension import Dimension
+from .parameter import Parameter
 
 
 class TestSettings:

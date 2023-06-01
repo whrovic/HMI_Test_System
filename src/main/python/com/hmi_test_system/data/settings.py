@@ -2,7 +2,9 @@ from .model.model import Model
 from .model.display import Display
 from .path import Path
 from test.sequence_test import SequenceTest
-from .hardware_settings.camera_settings import CameraSettings
+from .hardware_settings.test_settings import TestSettings
+from .model.info import Info
+from .model.boot_loader_info import BootLoaderInfo
 
 class Settings:
 
@@ -14,12 +16,9 @@ class Settings:
         #self.cam2 = CameraSettings()
 
 
-    #------------------------------------Camera------------------------------------#
-    
-
     #------------------------------------Model------------------------------------#
-    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info):
-        self.model.append(Model(name, n_leds, n_buttons, display, info))
+    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
+        self.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))
    
     
     def call_model(self, name):
@@ -70,5 +69,6 @@ class Settings:
                 return i
         
         return None
+        
 
 
