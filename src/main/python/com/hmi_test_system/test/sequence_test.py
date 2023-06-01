@@ -169,7 +169,7 @@ class SequenceTest:
                 received_sp = True
                 
                 data = str(data)
-                if data.startswith(TEST_BUTTONS_BEGIN):
+                if data.startswith(TEST_LEDS_BEGIN):
                     break
             
             sleep(0.1)
