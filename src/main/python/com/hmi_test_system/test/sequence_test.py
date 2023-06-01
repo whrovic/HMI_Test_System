@@ -178,7 +178,7 @@ class SequenceTest:
         cam.start_capture()
 
         # Start led test
-        result = Test.test_button(cam, serial_port, leds_sequence)
+        result = Test.test_led(cam, serial_port, leds_sequence)
 
         # Close all the opened connections
         SetupTest.close()
