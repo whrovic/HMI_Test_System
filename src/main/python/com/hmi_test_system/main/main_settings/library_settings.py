@@ -1,17 +1,16 @@
-from data.settings import Settings
+import os
+
+from data.color.list_of_colors import ListOfColors
 from data.define_and_fill_model import DefineAndFillModel as df
+from data.model.boot_loader_info import BootLoaderInfo
 from data.model.button import Button
 from data.model.display import Display
-from data.model.led import Led
 from data.model.info import Info
-from data.model.boot_loader_info import BootLoaderInfo
+from data.model.led import Led
+from data.settings import Settings
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
-import os
-from data.color.list_of_colors import ListOfColors
-__all__=['edit_camara_settings', 'edit_SP_settings', 'create_model_manual', 'add_models', 
-         'edit_model', 'edit_model_info', 'edit_led', 'edit_led', 'edit_led_settings' , 
-         'edit_button', 'edit_display']
+
 
 def edit_camara_settings(M: Settings):
     pass

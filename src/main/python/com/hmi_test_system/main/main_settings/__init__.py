@@ -1,7 +1,11 @@
-__all__ = ['MenuPrints', 'new_model', 'settings_menu']
+__all__ = ['MP', 'new_model', 'settings_menu',
+           'edit_camara_settings', 'edit_SP_settings', 'create_model_manual', 'add_models', 
+         'edit_model', 'edit_model_info', 'edit_led', 'edit_led_settings' , 
+         'edit_button', 'edit_display']
 
-from .menus import *
-from .menu_prints import MenuPrints
-from .library_settings import *
-from .menus import new_model
-from .menus import settings_menu
+from .library_settings import (add_models, create_model_manual, edit_button,
+                               edit_camara_settings, edit_display, edit_led,
+                               edit_led_settings, edit_model, edit_model_info,
+                               edit_SP_settings)
+from .menu_prints import MenuPrints as MP
+from .menus import new_model, settings_menu

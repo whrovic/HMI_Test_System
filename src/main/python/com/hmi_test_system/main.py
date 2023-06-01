@@ -1,11 +1,12 @@
-from data.settings import Settings
-from main.main_settings.menus import *
 import os
 import sys
-from main.main_settings.menu_prints import MenuPrints as MP
+
 from data.color.list_of_colors import ListOfColors
-from main.main_test.library_test import *
+from data.settings import Settings
 from main.constant_main import *
+from main.main_settings import *
+from main.main_settings.menu_prints import MenuPrints as MP
+from main.main_test.library_test import *
 
 '''from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -21,35 +22,45 @@ M = Settings()
 # Read all the colors from the local file
 ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
 
+def arguments_help():
+    print("HELP")
+    print("main.py [type: set or test]")
+    print("   set - Initialize the user friendly menu of settings")
+    print("   test [name_model] [(optional)type_test] [optionals]")
+    print("   test [model_name] [serial_number] [manufacture_date] - Tests everything sequentially as defined in the model and the actual firmware")
+    print("TYPE_TEST:")
+    print("        KEYS		: -key \n 	BOOTLOADER INFO	: -bootloader \n	BOARD INFO	: -board")
+    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display")
+
 #------------------------------------CODE BEGIN------------------------------------#
 
 if len(sys.argv) < 2:
-    print("Usage: main.py [type]")
-    print("       [type]: set or test")
+    print("Miss arguments: main.py [type: set or test]")
     print("Ex: main.py set")
     print("Ex: main.py test [name_model] [(optional)type_test] [optionals]")
     sys.exit()
 
 value = sys.argv[1]
-settings = False
-
-if value == "test":
+if value == TYPE_TEST:
+    '''
     print("The value is 'test'") 
-    menu_choice = input('Press Enter')
+    menu_choice = input('Press Enter')'''
     exit_code = test_menu(M)
     print("Test Exit Code =", exit_code)
-elif value == "set":
-    print("The value is 'set'")
-    settings = True
+elif value == TYPE_SET:
+    # Menu Settings
+    settings_menu(M)
+elif value == TYPE_HELP:
+    # Menu Settings
+    arguments_help()
 else:
-    print(f"The value '{value}' is not 'test' or 'set'")
-    menu_choice = input('Press Enter')
+    print("Wrong arguments, write main.py -help for help")
+    menu_choice = input('Press Enter to exit')
     
-while(settings):
+'''while(settings):
     MP.main_menu_print()        
     menu_choice = input()
     
-    # Menu Settings
     if (menu_choice == '1'):
         count = 0
         if (settings_menu(M) == -1 ):
@@ -71,4 +82,4 @@ while(settings):
         count = count + 1
         if (count > NTIMEOUT_MENUS):
             break
-        continue
+        continue'''
