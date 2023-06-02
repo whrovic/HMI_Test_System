@@ -4,9 +4,7 @@ import sys
 from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
-from main.main_settings.menus import Menu
-#from main.main_settings import *
-#from main.main_settings.menu_prints import MenuPrints as MP
+from main.main_settings.menu_settings import MenuSettings as MS
 from main.main_test.library_test import *
 from report import ExitCode
 
@@ -53,7 +51,7 @@ if value == TYPE_TEST:
     
 elif value == TYPE_SET:
     # Menu Settings
-    Menu.settings_menu(M)
+    MS.settings_menu(M)
 elif value == TYPE_HELP:
     # Menu Settings
     arguments_help()
