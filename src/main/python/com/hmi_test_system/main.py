@@ -4,7 +4,7 @@ import sys
 from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
-from main.main_settings.menus import settings_menu
+from main.main_settings.menus import Menu
 #from main.main_settings import *
 #from main.main_settings.menu_prints import MenuPrints as MP
 from main.main_test.library_test import *
@@ -53,13 +53,13 @@ if value == TYPE_TEST:
     
 elif value == TYPE_SET:
     # Menu Settings
-    settings_menu(M)
+    Menu.settings_menu(M)
 elif value == TYPE_HELP:
     # Menu Settings
     arguments_help()
 else:
     print("Wrong arguments, write main.py -help for help")
-    menu_choice = input('Press Enter to exit')
+    menu_choice = input('Press Enter to exit ')
 
 
 sys.exit(ExitCode.get_current_value())
