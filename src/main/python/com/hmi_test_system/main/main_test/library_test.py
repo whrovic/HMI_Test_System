@@ -5,6 +5,7 @@ from data.model.model import Model
 from data.model.led import Led 
 from data.model.display import Display
 from data.model.button import Button
+from main.constant_main import *
 
 def test_menu(M: Settings):
 
@@ -59,7 +60,7 @@ def test_menu(M: Settings):
             test_type.append(t_type)
 
             # Leds test type
-            if (t_type == '-led'):
+            if (t_type == TEST_TYPE_LEDS):
 
                 if len(args) > 0:                
 
@@ -87,7 +88,7 @@ def test_menu(M: Settings):
             
 
             # Buttons test type
-            elif (t_type == '-key'):
+            elif (t_type == TEST_TYPE_BUTTONS):
 
                 #TODO: Check if the results come from display or serial port
 
@@ -123,7 +124,7 @@ def test_menu(M: Settings):
 
     
             # Display test type
-            elif (t_type == '-display'):
+            elif (t_type == TEST_TYPE_DISPLAY):
                 continue
             else:
                 exit_code = 3      # invalid argument
@@ -134,7 +135,7 @@ def test_menu(M: Settings):
         for i in range(len(test_type)):
 
             # led test
-            if(test_type[i] == "-led"):
+            if(test_type[i] == TEST_TYPE_LEDS):
 
                 # if user doesnt't choose the leds
                 if(len(leds_name) == 0):
@@ -148,7 +149,7 @@ def test_menu(M: Settings):
                     exit_code = 8     # led test failed
 
             # lcd test
-            elif(test_type[i] == "-display"):
+            elif(test_type[i] == TEST_TYPE_DISPLAY):
 
                 result_display =  display_test(M, model)
                 
@@ -158,7 +159,7 @@ def test_menu(M: Settings):
                     exit_code = 9     # lcd test failed  
 
             # button test
-            elif(test_type[i] == "-key"):
+            elif(test_type[i] == TEST_TYPE_BUTTONS):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
