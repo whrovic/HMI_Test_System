@@ -2,14 +2,11 @@ import os
 
 from data.settings import Settings
 from main.constant_main import *
-from .library_settings import (add_models, create_model_manual, edit_button,
-                               edit_camara_settings, edit_display, edit_led,
-                               edit_led_settings, edit_model, edit_model_info,
-                               edit_SP_settings)
+from .library_settings import LibrarySettings as LS
 from .menu_prints import MenuPrints as MP
 
 #count = 0
-class Menu:
+class MenuSettings:
 
     @staticmethod
     def settings_menu(M: Settings):
@@ -21,7 +18,7 @@ class Menu:
             # new model
             if (menu_choice == '1'):
                 count = 0
-                if ( Menu.new_model(M) == -1 ):
+                if ( MenuSettings.new_model(M) == -1 ):
                     return -1
 
             # color
@@ -33,7 +30,7 @@ class Menu:
             # edit model    
             elif (menu_choice == '3'):
                 count = 0
-                if ( edit_model(M) == -1 ):
+                if ( LS.edit_model(M) == -1 ):
                     return -1
 
             # test settings   
@@ -68,7 +65,7 @@ class Menu:
             # manually
             if (menu_choice == '1'):
                 count = 0
-                add_models(M)
+                LS.add_models(M)
 
             # automatic
             elif (menu_choice == '2'):
