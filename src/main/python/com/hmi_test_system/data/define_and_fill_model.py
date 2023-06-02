@@ -3,10 +3,56 @@ from .settings import Settings
 from .model.display import Display
 from .model.led import Led
 from .model.button import Button
+from .model.info import Info
+from .model.boot_loader_info import BootLoaderInfo
 import os
 from data.color.list_of_colors import ListOfColors
 
 class DefineAndFillModel:
+
+#------------------------------------SETTINGS XML------------------------------------#
+
+    '''def open_xml_settings(M: Settings): 
+        while True:
+            try:
+                files = os.listdir(M.path.get_settings_directory())   # files in directory
+                break
+            except:
+                print("Error path don't exist")
+                print("To go to the menu insert anything\n")
+                c = input()
+                return -1
+                
+        xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
+
+
+        for filename in xml_files:
+            # check if it is the asked file
+            if filename == f'{"ADICIONAR"}.xml': 
+                #...
+                pass
+                
+    def create_xml_settings(M: Settings):
+        # Create the XML document and write it to a file
+        tree = ET.ElementTree("")
+        ET.indent(tree, '  ')
+        tree.write(f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml")
+
+    
+    def delete_xml_settings(M: Settings):
+        file_path = f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml"
+
+        # check if the file exists
+        if os.path.exists(file_path):
+            # delete the file
+            os.remove(file_path)
+            return 1
+        else:
+            return -1'''
+        
+
+#------------------------------------MODEL XML------------------------------------#
+    
     def open_model_xml(M: Settings, name_model):
 
         while True:
@@ -15,8 +61,9 @@ class DefineAndFillModel:
                 break
             except:
                 print("Error path don't exist")
-                print("To go to the menu insert anything\n")
-                c = input()
+                #print("To go to the menu insert anything\n")
+                #c = input()
+                c = input('Write \'q\' to back to menu')
                 return -1
                 
         xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
@@ -39,8 +86,17 @@ class DefineAndFillModel:
                 display_dimx = display.find('display_dimx')
                 display_dimy = display.find('display_dimy')
                 LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
-                version = model.find('version')
-                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, version.text)
+                info = model.find('info')
+                info_board = info.find('board')
+                info_option = info.find('option')
+                info_revision = info.find('revision')
+                info_edition = info.find('edition')
+                INFO = Info(info_board.text, info_option.text, info_revision.text, info_edition.text)
+                boot_info = model.find('boot_loader_info')
+                boot_version = boot_info.find('version')
+                boot_date = boot_info.find('date')
+                BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
+                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
                 
                 index = M.index_model(name.text)
 
@@ -98,8 +154,22 @@ class DefineAndFillModel:
         display_dimx.text = str(dsp.get_dim_x())
         display_dimy = ET.SubElement(display, 'display_dimy')
         display_dimy.text = str(dsp.get_dim_y())
-        version = ET.SubElement(model, 'version')
-        version.text = str(aux.get_version())
+        info = ET.SubElement(model, 'info')
+        inf = aux.get_info()
+        info_board = ET.SubElement(info, 'info_board')
+        info_board.text = str(inf.get_board())
+        info_option = ET.SubElement(info, 'info_option')
+        info_option.text = str(inf.get_option())
+        info_revision = ET.SubElement(info, 'info_revision')
+        info_revision.text = str(inf.get_revision())
+        info_edition = ET.SubElement(info, 'info_edition')
+        info_edition.text = str(inf.get_edition())
+        boot_info = ET.SubElement(model, 'boot_loader_info')
+        boot = aux.get_boot_loader_info()
+        boot_version = ET.SubElement(boot_info, 'version')
+        boot_version.text = str(boot.get_version())
+        boot_date = ET.SubElement(boot_info, 'date')
+        boot_date.text = str(boot.get_date())
         
 
         leds = ET.SubElement(model, 'leds')
@@ -116,7 +186,7 @@ class DefineAndFillModel:
             led_y.text = str(aux2.get_pos_y())
             leds_colours = ET.SubElement(leds, f'led{i+1}_colours')
             for j in range(0, aux2._n_colour):
-                aux3 = aux._leds[i].get_colour()
+                aux3 = aux._leds[i].get_colours()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
                 led_colour.text = str(aux3[j].get_name())
         

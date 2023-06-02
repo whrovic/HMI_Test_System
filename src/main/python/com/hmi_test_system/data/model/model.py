@@ -1,19 +1,22 @@
 from .led import Led
 from .button import Button
 from .display import Display
+from .info import Info
+from .boot_loader_info import BootLoaderInfo
 
 class Model:
     
-    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, version: str):
+    def __init__(self, name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
         self._name = name
         self._n_leds = n_leds
         self._leds: list[Led] = []
         self._n_buttons = n_buttons
         self._buttons: list[Button] = []
         self._display = display
-        self._version = version
+        self._info = info
+        self._boot_loader_info = boot_loader_info
     
-    def set_name(self, name: int):
+    def set_name(self, name: str):
         self._name = name
         
     def get_name(self):
@@ -93,10 +96,18 @@ class Model:
     def get_display(self):
         return self._display
        
-    def set_version(self, version):
-        self._version = version
+    def set_info(self, info: Info):
+        self._info = info
         
-    def get_version(self):
-        return self._version
+    def get_info(self):
+        return self._info
+    
+    def set_boot_loader_info(self, boot_loader_info: BootLoaderInfo):
+        self._boot_loader_info = boot_loader_info
+        
+    def get_boot_loader_info(self):
+        return self._boot_loader_info
+    
+    
     
     

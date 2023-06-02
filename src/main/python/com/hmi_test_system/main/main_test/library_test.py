@@ -8,8 +8,6 @@ from data.model.button import Button
 
 def test_menu(M: Settings):
 
-    # TODO: A verificação dos nomes dos leds e botões deve ser verificado no sequence test
-
     exit_code = 0
 
     if len(sys.argv) < 3:
@@ -34,9 +32,6 @@ def test_menu(M: Settings):
         return exit_code
 
     model = M.call_model(name_model)
-    leds = model.get_leds()
-    buttons = model.get_buttons()
-    display = model.get_display()
     leds_name = []
     buttons_name = [] 
 
@@ -53,6 +48,7 @@ def test_menu(M: Settings):
         while len(args) > 0:
             
             t_type = args[0]
+            t_type = str(t_type)
             args.pop(0)
 
             # Check if it's a declaration of a new test
@@ -68,6 +64,7 @@ def test_menu(M: Settings):
                 if len(args) > 0:                
 
                     n_leds = args[0]
+                    n_leds = str(n_leds)
 
                     if not n_leds.isdigit():
                         if len(args) == 1:
@@ -86,12 +83,9 @@ def test_menu(M: Settings):
                     for i in range(n_leds):
                         led_name = args[0]
                         args.pop(0)
-
-                        l = model.get_led(led_name)
-                        if l is None:
-                            exit_code = 3  # Invalid argument
-                            return exit_code
                         leds_name.append(led_name)
+            
+
             # Buttons test type
             elif (t_type == '-key'):
 
@@ -99,6 +93,7 @@ def test_menu(M: Settings):
 
                 if len(args) > 0:
                     n_buttons = args[0]
+                    n_buttons = str(n_buttons)
 
                     if not n_buttons.isdigit():
                         if len(args) == 1:
@@ -110,7 +105,7 @@ def test_menu(M: Settings):
                     args.pop(0)
 
                     n_buttons = int(n_buttons)
-                    if len(args) < n_buttons:
+                    if len(args) < n_buttons-1:
                         exit_code = 4      # Invalid number of arguments
                         return exit_code
 
@@ -118,18 +113,22 @@ def test_menu(M: Settings):
                     for i in range(n_buttons):
                         button_name = args[0]
                         args.pop(0)
-
-                        b = model.get_button(button_name)
-                        if b is None:
-                            exit_code = 3  # Invalid argument
-                            return exit_code
                         buttons_name.append(button_name)
+                    
+                    if(args[0] == '-sp'):
+                        args.pop(0)
+                        key_code = 0    # only serial port test
+                    else:
+                        key_code = 1    # serial port and display test
+
+    
             # Display test type
             elif (t_type == '-display'):
                 continue
             else:
                 exit_code = 3      # invalid argument
                 return exit_code
+
 
         # Execute the tests
         for i in range(len(test_type)):
@@ -139,7 +138,7 @@ def test_menu(M: Settings):
 
                 # if user doesnt't choose the leds
                 if(len(leds_name) == 0):
-                    leds_name = [l.get_name() for l in leds]
+                    leds_name = None
 
                 result_led = led_test(M, model, leds_name)
                 
@@ -151,7 +150,7 @@ def test_menu(M: Settings):
             # lcd test
             elif(test_type[i] == "-display"):
 
-                result_display =  display_test(M, model, display)
+                result_display =  display_test(M, model)
                 
                 if(result_display == 0):
                     exit_code = 0     # test passed
@@ -163,25 +162,24 @@ def test_menu(M: Settings):
                 
                 # if user doesnt't choose the buttons
                 if(len(buttons_name) == 0):
-                    buttons_name = [b.get_name() for b in buttons]
-                    
-                result_button = button_test(M, model, 1, buttons_name) # 1 - sp | 2 - dsp | 3- all
+                    buttons_name = None 
+
+                # w/ dsp test -> key_code = 1  | only sp test -> key_code = 0                
+                result_button = button_test(M, model, key_code, buttons_name)      
                 
                 if(result_button == 0):
                     exit_code = 0     # test passed
                 elif(result_button == -1): 
                     exit_code = 10    # button test failed
+                    
     
     # default -> all tests
     else:
+        leds_name = None
+        buttons_name = None
 
-        # Get all led names
-        leds_name = [led.get_name() for led in leds]
-        # Get all button names
-        buttons_name = [button.get_name() for button in buttons]
-
-        result_led = led_test(M, model, None)
-        result_display = display_test(M, model, display)
+        result_led = led_test(M, model, leds_name)
+        result_display = display_test(M, model)
         result_button = button_test(M, model, 1, buttons_name)
 
         if(result_led + result_display + result_button == 0):
@@ -201,18 +199,8 @@ def led_test(M: Settings, model: Model, leds_name: list[str] = []):
          
 #------------------------------------BUTTON TEST------------------------------------#
 def button_test(M:Settings,  model: Model, code: int, buttons_name: list[str] = []):
-
-    if code == 1:
-        result = M.test.seq_button(model, buttons_name, 1, 0)
-
-    elif code == 2:
-        result = M.test.seq_button(model, buttons_name, 0, 1)
-
-    elif code == 3:
-        result =M.test.seq_button(model, buttons_name, 1, 1)
-
-    return result
+    return M.test.seq_button(model, buttons_name, code)     # w/ dsp test -> code = 1  | only sp test -> code = 0
 
 #------------------------------------LCD TEST------------------------------------#
-def display_test(M:Settings, model: Model, display: Display):
-    return M.test.seq_display(model, display)
+def display_test(M:Settings, model: Model):
+    return M.test.seq_display(model)

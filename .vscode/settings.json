@@ -1,5 +1,9 @@
 {
     "python.analysis.extraPaths": [
         "./src/main/python/com/hmi_test_system/data"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
 }

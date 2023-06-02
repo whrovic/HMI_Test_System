@@ -22,7 +22,8 @@ class VideoDevice(VideoCapture, ABC):
 
     def stop_capture(self):
         self._is_capturing = False
-        self._thread.join()
+        if self._thread.is_alive():
+            self._thread.join()
 
     def capture_loop(self):
         
