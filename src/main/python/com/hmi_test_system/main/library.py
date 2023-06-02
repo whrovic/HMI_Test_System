@@ -1,18 +1,34 @@
-
-import os
-
 from data import *
+
 from .constant_main import *
+
 
 class Library:
 
     def get_input(print_str: str):
-        print(print_str)
-        name_model = input('Write \'q\' to return to menu   ')
-        # back to menu
-        if(name_model == 'q'):
-            return None
-        
+        count = 0
+        while True:
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS):
+                return None
+            
+            # Ask for model name
+            print(print_str)
+            print("(Write \'q\' to cancel and return to menu)")
+            name_model = str(input()).strip()
+            
+            # back to menu
+            if (name_model == 'q'):
+                return None
+            elif name_model.isdigit() or (len(name_model) > 0 and name_model[0].isdigit()):
+                print("Model name cannot start with integer")
+                count += 1
+                continue
+            elif len(name_model) == 0:
+                print("Model name cannot be empty")
+                count += 1
+                continue
+            else:
+                break
         return name_model
     
     def exit_input(print_str: str):
@@ -23,30 +39,34 @@ class Library:
     def until_find_str(print_str: str):
         count = 0
         while True:
-            print(print_str)
-            board = str(input()) 
-            board = board.strip()
-            if (len(board) > MIN_LEN_STRING):
-                break
-            elif (count > NTIMEOUT_LIBRARY_SETTINGS):
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS):
                 return None
-            else:
+            
+            # Ask for data
+            data = str(input(print_str)).strip()
+            
+            if (len(data) <= 0):
                 count +=1
                 continue
-        return board
+            else:
+                break
+        return data
 
     def until_find_int(print_str: str):
         count = 0
         while True:
-            print(print_str)
-            value_input = input()    
-            if value_input.isdigit():
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS):
+                return -1
+            
+            # Ask for int
+            value_input = str(input(print_str)).strip()
+            
+            # Check if it's integer
+            if not value_input.isdigit():
+                print("Invalid input! Please insert an integer value")
+                count += 1
+                continue
+            else:
                 value_input = int(value_input)
                 break
-            elif (count > NTIMEOUT_LIBRARY_SETTINGS):
-                return -1
-            else: 
-                count +=1
-                continue
         return value_input
-

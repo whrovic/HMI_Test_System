@@ -232,19 +232,48 @@ def test_find_folder():
     folder_path = find_folder("HMI_Test_System")
     print(repr(folder_path))
 
+def test_read_colours():
+    from video.image_files import ImageFiles
+    from opencv.define_model_cv import DefineModelCV
+    from opencv.hmicv import HMIcv
+    from data.model.led import Led
+    from data.color.list_of_colors import ListOfColors
+    import cv2
+
+    img1 = "test_images/img_leds_1.png"
+
+    Img = ImageFiles([img1,])
+
+    Img.start_capture()
+    Img.stop_capture()
+
+    img = Img.get_image()
+
+    coordinates = DefineModelCV.detect_pos_leds(img)
+
+    for c in coordinates:
+        led = Led('L1', 0, int(c[0]), int(c[1]))
+
+        print(HMIcv.led_test(img, led).get_name())
+        DefineModelCV.show_coordinates(img, [c,])
+
+    cv2.imshow("img1", img)
+    cv2.waitKey(0)
+
+    cv2.destroyAllWindows()
+
 if (__name__ == "__main__"):
     #test_image_files()
     #test_video_file()
     #test_list_cameras()
     
     from data.path import Path
+    from data.color.list_of_colors import ListOfColors
     Path()
+
+    ListOfColors.read_from_file(Path.get_settings_directory() + "/colors.json")
     
-    test_camera()
-    input()
-    test_char()
-    input()
-    test_read_color_pattern()
+    test_read_colours()
 
     pass
     

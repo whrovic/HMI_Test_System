@@ -50,7 +50,7 @@ class DefineModelCV():
         for contour in contours:
             # Fit a minimum enclosing circle to the contour
             (x, y), _ = cv2.minEnclosingCircle(contour)
-            led_coordinates.append((x, y))
+            led_coordinates.append((int(x), int(y)))
 
         # Display the image with detected circles
         DefineModelCV.show_coordinates(img, led_coordinates)

@@ -10,7 +10,7 @@ class HMIcv():
         img = LEDcv.cut_led(img, led)
 
         # Get the colors read on the led image
-        led_color = LEDcv.read_color(img, led)
+        led_color = LEDcv.read_color(img)
 
         return led_color 
         

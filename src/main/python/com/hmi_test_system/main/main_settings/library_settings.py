@@ -34,12 +34,12 @@ class LibrarySettings:
             os.system('cls') 
                 
             name_model = L.get_input("Insert the name of the new model:")
-            if(name_model == None):
+            if (name_model is None):
                 # back to menu
                 break
             
             # model doesn't exist -> new configuration
-            elif(df.open_model_xml(M, name_model) is None):
+            elif (df.open_model_xml(M, name_model) is None):
                 os.system('cls') 
                 print(f"{name_model} DOESN'T EXIST\n")
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")

@@ -1,6 +1,3 @@
-
-import os
-
 from data import *
 from main.constant_main import *
 from main.library import Library as L
@@ -36,18 +33,18 @@ class LibraryNewModel:
         # Info configuration
         print("\n\nINFO CONFIGURATION\n")       
 
-        board = L.until_find_str("Board:")
-        if (board) == None: return -1
-        option = L.until_find_str("Option:")
-        if (option) == None: return -1
-        revision = L.until_find_str("Revision:")
-        if (revision) == None: return -1
-        edition = L.until_find_str("Edition:")
-        if (edition) == None: return -1
-        boot_version = L.until_find_str("Boot loader version:")
-        if (boot_version) == None: return -1
-        boot_date = L.until_find_str("Boot loader date:")
-        if (boot_date) == None: return -1
+        board = L.until_find_str("Board: ")
+        if board is None: return -1
+        option = L.until_find_str("Option: ")
+        if option is None: return -1
+        revision = L.until_find_str("Revision: ")
+        if revision is None: return -1
+        edition = L.until_find_str("Edition: ")
+        if edition is None: return -1
+        boot_version = L.until_find_str("Boot loader version: ")
+        if boot_version is None: return -1
+        boot_date = L.until_find_str("Boot loader date: ")
+        if boot_date is None: return -1
         
         info = Info(board, option, revision, edition)
         boot_info = BootLoaderInfo(boot_version, boot_date)
