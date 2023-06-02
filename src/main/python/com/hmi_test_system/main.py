@@ -1,4 +1,3 @@
-import os
 import sys
 
 from data.color.list_of_colors import ListOfColors
@@ -6,8 +5,6 @@ from data.settings import Settings
 from main.constant_main import *
 from main.main_settings import *
 from main.main_test.library_test import test_menu
-#from main.main_settings.menu_settings import MenuSettings as MS
-#from main.main_test.library_test import *
 from report import ExitCode
 
 '''from tkinter import Tk
@@ -63,30 +60,3 @@ else:
 
 
 sys.exit(ExitCode.get_current_value())
-
-'''while(settings):
-    MP.main_menu_print()        
-    menu_choice = input()
-    
-    if (menu_choice == '1'):
-        count = 0
-        if (settings_menu(M) == -1 ):
-            break
-
-    # Test model    
-    elif (menu_choice == '2'):
-        count = 0
-        print("Not working anymore :(")
-        menu_choice = input('Press Enter')
-        #model_menu(M) == -1 
-
-    # Turn off the program    
-    elif(menu_choice == '3'):
-        os.system('cls')
-        break
-
-    else:
-        count = count + 1
-        if (count > NTIMEOUT_MENUS):
-            break
-        continue'''
