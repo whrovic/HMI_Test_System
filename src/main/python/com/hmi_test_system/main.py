@@ -4,8 +4,10 @@ import sys
 from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
-from main.main_settings.menu_settings import MenuSettings as MS
-from main.main_test.library_test import *
+from main.main_settings import *
+from main.main_test.library_test import test_menu
+#from main.main_settings.menu_settings import MenuSettings as MS
+#from main.main_test.library_test import *
 from report import ExitCode
 
 '''from tkinter import Tk

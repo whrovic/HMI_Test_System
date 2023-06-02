@@ -23,8 +23,6 @@ from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
 from opencv.hmicv import HMIcv
-#from report.exit_code import ExitCode
-#from report.log_display import LogDisplay
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
