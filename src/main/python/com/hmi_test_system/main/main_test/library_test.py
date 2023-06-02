@@ -1,10 +1,9 @@
-from data.settings import Settings
-from data.define_and_fill_model import DefineAndFillModel as df
 import sys
+
+from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.model import Model
-from data.model.led import Led 
-from data.model.display import Display
-from data.model.button import Button
+from data.settings import Settings
+
 
 def test_menu(M: Settings):
 
