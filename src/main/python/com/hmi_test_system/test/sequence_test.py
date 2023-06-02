@@ -56,6 +56,8 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
 
+        print("Serial Port communication openned")
+
         # Waits for serial port TestKeys begin
         begin_waiting_time = time()
         received_sp = False
@@ -85,6 +87,8 @@ class SequenceTest:
         # If the test will use both serial port and display, start recording images
         if dsp:
             cam.start_capture()
+
+        print("Buttons Tests started")
 
         # Start button test
         result = Test.test_button(cam, serial_port, button_sequence)

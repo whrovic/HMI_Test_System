@@ -50,6 +50,8 @@ class Test:
                 while d is None:
                     d, _ = serial.get_serial()
                 continue
+
+            print(button.get_name(), "error")
             return -1
 
         data, time = serial.get_serial()
