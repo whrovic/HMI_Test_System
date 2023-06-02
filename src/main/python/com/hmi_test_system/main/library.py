@@ -14,7 +14,11 @@ class Library:
             return None
         
         return name_model
-        
+    
+    def exit_input(print_str: str):
+        print(print_str)
+        input('Press Enter ')
+        return
         
     def until_find_str(print_str: str):
         count = 0

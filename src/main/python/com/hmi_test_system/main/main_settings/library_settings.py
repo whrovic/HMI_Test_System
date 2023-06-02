@@ -55,19 +55,21 @@ class LibrarySettings:
                 if ( LNM.create_model_manual(M, name_model) == 0):
                     df.create_xml(M, name_model)
                     os.system('cls') 
-                    print(f"{name_model} IS ADDED \n\n")
+                    #print(f"{name_model} IS ADDED \n\n")
                     #print("To go to the menu insert anything\n")
                     #c = input()
-                    c = input('Press Enter ')
+                    L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
                 else:
                     os.system('cls') 
-                    print(f"{name_model} IS NOT ADDED \n\n")
-                    c = input('Press Enter ')
+                    #print(f"{name_model} IS NOT ADDED \n\n")
+                    #c = input('Press Enter ')
+                    L.exit_input(f"{name_model} IS NOT ADDED \n\n")
                     break
             # model already exists
             else:
                 os.system('cls') 
-                print(f"{name_model} ALREADY EXISTS\n\n")
-                c = input('Press Enter ')
+                #print(f"{name_model} ALREADY EXISTS\n\n")
+                #c = input('Press Enter ')
+                L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
                 break
