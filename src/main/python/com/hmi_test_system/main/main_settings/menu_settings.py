@@ -16,6 +16,10 @@ class MenuSettings:
             MP.settings()        
             menu_choice = input()
             
+            # match (menu_choice):
+            #     case '1':
+            #         break
+
             # new model
             if (menu_choice == '1'):
                 count = 0

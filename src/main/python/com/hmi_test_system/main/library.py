@@ -8,7 +8,7 @@ class Library:
 
     def get_input(print_str: str):
         print(print_str)
-        name_model = input('Write \'q\' to back to menu  ')
+        name_model = input('Write \'q\' to return to menu   ')
         # back to menu
         if(name_model == 'q'):
             return None

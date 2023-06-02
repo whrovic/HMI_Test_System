@@ -32,14 +32,6 @@ class LibrarySettings:
         #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
-            
-            '''print("Insert the name of the new model:" )
-            #print("(to go to the menu insert q)\n" )
-            name_model = input('Write \'q\' to back to menu  ')
-            
-            # back to menu
-            if(name_model == 'q'):
-                break'''
                 
             name_model = L.get_input("Insert the name of the new model:")
             if(name_model == None):
@@ -54,22 +46,15 @@ class LibrarySettings:
 
                 if ( LNM.create_model_manual(M, name_model) == 0):
                     df.create_xml(M, name_model)
-                    os.system('cls') 
-                    #print(f"{name_model} IS ADDED \n\n")
-                    #print("To go to the menu insert anything\n")
-                    #c = input()
+                    os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
                 else:
-                    os.system('cls') 
-                    #print(f"{name_model} IS NOT ADDED \n\n")
-                    #c = input('Press Enter ')
+                    os.system('cls')
                     L.exit_input(f"{name_model} IS NOT ADDED \n\n")
                     break
             # model already exists
             else:
-                os.system('cls') 
-                #print(f"{name_model} ALREADY EXISTS\n\n")
-                #c = input('Press Enter ')
+                os.system('cls')
                 L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
                 break

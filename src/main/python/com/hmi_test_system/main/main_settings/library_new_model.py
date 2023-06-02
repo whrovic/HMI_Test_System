@@ -13,6 +13,10 @@ from .menu_prints import MenuPrints as MP
 class LibraryNewModel:
     def create_model_manual(M: Settings, name_model):
 
+        # cam = Camera(0)
+        # img = cam.get_frame()
+        # cam.close()
+
         img_path = "test_images/HMI.png"
 
         cap = ImageFiles([img_path])
