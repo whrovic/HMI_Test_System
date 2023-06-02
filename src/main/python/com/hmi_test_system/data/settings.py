@@ -12,6 +12,7 @@ class Settings:
         self.model: list[Model] = []
         self.path = Path()
         self.test = SequenceTest()
+        self.test_settings = TestSettings()
         #self.cam1 = CameraSettings()
         #self.cam2 = CameraSettings()
 
