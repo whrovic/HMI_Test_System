@@ -16,26 +16,11 @@ from .test import Test
 class SequenceTest:
 
     @staticmethod
-<<<<<<< HEAD
-    def seq_button(model: Model, buttons_test: list[str], sp: bool, dsp: bool):
-        
-        for b in buttons_test:
-            print(b)
-=======
     def seq_button(model: Model, buttons_test = None, dsp = False):
->>>>>>> release
 
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
 
-<<<<<<< HEAD
-        print("Opening serial port communication")
-
-        # TODO: As portas série e camaras não são iniciadas, nem startadas aqui
-        # TODO: Isto é código inicial para teste
-        serial1 = SerialPort('COM3')
-        serial1.start_receive()
-=======
         # Gets the buttons to test
         if buttons_test is None:
             # If no button names are provided, get everyone from the model
@@ -70,7 +55,6 @@ class SequenceTest:
         
         # Start receiving data from serial port
         serial_port.start_receive()
->>>>>>> release
 
         print("Serial Port communication openned")
 
@@ -109,16 +93,8 @@ class SequenceTest:
         # Start button test
         result = Test.test_button(cam, serial_port, button_sequence)
 
-<<<<<<< HEAD
-        print(result)
-
-        # TODO: This has to get away from here
-        serial1.stop_receive()
-        serial1.clear_queue()
-=======
         # Close all the opened connections
         SetupTest.close()
->>>>>>> release
 
         # Return -1 in case of error or 0 if success
         return result

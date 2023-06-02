@@ -9,21 +9,12 @@ class SerialPort:
     _thread : Thread
     
     def __init__(self, port):
-<<<<<<< HEAD
-        self.is_receiving = False
-        self.thread = Thread(target = self.thread_loop)
-        self.serial = serial.Serial(port = port, baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, xonxoff=False)
-        self.port_queue_data = queue.Queue()
-        self.port_queue_time = queue.Queue()
-
-=======
         self._is_receiving = False
         self._thread = Thread(target = self._thread_loop)
-        self._serial = Serial(port = port, baudrate = 115200, bytesize = 8, parity = PARITY_NONE, stopbits = 1, xonxoff=False)
+        self._serial = serial.Serial(port = port, baudrate = 115200, bytesize = 8, parity = serial.PARITY_NONE, stopbits = 1, xonxoff=False)
         self._port_queue_data = queue.Queue()
         self._port_queue_time = queue.Queue()
     
->>>>>>> release
     def get_serial(self):
         if self._port_queue_data.empty():
             return None, None

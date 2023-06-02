@@ -45,12 +45,7 @@ class Test:
                 data, time = serial.get_serial()
 
             data = str(data)
-<<<<<<< HEAD
-            if data.startswith("TestKeys - Pressed:") and data.endswith(button.get_name()):
-                print(button.get_name(), "pressed")
-=======
             if data.startswith(TEST_BUTTONS) and data.endswith(button.get_name()):
->>>>>>> release
                 d = None
                 while d is None:
                     d, _ = serial.get_serial()
