@@ -4,6 +4,7 @@ from data.settings import Settings
 from main.constant_main import *
 from .library_settings import LibrarySettings as LS
 from .menu_prints import MenuPrints as MP
+from .library_edit_model import LibraryEditModel as LEM
 
 #count = 0
 class MenuSettings:
@@ -30,7 +31,7 @@ class MenuSettings:
             # edit model    
             elif (menu_choice == '3'):
                 count = 0
-                if ( LS.edit_model(M) == -1 ):
+                if ( LEM.edit_model(M) == -1 ):
                     return -1
 
             # test settings   
