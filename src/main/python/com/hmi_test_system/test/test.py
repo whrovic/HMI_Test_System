@@ -165,12 +165,112 @@ class Test:
             return 0
 
     @staticmethod
-    def test_boot_loader_info(cam, serial, version, date):
-        return -1
+    def test_boot_loader_info(cam : Camera, serial : SerialPort, version, date):
+
+    # Wait for the response from the serial port
+
+        response = None
+        timeout = 5
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            response, _ = serial.get_serial()
+            if response is not None:
+                break
+
+    # Check if the response is valid
+        if response is None:
+            print("Error: No response received from the serial port")
+            return -1
+
+    # Parse the response to extract the version and date
+        received_info = response.split('\n')
+
+    # Extract the version from the received info
+        received_version = received_info[1].split(':')[1].strip()
+
+    # Compare the received version with the expected version
+        if received_version == version:
+            print("Serial port has the correct version of the HMI")
+        else:
+            print("Boot Loader Info failed: Incorrect version of the HMI")
+            return -1
+
+    # Wait for the response from the serial port for date
+        response = None
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            response, _ = serial.get_serial()
+            if response is not None:
+                break
+
+    # Check if the response is valid
+        if response is None:
+            print("Error: No response received from the serial port")
+            return -1
+
+    # Extract the date from the received info
+        received_date = response.split(':')[1].strip()
+
+    # Compare the received date with the expected date
+        if received_date == date:
+            print("Serial port has the correct date of the HMI")
+            return 0
+        else:
+            print("Boot Loader Info failed: Incorrect date of the HMI")
+            return -1
+
     
     @staticmethod
-    def test_board_info(cam, serial, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
-        return -1
+
+    def test_board_info(cam: Camera, serial: SerialPort, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
+
+    # Check the board information
+        board_info, _ = serial.get_serial()
+        if not board_info.startswith("TestBoardInfo - Board: " + board):
+            print("Board Info Test failed: Incorrect board information")
+            return -1
+
+    # Check the serial number
+        serial_number_info, _ = serial.get_serial()
+        if serial_number_info.find("Serial Number: " + serial_number) == -1:
+            print("Board Info Test failed: Incorrect serial number")
+            return -1
+
+    # Check the manufacture date
+        manufacture_date_info, _ = serial.get_serial()
+        if manufacture_date_info.find("Manufacture Date: " + manufacture_date) == -1:
+            print("Board Info Test failed: Incorrect manufacture date")
+            return -1
+
+    # Check the option
+        option_info, _ = serial.get_serial()
+        if option_info.find("Option: " + option) == -1:
+            print("Board Info Test failed: Incorrect option")
+            return -1
+
+    # Check the revision
+        revision_info, _ = serial.get_serial()
+        if revision_info.find("Revision: " + revision) == -1:
+            print("Board Info Test failed: Incorrect revision")
+            return -1
+
+    # Check the edition
+        edition_info, _ = serial.get_serial()
+        if edition_info.find("Edition: " + edition) == -1:
+            print("Board Info Test failed: Incorrect edition")
+            return -1
+
+    # Check the LCD type
+        lcd_type_info, _ = serial.get_serial()
+        if lcd_type_info.find("LCD Type: " + lcd_type) == -1:
+            print("Board Info Test failed: Incorrect LCD type")
+            return -1
+
+    # All checks passed
+        print("Board Info Test passed")
+        return 0
+
+    
     
     @staticmethod
     def test_alight(cam, serial):
