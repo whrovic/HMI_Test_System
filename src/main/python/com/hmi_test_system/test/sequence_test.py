@@ -169,7 +169,7 @@ class SequenceTest:
         return result
     
     @staticmethod
-    def seq_board_info(model: Model, dsp = False):
+    def seq_board_info(model: Model, serial_number: str, manufacture_date: str, dsp = False):
         
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
@@ -229,7 +229,7 @@ class SequenceTest:
         print("Board Info Test started")
 
         # Start button test
-        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), model.get_info().get_serial_number(), model.get_info().get_manufacture_date(), model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
+        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
 
         # Close all the opened connections
         SetupTest.close()
@@ -239,8 +239,73 @@ class SequenceTest:
     
     @staticmethod
     def seq_alight(dsp = False):
-        return -1
+        
+        # TODO: This shouldn't be defined here
+        TIMEOUT = 10
 
+        # Open the needed connections
+        SetupTest.setup(False, dsp, True, False)
+
+        # Check connections status
+        serial_port = SetupTest.__sp_main
+        if serial_port.closed():
+            # Couldn't open serial port connection
+            SetupTest.close()
+            ExitCode.serialport_connection_failure()
+            return -1
+        cam = SetupTest.__cam_display
+        if dsp and cam.closed():
+            # Couldn't open camera connection
+            SetupTest.close()
+            ExitCode.camera_connection_failure()
+            return -1
+        
+        # Start receiving data from serial port
+        serial_port.start_receive()
+
+        print("Serial Port communication opened")
+
+        # Waits for serial port TestKeys begin
+        begin_waiting_time = time()
+        received_sp = False
+        while True:
+            now = time()
+
+            # Check if the serial port timed out waiting for the first received data
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+                # No data was received from the serial port
+                # TODO: Catch this error
+                SetupTest.close()
+                ExitCode.serialport_timeout_reception()
+                return -1
+            
+            # Get data from serial port
+            data, _ = serial_port.get_serial()
+
+            if data is not None:
+                received_sp = True
+                
+                data = str(data)
+                if data.startswith(TEST_ALIGHT_BEGIN):
+                    break
+            
+            sleep(0.1)
+
+        # If the test will use both serial port and display, start recording images
+        if dsp:
+            cam.start_capture()
+
+        print("Light Test started")
+
+        # Start button test
+        result = Test.test_alight(cam, serial_port)
+
+        # Close all the opened connections
+        SetupTest.close()
+
+        # Return -1 in case of error or 0 if success
+        return result
+    
     @staticmethod
     def seq_led(model: Model, leds_test = None):
         
@@ -250,7 +315,7 @@ class SequenceTest:
         # Gets the leds to test
         if leds_test is None:
             # If no led names are provided, get everyone from the model
-            leds_sequence = model.get_leds
+            leds_sequence = model.get_leds()
         else:
             leds_sequence = []
             for led_name in leds_test:
@@ -272,7 +337,7 @@ class SequenceTest:
             SetupTest.close()
             ExitCode.serialport_connection_failure()
             return -1
-        cam = SetupTest.__cam_display
+        cam = SetupTest.__cam_leds
         if cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
