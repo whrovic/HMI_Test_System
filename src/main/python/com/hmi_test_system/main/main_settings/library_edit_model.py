@@ -369,7 +369,7 @@ class LibraryEditModel:
         dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
         
-        M.model[index]._display.new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
+        M.model[index]._display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
 
         os.system('cls')
         print("LCD POSITION CHANGED\n")

@@ -41,12 +41,14 @@ class LibraryNewModel:
         if revision is None: return -1
         edition = L.until_find_str("Edition: ")
         if edition is None: return -1
+        lcd_type = L.until_find_int("LCD Type: ")
+        if lcd_type is None: return -1
         boot_version = L.until_find_str("Boot loader version: ")
         if boot_version is None: return -1
         boot_date = L.until_find_str("Boot loader date: ")
         if boot_date is None: return -1
         
-        info = Info(board, option, revision, edition)
+        info = Info(board, option, revision, edition, lcd_type)
         boot_info = BootLoaderInfo(boot_version, boot_date)
     
 
