@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from .displaycv import Displaycv
+
 
 class DefineModelCV():
 
@@ -82,6 +84,22 @@ class DefineModelCV():
     @staticmethod
     def detect_pos_buttons(image):
         pass
+
+    @staticmethod
+    def write_reference_image_to_file(image, filename, path):
+        
+        # Calculate the transformation matrix
+        transformation_matrix, coordinates = Displaycv.__get_transformation_matrix(image)
+        if transformation_matrix is None:
+            # TODO: Error Code
+            return -1
+
+        # Extract display
+        display_image = Displaycv.__extract_display(image, transformation_matrix, coordinates)
+
+        ret_val = cv2.imwrite(path + filename, display_image)
+
+        return ret_val
 
     @staticmethod
     def show_coordinates(image, coordinates):

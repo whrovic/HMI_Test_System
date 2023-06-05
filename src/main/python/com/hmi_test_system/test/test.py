@@ -72,6 +72,16 @@ class Test:
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
 
+        # Get images from the model
+        chr_reference_img = HMIcv.read_image_from_file(display.get_chr_reference_path())
+        pal_reference_img = HMIcv.read_image_from_file(display.get_pal_reference_path())
+
+        if chr_reference_img is None or pal_reference_img is None:
+            # TODO: Exit Code
+            # TODO: Log
+            return -1
+        # TODO: Log
+
         # Initializing the test variables
         test_name = None
         test_start_time = None
@@ -86,7 +96,7 @@ class Test:
 
         while True:
             # Get the data from the serial port with a timeout
-            data, data_time = serial.get_serial(timeout=0.1)
+            data, data_time = serial.get_serial()
 
             # Check if the data is related to the display test
             if data is not None:
@@ -94,21 +104,18 @@ class Test:
                 if PIXEL in data:
                     new_test_name = PIXEL
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
 
                 elif CHAR in data:
                     new_test_name = CHAR
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
 
                 elif COLOR in data:
                     new_test_name = COLOR
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
 
-                elif TEST_DISPLAY_ENTER in data:
-                    log_display.test_finished()
-                    break
+                elif TEST_DISPLAY_OK in data:
+                    new_test_name = None
+                    new_test_start_time = data_time
 
             # Start the first test
             if test_name is None and new_test_name is not None:
@@ -136,7 +143,7 @@ class Test:
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == PIXEL:
-                        if HMIcv.display_backlight_test(frame, display):
+                        if HMIcv.display_backlight_test(frame):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -144,7 +151,7 @@ class Test:
                             continue
 
                     elif test_name == CHAR:
-                        if HMIcv.display_characters_test(frame, display):
+                        if HMIcv.display_characters_test(frame, chr_reference_img):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -152,7 +159,7 @@ class Test:
                             continue
 
                     elif test_name == COLOR:
-                        if HMIcv.display_color_pattern_test(frame, display):
+                        if HMIcv.display_color_pattern_test(frame, pal_reference_img):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None

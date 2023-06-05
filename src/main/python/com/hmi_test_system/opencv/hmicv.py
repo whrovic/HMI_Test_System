@@ -57,13 +57,10 @@ class HMIcv():
     @staticmethod
     def display_characters_test(img, model_display):
         
-        # Extract the reference display
-        model_transformation_matrix, model_coordinates = Displaycv.__get_transformation_matrix(model_display)
-        if model_transformation_matrix is None:
+        if model_display is None:
             # TODO: Error Code
             return -1
-        model_display = Displaycv.__extract_display(model_display, model_transformation_matrix, model_coordinates)
-        
+
         # Extract the display
         image_display = Displaycv.__get_extracted_display(img)
         if image_display is None:
@@ -71,8 +68,8 @@ class HMIcv():
             return -1
         
         # Correct areas with low sharpness
-        model_display = Displaycv.__correct_low_sharpness(model_display, threshold=25, strength=2.5)
         image_display = Displaycv.__correct_low_sharpness(image_display, threshold=25, strength=2.5)
+        model_display = Displaycv.__correct_low_sharpness(model_display, threshold=25, strength=2.5)
 
         # Convert images to grayscale
         model_gray = cv2.cvtColor(model_display, cv2.COLOR_BGR2GRAY)
@@ -89,12 +86,9 @@ class HMIcv():
     @staticmethod
     def display_color_pattern_test(img, model_display):
         
-        # Extract the reference display
-        model_transformation_matrix, model_coordinates = Displaycv.__get_transformation_matrix(model_display)
-        if model_transformation_matrix is None:
+        if model_display is None:
             # TODO: Error Code
             return -1
-        model_display = Displaycv.__extract_display(model_display, model_transformation_matrix, model_coordinates)
 
         # Extract the display
         image_display = Displaycv.__get_extracted_display(img)
@@ -112,3 +106,7 @@ class HMIcv():
         # Compare the MSE against the threshold
         threshold = 10
         return (mse <= threshold)
+    
+    @staticmethod
+    def read_image_from_file(filepath):
+        return cv2.imread(filepath)
