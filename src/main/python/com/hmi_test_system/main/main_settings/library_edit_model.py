@@ -13,6 +13,9 @@ class LibraryEditModel:
     
     def edit_model(M: Settings):
 
+        os.system('cls') 
+
+        # TODO: Change this
         img_path = "test_images/HMI.png"
 
         cap = ImageFiles([img_path])
@@ -24,13 +27,29 @@ class LibraryEditModel:
         cap.stop_capture()
         cap.clear_queue()
 
+        # Get list of available models
+        name_models = DefineAndFillModel.get_all_xml_file_names(M)
+        if name_models is None:
+            # TODO: Error code
+            print("Error path don't exist")
+            input("Press Enter to continue...")
+            return -1
+        elif len(name_models) == 0:
+            print("No available models to edit")
+            input("Press Enter to continue...")
+            return 0
+
         #------------------------------------EDIT MENU------------------------------------#
         while True:
+                
                 os.system('cls') 
-                print("What model do you want to edit?" )
-                #print("(to go to the menu insert q)\n" )
-                #name_model = input()
-                name_model = input('Write \'q\' to back to menu  ')
+
+                print("Available models:")
+                for n in name_models:
+                    print(n)
+                print("\nWhat model do you want to edit?")
+                print("(Write 'q' to back to menu)")
+                name_model = input()
                 
                 # back to menu
                 if(name_model == 'q'):
@@ -40,8 +59,7 @@ class LibraryEditModel:
                 elif(df.open_model_xml(M, name_model) is None):
                     os.system('cls') 
                     print(f"{name_model} DOESN'T EXIST\n")
-                    print("To go to the menu insert anything\n" )
-                    c = input()
+                    input("Press Enter to continue..." )
                 
                 # model  exists
                 else:
@@ -77,41 +95,32 @@ class LibraryEditModel:
                         
                         # save
                         elif menu_choice == '5':
-                            while True:
-                                print("What version is this?\n")
-                                version = input() 
-                                if version.isdigit():
-                                    version = int(version)
-                                    break
-                                else: 
-                                    continue
-                            M.model[index].set_version(version)
                             df.create_xml(M, name_model)
-                            n = 0
-                            break
+                            print("Changes saved!")
+                            input("Press Enter to continue...")
+                            continue
                         
                         #back
                         elif menu_choice == '6':
                             while True:
-                                resp = input("Do you want to save the changes before leaving? [y/n]")
-                                if (resp == 'y'):
+                                resp = input("Do you want to save the changes before leaving? [y/n] ")
+                                if (resp.lower() == 'y'):
                                     df.create_xml(M, name_model)
                                     break
-                                elif (resp == 'n'):
+                                elif (resp.lower() == 'n'):
                                     break
                                 else: 
                                     continue
-                            
                             return 0
                         
                         #exit
-                        elif c == '7':
+                        elif menu_choice == '7':
                             while True:
                                 resp = input("Do you want to save the changes before leaving? [y/n]")
-                                if (resp == "y"):
+                                if (resp.lower() == "y"):
                                     df.create_xml(M, name_model)
                                     break
-                                elif (resp == 'n'):
+                                elif (resp.lower() == 'n'):
                                     break
                                 else:
                                     continue

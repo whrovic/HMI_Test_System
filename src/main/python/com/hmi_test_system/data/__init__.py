@@ -1,5 +1,5 @@
 __all__ = ['ListOfColors', 'df', 'BootLoaderInfo', 'Button', 'Display',
-           'Info', 'Led', 'Settings']
+           'Info', 'Led', 'Settings', 'DefineAndFillModel']
 
 from data.color.list_of_colors import ListOfColors
 from data.define_and_fill_model import DefineAndFillModel as df
@@ -9,3 +9,4 @@ from data.model.display import Display
 from data.model.info import Info
 from data.model.led import Led
 from data.settings import Settings
+from data.define_and_fill_model import DefineAndFillModel

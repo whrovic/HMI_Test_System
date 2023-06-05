@@ -53,83 +53,73 @@ class DefineAndFillModel:
 
 #------------------------------------MODEL XML------------------------------------#
     
+    @staticmethod
     def open_model_xml(M: Settings, name_model):
 
-        while True:
-            try:
-                files = os.listdir(M.path.get_xml_directory())   # files in directory
-                break
-            except:
-                print("Error path don't exist")
-                #print("To go to the menu insert anything\n")
-                #c = input()
-                c = input('Write \'q\' to back to menu')
-                return -1
-                
-        xml_files = [file for file in files if file.endswith('.xml')]   # xml files in directory
+        # Get all the xml filenames from the xml files folder                
+        xml_filenames = DefineAndFillModel.get_all_xml_file_names(M)
+        if xml_filenames is None:
+            print("Error path don't exist")
+            input('Write anything to back to menu')
+            return -1
 
-
-        for filename in xml_files:
-            # check if it is the asked file
-            if filename == f'{name_model}.xml':
-                # make a model with the xml file
-                xml_file = os.path.join(M.path.get_xml_directory(), filename)
-                tree = ET.parse(xml_file)
-                model = tree.getroot()
-                name = model.find('name')
-                n_leds = model.find('n_leds')
-                n_buttons = model.find('n_buttons')
-                display = model.find('display')
-                display_name = display.find('display_name')
-                display_x = display.find('display_x')
-                display_y = display.find('display_y')
-                display_dimx = display.find('display_dimx')
-                display_dimy = display.find('display_dimy')
-                LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
-                info = model.find('info')
-                info_board = info.find('board')
-                info_option = info.find('option')
-                info_revision = info.find('revision')
-                info_edition = info.find('edition')
-                info_lcd_type = info.find('lcd_type')
-                INFO = Info(info_board.text, info_option.text, info_revision.text, info_edition.text, info_lcd_type.text)
-                boot_info = model.find('boot_loader_info')
-                boot_version = boot_info.find('version')
-                boot_date = boot_info.find('date')
-                BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
-                M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
-                
-                index = M.index_model(name.text)
-
-                leds = model.find('leds')
-                for i in range(0, int(n_leds.text)):
-                    led_name = leds.find(f'led{i+1}_name')
-                    led_nColour = leds.find(f'led{i+1}_nColour')
-                    led_x = leds.find(f'led{i+1}_x')
-                    led_y = leds.find(f'led{i+1}_y') 
-                    led = Led(led_name.text, int(led_nColour.text), int(led_x.text), int(led_y.text))
-                    leds_colours = leds.find(f'led{i+1}_colours')
-                    for j in range(0, int(led_nColour.text)):   
-                        led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
-                        led.new_colour(ListOfColors.get_color(led_colour.text))
-                    M.model[index].set_led(led) 
-
-                buttons = model.find('buttons')
-                for i in range(0, int(n_buttons.text)):
-                    button_name = buttons.find(f'button{i+1}_name')
-                    button_x = buttons.find(f'button{i+1}_x')
-                    button_y = buttons.find(f'button{i+1}_y')
-                    button = Button(button_name.text, int(button_x.text), int(button_y.text))
-                    M.model[index].set_button(button)
-
-                return 1
+        filename = name_model + '.xml'
+        if  name_model in xml_filenames:
+            # open a model with the xml file
+            xml_file = os.path.join(M.path.get_xml_directory(), filename)
+            tree = ET.parse(xml_file)
+            model = tree.getroot()
+            name = model.find('name')
+            n_leds = model.find('n_leds')
+            n_buttons = model.find('n_buttons')
+            display = model.find('display')
+            display_name = display.find('display_name')
+            display_x = display.find('display_x')
+            display_y = display.find('display_y')
+            display_dimx = display.find('display_dimx')
+            display_dimy = display.find('display_dimy')
+            LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
+            info = model.find('info')
+            info_board = info.find('board')
+            info_option = info.find('option')
+            info_revision = info.find('revision')
+            info_edition = info.find('edition')
+            info_lcd_type = info.find('lcd_type')
+            INFO = Info(info_board.text, info_option.text, info_revision.text, info_edition.text, info_lcd_type.text)
+            boot_info = model.find('boot_loader_info')
+            boot_version = boot_info.find('version')
+            boot_date = boot_info.find('date')
+            BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
+            M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
             
-            else:
-                continue
-        
-        
-        return None
+            index = M.index_model(name.text)
 
+            leds = model.find('leds')
+            for i in range(0, int(n_leds.text)):
+                led_name = leds.find(f'led{i+1}_name')
+                led_nColour = leds.find(f'led{i+1}_nColour')
+                led_x = leds.find(f'led{i+1}_x')
+                led_y = leds.find(f'led{i+1}_y') 
+                led = Led(led_name.text, int(led_nColour.text), int(led_x.text), int(led_y.text))
+                leds_colours = leds.find(f'led{i+1}_colours')
+                for j in range(0, int(led_nColour.text)):   
+                    led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
+                    led.new_colour(ListOfColors.get_color(led_colour.text))
+                M.model[index].set_led(led) 
+
+            buttons = model.find('buttons')
+            for i in range(0, int(n_buttons.text)):
+                button_name = buttons.find(f'button{i+1}_name')
+                button_x = buttons.find(f'button{i+1}_x')
+                button_y = buttons.find(f'button{i+1}_y')
+                button = Button(button_name.text, int(button_x.text), int(button_y.text))
+                M.model[index].set_button(button)
+
+            return 1
+        else:
+            return None
+
+    @staticmethod
     def create_xml(M: Settings, name_model):
 
         index = M.index_model(name_model)
@@ -211,6 +201,7 @@ class DefineAndFillModel:
         ET.indent(tree, '  ')
         tree.write(f"{M.path.get_xml_directory()}/{name_model}.xml")
 
+    @staticmethod
     def delete_xml(M: Settings, name_model):
         
         file_path = f"{M.path.get_xml_directory()}/{name_model}.xml"
@@ -222,3 +213,15 @@ class DefineAndFillModel:
             return 1
         else:
             return -1
+
+    @staticmethod
+    def get_all_xml_file_names(M: Settings):
+        
+        try:
+            files = os.listdir(M.path.get_xml_directory())   # files in directory
+        except:
+            return None
+                
+        xml_files = [file[:-4] for file in files if file.endswith('.xml')]   # xml files in directory
+
+        return xml_files
