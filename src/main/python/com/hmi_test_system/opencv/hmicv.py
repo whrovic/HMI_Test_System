@@ -1,11 +1,17 @@
+import cv2
 import numpy as np
-from .ledcv import LEDcv
 from data.model.display import Display
+from skimage.metrics import structural_similarity as ssim
+
 from .displaycv import Displaycv
+from .ledcv import LEDcv
+
 
 class HMIcv():
 
+    @staticmethod
     def led_test(img, led):
+        
         # Cut the image wanted
         img = LEDcv.cut_led(img, led)
 
@@ -13,62 +19,96 @@ class HMIcv():
         led_color = LEDcv.read_color(img)
 
         return led_color 
-        
-    def display_characters_test(img, model_display: Display):
-        # Create an instance of the Displaycv class
-        displaycv = Displaycv()
-
-        # Cut display from HMI image
-        display = displaycv.cut_display(img, model_display)
-
-        # Read character pattern from display
-        character_pattern = displaycv.read_characters(display)
-
-        # Compare character pattern from image and model and return the result  
-        if (character_pattern == model_display.get_char):
-            return True
-        else:
-            return False
     
-    def display_backlight_test(img, model_display: Display):
-        # Create an instance of the Displaycv class
-        displaycv = Displaycv()
+    @staticmethod
+    def read_characters(img):
 
-        # Cut display from HMI image
-        display = displaycv.cut_display(img, model_display)
+        # Extract display
+        display = Displaycv.__get_extracted_display(img)
+        if display is None:
+            return None
 
-        # Get color pattern from display
-        color_pattern = displaycv.__get_color_pattern(display)
+        # Correct areas with low sharpness
+        corrected_display = Displaycv.__correct_low_sharpness(display, threshold=25, strength=2.5)
 
-        # Verify if each color is black within a tolerance range of 5
-        result = True
-        for i in range(len(color_pattern)):
-            if not np.allclose(color_pattern[i], [0,0,0], atol=5):
-                result = False
-                break
+        # Read characters on the display
+        text = Displaycv.__read_char(corrected_display)
+
+        return text
+
+    @staticmethod
+    def display_backlight_test(img):
         
-        # Return the result
-        return result
+        # Extract the display
+        display = Displaycv.__get_extracted_display(img)
+        if display is None:
+            return None
+
+        # Convert image to grayscale
+        image_gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
+
+        # Calculate the average pixel value
+        average_brightness = np.mean(image_gray)
+
+        # Check if the average brightness is below the threshold
+        threshold = 10
+        return (average_brightness <= threshold)
+
+    @staticmethod
+    def display_characters_test(img, model_display):
+        
+        # Extract the reference display
+        model_transformation_matrix, model_coordinates = Displaycv.__get_transformation_matrix(model_display)
+        if model_transformation_matrix is None:
+            # TODO: Error Code
+            return -1
+        model_display = Displaycv.__extract_display(model_display, model_transformation_matrix, model_coordinates)
+        
+        # Extract the display
+        image_display = Displaycv.__get_extracted_display(img)
+        if image_display is None:
+            # TODO: Error Code
+            return -1
+        
+        # Correct areas with low sharpness
+        model_display = Displaycv.__correct_low_sharpness(model_display, threshold=25, strength=2.5)
+        image_display = Displaycv.__correct_low_sharpness(image_display, threshold=25, strength=2.5)
+
+        # Convert images to grayscale
+        model_gray = cv2.cvtColor(model_display, cv2.COLOR_BGR2GRAY)
+        image_gray = cv2.cvtColor(image_display, cv2.COLOR_BGR2GRAY)
+
+        # Calcula o SSIM entre as imagens
+        win_size = min(image_gray.shape[0], image_gray.shape[1]) // 7 * 2 + 1
+        ssim_score = ssim(image_gray, model_gray, win_size=win_size, full=True)[0]
+
+        # Check if the ssim score is above the threshold
+        threshold = 0.95
+        return (ssim_score > threshold)
     
-    def display_color_pattern_test(img, model_display: Display):
-        # Create an instance of the Displaycv class
-        displaycv = Displaycv()
-
-        # Cut display from HMI image
-        display = displaycv.cut_display(img, model_display)
-
-        # Get color pattern from display
-        color_pattern = displaycv.__get_color_pattern(display)
-
-        # Get color pattern from model
-        model_color_pattern = model_display.get_color_vector()
-
-        # Compare the two color patterns within a tolerance range of 5
-        result = True
-        for i in range(len(color_pattern)):
-            if not np.allclose(color_pattern[i], model_color_pattern[i], atol=5):
-                result = False
-                break
+    @staticmethod
+    def display_color_pattern_test(img, model_display):
         
-        # Return the result of the comparison
-        return result
+        # Extract the reference display
+        model_transformation_matrix, model_coordinates = Displaycv.__get_transformation_matrix(model_display)
+        if model_transformation_matrix is None:
+            # TODO: Error Code
+            return -1
+        model_display = Displaycv.__extract_display(model_display, model_transformation_matrix, model_coordinates)
+
+        # Extract the display
+        image_display = Displaycv.__get_extracted_display(img)
+        if image_display is None:
+            # TODO: Error Code
+            return -1
+        
+        # Convert the images to RGB color space
+        image = cv2.cvtColor(image_display, cv2.COLOR_BGR2RGB)
+        model = cv2.cvtColor(model_display, cv2.COLOR_BGR2RGB)
+        
+        # Calculate mean squared error (MSE) between the intensities of the two plots
+        mse = np.square(np.subtract(image, model)).mean()
+
+        # Compare the MSE against the threshold
+        threshold = 10
+        return (mse <= threshold)

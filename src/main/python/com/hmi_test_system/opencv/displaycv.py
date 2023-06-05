@@ -6,7 +6,7 @@ import pytesseract
 class Displaycv():
 
     @staticmethod
-    def read_characters(display):
+    def __read_char(display):
 
         # Setup tesseract
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -34,6 +34,59 @@ class Displaycv():
         display = corrected_image[y:y+h, x:x+w]
 
         return display
+
+    @staticmethod
+    def __get_transformation_matrix(image):
+
+        # Convert image to grayscale
+        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        # Convert images to binary for LCD detection
+        image_binary = cv2.threshold(image_gray, 70, 255, cv2.THRESH_BINARY)[1]
+
+        # Find display contour
+        image_contours = cv2.findContours(image_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+
+        # Check if the display was found
+        if len(image_contours) == 0:
+            return None, None
+
+        largest_contour = max(image_contours, key=cv2.contourArea)
+
+        # Approximate the contour with a 4-sided polygon
+        epsilon = 0.1 * cv2.arcLength(largest_contour, True)
+        approx = cv2.approxPolyDP(largest_contour, epsilon, True)
+
+        # Define the coordinates of the display's vertices 
+        top_right = approx[0][0]
+        top_left = approx[1][0]
+        bottom_left = approx[2][0]
+        bottom_right = approx[3][0]
+        display_coords = np.float32([top_left, top_right, bottom_right, bottom_left])
+
+        # Define the coordinates of the rectangle's vertices
+        display_width = 11.564 * 50  # atualizar
+        display_height = 8.710 * 50  # atualizar
+        rectangle_coords = np.float32([top_left, top_left + [display_width, 0], top_left + [display_width, display_height], top_left + [0, display_height]])
+
+        # Calculate the perspective transform matrix
+        transform_matrix = cv2.getPerspectiveTransform(display_coords, rectangle_coords)
+
+        return transform_matrix, rectangle_coords
+
+    @staticmethod
+    def __get_extracted_display(image):
+        if Displaycv.display_transformation_matrix is None:
+            transformation_matrix, display_coordinates = Displaycv.__get_transformation_matrix(image)
+            if transformation_matrix is None:
+                return None
+            else:
+                Displaycv.display_transformation_matrix = transformation_matrix
+                Displaycv.display_coordinates = display_coordinates
+
+        corrected_display = Displaycv.__extract_display(image, Displaycv.display_transformation_matrix, Displaycv.display_coordinates)
+
+        return corrected_display
 
     @staticmethod
     def __correct_low_sharpness(image, threshold, strength):
@@ -70,64 +123,3 @@ class Displaycv():
         corrected_image = (corrected_image * 255).astype(np.uint8)
 
         return corrected_image
-
-    @staticmethod
-    def __get_transformation_matrix(image):
-
-        # Convert image to grayscale
-        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-        # Convert images to binary for LCD detection
-        image_binary = cv2.threshold(image_gray, 70, 255, cv2.THRESH_BINARY)[1]
-
-        # Find display contour
-        image_contours = cv2.findContours(image_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-        largest_contour = max(image_contours, key=cv2.contourArea)
-
-        # Approximate the contour with a 4-sided polygon
-        epsilon = 0.1 * cv2.arcLength(largest_contour, True)
-        approx = cv2.approxPolyDP(largest_contour, epsilon, True)
-
-        # Define the coordinates of the display's vertices 
-        top_right = approx[0][0]
-        top_left = approx[1][0]
-        bottom_left = approx[2][0]
-        bottom_right = approx[3][0]
-        display_coords = np.float32([top_left, top_right, bottom_right, bottom_left])
-
-        # Define the coordinates of the rectangle's vertices
-        display_width = 11.564 * 50  # atualizar
-        display_height = 8.710 * 50  # atualizar
-        rectangle_coords = np.float32([top_left, top_left + [display_width, 0], top_left + [display_width, display_height], top_left + [0, display_height]])
-
-        # Calculate the perspective transform matrix
-        transform_matrix = cv2.getPerspectiveTransform(display_coords, rectangle_coords)
-
-        return transform_matrix, rectangle_coords
-    
-    @staticmethod
-    def __get_color_pattern(display):
-        ''' Outdated '''
-
-        # Resize display image
-        display = cv2.resize(display, (680, 512))
-
-        # Calculate the width and height of each rectangle
-        width = display.shape[1] // 40
-        height = display.shape[0] // 16
-
-        # Create a list to store the colors
-        color_pattern = []
-        # Loop over each rectangle and extract the color
-        for i in range(40):
-            for j in range(16):
-                # Calculate the coordinates of the rectangle
-                x = i * width
-                y = j * height
-                # Extract the color of the rectangle by taking the average color value
-                color = cv2.mean(display[y:y+height, x:x+width])
-                # Add the color to the list of colors
-                color_pattern.append(color)
-
-        # Return color pattern
-        return color_pattern
