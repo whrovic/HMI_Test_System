@@ -46,8 +46,9 @@ class MenuSettings:
             
             # directory
             elif(menu_choice == '5'):
-                print("In construction")
-                menu_choice = input('Press Enter')
+                count = 0
+                if ( MenuSettings.directory_menu(M) == -1 ):
+                    return -1
 
             # exit 
             elif(menu_choice == '6'):
@@ -99,3 +100,40 @@ class MenuSettings:
                 if (count > NTIMEOUT_MENUS):
                     return -1
                 continue
+
+    @staticmethod
+    def directory_menu(M: Settings):
+        count = 0
+        while True:
+            MP.directory()        
+            menu_choice = input()
+            
+            match (menu_choice):
+                #camera
+                case '1':
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
+                    continue
+                
+                #serial port
+                case '2':
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
+                    continue
+                
+                #back
+                case '3':
+                    return 0
+                
+                #exit
+                case '4':
+                    return -1
+                
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                
+
