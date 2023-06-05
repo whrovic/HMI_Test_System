@@ -22,7 +22,7 @@ class HMIcv():
         display = displaycv.cut_display(img, model_display)
 
         # Read character pattern from display
-        character_pattern = displaycv.read_char(display)
+        character_pattern = displaycv.read_characters(display)
 
         # Compare character pattern from image and model and return the result  
         if (character_pattern == model_display.get_char):
@@ -38,7 +38,7 @@ class HMIcv():
         display = displaycv.cut_display(img, model_display)
 
         # Get color pattern from display
-        color_pattern = displaycv.get_color_pattern(display)
+        color_pattern = displaycv.__get_color_pattern(display)
 
         # Verify if each color is black within a tolerance range of 5
         result = True
@@ -58,7 +58,7 @@ class HMIcv():
         display = displaycv.cut_display(img, model_display)
 
         # Get color pattern from display
-        color_pattern = displaycv.get_color_pattern(display)
+        color_pattern = displaycv.__get_color_pattern(display)
 
         # Get color pattern from model
         model_color_pattern = model_display.get_color_vector()

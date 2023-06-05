@@ -107,7 +107,7 @@ def test_read_color_pattern():
     lcd = img[y:y+h, x:x+w]
     lcd = cv2.resize(lcd, (680, 512))
 
-    color_pat = np.array(Displaycv.get_color_pattern(lcd))
+    color_pat = np.array(Displaycv.__get_color_pattern(lcd))
 
     image = np.zeros((512, 680, 3))
 
