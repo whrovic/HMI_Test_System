@@ -3,32 +3,24 @@ from data.model.display import Display
 
 class Displaycv():
     
-    '''
-    (Pedro)
-    '''
     @staticmethod
     def read_char(display):
+
         # Setup tesseract
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-        # Convert display image to grayscale
-        gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
+        # Convert image to grayscale
+        display_gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
 
-        # Convert to binary with adaptive threshold
-        binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 37, 35)
-        
-        # Read characters on display
-        character_pattern = pytesseract.image_to_string(binary, lang='eng', config='--psm 6') # psm 6 --> Assume a single uniform block of text
-        
-        # Remove unnecessary whitespaces and duplicate newlines
-        character_pattern = character_pattern.replace(" ", "").replace("\n\n", "\n")
-        
-        # Return character pattern
-        return character_pattern
+        # Convert to binary
+        display_binary = cv2.threshold(display_gray, 140, 255, cv2.THRESH_BINARY)[1]
+
+        # Read text on display
+        text = pytesseract.image_to_string(display_binary, lang='eng')
+        text = text.replace("\n\n", "\n")
+
+        return text
     
-    '''
-    (Pedro)
-    '''
     @staticmethod
     def get_color_pattern(display):
         # Resize display image
@@ -54,9 +46,6 @@ class Displaycv():
         # Return color pattern
         return color_pattern
     
-    '''
-    (Pedro)
-    '''
     @staticmethod
     def cut_display(image, display: Display):
         # Get display position

@@ -36,7 +36,7 @@ class Test:
     def test_button_display(button_sequence: list[Button]):
         return -1
 
-    # return: 0 - Test passed, -1 not passed
+
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
 
@@ -165,6 +165,7 @@ class Test:
         else:
             return 0
 
+
     @staticmethod
     def test_boot_loader_info(cam : Camera, serial : SerialPort, version, date):
 
@@ -227,7 +228,6 @@ class Test:
 
     
     @staticmethod
-
     def test_board_info(cam: Camera, serial: SerialPort, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
 
         if cam is None:
@@ -521,5 +521,3 @@ class Test:
                     log_leds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
-
-                
