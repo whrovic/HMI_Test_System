@@ -52,7 +52,7 @@ class DefineAndFillModel:
         
 
 #------------------------------------MODEL XML------------------------------------#
-    
+
     @staticmethod
     def open_model_xml(M: Settings, name_model):
 
@@ -216,7 +216,6 @@ class DefineAndFillModel:
 
     @staticmethod
     def get_all_xml_file_names(M: Settings):
-        
         try:
             files = os.listdir(M.path.get_xml_directory())   # files in directory
         except:

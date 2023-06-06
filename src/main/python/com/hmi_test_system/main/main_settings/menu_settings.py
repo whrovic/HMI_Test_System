@@ -71,7 +71,7 @@ class MenuSettings:
             # manually
             if (menu_choice == '1'):
                 count = 0
-                LS.add_models(M)
+                LS.add_models_mannually(M)
 
             # automatic
             elif (menu_choice == '2'):
@@ -82,8 +82,7 @@ class MenuSettings:
             # XML  
             elif (menu_choice == '3'):
                 count = 0
-                print("In construction")
-                menu_choice = input('Press Enter')
+                LS.add_models_xml(M)
             
             # back  
             elif(menu_choice == '4'):

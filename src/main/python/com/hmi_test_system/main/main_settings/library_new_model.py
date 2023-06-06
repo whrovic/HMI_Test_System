@@ -1,3 +1,5 @@
+import xml.etree.ElementTree as ET
+
 from data import *
 from main.constant_main import *
 from main.library import Library as L
@@ -8,6 +10,7 @@ from .menu_prints import MenuPrints as MP
 
 
 class LibraryNewModel:
+    
     def create_model_manual(M: Settings, name_model):
 
         # cam = Camera(0)
@@ -139,3 +142,155 @@ class LibraryNewModel:
             return -1
 
 
+    def create_model_xml(M: Settings, directory: str, name_model: str):
+
+        tree = ET.parse(directory)
+        model = tree.getroot()
+        name = model.find('name')
+        name = str(name.text.strip())
+        if(len(name) <= 0):
+            return -1
+        
+        if(name == name_model):
+            n_leds = model.find('n_leds')
+            n_leds = str(n_leds.text.strip())
+            if not n_leds.isdigit():
+                return -1
+            
+            n_buttons = model.find('n_buttons')
+            n_buttons = str(n_buttons.text.strip())
+            if not n_buttons.isdigit():
+                return -1
+            
+            display = model.find('display')
+            display_name = display.find('display_name')
+            display_name = str(display_name.text.strip())
+            if(len(display_name) <= 0):
+                return -1
+            
+            display_x = display.find('display_x')
+            display_x = str(display_x.text.strip())
+            if not display_x.isdigit():
+                return -1
+            
+            display_y = display.find('display_y')
+            display_y = str(display_y.text.strip())
+            if not display_y.isdigit():
+                return -1
+            
+            display_dimx = display.find('display_dimx')
+            display_dimx = str(display_dimx.text.strip())
+            if not display_dimx.isdigit():
+                return -1
+            
+            display_dimy = display.find('display_dimy')
+            display_dimy = str(display_dimy.text.strip())
+            if not display_dimy.isdigit():
+                return -1
+            
+            LCD = Display(display_name, int(display_x), int(display_y), int(display_dimx), int(display_dimy))
+
+            info = model.find('info')
+            info_board = info.find('board')
+            info_board = str(info_board.text.strip())
+            if(len(info_board) <= 0):
+                return -1
+            
+            info_option = info.find('option')
+            info_option = str(info_option.text.strip())
+            if(len(info_option) <= 0):
+                return -1
+            
+            info_revision = info.find('revision')
+            info_revision = str(info_revision.text.strip())
+            if(len(info_revision) <= 0):
+                return -1
+            
+            info_edition = info.find('edition')
+            info_edition = str(info_edition.text.strip())
+            if(len(info_edition) <= 0):
+                return -1
+            
+            info_lcd_type = info.find('lcd_type')
+            info_lcd_type = str(info_lcd_type.text.strip())
+            if(len(info_lcd_type) <= 0):
+                return -1
+            
+            INFO = Info(info_board, info_option, info_revision, info_edition, info_lcd_type)
+
+            boot_info = model.find('boot_loader_info')
+            boot_version = boot_info.find('version')
+            boot_version = str(boot_version.text.strip())
+            if(len(boot_version) <= 0):
+                return -1
+            
+            boot_date = boot_info.find('date')
+            boot_date = str(boot_date.text.strip())
+            if(len(boot_date) <= 0):
+                return -1
+            
+            BOOT_INFO = BootLoaderInfo(boot_version, boot_date)
+            
+            M.new_model(name, int(n_leds), int(n_buttons), LCD, INFO, BOOT_INFO)
+            index = M.index_model(name)
+
+            leds = model.find('leds')
+            for i in range(0, int(n_leds)):
+                led_name = leds.find(f'led{i+1}_name')
+                led_name = str(led_name.text.strip())
+                if(len(led_name) <= 0):
+                    return -1
+                
+                led_nColour = leds.find(f'led{i+1}_nColour')
+                led_nColour = str(led_nColour.text.strip())
+                if not led_nColour.isdigit():
+                    return -1
+
+                led_x = leds.find(f'led{i+1}_x')
+                led_x = str(led_x.text.strip())
+                if not led_x.isdigit():
+                    return -1
+                
+                led_y = leds.find(f'led{i+1}_y')
+                led_y = str(led_y.text.strip())
+                if not led_y.isdigit():
+                    return -1
+                 
+                led = Led(led_name, int(led_nColour), int(led_x), int(led_y))
+                
+                leds_colours = leds.find(f'led{i+1}_colours')
+                for j in range(0, int(led_nColour)):   
+                    led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
+                    led_colour = str(led_colour.text.strip())
+                    if(len(led_colour) <= 0):
+                        return -1
+                    
+                    led.new_colour(ListOfColors.get_color(led_colour))
+                
+                M.model[index].set_led(led) 
+
+
+            buttons = model.find('buttons')
+            for i in range(0, int(n_buttons)):
+                button_name = buttons.find(f'button{i+1}_name')
+                button_name = str(button_name.text.strip())
+                if(len(button_name) <= 0):
+                    return -1
+                
+                button_x = buttons.find(f'button{i+1}_x')
+                button_x = str(button_x.text.strip())
+                if not button_x.isdigit():
+                    return -1
+                
+                button_y = buttons.find(f'button{i+1}_y')
+                button_y = str(button_y.text.strip())
+                if not button_y.isdigit():
+                    return -1
+                
+                button = Button(button_name, int(button_x), int(button_y))
+                M.model[index].set_button(button)
+
+            return 0
+        
+        else:
+            return -1

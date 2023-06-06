@@ -19,7 +19,7 @@ class ListOfColors:
         return ListOfColors._list_of_colors[index]
 
     @staticmethod
-    def get_color(name):
+    def get_color(name: str):
         for color in ListOfColors._list_of_colors:
             if color.get_name() == name:
                 return color
