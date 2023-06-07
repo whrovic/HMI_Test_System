@@ -88,9 +88,7 @@ def test_menu(M: Settings):
             # Buttons test type
             elif (t_type == TEST_TYPE_BUTTONS):
 
-                #TODO: Check if the results come from display or serial port
-
-                if len(args) > 0:
+                if len(args) > 1:
                     n_buttons = args[0]
                     n_buttons = str(n_buttons)
 
@@ -113,12 +111,12 @@ def test_menu(M: Settings):
                         button_name = args[0]
                         args.pop(0)
                         buttons_name.append(button_name)
-                    
-                    if(args[0] == '-sp'):
-                        args.pop(0)
-                        key_code = 0    # only serial port test
-                    else:
-                        key_code = 1    # serial port and display test
+                  
+                if(args[0] == '-sp'):
+                    args.pop(0)
+                    key_code = 0    # only serial port test
+                else:
+                    key_code = 1    # serial port and display test
 
     
             # Display test type
