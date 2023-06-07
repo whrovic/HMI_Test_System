@@ -17,8 +17,9 @@ class VideoDevice(VideoCapture, ABC):
         self._thread = Thread(target=self.capture_loop)
 
     def start_capture(self):
-        self._is_capturing = True
-        self._thread.start()
+        if not self._is_capturing:
+            self._is_capturing = True
+            self._thread.start()
 
     def stop_capture(self):
         self._is_capturing = False
