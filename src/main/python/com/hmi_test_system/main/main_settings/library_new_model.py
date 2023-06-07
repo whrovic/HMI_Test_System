@@ -44,7 +44,7 @@ class LibraryNewModel:
         print("\n\nLCD CONFIGURATION\n")
 
         # Gets the image of the display
-        display_img = DefineModelCV.get_display_image(None)
+        display_img = DefineModelCV.get_display_board_image()
 
         print("Select the LCD initial position and press ENTER")
         pos_vector_init = DefineModelCV.click_pos(display_img)
@@ -68,7 +68,7 @@ class LibraryNewModel:
             # leds configuration
             print("\n\nLEDS CONFIGURATION\n")
 
-            leds_img = DefineModelCV.get_leds_board_image(None)
+            leds_img = DefineModelCV.get_leds_board_image()
 
             if(n_leds > 0):
                 for i in range(0, n_leds):
@@ -111,7 +111,7 @@ class LibraryNewModel:
             print("\n\nBUTTONS CONFIGURATION\n")
 
             # Get the image for the buttons
-            buttons_img = DefineModelCV.get_leds_board_image(None)
+            buttons_img = DefineModelCV.get_leds_board_image()
 
             if(n_buttons > 0):
                 for i in range(0, n_buttons):

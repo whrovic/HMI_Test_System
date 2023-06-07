@@ -5,7 +5,6 @@ class CameraSettings:
 
     def __init__(self, name: str, structure: Dimension, parameters: Parameter):
         self._name = name
-        self._structure = structure
         self._parameters: dict[str, Parameter] = {}
 
     def get_name(self):
@@ -19,6 +18,3 @@ class CameraSettings:
     
     def set_parameters(self, position: str, parameters: Parameter):
         self._parameters[position] = parameters
-
-    def get_structure(self):
-        return self._structure.get_length() , self._structure.get_width()
