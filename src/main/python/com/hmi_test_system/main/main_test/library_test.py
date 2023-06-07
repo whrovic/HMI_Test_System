@@ -1,5 +1,6 @@
 import sys
 
+from data.report.log_library_test import LogLibraryTest
 from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.model import Model
 from data.settings import Settings
@@ -7,10 +8,12 @@ from main.constant_main import *
 
 def test_menu(M: Settings):
 
+    library_test = LogLibraryTest()
     exit_code = 0
 
     # No model name
     if len(sys.argv) < 3:
+        library_test.test_library_missing_name()
         exit_code = 3
         return exit_code
     
@@ -18,12 +21,16 @@ def test_menu(M: Settings):
 
     # Checks for bad model format
     if name_model[0].isdigit():
-        exit_code = 3   # Invalid argument
+        # TODO: Move this print to logs
+        library_test.test_library_invalid_name()
+        exit_code = 3   # invalid argument
         return exit_code
 
     # Model doesn't exist
     if(df.open_model_xml(M, name_model) is None):
-        exit_code = 2   # Model doesn't exist
+        # TODO: Move this print to logs
+        library_test.test_library_error_name(name_model)
+        exit_code = 2   # model doesn't exist
         return exit_code
 
     model = M.call_model(name_model)
@@ -48,7 +55,8 @@ def test_menu(M: Settings):
 
             # Check if it's a declaration of a new test
             if not t_type.startswith('-'):
-                exit_code = 3      # Invalid argument
+                library_test.test_library_invalid_argument()
+                exit_code = 3      # invalid argument
                 return exit_code
             
             test_type.append(t_type)
@@ -63,6 +71,7 @@ def test_menu(M: Settings):
 
                     if not n_leds.isdigit():
                         if len(args) == 1:
+                            library_test.test_library_invalid_argument()
                             exit_code = 3      # Invalid argument
                             return exit_code
                         else:
@@ -72,6 +81,7 @@ def test_menu(M: Settings):
                     
                     n_leds = int(n_leds)
                     if len(args) < n_leds:
+                        library_test.test_library_invalid_number_argument()
                         exit_code = 4      # Invalid number of arguments
                         return exit_code
 
@@ -90,6 +100,7 @@ def test_menu(M: Settings):
 
                     if not n_buttons.isdigit():
                         if len(args) == 1:
+                            library_test.test_library_invalid_argument()
                             exit_code = 3      # Invalid argument
                             return exit_code
                         else:
@@ -99,6 +110,7 @@ def test_menu(M: Settings):
 
                     n_buttons = int(n_buttons)
                     if len(args) < n_buttons-1:
+                        library_test.test_library_invalid_number_argument()
                         exit_code = 4      # Invalid number of arguments
                         return exit_code
 
@@ -162,7 +174,8 @@ def test_menu(M: Settings):
                     alight_code = 1    # Serial port and display test
                 
             else:
-                exit_code = 3      # Invalid argument
+                library_test.test_library_invalid_argument()
+                exit_code = 3      # invalid argument
                 return exit_code
                 
 
