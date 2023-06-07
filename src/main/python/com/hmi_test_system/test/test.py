@@ -174,9 +174,6 @@ class Test:
             cam.start_capture()
 
             try:
-                # Wait for some time to ensure stable camera feed
-                time.sleep(2)
-
                 # Capture a frame from the camera
                 frame = cam.get_frame()
 
