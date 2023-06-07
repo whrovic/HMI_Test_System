@@ -23,15 +23,13 @@ TEST_BOOT_LOADER_INFO_ENTER = 'TestBootloaderInfo - Pressed: ENTER'
 TEST_BOOT_LOADER_INFO_CANCEL = 'TestBootloaderInfo - Pressed: CANCEL'
 
 TEST_BOARD_INFO_BEGIN = 'TestBoardInfo - Testing...'
-TEST_BOARD_INFO_BOARD = 'TestBoardInfo - Board:' # MAP8061
-BOARD = 'MAP8061'
-TEST_BOARD_INFO_SERIAL_NUMBER = 'TestBoardInfo - Serial Number:' #AM038958
-SERIAL_NUMBER = 'AM038958'
-TEST_BOARD_INFO_MANUFACTURE_DATE = 'TestBoardInfo - Manufacture Date:' # 20230109
-TEST_BOARD_INFO_OPTION = 'TestBoardInfo - Option:' # 1
-TEST_BOARD_INFO_REVISON = 'TestBoardInfo - Revision:' # 2.0
-TEST_BOARD_INFO_EDITON = 'TestBoardInfo - Edition:' # 2
-TEST_BOARD_INFO_LCD_TYPE = 'TestBoardInfo - LCD Type:' # Tiamna TM057QHD01
+TEST_BOARD_INFO_BOARD = 'TestBoardInfo - Board: ' # MAP8061
+TEST_BOARD_INFO_SERIAL_NUMBER = 'TestBoardInfo - Serial Number: ' #AM038958
+TEST_BOARD_INFO_MANUFACTURE_DATE = 'TestBoardInfo - Manufacture Date: ' # 20230109
+TEST_BOARD_INFO_OPTION = 'TestBoardInfo - Option: ' # 1
+TEST_BOARD_INFO_REVISON = 'TestBoardInfo - Revision: ' # 2.0
+TEST_BOARD_INFO_EDITON = 'TestBoardInfo - Edition: ' # 2
+TEST_BOARD_INFO_LCD_TYPE = 'TestBoardInfo - LCD Type: ' # Tiamna TM057QHD01
 TEST_BOARD_INFO_CANCEL = 'TestBoardInfo - Pressed: CANCEL'
 TEST_BOARD_INFO_ENTER = 'TestBoardInfo - Pressed: ENTER'
 
