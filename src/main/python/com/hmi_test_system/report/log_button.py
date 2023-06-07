@@ -1,17 +1,24 @@
+import logging
+
 
 class LogButton:
-    def button_test_display(button_name, test_result):
-      print("Display Test Results:")
-      print(f"Button '{button_name}': {'Passed' if test_result else 'Failed'}")
 
-   
-    def button_test_serial(button_name, test_result):
-      print("Serial Port Test Results:")
-      print(f"Button '{button_name}': {'Passed' if test_result else 'Failed'}")
+    # prints for button tests
 
+    def __init__(self):
+        self.logger = logging.getLogger('LogButtons')
+        self.logger.setLevel(logging.DEBUG)
+        self.handler = logging.StreamHandler()
+        self.handler.setLevel(logging.DEBUG)
+        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        self.handler.setFormatter(self.formatter)
+        self.logger.addHandler(self.handler)
 
-    def button_test_combined(button_name, display_result, serial_result):
-      print("Combined Test Results:")
-      print(f"Button '{button_name}':")
-      print(f"- Display Test: {'Passed' if display_result else 'Failed'}")
-      print(f"- Serial Port Test: {'Passed' if serial_result else 'Failed'}")
+    def button_test_serial_error(self, button_name):
+        self.logger.info(f"Error in button {button_name}")
+
+    def button_test_serial_error_final(self):
+        self.logger.info("Error on Button Test")
+
+    def button_test_serial_pass(self):
+        self.logger.info("Button Test Serial passed")

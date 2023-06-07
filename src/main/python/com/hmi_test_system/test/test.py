@@ -1,11 +1,12 @@
-'''from .. import serial_port
+from .. import serial_port
 from ..report.log_display import LogDisplay
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
 from ..serial_port.serial_port import SerialPort
-import time
+from time import time
 from ..report.exit_code import ExitCode
 from ..report.log_leds import LogLeds
+from ..report.log_button import LogButton
 
 from ..data.model.button import Button
 from ..data.model.display import Display
@@ -13,10 +14,12 @@ from ..data.model.led import Led
 from ..data.model.model import Model
 from ..opencv.hmicv import HMIcv
 from ..video.camera import Camera
-from ..data.color.color import Color
-from ..serial_port.constant_test import *'''
 
-from time import time
+from ..serial_port.constant_test import *
+from ..data.color.color import Color, OffColor
+
+
+'''from time import time
 
 from data.color.color import Color, OffColor
 from data.model.button import Button
@@ -26,7 +29,7 @@ from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
-from video.camera import Camera
+from video.camera import Camera'''
 
 
 class Test:
@@ -38,7 +41,7 @@ class Test:
     # return: 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
-
+        log_button = LogButton()
         for button in button_sequence:
             data = None
             while data is None:
@@ -50,14 +53,17 @@ class Test:
                 while d is None:
                     d, _ = serial.get_serial()
                 continue
-
-            print(button.get_name(), "error")
-            return -1
+            else:
+                log_button.button_test_serial_error(button.get_name())
+                # TODO: missing exitcode
+                return -1
 
         data, time = serial.get_serial()
         if data != TEST_BUTTONS_OK:
+            log_button.button_test_serial_error_final()
+            # TODO: missing exitcode
             return -1
-
+        log_button.button_test_serial_pass()
         return 0
 
     @staticmethod
@@ -222,7 +228,7 @@ class Test:
             img, arrive_time_img = cam.get_image()
             if img is None:
                 if time() - old_arrive_time_img > TIMEOUT:
-                    # TODO: add log
+                    log_leds.test_leds_timeout()
                     ExitCode.camera_timeout_stopped()
                     return -1
                 else:
@@ -239,11 +245,11 @@ class Test:
             # Check for the end of the tests
             if (serial_data == TEST_LEDS_OK) and (serial_data_time < arrive_time_img):
                 log_leds.test_leds_sequence_passed()
-                log_leds.test_finished()
+                log_leds.test_leds_finished()
                 return 0
             elif sequence_state == total_n_colours:
                 log_leds.test_leds_sequence_passed()
-                log_leds.test_finished()
+                log_leds.test_leds_finished()
                 return 0
 
             # Test All Leds ON
@@ -251,8 +257,7 @@ class Test:
                 
                 for i in range(0, n_leds_test):
                     if isinstance(vet_cor[i], OffColor):
-                        # TODO: log the led name
-                        log_leds.test_failed()
+                        log_leds.test_failed(vet_cor[i].get_name())
                         ExitCode.leds_test_not_turn_all_on()
                         return -1
 
@@ -278,7 +283,7 @@ class Test:
                 # TODO: Add timeout
                 # If at least one led failed, return
                 else:
-                    log_leds.test_failed()
+                    log_leds.test_failed_off()
                     ExitCode.leds_test_not_turn_all_off()
                     return -1
 
@@ -300,7 +305,7 @@ class Test:
                 # TODO: Add timeout
                 # If at least one led failed, return
                 else:
-                    log_leds.test_failed()
+                    log_leds.test_failed_on()
                     ExitCode.leds_test_not_turn_all_on()
                     return -1
 
