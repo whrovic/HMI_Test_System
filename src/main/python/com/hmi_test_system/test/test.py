@@ -55,7 +55,7 @@ class Test:
             print(button.get_name(), "error")
             return -1
 
-        data, time = serial.get_serial()
+        data, _ = serial.get_serial()
         if data != TEST_BUTTONS_OK:
             return -1
 
@@ -240,52 +240,52 @@ class Test:
         if cam is None:
         # Check the board information
             board_info, _ = serial.get_serial()
-            if not board_info.startswith("TestBoardInfo - Board: " + board):
+            if not board_info.startswith(TEST_BOARD_INFO_BOARD + board):
                 print("Board Info Test failed: Incorrect board information")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
         
 
         # Check the serial number
             serial_number_info, _ = serial.get_serial()
-            if serial_number_info.find("Serial Number: " + serial_number) == -1:
+            if serial_number_info.find(TEST_BOARD_INFO_SERIAL_NUMBER + serial_number) == -1:
                 print("Board Info Test failed: Incorrect serial number")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the manufacture date
             manufacture_date_info, _ = serial.get_serial()
-            if manufacture_date_info.find("Manufacture Date: " + manufacture_date) == -1:
+            if manufacture_date_info.find(TEST_BOARD_INFO_MANUFACTURE_DATE + manufacture_date) == -1:
                 print("Board Info Test failed: Incorrect manufacture date")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the option
             option_info, _ = serial.get_serial()
-            if option_info.find("Option: " + option) == -1:
+            if option_info.find(TEST_BOARD_INFO_OPTION + option) == -1:
                 print("Board Info Test failed: Incorrect option")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the revision
             revision_info, _ = serial.get_serial()
-            if revision_info.find("Revision: " + revision) == -1:
+            if revision_info.find(TEST_BOARD_INFO_REVISON + revision) == -1:
                 print("Board Info Test failed: Incorrect revision")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the edition
             edition_info, _ = serial.get_serial()
-            if edition_info.find("Edition: " + edition) == -1:
+            if edition_info.find(TEST_BOARD_INFO_EDITON + edition) == -1:
                 print("Board Info Test failed: Incorrect edition")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the LCD type
             lcd_type_info, _ = serial.get_serial()
-            if lcd_type_info.find("LCD Type: " + lcd_type) == -1:
+            if lcd_type_info.find(TEST_BOARD_INFO_LCD_TYPE + lcd_type) == -1:
                 print("Board Info Test failed: Incorrect LCD type")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # All checks passed
@@ -300,7 +300,7 @@ class Test:
     
             alight_info, _ = serial.get_serial()
 
-            if alight_info.startswith("TestALight - ALight"):
+            if alight_info.startswith(TEST_ALIGHT_ALIGHT):
 
                 # Extract the ALight sensor value from the received info
                 alight_value = float(alight_info.split(':')[1].strip().split('Lux')[0])
@@ -310,48 +310,49 @@ class Test:
                     print("ALight sensor test passed")
                 else:
                     print("ALight sensor test failed: Incorrect ALight value")
-                    ExitCode.alight_test_not_passed
+                    ExitCode.alight_test_not_passed()
                     return -1
             else:
                 print("ALight sensor test failed: No ALight value received")
-                ExitCode.alight_test_not_passed
+                ExitCode.alight_test_not_passed()
                 return -1
 
             # Wait for the 'Cover up the ALight Sensor' 
             cover_prompt, _ = serial.get_serial()
-            if cover_prompt.startswith("TestALight - Cover up the ALight Sensor"):
+
+            if cover_prompt.startswith(TEST_ALIGHT_GO_ON):
 
                 # Wait for the Enter key press
                 enter_press, _ = serial.get_serial()
 
-                if enter_press.startswith("TestALight - Pressed: ENTER"):
+                if enter_press.startswith(TEST_ALIGHT_ENTER):
 
                     # Wait for the ALight sensor value after covering
                     covered_alight_info, _ = serial.get_serial()
 
-                    if covered_alight_info.startswith("TestALight - ALight"):
+                    if covered_alight_info.startswith(TEST_ALIGHT_ALIGHT):
 
                         # Extract the covered ALight sensor value
                         covered_alight_value = float(covered_alight_info.split(':')[1].strip().split('Lux')[0])
 
-                        if covered_alight_value < alight_value/2:
+                        if covered_alight_value < alight_value / 2:
                             print("ALight sensor test passed (Covered)")
                             return 0
                         else:
                             print("ALight sensor test failed: Incorrect covered ALight value")
-                            ExitCode.alight_test_not_passed
+                            ExitCode.alight_test_not_passed()
                             return -1
                     else:
                         print("ALight sensor test failed: No covered ALight value received")
-                        ExitCode.alight_test_not_passed
+                        ExitCode.alight_test_not_passed()
                         return -1
                 else:
                     print("ALight sensor test failed: Enter key press not received")
-                    ExitCode.alight_test_not_passed
+                    ExitCode.alight_test_not_passed()
                     return -1
             else:
                 print("ALight sensor test failed: 'Cover up the ALight Sensor' prompt not received")
-                ExitCode.alight_test_not_passed
+                ExitCode.alight_test_not_passed()
                 return -1
             
 

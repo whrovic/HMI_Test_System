@@ -48,11 +48,6 @@ class Camera(VideoDevice):
         self._cap.set(cv2.CAP_PROP_SATURATION, saturation)
         self._cap.set(cv2.CAP_PROP_SHARPNESS, sharpness)
 
-        self._cap.set(cv2.CAP_PROP_SETTINGS, 1.0)
-        import time
-        
-        time.sleep(1000)
-
     def closed(self):
         return ((self._cap is None) or (not self._cap.isOpened()))
     
