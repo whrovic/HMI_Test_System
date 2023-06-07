@@ -260,13 +260,82 @@ class Test:
     @staticmethod
 
     def test_board_info(cam: Camera, serial: SerialPort, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
+         
+        if cam is not None:
+                
+            cam.start_capture()
+
+            try:
+        
+                # Capture a frame from the camera
+                frame = cam.get_frame()
+
+                # Read the text from the display
+                text = displaycv.read_char(frame)
+
+                # Check if the board information matches the expected values
+                if board in text:
+                    print("Board matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect board information")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if serial_number in text:
+                    print("Serial number matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect serial number")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if manufacture_date in text:
+                    print("Manufacture date matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect manufacture date")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if option in text:
+                    print("Option matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect option")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if revision in text:
+                    print("Revision matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect revision")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if edition in text:
+                    print("Edition matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect edition")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+                if lcd_type in text:
+                    print("LCD type matches the expected value")
+                else:
+                    print("Board Info Test failed: Incorrect LCD type")
+                    ExitCode.board_info_test_not_passed()
+                    return -1
+
+            finally:
+
+                # Close the camera
+                cam.close()
+                return 0
+
 
         if cam is None:
         # Check the board information
             board_info, _ = serial.get_serial()
             if not board_info.startswith("TestBoardInfo - Board: " + board):
                 print("Board Info Test failed: Incorrect board information")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
         
 
@@ -274,42 +343,42 @@ class Test:
             serial_number_info, _ = serial.get_serial()
             if serial_number_info.find("Serial Number: " + serial_number) == -1:
                 print("Board Info Test failed: Incorrect serial number")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the manufacture date
             manufacture_date_info, _ = serial.get_serial()
             if manufacture_date_info.find("Manufacture Date: " + manufacture_date) == -1:
                 print("Board Info Test failed: Incorrect manufacture date")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the option
             option_info, _ = serial.get_serial()
             if option_info.find("Option: " + option) == -1:
                 print("Board Info Test failed: Incorrect option")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the revision
             revision_info, _ = serial.get_serial()
             if revision_info.find("Revision: " + revision) == -1:
                 print("Board Info Test failed: Incorrect revision")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the edition
             edition_info, _ = serial.get_serial()
             if edition_info.find("Edition: " + edition) == -1:
                 print("Board Info Test failed: Incorrect edition")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # Check the LCD type
             lcd_type_info, _ = serial.get_serial()
             if lcd_type_info.find("LCD Type: " + lcd_type) == -1:
                 print("Board Info Test failed: Incorrect LCD type")
-                ExitCode.board_info_test_not_passed
+                ExitCode.board_info_test_not_passed()
                 return -1
 
         # All checks passed
@@ -334,11 +403,11 @@ class Test:
                     print("ALight sensor test passed")
                 else:
                     print("ALight sensor test failed: Incorrect ALight value")
-                    ExitCode.alight_test_not_passed
+                    ExitCode.alight_test_not_passed()
                     return -1
             else:
                 print("ALight sensor test failed: No ALight value received")
-                ExitCode.alight_test_not_passed
+                ExitCode.alight_test_not_passed()
                 return -1
 
             # Wait for the 'Cover up the ALight Sensor' 
@@ -363,19 +432,19 @@ class Test:
                             return 0
                         else:
                             print("ALight sensor test failed: Incorrect covered ALight value")
-                            ExitCode.alight_test_not_passed
+                            ExitCode.alight_test_not_passed()
                             return -1
                     else:
                         print("ALight sensor test failed: No covered ALight value received")
-                        ExitCode.alight_test_not_passed
+                        ExitCode.alight_test_not_passed()
                         return -1
                 else:
                     print("ALight sensor test failed: Enter key press not received")
-                    ExitCode.alight_test_not_passed
+                    ExitCode.alight_test_not_passed()
                     return -1
             else:
                 print("ALight sensor test failed: 'Cover up the ALight Sensor' prompt not received")
-                ExitCode.alight_test_not_passed
+                ExitCode.alight_test_not_passed()
                 return -1
             
 
