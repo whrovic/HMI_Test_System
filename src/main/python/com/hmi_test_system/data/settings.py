@@ -13,14 +13,12 @@ class Settings:
         self.path = Path()
         self.test = SequenceTest()
         self.test_settings = TestSettings()
-        #self.cam1 = CameraSettings()
-        #self.cam2 = CameraSettings()
 
 
     #------------------------------------Model------------------------------------#
     def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
         self.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))
-   
+    
     
     def call_model(self, name):
         for i in range(0, len(self.model)):

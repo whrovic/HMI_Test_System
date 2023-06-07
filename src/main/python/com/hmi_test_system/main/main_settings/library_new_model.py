@@ -13,21 +13,6 @@ class LibraryNewModel:
     
     def create_model_manual(M: Settings, name_model):
 
-        # cam = Camera(0)
-        # img = cam.get_frame()
-        # cam.close()
-
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
-
         n_buttons = L.until_find_int("Number of buttons: ")
         if (n_buttons) == -1: return -1
         n_leds = L.until_find_int("Number of leds: ")
@@ -44,7 +29,7 @@ class LibraryNewModel:
         if revision is None: return -1
         edition = L.until_find_str("Edition: ")
         if edition is None: return -1
-        lcd_type = L.until_find_int("LCD Type: ")
+        lcd_type = L.until_find_str("LCD Type: ")
         if lcd_type is None: return -1
         boot_version = L.until_find_str("Boot loader version: ")
         if boot_version is None: return -1
@@ -57,13 +42,16 @@ class LibraryNewModel:
 
         # LCD configuration
         print("\n\nLCD CONFIGURATION\n")
-        
+
+        # Gets the image of the display
+        display_img = DefineModelCV.get_display_image(None)
+
         print("Select the LCD initial position and press ENTER")
-        pos_vector_init = DefineModelCV.click_pos(image)
+        pos_vector_init = DefineModelCV.click_pos(display_img)
         
 
         print("Select the LCD final position and press ENTER")
-        pos_vector_final= DefineModelCV.click_pos(image)
+        pos_vector_final= DefineModelCV.click_pos(display_img)
         
         dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
@@ -74,12 +62,14 @@ class LibraryNewModel:
 
         index = M.index_model(name_model)
 
-
         # model exists 
         if(index != -1):
             
             # leds configuration
             print("\n\nLEDS CONFIGURATION\n")
+
+            leds_img = DefineModelCV.get_leds_board_image(None)
+
             if(n_leds > 0):
                 for i in range(0, n_leds):
                     print(f"\nLed {i+1} name: ")
@@ -94,7 +84,7 @@ class LibraryNewModel:
                             continue
 
                     print(f"Select the led {i+1} central position and press ENTER")
-                    pos_vector= DefineModelCV.click_pos(image)
+                    pos_vector= DefineModelCV.click_pos(leds_img)
                         
 
                     led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
@@ -112,7 +102,6 @@ class LibraryNewModel:
                             else:
                                 continue
                         
-                    
                     M.model[int(index)].set_led(led)
             else:
                 print("\nModel doesn't have leds\n")
@@ -120,12 +109,16 @@ class LibraryNewModel:
 
             # buttons configuration
             print("\n\nBUTTONS CONFIGURATION\n")
+
+            # Get the image for the buttons
+            buttons_img = DefineModelCV.get_leds_board_image(None)
+
             if(n_buttons > 0):
                 for i in range(0, n_buttons):
                     print(f"\nButton {i+1} name: ")
                     button_name = input()
                     print(f"Select the button {i+1} central position and press ENTER")
-                    pos_vector= DefineModelCV.click_pos(image)
+                    pos_vector= DefineModelCV.click_pos(buttons_img)
 
                     M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
             else:

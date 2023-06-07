@@ -2,9 +2,27 @@ import cv2
 import numpy as np
 
 from .displaycv import Displaycv
+from video.camera import Camera
+from data.hardware_settings.test_settings import TestSettings
 
 
 class DefineModelCV():
+
+    @staticmethod
+    def get_leds_board_image(settings):
+        cam = Camera(0)
+        cam.set_settings(settings)
+        img = cam.get_frame()
+        cam.close()
+        return img
+    
+    @staticmethod
+    def get_display_image(settings):
+        cam = Camera(0)
+        cam.set_settings(settings)
+        img = cam.get_frame()
+        cam.close()
+        return img
 
     @staticmethod
     def click_pos(image):

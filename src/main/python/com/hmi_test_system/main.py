@@ -15,7 +15,6 @@ filename = askdirectory() # Isto te permite selecionar um arquivo
 print(filename) # printa o arquivo selecionado      
 menu_choice = input()'''
 
-count = 0
 M = Settings()
 
 # Read all the colors from the local file
