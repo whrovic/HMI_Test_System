@@ -370,16 +370,16 @@ class Test:
         vet_cor: list[Color] = [OffColor()] * n_leds_test
         # Saves the expected sequence of colours in each led
         matrix_ref: list[list[Color]] = [[OffColor()] * n_leds_test] * total_n_colours
-        
+
         # Create the reference matrix
-        for i in range(0, total_n_colours):
-            for j in range(0, n_leds_test):
+        for i in range(total_n_colours):
+            for j in range(n_leds_test):
                 matrix_ref[i][j] = OffColor()
         pos = 0
         for i in range(n_leds_test):
             colours = leds_test[i].get_colours()
             for j in range(len(colours)):
-                matrix_ref[pos][pos] = colours[j]
+                matrix_ref[pos][i] = colours[j]
                 pos += 1
 
         # Stores the time arrival of the image
@@ -396,6 +396,8 @@ class Test:
         sequence_state = 0
 
         while True:
+
+            print(state)
 
             # Read new image and call test of colors
             # save the info on a vector

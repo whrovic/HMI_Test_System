@@ -33,7 +33,7 @@ class VideoDevice(VideoCapture, ABC):
             if (frame is not None):
                 self._frame_queue.put((frame, time.time()))
 
-            time.sleep(self._interval) 
+            time.sleep(self._interval)
     
     @abstractmethod
     def get_frame(self):

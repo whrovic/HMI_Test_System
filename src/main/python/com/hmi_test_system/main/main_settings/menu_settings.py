@@ -27,14 +27,14 @@ class MenuSettings:
                 count = 0
                 print("In construction")
                 menu_choice = input('Press Enter')
-        
+            
             # edit model    
             elif (menu_choice == '3'):
                 count = 0
                 if ( LEM.edit_model(M) == -1 ):
                     return -1
 
-            # test settings   
+            # test setting
             elif (menu_choice == '4'):
                 count = 0
                 print("In construction")

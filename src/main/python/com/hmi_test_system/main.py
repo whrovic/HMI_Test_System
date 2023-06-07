@@ -41,9 +41,7 @@ if len(sys.argv) < 2:
 
 value = sys.argv[1]
 if value == TYPE_TEST:
-    '''
-    print("The value is 'test'") 
-    menu_choice = input('Press Enter')'''
+    
     exit_code = test_menu(M)
     print("Test Exit Code =", exit_code)
     

@@ -17,8 +17,8 @@ class Camera(VideoDevice):
         if settings is None:
             settings = {}
         
-        width = settings.get('width', 1920)
-        height = settings.get('height', 1080)
+        width = settings.get('width', 1280)
+        height = settings.get('height', 720)
         auto_focus = settings.get('auto_focus', 1.0)
         manual_focus = settings.get('manual_focus', 1.0)
         auto_exposure = settings.get('auto_exposure', 1.0)

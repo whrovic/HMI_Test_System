@@ -11,7 +11,7 @@ class HMIcv():
 
     @staticmethod
     def led_test(img, led):
-        
+
         # Cut the image wanted
         img = LEDcv.cut_led(img, led)
 
@@ -24,15 +24,15 @@ class HMIcv():
     def read_characters(img):
 
         # Extract display
-        display = Displaycv.__get_extracted_display(img)
+        display = Displaycv.get_extracted_display(img)
         if display is None:
             return None
 
         # Correct areas with low sharpness
-        corrected_display = Displaycv.__correct_low_sharpness(display, threshold=25, strength=2.5)
+        corrected_display = Displaycv.correct_low_sharpness(display, threshold=25, strength=2.5)
 
         # Read characters on the display
-        text = Displaycv.__read_char(corrected_display)
+        text = Displaycv.read_char(corrected_display)
 
         return text
 
@@ -40,7 +40,7 @@ class HMIcv():
     def display_backlight_test(img):
         
         # Extract the display
-        display = Displaycv.__get_extracted_display(img)
+        display = Displaycv.get_extracted_display(img)
         if display is None:
             return None
 
@@ -62,14 +62,14 @@ class HMIcv():
             return -1
 
         # Extract the display
-        image_display = Displaycv.__get_extracted_display(img)
+        image_display = Displaycv.get_extracted_display(img)
         if image_display is None:
             # TODO: Error Code
             return -1
         
         # Correct areas with low sharpness
-        image_display = Displaycv.__correct_low_sharpness(image_display, threshold=25, strength=2.5)
-        model_display = Displaycv.__correct_low_sharpness(model_display, threshold=25, strength=2.5)
+        image_display = Displaycv.correct_low_sharpness(image_display, threshold=25, strength=2.5)
+        model_display = Displaycv.correct_low_sharpness(model_display, threshold=25, strength=2.5)
 
         # Convert images to grayscale
         model_gray = cv2.cvtColor(model_display, cv2.COLOR_BGR2GRAY)
@@ -91,7 +91,7 @@ class HMIcv():
             return -1
 
         # Extract the display
-        image_display = Displaycv.__get_extracted_display(img)
+        image_display = Displaycv.get_extracted_display(img)
         if image_display is None:
             # TODO: Error Code
             return -1

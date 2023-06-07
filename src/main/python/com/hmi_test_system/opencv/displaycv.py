@@ -6,7 +6,7 @@ import pytesseract
 class Displaycv():
 
     @staticmethod
-    def __read_char(display):
+    def read_char(display):
 
         # Setup tesseract
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -24,7 +24,7 @@ class Displaycv():
         return text
     
     @staticmethod
-    def __extract_display(image, transform_matrix, coordinates):
+    def extract_display(image, transform_matrix, coordinates):
         
         # Apply the perspective transform matrix to the image
         corrected_image = cv2.warpPerspective(image, transform_matrix, (image.shape[1], image.shape[0]))
@@ -36,7 +36,7 @@ class Displaycv():
         return display
 
     @staticmethod
-    def __get_transformation_matrix(image):
+    def get_transformation_matrix(image):
 
         # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -75,21 +75,21 @@ class Displaycv():
         return transform_matrix, rectangle_coords
 
     @staticmethod
-    def __get_extracted_display(image):
+    def get_extracted_display(image):
         if Displaycv.display_transformation_matrix is None:
-            transformation_matrix, display_coordinates = Displaycv.__get_transformation_matrix(image)
+            transformation_matrix, display_coordinates = Displaycv.get_transformation_matrix(image)
             if transformation_matrix is None:
                 return None
             else:
                 Displaycv.display_transformation_matrix = transformation_matrix
                 Displaycv.display_coordinates = display_coordinates
 
-        corrected_display = Displaycv.__extract_display(image, Displaycv.display_transformation_matrix, Displaycv.display_coordinates)
+        corrected_display = Displaycv.extract_display(image, Displaycv.display_transformation_matrix, Displaycv.display_coordinates)
 
         return corrected_display
 
     @staticmethod
-    def __correct_low_sharpness(image, threshold, strength):
+    def correct_low_sharpness(image, threshold, strength):
         
         # Convert the image to grayscale
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
