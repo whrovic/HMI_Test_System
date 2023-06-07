@@ -273,7 +273,13 @@ if (__name__ == "__main__"):
 
     ListOfColors.read_from_file(Path.get_settings_directory() + "/colors.json")
     
-    test_read_colours()
+    #test_read_colours()
+
+    from video.camera import Camera
+
+    cam = Camera(0)
+
+    cam.set_settings(None)
 
     pass
     
