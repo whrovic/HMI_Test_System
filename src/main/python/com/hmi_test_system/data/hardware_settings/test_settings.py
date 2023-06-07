@@ -6,36 +6,70 @@ from .parameter import Parameter
 
 class TestSettings:
 
-    def __init__(self):
-        self._cam: list[CameraSettings] = []
-        self._sp: list[SerialPortSettings] = []
+    _cam: list[CameraSettings] = []
+    _sp: list[SerialPortSettings] = []
+    _cam_display = None
+    _cam_leds = None
+    _sp_main = None
+    _sp_usb = None
 
-    def set_new_sp(self, name: str, baudrate: int, port: str):
-        self._sp.append(SerialPortSettings(name, baudrate, port))
 
-    def get_index_sp(self, name: str):
-        for i in range(len(self._sp)):
-            sp_name = self._sp[i].get_name()
+    def get_cam_display():
+        return TestSettings._cam_display
+
+    def set_cam_display(name: str):
+        cam_index = TestSettings.get_index_cam(name)
+        if cam_index == -1:
+            # TODO: Error Code
+            return -1
+        else:
+            TestSettings._cam_display = TestSettings._cam[cam_index]
+
+    def get_cam_leds():
+        return TestSettings._cam_leds
+
+    def set_cam_leds(name: str):
+        cam_index = TestSettings.get_index_cam(name)
+        if cam_index == -1:
+            # TODO: Error Code
+            return -1
+        else:
+            TestSettings._cam_leds = TestSettings._cam[cam_index]
+
+    def get_sp_main():
+        return TestSettings._sp_main
+    
+    def set_sp_main(name: str):
+        sp_index = TestSettings.get_index_sp(name)
+        if sp_index == -1:
+            # TODO: Error code
+            return -1
+        TestSettings._sp_main = TestSettings._sp[sp_index]
+
+    def add_new_sp_settings(name: str, baudrate: int, port: str):
+        TestSettings._sp.append(SerialPortSettings(name, baudrate, port))
+
+    def get_index_sp(name: str):
+        for i in range(len(TestSettings._sp)):
+            sp_name = TestSettings._sp[i].get_name()
             if(sp_name == name):
-                return self._sp[i]
+                return TestSettings._sp[i]
+        return -1
     
-    def delete_sp(self, name: str):
-        sp_index = self.get_index_sp(name)
-        self._sp.pop(sp_index)
+    def delete_sp_settings(name: str):
+        sp_index = TestSettings.get_index_sp(name)
+        TestSettings._sp.pop(sp_index)
 
+    def add_new_cam_settings(name: str, structure: Dimension, parameters: Parameter):
+        TestSettings._cam.append(CameraSettings(name, structure, parameters))
 
-
-    def set_new_cam(self, name: str, structure: Dimension, parameters: Parameter):
-        self._cam.append(CameraSettings(name, structure, parameters))
-
-    def get_index_cam(self, name: str):
-        for i in range(len(self._cam)):
-            cam_name = self._cam[i].get_name()
+    def get_index_cam(name: str):
+        for i in range(len(TestSettings._cam)):
+            cam_name = TestSettings._cam[i].get_name()
             if(cam_name == name):
-                return self._cam[i]
+                return TestSettings._cam[i]
+        return -1
     
-    def delete_cam(self, name: str):
-        cam_index = self.get_index_cam(name)
-        self._cam.pop(cam_index)
-    
-    
+    def delete_cam_settings(name: str):
+        cam_index = TestSettings.get_index_cam(name)
+        TestSettings._cam.pop(cam_index)
