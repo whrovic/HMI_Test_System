@@ -3,7 +3,7 @@ from .parameter import Parameter
 
 class CameraSettings:
 
-    def __init__(self, name: str, structure: Dimension, parameters: Parameter):
+    def __init__(self, name: str):
         self._name = name
         self._parameters: dict[str, Parameter] = {}
 
