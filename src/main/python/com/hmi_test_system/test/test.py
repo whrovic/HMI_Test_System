@@ -26,6 +26,7 @@ from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
+from src.main.python.com.hmi_test_system.opencv import displaycv
 from video.camera import Camera
 from report.exit_code import ExitCode
 
@@ -36,7 +37,7 @@ class Test:
     def test_button_display(button_sequence: list[Button]):
         return -1
 
-
+    # return: 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
 
@@ -55,7 +56,7 @@ class Test:
             print(button.get_name(), "error")
             return -1
 
-        data, _ = serial.get_serial()
+        data, time = serial.get_serial()
         if data != TEST_BUTTONS_OK:
             return -1
 
@@ -72,16 +73,6 @@ class Test:
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
 
-        # Get images from the model
-        chr_reference_img = HMIcv.read_image_from_file(display.get_chr_reference_path())
-        pal_reference_img = HMIcv.read_image_from_file(display.get_pal_reference_path())
-
-        if chr_reference_img is None or pal_reference_img is None:
-            # TODO: Exit Code
-            # TODO: Log
-            return -1
-        # TODO: Log
-
         # Initializing the test variables
         test_name = None
         test_start_time = None
@@ -96,7 +87,7 @@ class Test:
 
         while True:
             # Get the data from the serial port with a timeout
-            data, data_time = serial.get_serial()
+            data, data_time = serial.get_serial(timeout=0.1)
 
             # Check if the data is related to the display test
             if data is not None:
@@ -104,18 +95,21 @@ class Test:
                 if PIXEL in data:
                     new_test_name = PIXEL
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
                 elif CHAR in data:
                     new_test_name = CHAR
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
                 elif COLOR in data:
                     new_test_name = COLOR
                     new_test_start_time = data_time
+                    log_display.start_test(new_test_name)
 
-                elif TEST_DISPLAY_OK in data:
-                    new_test_name = None
-                    new_test_start_time = data_time
+                elif TEST_DISPLAY_ENTER in data:
+                    log_display.test_finished()
+                    break
 
             # Start the first test
             if test_name is None and new_test_name is not None:
@@ -143,7 +137,7 @@ class Test:
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == PIXEL:
-                        if HMIcv.display_backlight_test(frame):
+                        if HMIcv.display_backlight_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -151,7 +145,7 @@ class Test:
                             continue
 
                     elif test_name == CHAR:
-                        if HMIcv.display_characters_test(frame, chr_reference_img):
+                        if HMIcv.display_characters_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -159,7 +153,7 @@ class Test:
                             continue
 
                     elif test_name == COLOR:
-                        if HMIcv.display_color_pattern_test(frame, pal_reference_img):
+                        if HMIcv.display_color_pattern_test(frame, display):
                             log_display.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -172,10 +166,42 @@ class Test:
         else:
             return 0
 
-
     @staticmethod
     def test_boot_loader_info(cam : Camera, serial : SerialPort, version, date):
 
+        if cam is not None: 
+        # Start capturing camera feed
+            cam.start_capture()
+
+            try:
+                # Wait for some time to ensure stable camera feed
+                time.sleep(2)
+
+                # Capture a frame from the camera
+                frame = cam.get_frame()
+
+                # Read the text from the display
+                text = displaycv.read_char(frame)
+
+                # Check if the version and date are present in the extracted text
+                if version in text and date in text:
+                    print("Display has the correct version of the HMI")
+                    if date in text:
+                        print("Display has the correct date of the HMI")
+                        return 0
+                    else: 
+                        print("Boot Loader Info failed: Incorrect date of the HMI")
+                        return -1
+                else:
+                    print("Boot Loader Info failed: Incorrect version of the HMI")
+                    ExitCode.bootloader_test_not_passed()
+                    return -1
+
+            finally:
+                # Close the camera
+                cam.close()
+
+        
         if cam is None: 
               
         # Wait for the response from the serial port
@@ -235,57 +261,58 @@ class Test:
 
     
     @staticmethod
+
     def test_board_info(cam: Camera, serial: SerialPort, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
 
         if cam is None:
         # Check the board information
             board_info, _ = serial.get_serial()
-            if not board_info.startswith(TEST_BOARD_INFO_BOARD + board):
+            if not board_info.startswith("TestBoardInfo - Board: " + board):
                 print("Board Info Test failed: Incorrect board information")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
         
 
         # Check the serial number
             serial_number_info, _ = serial.get_serial()
-            if serial_number_info.find(TEST_BOARD_INFO_SERIAL_NUMBER + serial_number) == -1:
+            if serial_number_info.find("Serial Number: " + serial_number) == -1:
                 print("Board Info Test failed: Incorrect serial number")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # Check the manufacture date
             manufacture_date_info, _ = serial.get_serial()
-            if manufacture_date_info.find(TEST_BOARD_INFO_MANUFACTURE_DATE + manufacture_date) == -1:
+            if manufacture_date_info.find("Manufacture Date: " + manufacture_date) == -1:
                 print("Board Info Test failed: Incorrect manufacture date")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # Check the option
             option_info, _ = serial.get_serial()
-            if option_info.find(TEST_BOARD_INFO_OPTION + option) == -1:
+            if option_info.find("Option: " + option) == -1:
                 print("Board Info Test failed: Incorrect option")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # Check the revision
             revision_info, _ = serial.get_serial()
-            if revision_info.find(TEST_BOARD_INFO_REVISON + revision) == -1:
+            if revision_info.find("Revision: " + revision) == -1:
                 print("Board Info Test failed: Incorrect revision")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # Check the edition
             edition_info, _ = serial.get_serial()
-            if edition_info.find(TEST_BOARD_INFO_EDITON + edition) == -1:
+            if edition_info.find("Edition: " + edition) == -1:
                 print("Board Info Test failed: Incorrect edition")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # Check the LCD type
             lcd_type_info, _ = serial.get_serial()
-            if lcd_type_info.find(TEST_BOARD_INFO_LCD_TYPE + lcd_type) == -1:
+            if lcd_type_info.find("LCD Type: " + lcd_type) == -1:
                 print("Board Info Test failed: Incorrect LCD type")
-                ExitCode.board_info_test_not_passed()
+                ExitCode.board_info_test_not_passed
                 return -1
 
         # All checks passed
@@ -300,7 +327,7 @@ class Test:
     
             alight_info, _ = serial.get_serial()
 
-            if alight_info.startswith(TEST_ALIGHT_ALIGHT):
+            if alight_info.startswith("TestALight - ALight"):
 
                 # Extract the ALight sensor value from the received info
                 alight_value = float(alight_info.split(':')[1].strip().split('Lux')[0])
@@ -310,49 +337,48 @@ class Test:
                     print("ALight sensor test passed")
                 else:
                     print("ALight sensor test failed: Incorrect ALight value")
-                    ExitCode.alight_test_not_passed()
+                    ExitCode.alight_test_not_passed
                     return -1
             else:
                 print("ALight sensor test failed: No ALight value received")
-                ExitCode.alight_test_not_passed()
+                ExitCode.alight_test_not_passed
                 return -1
 
             # Wait for the 'Cover up the ALight Sensor' 
             cover_prompt, _ = serial.get_serial()
-
-            if cover_prompt.startswith(TEST_ALIGHT_GO_ON):
+            if cover_prompt.startswith("TestALight - Cover up the ALight Sensor"):
 
                 # Wait for the Enter key press
                 enter_press, _ = serial.get_serial()
 
-                if enter_press.startswith(TEST_ALIGHT_ENTER):
+                if enter_press.startswith("TestALight - Pressed: ENTER"):
 
                     # Wait for the ALight sensor value after covering
                     covered_alight_info, _ = serial.get_serial()
 
-                    if covered_alight_info.startswith(TEST_ALIGHT_ALIGHT):
+                    if covered_alight_info.startswith("TestALight - ALight"):
 
                         # Extract the covered ALight sensor value
                         covered_alight_value = float(covered_alight_info.split(':')[1].strip().split('Lux')[0])
 
-                        if covered_alight_value < alight_value / 2:
+                        if covered_alight_value < alight_value/2:
                             print("ALight sensor test passed (Covered)")
                             return 0
                         else:
                             print("ALight sensor test failed: Incorrect covered ALight value")
-                            ExitCode.alight_test_not_passed()
+                            ExitCode.alight_test_not_passed
                             return -1
                     else:
                         print("ALight sensor test failed: No covered ALight value received")
-                        ExitCode.alight_test_not_passed()
+                        ExitCode.alight_test_not_passed
                         return -1
                 else:
                     print("ALight sensor test failed: Enter key press not received")
-                    ExitCode.alight_test_not_passed()
+                    ExitCode.alight_test_not_passed
                     return -1
             else:
                 print("ALight sensor test failed: 'Cover up the ALight Sensor' prompt not received")
-                ExitCode.alight_test_not_passed()
+                ExitCode.alight_test_not_passed
                 return -1
             
 
@@ -529,3 +555,5 @@ class Test:
                     log_leds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
+
+                
