@@ -174,6 +174,11 @@ class Test:
             cam.start_capture()
 
             try:
+
+               start_time = time.time()
+               timeout = 60  # Set a timeout of 60 seconds
+
+               while time.time() - start_time < timeout:
                 # Capture a frame from the camera
                 frame = cam.get_frame()
 
@@ -266,7 +271,11 @@ class Test:
             cam.start_capture()
 
             try:
-        
+               
+               start_time = time.time()
+               timeout = 60  # Set a timeout of 60 seconds
+
+               while time.time() - start_time < timeout:
                 # Capture a frame from the camera
                 frame = cam.get_frame()
 
@@ -388,6 +397,89 @@ class Test:
     
     @staticmethod
     def test_alight(cam, serial):
+
+        if cam is not None:
+            cam.start_capture()
+
+            try:
+                start_time = time.time()
+                timeout = 60  # Set a timeout of 60 seconds
+
+                while time.time() - start_time < timeout:
+                    # Capture a frame from the camera
+                    frame = cam.get_frame()
+
+                    # Read the text from the display
+                    text = displaycv.read_char(frame)
+
+                    if text.startswith("TestALight - ALight"):
+                        # Extract the ALight sensor value from the received info
+                        alight_value = float(text.split(':')[1].strip().split('Lux')[0])
+
+                        # Check if the ALight sensor value is within the expected range
+                        if alight_value > 1000:
+                            print("ALight sensor test passed")
+                        else:
+                            print("ALight sensor test failed: Incorrect ALight value")
+                            ExitCode.alight_test_not_passed()
+                            return -1
+
+                        # Wait for the 'Cover up the ALight Sensor'
+                        while time.time() - start_time < timeout:
+                            # Capture a frame from the camera
+                            frame = cam.get_frame()
+
+                            # Read the text from the display
+                            text = displaycv.read_char(frame)
+
+                            if text.startswith("TestALight - Cover up the ALight Sensor"):
+                                # Wait for the Enter key press
+                                while time.time() - start_time < timeout:
+                                    # Capture a frame from the camera
+                                    frame = cam.get_frame()
+
+                                    # Read the text from the display
+                                    text = displaycv.read_char(frame)
+
+                                    if text.startswith("TestALight - Pressed: ENTER"):
+                                        # Wait for the ALight sensor value after covering
+                                        while time.time() - start_time < timeout:
+                                            # Capture a frame from the camera
+                                            frame = cam.get_frame()
+
+                                            # Read the text from the display
+                                            text = displaycv.read_char(frame)
+
+                                            if text.startswith("TestALight - ALight"):
+                                                # Extract the covered ALight sensor value
+                                                covered_alight_value = float(text.split(':')[1].strip().split('Lux')[0])
+
+                                                if covered_alight_value < alight_value / 2:
+                                                    print("ALight sensor test passed (Covered)")
+                                                    return 0
+                                                else:
+                                                    print("ALight sensor test failed: Incorrect covered ALight value")
+                                                    ExitCode.alight_test_not_passed()
+                                                    return -1
+                                                break
+                                        break
+                                    elif time.time() - start_time >= timeout:
+                                        print("ALight sensor test failed: Enter key press not received")
+                                        ExitCode.alight_test_not_passed()
+                                        return -1
+                                break
+                        break
+
+                    elif time.time() - start_time >= timeout:
+                        print("ALight sensor test failed: No ALight value received")
+                        ExitCode.alight_test_not_passed()
+                        return -1
+
+            finally:
+                cam.close()
+                return 0
+
+
 
         if cam is None:
     
