@@ -4,7 +4,6 @@ from data import *
 from main.constant_main import *
 from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
-from video.image_files import ImageFiles
 
 from .menu_prints import MenuPrints as MP
 
