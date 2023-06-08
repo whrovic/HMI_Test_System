@@ -29,7 +29,7 @@ from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
-from src.main.python.com.hmi_test_system.opencv import displaycv
+from opencv.displaycv import Displaycv
 from video.camera import Camera
 from report.exit_code import ExitCode
 
@@ -189,7 +189,7 @@ class Test:
                 frame = cam.get_frame()
 
                 # Read the text from the display
-                text = displaycv.read_char(frame)
+                text = Displaycv.read_char(frame)
 
                 # Check if the version and date are present in the extracted text
                 if version in text and date in text:
@@ -286,7 +286,7 @@ class Test:
                 frame = cam.get_frame()
 
                 # Read the text from the display
-                text = displaycv.read_char(frame)
+                text = Displaycv.read_char(frame)
 
                 # Check if the board information matches the expected values
                 if board in text:
@@ -416,7 +416,7 @@ class Test:
                     frame = cam.get_frame()
 
                     # Read the text from the display
-                    text = displaycv.read_char(frame)
+                    text = Displaycv.read_char(frame)
 
                     if text.startswith("TestALight - ALight"):
                         # Extract the ALight sensor value from the received info
@@ -436,7 +436,7 @@ class Test:
                             frame = cam.get_frame()
 
                             # Read the text from the display
-                            text = displaycv.read_char(frame)
+                            text = Displaycv.read_char(frame)
 
                             if text.startswith("TestALight - Cover up the ALight Sensor"):
                                 # Wait for the Enter key press
@@ -445,7 +445,7 @@ class Test:
                                     frame = cam.get_frame()
 
                                     # Read the text from the display
-                                    text = displaycv.read_char(frame)
+                                    text = Displaycv.read_char(frame)
 
                                     if text.startswith("TestALight - Pressed: ENTER"):
                                         # Wait for the ALight sensor value after covering
@@ -454,7 +454,7 @@ class Test:
                                             frame = cam.get_frame()
 
                                             # Read the text from the display
-                                            text = displaycv.read_char(frame)
+                                            text = Displaycv.read_char(frame)
 
                                             if text.startswith("TestALight - ALight"):
                                                 # Extract the covered ALight sensor value

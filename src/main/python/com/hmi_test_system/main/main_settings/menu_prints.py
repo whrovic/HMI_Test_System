@@ -13,9 +13,8 @@ class MenuPrints:
     def new_model():
         os.system('cls')
         print("-------------- New Model --------------\n\n")
-        print("1- Manually         2- Automatically   \n")
-        print("          3- From XML file             \n")
-        print("4- Back             5- Exit            \n\n")
+        print("1- Create           2- Import XML   \n")
+        print("3- Back             4- Exit            \n\n")
         print("---------------------------------------\n")
     
     def test_settings():

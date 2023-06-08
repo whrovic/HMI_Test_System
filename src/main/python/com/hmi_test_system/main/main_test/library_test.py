@@ -1,11 +1,10 @@
 import sys
 
-from data.report.log_library_test import LogLibraryTest
 from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.model import Model
 from data.settings import Settings
 from main.constant_main import *
-from report.exit_code import ExitCode
+from report import *
 
 def test_menu(M: Settings):
 
