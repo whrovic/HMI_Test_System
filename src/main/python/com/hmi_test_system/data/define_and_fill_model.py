@@ -12,10 +12,10 @@ class DefineAndFillModel:
 
 #------------------------------------SETTINGS XML------------------------------------#
 
-    '''def open_xml_settings(M: Settings): 
+    '''def open_xml_settings(): 
         while True:
             try:
-                files = os.listdir(M.path.get_settings_directory())   # files in directory
+                files = os.listdir(Settings.path.get_settings_directory())   # files in directory
                 break
             except:
                 print("Error path don't exist")
@@ -32,15 +32,15 @@ class DefineAndFillModel:
                 #...
                 pass
                 
-    def create_xml_settings(M: Settings):
+    def create_xml_settings():
         # Create the XML document and write it to a file
         tree = ET.ElementTree("")
         ET.indent(tree, '  ')
-        tree.write(f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml")
+        tree.write(f"{Settings.path.get_settings_directory()}/{"ADICIONAR"}.xml")
 
     
-    def delete_xml_settings(M: Settings):
-        file_path = f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml"
+    def delete_xml_settings():
+        file_path = f"{Settings.path.get_settings_directory()}/{"ADICIONAR"}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):
@@ -54,10 +54,10 @@ class DefineAndFillModel:
 #------------------------------------MODEL XML------------------------------------#
 
     @staticmethod
-    def open_model_xml(M: Settings, name_model):
+    def open_model_xml(name_model):
 
         # Get all the xml filenames from the xml files folder                
-        xml_filenames = DefineAndFillModel.get_all_xml_file_names(M)
+        xml_filenames = DefineAndFillModel.get_all_xml_file_names()
         if xml_filenames is None:
             print("Error path don't exist")
             input('Write anything to back to menu')
@@ -66,7 +66,7 @@ class DefineAndFillModel:
         filename = name_model + '.xml'
         if  name_model in xml_filenames:
             # open a model with the xml file
-            xml_file = os.path.join(M.path.get_xml_directory(), filename)
+            xml_file = os.path.join(Settings.path.get_xml_directory(), filename)
             tree = ET.parse(xml_file)
             model = tree.getroot()
             name = model.find('name')
@@ -90,9 +90,9 @@ class DefineAndFillModel:
             boot_version = boot_info.find('version')
             boot_date = boot_info.find('date')
             BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
-            M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
+            Settings.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
             
-            index = M.index_model(name.text)
+            index = Settings.index_model(name.text)
 
             leds = model.find('leds')
             for i in range(0, int(n_leds.text)):
@@ -105,7 +105,7 @@ class DefineAndFillModel:
                 for j in range(0, int(led_nColour.text)):   
                     led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
                     led.new_colour(ListOfColors.get_color(led_colour.text))
-                M.model[index].set_led(led) 
+                Settings.model[index].set_led(led) 
 
             buttons = model.find('buttons')
             for i in range(0, int(n_buttons.text)):
@@ -113,17 +113,17 @@ class DefineAndFillModel:
                 button_x = buttons.find(f'button{i+1}_x')
                 button_y = buttons.find(f'button{i+1}_y')
                 button = Button(button_name.text, int(button_x.text), int(button_y.text))
-                M.model[index].set_button(button)
+                Settings.model[index].set_button(button)
 
             return 1
         else:
             return None
 
     @staticmethod
-    def create_xml(M: Settings, name_model):
+    def create_xml(name_model):
 
-        index = M.index_model(name_model)
-        aux = M.model[index]
+        index = Settings.index_model(name_model)
+        aux = Settings.model[index]
 
         # create an XML representation of the object
         model = ET.Element(f'{aux.get_name()}')
@@ -199,12 +199,12 @@ class DefineAndFillModel:
         # Create the XML document and write it to a file
         tree = ET.ElementTree(model)
         ET.indent(tree, '  ')
-        tree.write(f"{M.path.get_xml_directory()}/{name_model}.xml")
+        tree.write(f"{Settings.path.get_xml_directory()}/{name_model}.xml")
 
     @staticmethod
-    def delete_xml(M: Settings, name_model):
+    def delete_xml(name_model):
         
-        file_path = f"{M.path.get_xml_directory()}/{name_model}.xml"
+        file_path = f"{Settings.path.get_xml_directory()}/{name_model}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):
@@ -215,9 +215,9 @@ class DefineAndFillModel:
             return -1
 
     @staticmethod
-    def get_all_xml_file_names(M: Settings):
+    def get_all_xml_file_names():
         try:
-            files = os.listdir(M.path.get_xml_directory())   # files in directory
+            files = os.listdir(Settings.path.get_xml_directory())   # files in directory
         except:
             return None
                 

@@ -10,7 +10,7 @@ from .library_edit_model import LibraryEditModel as LEM
 class MenuSettings:
 
     @staticmethod
-    def settings_menu(M: Settings):
+    def settings_menu():
         count = 0
         while True:
             MP.settings()        
@@ -19,7 +19,7 @@ class MenuSettings:
             # new model
             if (menu_choice == '1'):
                 count = 0
-                if ( MenuSettings.new_model(M) == -1 ):
+                if ( MenuSettings.new_model() == -1 ):
                     return -1
 
             # color
@@ -31,7 +31,7 @@ class MenuSettings:
             # edit model    
             elif (menu_choice == '3'):
                 count = 0
-                if ( LEM.edit_model(M) == -1 ):
+                if ( LEM.edit_model() == -1 ):
                     return -1
 
             # test setting
@@ -43,7 +43,7 @@ class MenuSettings:
             # directory
             elif(menu_choice == '5'):
                 count = 0
-                if ( MenuSettings.directory_menu(M) == -1 ):
+                if ( MenuSettings.directory_menu() == -1 ):
                     return -1
 
             # exit 
@@ -58,7 +58,7 @@ class MenuSettings:
                 continue
     
     @staticmethod
-    def new_model(M: Settings):
+    def new_model():
         count = 0
         while True:
             MP.new_model()
@@ -67,7 +67,7 @@ class MenuSettings:
             # manually
             if (menu_choice == '1'):
                 count = 0
-                LS.add_models_mannually(M)
+                LS.add_models_mannually()
 
             # automatic
             elif (menu_choice == '2'):
@@ -78,7 +78,7 @@ class MenuSettings:
             # XML  
             elif (menu_choice == '3'):
                 count = 0
-                LS.add_models_xml(M)
+                LS.add_models_xml()
             
             # back  
             elif(menu_choice == '4'):
@@ -97,7 +97,7 @@ class MenuSettings:
                 continue
 
     @staticmethod
-    def directory_menu(M: Settings):
+    def directory_menu():
         count = 0
         while True:
             MP.directory()        
@@ -130,5 +130,4 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
-                
-
+    

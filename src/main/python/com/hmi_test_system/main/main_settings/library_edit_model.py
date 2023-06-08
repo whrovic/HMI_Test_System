@@ -11,7 +11,7 @@ from .menu_prints import MenuPrints as MP
 
 class LibraryEditModel:
     
-    def edit_model(M: Settings):
+    def edit_model():
 
         os.system('cls') 
 
@@ -28,7 +28,7 @@ class LibraryEditModel:
         cap.clear_queue()
 
         # Get list of available models
-        name_models = DefineAndFillModel.get_all_xml_file_names(M)
+        name_models = DefineAndFillModel.get_all_xml_file_names()
         if name_models is None:
             # TODO: Error code
             print("Error path don't exist")
@@ -56,7 +56,7 @@ class LibraryEditModel:
                     return 0
 
                 # model doesn't exist
-                elif(df.open_model_xml(M, name_model) is None):
+                elif(df.open_model_xml(name_model) is None):
                     os.system('cls') 
                     print(f"{name_model} DOESN'T EXIST\n")
                     input("Press Enter to continue..." )
@@ -64,12 +64,12 @@ class LibraryEditModel:
                 # model  exists
                 else:
                     #df.delete_xml(name_model, directory) # Delete the xml file
-                    index = M.index_model(name_model)
+                    index = Settings.index_model(name_model)
 
                     if(index == -1):
                         return -1
 
-                    name_model = M.model[index].get_name()
+                    name_model = Settings.model[index].get_name()
 
                     #TODO: not good pratic while inside while
                     while True:
@@ -78,24 +78,24 @@ class LibraryEditModel:
 
                         # edit name model
                         if menu_choice == '1':
-                            LibraryEditModel.edit_model_info(M, index)
-                            name_model = M.model[index].get_name()
+                            LibraryEditModel.edit_model_info(index)
+                            name_model = Settings.model[index].get_name()
                                 
                         # edit led
                         elif menu_choice == '2':
-                            LibraryEditModel.edit_led(M, name_model, index, image)
+                            LibraryEditModel.edit_led(name_model, index, image)
                         
                         # edit button
                         elif menu_choice == '3':
-                            LibraryEditModel.edit_button(M, name_model, index, image)
+                            LibraryEditModel.edit_button(name_model, index, image)
                         
                         # edit LCD
                         elif menu_choice == '4':
-                            LibraryEditModel.edit_display(M, index, image)
+                            LibraryEditModel.edit_display(index, image)
                         
                         # save
                         elif menu_choice == '5':
-                            df.create_xml(M, name_model)
+                            df.create_xml(name_model)
                             print("Changes saved!")
                             input("Press Enter to continue...")
                             continue
@@ -105,7 +105,7 @@ class LibraryEditModel:
                             while True:
                                 resp = input("Do you want to save the changes before leaving? [y/n] ")
                                 if (resp.lower() == 'y'):
-                                    df.create_xml(M, name_model)
+                                    df.create_xml(name_model)
                                     break
                                 elif (resp.lower() == 'n'):
                                     break
@@ -118,7 +118,7 @@ class LibraryEditModel:
                             while True:
                                 resp = input("Do you want to save the changes before leaving? [y/n]")
                                 if (resp.lower() == "y"):
-                                    df.create_xml(M, name_model)
+                                    df.create_xml(name_model)
                                     break
                                 elif (resp.lower() == 'n'):
                                     break
@@ -129,7 +129,7 @@ class LibraryEditModel:
                         
                         
     #------------------------------------EDIT MODEL INFO------------------------------------#
-    def edit_model_info(M: Settings, index: int):
+    def edit_model_info(index: int):
 
         while True:
             os.system('cls')
@@ -137,7 +137,7 @@ class LibraryEditModel:
             name_model = str(input())
             name_model = name_model.strip()
             if(len(name_model)>0):
-                M.model[index].set_name(name_model)
+                Settings.model[index].set_name(name_model)
                 break
             else:
                 continue
@@ -203,10 +203,10 @@ class LibraryEditModel:
                 continue
 
         info = Info(board, option, revision, edition)
-        M.model[index].set_info(info)
+        Settings.model[index].set_info(info)
 
         boot_info = BootLoaderInfo(boot_version, boot_date)
-        M.model[index].set_boot_loader_info(boot_info)
+        Settings.model[index].set_boot_loader_info(boot_info)
 
         
         os.system('cls')
@@ -216,7 +216,7 @@ class LibraryEditModel:
 
 
     #------------------------------------EDIT LED------------------------------------#
-    def edit_led_settings(M: Settings, index: int, index_led: int, image):
+    def edit_led_settings(index: int, index_led: int, image):
         while True:
             MP.edit_led()
             menu_choice = input()
@@ -226,7 +226,7 @@ class LibraryEditModel:
                 os.system('cls') 
                 print("What is the new led name?\n")
                 led_name = input().strip()
-                M.model[index]._leds[index_led].set_name(led_name)
+                Settings.model[index]._leds[index_led].set_name(led_name)
 
                 os.system('cls')
                 print("LED NAME CHANGED")
@@ -235,7 +235,7 @@ class LibraryEditModel:
             
             # edit colours
             elif menu_choice == '2':
-                M.model[index]._leds[index_led].delete_colours()
+                Settings.model[index]._leds[index_led].delete_colours()
                 os.system('cls')
 
                 while True:
@@ -254,7 +254,7 @@ class LibraryEditModel:
                         new_colour = input()
                         if new_colour.isdigit():
                             new_colour = int(new_colour)
-                            M.model[index]._leds[index_led].new_colour(ListOfColors.get_color(new_colour-1))
+                            Settings.model[index]._leds[index_led].new_colour(ListOfColors.get_color(new_colour-1))
                             break
                         else:
                             continue
@@ -271,7 +271,7 @@ class LibraryEditModel:
                 print("Select the led central position and press ENTER")
                 pos_vector= DefineModelCV.click_pos(image)
 
-                M.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
+                Settings.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
 
                 os.system('cls')
                 print("LED POSITION CHANGED")
@@ -282,7 +282,7 @@ class LibraryEditModel:
             elif menu_choice == '4':
                 break
 
-    def edit_led(M: Settings, name_model, index: int, image):
+    def edit_led(name_model, index: int, image):
         
         while True:
 
@@ -295,7 +295,7 @@ class LibraryEditModel:
             if(led_name == 'q'):
                 break
             
-            index_led = M.index_led(name_model, led_name)
+            index_led = Settings.index_led(name_model, led_name)
             
             if (index_led is None):
                 os.system('cls')
@@ -305,11 +305,11 @@ class LibraryEditModel:
                 continue
 
             else:
-                LibraryEditModel.edit_led_settings(M, index, index_led, image)
+                LibraryEditModel.edit_led_settings(index, index_led, image)
 
 
     #------------------------------------EDIT BUTTON------------------------------------#
-    def edit_button(M: Settings, name_model, index: int, image):
+    def edit_button(name_model, index: int, image):
 
         while True:
             os.system('cls')
@@ -321,7 +321,7 @@ class LibraryEditModel:
             if(button_name == 'q'):
                 break
             
-            index_button = M.index_button(name_model, button_name) 
+            index_button = Settings.index_button(name_model, button_name) 
             
             if (index_button is None):
                 os.system('cls')
@@ -340,7 +340,7 @@ class LibraryEditModel:
                         os.system('cls') 
                         print("What is the new button name?\n")
                         button_name = input()
-                        M.model[index]._buttons[index_button].set_name(button_name)
+                        Settings.model[index]._buttons[index_button].set_name(button_name)
 
                         os.system('cls')
                         print("BUTTON NAME CHANGED")
@@ -354,7 +354,7 @@ class LibraryEditModel:
                         print(f"Select the button central position and press ENTER")
                         pos_vector= DefineModelCV.click_pos(image)
 
-                        M.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
+                        Settings.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
 
                         os.system('cls')
                         print("BUTTON POSTION CHANGED")
@@ -367,7 +367,7 @@ class LibraryEditModel:
 
 
     #------------------------------------EDIT LCD------------------------------------#
-    def edit_display(M: Settings, index: int, image):
+    def edit_display(index: int, image):
         os.system('cls')
         print("Select the LCD initial position and press ENTER")
         pos_vector_init= DefineModelCV.click_pos(image)
@@ -378,7 +378,7 @@ class LibraryEditModel:
         dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
         
-        M.model[index]._display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
+        Settings.model[index]._display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
 
         os.system('cls')
         print("LCD POSITION CHANGED\n")

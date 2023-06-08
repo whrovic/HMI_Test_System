@@ -1,60 +1,69 @@
 from .model.model import Model
 from .model.display import Display
 from .path import Path
-from test.sequence_test import SequenceTest
 from .hardware_settings.test_settings import TestSettings
 from .model.info import Info
 from .model.boot_loader_info import BootLoaderInfo
 
 class Settings:
 
-    def __init__(self):
-        self.model: list[Model] = []
-        self.path = Path()
-        self.test_settings = TestSettings()
+    model: list[Model] = []
+    path = Path()
+    test_settings = TestSettings()
 
     #------------------------------------Model------------------------------------#
-    def new_model(self, name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
-        self.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))
+    @staticmethod
+    def new_model(name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
+        Settings.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))
     
-    def call_model(self, name):
-        for i in range(0, len(self.model)):
-            model_name = self.model[int(i)].get_name()
+    @staticmethod
+    def add_model(model: Model):
+        if model not in Settings.model:
+            Settings.model.append(model)
+
+    @staticmethod
+    def call_model(name):
+        for i in range(0, len(Settings.model)):
+            model_name = Settings.model[int(i)].get_name()
             if(name == model_name):
-                return self.model[i]
+                return Settings.model[i]
         # Model not found
         return None
     
-    def index_model(self, name):
-        for i in range(len(self.model)):
-            model_name = self.model[int(i)].get_name()
+    @staticmethod
+    def index_model(name):
+        for i in range(len(Settings.model)):
+            model_name = Settings.model[int(i)].get_name()
             if(name == model_name):
                 return i
         # Model not found
         return -1
     
-    def delete_model(self, name):
-        n_model = int(self.index_model(name))
+    @staticmethod
+    def delete_model(name):
+        n_model = int(Settings.index_model(name))
 
         if(n_model == -1):
             return -1
         else:
-            self.model.remove(n_model)
+            Settings.model.remove(n_model)
             return 0
 
-    def index_led(self, name_model, led_name):
-        index = self.index_model(name_model)
+    @staticmethod
+    def index_led(name_model, led_name):
+        index = Settings.index_model(name_model)
 
-        for i in range(0, len(self.model[index]._leds)):
-            if(self.model[index]._leds[i]._name == led_name):
+        for i in range(0, len(Settings.model[index]._leds)):
+            if(Settings.model[index]._leds[i]._name == led_name):
                 return i
         return None
     
-    def index_button(self, name_model, button_name):
-        index = self.index_model(name_model)
+    @staticmethod
+    def index_button(name_model, button_name):
+        index = Settings.index_model(name_model)
 
-        for i in range(0, len(self.model[index]._buttons)):
-            if(self.model[index]._buttons[i]._name == button_name):
+        for i in range(0, len(Settings.model[index]._buttons)):
+            if(Settings.model[index]._buttons[i]._name == button_name):
                 return i
         return None
     

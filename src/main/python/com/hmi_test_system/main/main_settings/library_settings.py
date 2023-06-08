@@ -23,15 +23,15 @@ from data.define_and_fill_model import DefineAndFillModel as df
 
 class LibrarySettings:
     
-    def edit_camara_settings(M: Settings):
+    def edit_camara_settings():
         pass
 
 
-    def edit_SP_settings(M: Settings):
+    def edit_SP_settings():
         pass
 
     
-    def add_models_mannually(M: Settings):
+    def add_models_mannually():
         #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
@@ -42,12 +42,12 @@ class LibrarySettings:
                 break
             
             # model doesn't exist -> new configuration
-            elif (df.open_model_xml(M, name_model) is None):
+            elif (df.open_model_xml(name_model) is None):
                 os.system('cls') 
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
-                if ( LNM.create_model_manual(M, name_model) == 0):
-                    df.create_xml(M, name_model)
+                if ( LNM.create_model_manual(name_model) == 0):
+                    df.create_xml(name_model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
@@ -62,7 +62,7 @@ class LibrarySettings:
                 break
 
     
-    def add_models_xml(M: Settings):
+    def add_models_xml():
          #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
@@ -73,13 +73,13 @@ class LibrarySettings:
                 break
             
             # model doesn't exist -> new configuration
-            elif (df.open_model_xml(M, name_model) is None):
+            elif (df.open_model_xml(name_model) is None):
                 os.system('cls') 
                 print("Insert the path of the XML file")
                 directory = str(input())
 
-                if (LNM.create_model_xml(M, directory, name_model) == 0):
-                    df.create_xml(M, name_model)
+                if (LNM.create_model_xml(directory, name_model) == 0):
+                    df.create_xml(name_model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
