@@ -1,6 +1,7 @@
 import os
 
 from data import *
+from data.model.model import Model
 from main.constant_main import *
 from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
@@ -15,7 +16,7 @@ class LibraryEditModel:
     @staticmethod
     def edit_model():
 
-        os.system('cls') 
+        os.system('cls')
 
         # TODO: Change this
         img_path = "test_images/HMI.png"
@@ -46,13 +47,16 @@ class LibraryEditModel:
                 
                 os.system('cls') 
 
+                # Print all available models
                 print("Available models:")
                 for i, name in enumerate(name_models):
                     print(str(i+1) + ' - ' + name)
+                
                 print("\nWhat model do you want to edit?")
                 print("(Write 'q' to back to menu)")
                 name_model = input()
                 
+                # Check if the user wrote the index of the model
                 if name_model.isdigit():
                     model_index = int(name_model)
                     if model_index > 0 and model_index <= len(name_models):
@@ -75,34 +79,33 @@ class LibraryEditModel:
                 # model  exists
                 else:
 
-                    index = Settings.index_model(name_model)
-
-                    if(index == -1):
+                    model = Settings.get_model(name_model)
+                    if model is None:
                         return -1
 
-                    name_model = Settings.model[index].get_name()
+                    name_model = model.get_name()
 
                     #TODO: not good pratic while inside while
                     while True:
                         MP.edit_menu()                
                         menu_choice = input()
 
-                        # edit name model
+                        # edit model info
                         if menu_choice == '1':
-                            LibraryEditModel.edit_model_info(index)
-                            name_model = Settings.model[index].get_name()
+                            LibraryEditModel.edit_model_info(model)
+                            name_model = model.get_name()
                                 
                         # edit led
                         elif menu_choice == '2':
-                            LibraryEditModel.edit_led(name_model, index, image)
+                            LibraryEditModel.edit_led(model, image)
                         
                         # edit button
                         elif menu_choice == '3':
-                            LibraryEditModel.edit_button(name_model, index, image)
+                            LibraryEditModel.edit_button(model, image)
                         
                         # edit LCD
                         elif menu_choice == '4':
-                            LibraryEditModel.edit_display(index, image)
+                            LibraryEditModel.edit_display(model, image)
                         
                         # save
                         elif menu_choice == '5':
@@ -140,7 +143,7 @@ class LibraryEditModel:
                                 
     #------------------------------------EDIT MODEL INFO------------------------------------#
     @staticmethod
-    def edit_model_info(index: int):
+    def edit_model_info(model: Model):
 
         while True:
             os.system('cls')
@@ -148,7 +151,7 @@ class LibraryEditModel:
             name_model = str(input())
             name_model = name_model.strip()
             if(len(name_model)>0):
-                Settings.model[index].set_name(name_model)
+                model.set_name(name_model)
                 break
             else:
                 continue
@@ -224,20 +227,45 @@ class LibraryEditModel:
                 continue
 
         info = Info(board, option, revision, edition, lcd_type)
-        Settings.model[index].set_info(info)
+        model.set_info(info)
 
         boot_info = BootLoaderInfo(boot_version, boot_date)
-        Settings.model[index].set_boot_loader_info(boot_info)
-
+        model.set_boot_loader_info(boot_info)
         
         os.system('cls')
         print("INFO CHANGED\n")
         input("Press Enter to continue...\n")
+        return 0
 
     #------------------------------------EDIT LED------------------------------------#
     @staticmethod
-    def edit_led_settings(index: int, index_led: int, image):
+    def edit_led(model: Model, image):
+        
         while True:
+
+            os.system('cls')
+            print("What led do you want to edit?")
+            print("(to go to the menu insert q)\n" )
+            led_name = input()
+
+            # back to menu
+            if(led_name == 'q'):
+                break
+            
+            led = model.get_led(led_name)
+            
+            if (led is None):
+                os.system('cls')
+                print(f"{led_name} doesn't exist")
+                input("Press Enter to continue...\n")
+                continue
+            else:
+                LibraryEditModel.edit_led_settings(led, image)
+
+    @staticmethod
+    def edit_led_settings(led: Led, image):
+        while True:
+
             MP.edit_led()
             menu_choice = input()
 
@@ -246,7 +274,7 @@ class LibraryEditModel:
                 os.system('cls') 
                 print("What is the new led name?\n")
                 led_name = input().strip()
-                Settings.model[index]._leds[index_led].set_name(led_name)
+                led.set_name(led_name)
 
                 os.system('cls')
                 print("LED NAME CHANGED")
@@ -255,7 +283,7 @@ class LibraryEditModel:
             
             # edit colours
             elif menu_choice == '2':
-                Settings.model[index]._leds[index_led].delete_colours()
+                led.delete_colours()
                 os.system('cls')
 
                 while True:
@@ -264,17 +292,19 @@ class LibraryEditModel:
                     if n_colours.isdigit():
                         n_colours = int(n_colours)
                         break
+
+                led._n_colour = n_colours
                 
-                for i in range(0, n_colours):
+                for i in range(n_colours):
                     print(f"Colour {i+1} of led:")
-                    for i , color in enumerate(ListOfColors.get_list_of_colors()):
+                    for i, color in enumerate(ListOfColors.get_list_of_colors()):
                         print(f'{i+1} - {color.get_name()}')
                     while True:
                         print('Type which number you want')
                         new_colour = input()
                         if new_colour.isdigit():
                             new_colour = int(new_colour)
-                            Settings.model[index]._leds[index_led].new_colour(ListOfColors.get_color(new_colour-1))
+                            led.new_colour(ListOfColors.get_color_index(new_colour-1))
                             break
                         else:
                             continue
@@ -291,7 +321,7 @@ class LibraryEditModel:
                 print("Select the led central position and press ENTER")
                 pos_vector = DefineModelCV.click_pos(image)
 
-                Settings.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
+                led.set_pos(pos_vector[0], pos_vector[1])
 
                 os.system('cls')
                 print("LED POSITION CHANGED")
@@ -302,34 +332,9 @@ class LibraryEditModel:
             elif menu_choice == '4':
                 break
 
-    @staticmethod
-    def edit_led(name_model, index: int, image):
-        
-        while True:
-
-            os.system('cls')
-            print("What led do you want to edit?")
-            print("(to go to the menu insert q)\n" )
-            led_name = input()
-
-            # back to menu
-            if(led_name == 'q'):
-                break
-            
-            index_led = Settings.index_led(name_model, led_name)
-            
-            if (index_led is None):
-                os.system('cls')
-                print(f"{led_name} DOESN'T EXIST")
-                print("To edit another one or go to the edit menu insert anything\n")
-                c = input()
-                continue
-            else:
-                LibraryEditModel.edit_led_settings(index, index_led, image)
-
     #------------------------------------EDIT BUTTON------------------------------------#
     @staticmethod
-    def edit_button(name_model, index: int, image):
+    def edit_button(model: Model, image):
 
         while True:
             os.system('cls')
@@ -341,17 +346,17 @@ class LibraryEditModel:
             if(button_name == 'q'):
                 break
             
-            index_button = Settings.index_button(name_model, button_name) 
-            
-            if (index_button is None):
+            button = model.get_button(button_name)            
+            if (button is None):
                 os.system('cls')
-                print(f"{button_name} DOESN'T EXIST")
-                print("To edit another one or go to the edit menu insert anything\n")
-                c = input()
+                print(f"{button_name} doesn't exist")
+                input("Press Enter to continue...")
                 continue
 
             else:
+                
                 while True:
+                    
                     MP.edit_button()
                     c = input()
 
@@ -360,7 +365,7 @@ class LibraryEditModel:
                         os.system('cls') 
                         print("What is the new button name?\n")
                         button_name = input()
-                        Settings.model[index]._buttons[index_button].set_name(button_name)
+                        button.set_name(button_name)
 
                         os.system('cls')
                         print("BUTTON NAME CHANGED")
@@ -374,7 +379,7 @@ class LibraryEditModel:
                         print(f"Select the button central position and press ENTER")
                         pos_vector= DefineModelCV.click_pos(image)
 
-                        Settings.model[index]._buttons[index_button].set_pos(pos_vector[0], pos_vector[1])
+                        button.set_pos(pos_vector[0], pos_vector[1])
 
                         os.system('cls')
                         print("BUTTON POSTION CHANGED")
@@ -387,7 +392,10 @@ class LibraryEditModel:
 
     #------------------------------------EDIT LCD------------------------------------#
     @staticmethod
-    def edit_display(index: int, image):
+    def edit_display(model: Model, image):
+        
+        display = model.get_display()
+
         os.system('cls')
         print("Select the LCD initial position and press ENTER")
         pos_vector_init= DefineModelCV.click_pos(image)
@@ -398,10 +406,10 @@ class LibraryEditModel:
         dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
         
-        Settings.model[index]._display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
+        display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
 
         os.system('cls')
         print("LCD POSITION CHANGED\n")
-        print("To go to the edit menu insert anything\n")
-        c = input()
-        
+        input("Press Enter to continue...")
+        return 0
+    
