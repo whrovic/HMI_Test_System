@@ -11,9 +11,12 @@ from serial_port.serial_port import SerialPort
 
 from .setup_test import SetupTest
 from .test import Test
-
+from data.hardware_settings.parameter import Parameter
 
 class SequenceTest:
+
+    parameters_leds = Parameter(1280, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
+    parameters_default = Parameter(1280, 720, 1.0, 0, 1.0, 0, 0, 1.0, 0, 128, 128, 128, 128)
 
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
@@ -331,19 +334,22 @@ class SequenceTest:
         SetupTest.setup(True, False, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             ExitCode.serialport_connection_failure()
             return -1
-        cam = SetupTest.__cam_leds
+        cam = SetupTest.get_cam_leds()
         if cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             ExitCode.camera_connection_failure()
             return -1
         
+        # Set settings
+        cam.set_settings(SequenceTest.parameters_leds.get_parameters())
+
         # Start receiving data from serial port
         serial_port.start_receive()
 
@@ -457,6 +463,7 @@ class SequenceTest:
         # Return -1 in case of error or 0 if success
         return result
     
+    @staticmethod
     def seq_all(model: Model, serial_number : str, manufacture_date : str):
         
         # TODO: This shouldn't be defined here

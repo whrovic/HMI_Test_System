@@ -5,21 +5,21 @@ from .displaycv import Displaycv
 from video.camera import Camera
 from data.hardware_settings.test_settings import TestSettings
 from data.hardware_settings.camera_settings import CameraSettings
-
+import time
 
 class DefineModelCV():
 
     @staticmethod
     def get_leds_board_image(settings = None):
-        
-        cam_settings = TestSettings.get_cam_leds()
 
         cam = Camera(0)
         
-        if cam_settings is None:
+        if settings is None:
             cam.set_settings(None)
         else:
-            cam.set_settings(cam_settings.get_parameters(settings))
+            cam.set_settings(settings.get_parameters())
+
+        time.sleep(2.0)
 
         img = cam.get_frame()
         cam.close()
@@ -28,14 +28,14 @@ class DefineModelCV():
     @staticmethod
     def get_display_board_image(settings = None):
 
-        cam_settings = TestSettings.get_cam_leds()
-
         cam = Camera(0)
 
-        if cam_settings is None:
+        if settings is None:
             cam.set_settings(None)
         else:
-            cam.set_settings(cam_settings.get_parameters(settings))
+            cam.set_settings(settings.get_parameters())
+
+        time.sleep(2.0)
 
         img = cam.get_frame()
         cam.close()
@@ -124,13 +124,13 @@ class DefineModelCV():
     def write_reference_image_to_file(image, filename, path):
         
         # Calculate the transformation matrix
-        transformation_matrix, coordinates = Displaycv.__get_transformation_matrix(image)
+        transformation_matrix, coordinates = Displaycv.get_transformation_matrix(image)
         if transformation_matrix is None:
             # TODO: Error Code
             return -1
 
         # Extract display
-        display_image = Displaycv.__extract_display(image, transformation_matrix, coordinates)
+        display_image = Displaycv.extract_display(image, transformation_matrix, coordinates)
 
         ret_val = cv2.imwrite(path + filename, display_image)
 

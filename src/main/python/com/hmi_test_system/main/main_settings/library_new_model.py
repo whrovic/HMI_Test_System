@@ -6,6 +6,7 @@ from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
 
 from .menu_prints import MenuPrints as MP
+from data.hardware_settings.parameter import Parameter
 
 
 class LibraryNewModel:
@@ -67,7 +68,9 @@ class LibraryNewModel:
             # leds configuration
             print("\n\nLEDS CONFIGURATION\n")
 
-            leds_img = DefineModelCV.get_leds_board_image()
+            parameters_leds = Parameter(1080, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
+
+            leds_img = DefineModelCV.get_leds_board_image(parameters_leds)
 
             if(n_leds > 0):
                 for i in range(0, n_leds):
