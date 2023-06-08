@@ -19,6 +19,7 @@ from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
 from data.define_and_fill_model import DefineAndFillModel as df
+from .menu_settings import MenuSettings as MS
 
 
 class LibrarySettings:
@@ -30,6 +31,81 @@ class LibrarySettings:
     def edit_SP_settings(M: Settings):
         pass
 
+    
+    def edit_model(M: Settings):
+
+        os.system('cls') 
+
+        # TODO: Change this
+        img_path = "test_images/HMI.png"
+
+        cap = ImageFiles([img_path])
+
+        cap.start_capture()
+
+        image = cap.get_image()
+
+        cap.stop_capture()
+        cap.clear_queue()
+
+        # Get list of available models
+        name_models = DefineAndFillModel.get_all_xml_file_names(M)
+        if name_models is None:
+            # TODO: Error code
+            L.exit_input("Error path don't exist")
+            '''print("Error path don't exist")
+            input("Press Enter to continue...")'''
+            return -1
+        elif len(name_models) == 0:
+            L.exit_input("No available models to edit")
+            #input("Press Enter to continue...")
+            return 0
+
+        #------------------------------------EDIT MENU------------------------------------#
+        #while True:  # Is not necessary, i think
+        #os.system('cls') 
+
+        print("Available models:")
+        for n in name_models:
+            print(n)
+        
+        '''
+        print("\nWhat model do you want to edit?")
+        print("(Write 'q' to back to menu)")
+        name_model = input()
+        
+        # back to menu
+        if(name_model == 'q'):
+            return 0'''
+            
+        name_model = L.get_input("\nWhat model do you want to edit?")
+        if (name_model is None):
+            # back to menu
+            return 0
+
+        # model doesn't exist
+        elif(df.open_model_xml(M, name_model) is None):
+            os.system('cls') 
+            L.exit_input(f"{name_model} DOESN'T EXIST\n")
+            '''print(f"{name_model} DOESN'T EXIST\n")
+            input("Press Enter to continue..." )'''
+        
+        # model  exists
+        else:
+            #df.delete_xml(name_model, directory) # Delete the xml file
+            index = M.index_model(name_model)
+
+            if(index == -1):
+                return -1
+
+            name_model = M.model[index].get_name()
+
+            if (MS.edit_model_menu(M, index, image) == -1):
+                return -1
+            
+        return 0
+                        
+        
     
     def add_models_mannually(M: Settings):
         #------------------------------------ADD NEW MODEL------------------------------------#

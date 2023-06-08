@@ -9,125 +9,7 @@ from video.image_files import ImageFiles
 from .menu_prints import MenuPrints as MP
 
 
-class LibraryEditModel:
-    
-    def edit_model(M: Settings):
-
-        os.system('cls') 
-
-        # TODO: Change this
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
-
-        # Get list of available models
-        name_models = DefineAndFillModel.get_all_xml_file_names(M)
-        if name_models is None:
-            # TODO: Error code
-            print("Error path don't exist")
-            input("Press Enter to continue...")
-            return -1
-        elif len(name_models) == 0:
-            print("No available models to edit")
-            input("Press Enter to continue...")
-            return 0
-
-        #------------------------------------EDIT MENU------------------------------------#
-        while True:
-                
-                os.system('cls') 
-
-                print("Available models:")
-                for n in name_models:
-                    print(n)
-                print("\nWhat model do you want to edit?")
-                print("(Write 'q' to back to menu)")
-                name_model = input()
-                
-                # back to menu
-                if(name_model == 'q'):
-                    return 0
-
-                # model doesn't exist
-                elif(df.open_model_xml(M, name_model) is None):
-                    os.system('cls') 
-                    print(f"{name_model} DOESN'T EXIST\n")
-                    input("Press Enter to continue..." )
-                
-                # model  exists
-                else:
-                    #df.delete_xml(name_model, directory) # Delete the xml file
-                    index = M.index_model(name_model)
-
-                    if(index == -1):
-                        return -1
-
-                    name_model = M.model[index].get_name()
-
-                    #TODO: not good pratic while inside while
-                    while True:
-                        MP.edit_menu()                
-                        menu_choice = input()
-
-                        # edit name model
-                        if menu_choice == '1':
-                            LibraryEditModel.edit_model_info(M, index)
-                            name_model = M.model[index].get_name()
-                                
-                        # edit led
-                        elif menu_choice == '2':
-                            LibraryEditModel.edit_led(M, name_model, index, image)
-                        
-                        # edit button
-                        elif menu_choice == '3':
-                            LibraryEditModel.edit_button(M, name_model, index, image)
-                        
-                        # edit LCD
-                        elif menu_choice == '4':
-                            LibraryEditModel.edit_display(M, index, image)
-                        
-                        # save
-                        elif menu_choice == '5':
-                            df.create_xml(M, name_model)
-                            print("Changes saved!")
-                            input("Press Enter to continue...")
-                            continue
-                        
-                        #back
-                        elif menu_choice == '6':
-                            while True:
-                                resp = input("Do you want to save the changes before leaving? [y/n] ")
-                                if (resp.lower() == 'y'):
-                                    df.create_xml(M, name_model)
-                                    break
-                                elif (resp.lower() == 'n'):
-                                    break
-                                else: 
-                                    continue
-                            return 0
-                        
-                        #exit
-                        elif menu_choice == '7':
-                            while True:
-                                resp = input("Do you want to save the changes before leaving? [y/n]")
-                                if (resp.lower() == "y"):
-                                    df.create_xml(M, name_model)
-                                    break
-                                elif (resp.lower() == 'n'):
-                                    break
-                                else:
-                                    continue
-
-                            return -1
-                        
-                        
+class LibraryEditModel:                
     #------------------------------------EDIT MODEL INFO------------------------------------#
     def edit_model_info(M: Settings, index: int):
 
@@ -384,4 +266,15 @@ class LibraryEditModel:
         print("LCD POSITION CHANGED\n")
         print("To go to the edit menu insert anything\n")
         c = input()
-        
+    
+    def save_changes(M: Settings, name_model):
+        while True:
+            resp = input("Do you want to save the changes before leaving? [y/n] ")
+            if (resp.lower() == 'y'):
+                df.create_xml(M, name_model)
+                break
+            elif (resp.lower() == 'n'):
+                break
+            else: 
+                continue
+    

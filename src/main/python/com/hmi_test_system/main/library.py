@@ -20,11 +20,11 @@ class Library:
             if (name_model == 'q'):
                 return None
             elif name_model.isdigit() or (len(name_model) > 0 and name_model[0].isdigit()):
-                print("Model name cannot start with integer")
+                print("Name cannot start with integer")
                 count += 1
                 continue
             elif len(name_model) == 0:
-                print("Model name cannot be empty")
+                print("Name cannot be empty")
                 count += 1
                 continue
             else:

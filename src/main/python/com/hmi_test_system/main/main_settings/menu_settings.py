@@ -3,8 +3,10 @@ import os
 from data.settings import Settings
 from main.constant_main import *
 from .library_settings import LibrarySettings as LS
+from main.library import Library as L
 from .menu_prints import MenuPrints as MP
 from .library_edit_model import LibraryEditModel as LEM
+from data.define_and_fill_model import DefineAndFillModel as df
 
 #count = 0
 class MenuSettings:
@@ -25,31 +27,31 @@ class MenuSettings:
                         return -1
                 
                 # color
-                case 2:                    
+                case '2':                    
                     count = 0
                     print("In construction")
                     menu_choice = input('Press Enter')
             
                 # edit model 
-                case 3:
+                case '3':
                     count = 0
-                    if ( LEM.edit_model(M) == -1 ):
+                    if ( LS.edit_model(M) == -1 ):
                         return -1
 
                 # test setting
-                case 4:
+                case '4':
                     count = 0
                     print("In construction")
                     menu_choice = input('Press Enter')
             
                 # directory
-                case 5:
+                case '5':
                     count = 0
                     if ( MenuSettings.directory_menu(M) == -1 ):
                         return -1
 
                 # exit 
-                case 6:
+                case '6':
                     os.system('cls')
                     return 0
             
@@ -127,5 +129,56 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
+                    
+    @staticmethod
+    def edit_model_menu(M: Settings, index: int, image):
+        count = 0
+        while True:
+            MP.edit_menu()                
+            menu_choice = input()
+
+            match (menu_choice):
+                # edit name model
+                case '1':
+                    LEM.edit_model_info(M, index)
+                    name_model = M.model[index].get_name()
+                        
+                # edit led
+                case '2':
+                    LEM.edit_led(M, name_model, index, image)
+                
+                # edit button
+                case '3':
+                    LEM.edit_button(M, name_model, index, image)
+                
+                # edit LCD
+                case '4':
+                    LEM.edit_display(M, index, image)
+                
+                # save
+                case '5':
+                    df.create_xml(M, name_model)
+                    L.exit_input("Changes saved!")
+                    '''print("Changes saved!")
+                    input("Press Enter to continue...")
+                    continue'''
+                
+                #back
+                case '6':
+                    LEM.save_changes(M, name_model)
+                    return 0
+                
+                #exit
+                case '7':
+                    LEM.save_changes(M, name_model)
+                    return -1
+                
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    
+                    
+                    
                 
 
