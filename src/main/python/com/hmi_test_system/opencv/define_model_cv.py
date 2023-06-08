@@ -1,11 +1,13 @@
+import time
+
 import cv2
 import numpy as np
+from data.hardware_settings.camera_settings import CameraSettings
+from data.hardware_settings.test_settings import TestSettings
+from video.camera import Camera
 
 from .displaycv import Displaycv
-from video.camera import Camera
-from data.hardware_settings.test_settings import TestSettings
-from data.hardware_settings.camera_settings import CameraSettings
-import time
+
 
 class DefineModelCV():
 

@@ -3,22 +3,22 @@ import logging
 
 class LogButton:
 
-    # prints for button tests
+    logger = logging.getLogger('LogButtons')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
-    def __init__(self):
-        self.logger = logging.getLogger('LogButtons')
-        self.logger.setLevel(logging.DEBUG)
-        self.handler = logging.StreamHandler()
-        self.handler.setLevel(logging.DEBUG)
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-        self.logger.addHandler(self.handler)
+    @staticmethod
+    def button_test_serial_error(button_name):
+        LogButton.logger.info(f"Error in button {button_name}")
 
-    def button_test_serial_error(self, button_name):
-        self.logger.info(f"Error in button {button_name}")
+    @staticmethod
+    def button_test_serial_error_final():
+        LogButton.logger.info("Error on Button Test")
 
-    def button_test_serial_error_final(self):
-        self.logger.info("Error on Button Test")
-
-    def button_test_serial_pass(self):
-        self.logger.info("Button Test Serial passed")
+    @staticmethod
+    def button_test_serial_pass():
+        LogButton.logger.info("Button Test Serial passed")

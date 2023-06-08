@@ -1,15 +1,17 @@
 import cv2
 import numpy as np
-from data.model.led import Led
 from data.color.color import OffColor, UnknownColor
 from data.color.list_of_colors import ListOfColors
+from data.model.led import Led
+
 
 class LEDcv:
     
+    @staticmethod
     def cut_led(image, led: Led):
         return image[led.get_pos_y()-2:led.get_pos_y()+2, led.get_pos_x()-2:led.get_pos_x()+2]
 
-
+    @staticmethod
     def read_color(image):
 
         # Convert the image from RGB to HSV 
@@ -45,3 +47,4 @@ class LEDcv:
         
         # If no color is found with a match less than 50%, return UnknownColor
         return UnknownColor()
+    

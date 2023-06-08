@@ -1,21 +1,24 @@
-import xml.etree.ElementTree as ET
-from .settings import Settings
-from .model.display import Display
-from .model.led import Led
-from .model.button import Button
-from .model.info import Info
-from .model.boot_loader_info import BootLoaderInfo
 import os
+import xml.etree.ElementTree as ET
+
 from data.color.list_of_colors import ListOfColors
+
+from .model.boot_loader_info import BootLoaderInfo
+from .model.button import Button
+from .model.display import Display
+from .model.info import Info
+from .model.led import Led
+from .settings import Settings
+
 
 class DefineAndFillModel:
 
 #------------------------------------SETTINGS XML------------------------------------#
 
-    '''def open_xml_settings(M: Settings): 
+    '''def open_xml_settings(): 
         while True:
             try:
-                files = os.listdir(M.path.get_settings_directory())   # files in directory
+                files = os.listdir(Settings.path.get_settings_directory())   # files in directory
                 break
             except:
                 print("Error path don't exist")
@@ -32,15 +35,15 @@ class DefineAndFillModel:
                 #...
                 pass
                 
-    def create_xml_settings(M: Settings):
+    def create_xml_settings():
         # Create the XML document and write it to a file
         tree = ET.ElementTree("")
         ET.indent(tree, '  ')
-        tree.write(f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml")
+        tree.write(f"{Settings.path.get_settings_directory()}/{"ADICIONAR"}.xml")
 
     
-    def delete_xml_settings(M: Settings):
-        file_path = f"{M.path.get_settings_directory()}/{"ADICIONAR"}.xml"
+    def delete_xml_settings():
+        file_path = f"{Settings.path.get_settings_directory()}/{"ADICIONAR"}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):
@@ -54,10 +57,10 @@ class DefineAndFillModel:
 #------------------------------------MODEL XML------------------------------------#
 
     @staticmethod
-    def open_model_xml(M: Settings, name_model):
+    def open_model_xml(name_model):
 
         # Get all the xml filenames from the xml files folder                
-        xml_filenames = DefineAndFillModel.get_all_xml_file_names(M)
+        xml_filenames = DefineAndFillModel.get_all_xml_file_names()
         if xml_filenames is None:
             print("Error path don't exist")
             input('Write anything to back to menu')
@@ -66,7 +69,7 @@ class DefineAndFillModel:
         filename = name_model + '.xml'
         if  name_model in xml_filenames:
             # open a model with the xml file
-            xml_file = os.path.join(M.path.get_xml_directory(), filename)
+            xml_file = os.path.join(Settings.path.get_xml_directory(), filename)
             tree = ET.parse(xml_file)
             model = tree.getroot()
             name = model.find('name')
@@ -90,9 +93,9 @@ class DefineAndFillModel:
             boot_version = boot_info.find('version')
             boot_date = boot_info.find('date')
             BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
-            M.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
+            Settings.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
             
-            index = M.index_model(name.text)
+            index = Settings.index_model(name.text)
 
             leds = model.find('leds')
             for i in range(0, int(n_leds.text)):
@@ -105,7 +108,7 @@ class DefineAndFillModel:
                 for j in range(0, int(led_nColour.text)):   
                     led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
                     led.new_colour(ListOfColors.get_color(led_colour.text))
-                M.model[index].set_led(led) 
+                Settings.model[index].set_led(led) 
 
             buttons = model.find('buttons')
             for i in range(0, int(n_buttons.text)):
@@ -113,29 +116,29 @@ class DefineAndFillModel:
                 button_x = buttons.find(f'button{i+1}_x')
                 button_y = buttons.find(f'button{i+1}_y')
                 button = Button(button_name.text, int(button_x.text), int(button_y.text))
-                M.model[index].set_button(button)
+                Settings.model[index].set_button(button)
 
             return 1
         else:
             return None
 
     @staticmethod
-    def create_xml(M: Settings, name_model):
+    def create_xml(name_model):
 
-        index = M.index_model(name_model)
-        aux = M.model[index]
+        model = Settings.get_model(name_model)
+        if model is None: return -1
 
         # create an XML representation of the object
-        model = ET.Element(f'{aux.get_name()}')
-        name = ET.SubElement(model, 'name')
-        name.text = str(aux.get_name())
-        n_leds = ET.SubElement(model, 'n_leds')
-        n_leds.text = str(aux.get_n_leds())
-        n_buttons = ET.SubElement(model, 'n_buttons')
-        n_buttons.text = str(aux.get_n_buttons())
-        display = ET.SubElement(model, 'display')
+        model_root = ET.Element(f'{model.get_name()}')
+        name = ET.SubElement(model_root, 'name')
+        name.text = str(model.get_name())
+        n_leds = ET.SubElement(model_root, 'n_leds')
+        n_leds.text = str(model.get_n_leds())
+        n_buttons = ET.SubElement(model_root, 'n_buttons')
+        n_buttons.text = str(model.get_n_buttons())
+        display = ET.SubElement(model_root, 'display')
         display_name = ET.SubElement(display, 'display_name')
-        dsp= aux.get_display()
+        dsp= model.get_display()
         display_name.text = str(dsp.get_name())
         display_x = ET.SubElement(display, 'display_x')
         display_x.text = str(dsp.get_pos_x())
@@ -145,8 +148,8 @@ class DefineAndFillModel:
         display_dimx.text = str(dsp.get_dim_x())
         display_dimy = ET.SubElement(display, 'display_dimy')
         display_dimy.text = str(dsp.get_dim_y())
-        info = ET.SubElement(model, 'info')
-        inf = aux.get_info()
+        info = ET.SubElement(model_root, 'info')
+        inf = model.get_info()
         info_board = ET.SubElement(info, 'board')
         info_board.text = str(inf.get_board())
         info_option = ET.SubElement(info, 'option')
@@ -157,18 +160,17 @@ class DefineAndFillModel:
         info_edition.text = str(inf.get_edition())
         info_lcd_type = ET.SubElement(info, 'lcd_type')
         info_lcd_type.text = str(inf.get_lcd_type())
-        boot_info = ET.SubElement(model, 'boot_loader_info')
-        boot = aux.get_boot_loader_info()
+        boot_info = ET.SubElement(model_root, 'boot_loader_info')
+        boot = model.get_boot_loader_info()
         boot_version = ET.SubElement(boot_info, 'version')
         boot_version.text = str(boot.get_version())
         boot_date = ET.SubElement(boot_info, 'date')
         boot_date.text = str(boot.get_date())
         
-
-        leds = ET.SubElement(model, 'leds')
-        nLeds = aux.get_n_leds()
+        leds = ET.SubElement(model_root, 'leds')
+        nLeds = model.get_n_leds()
         for i in range(0, nLeds):
-            aux2 = aux._leds[i]
+            aux2 = model._leds[i]
             led_name = ET.SubElement(leds, f'led{i+1}_name')
             led_name.text = str(aux2.get_name())
             led_nColour = ET.SubElement(leds, f'led{i+1}_nColour')
@@ -179,32 +181,31 @@ class DefineAndFillModel:
             led_y.text = str(aux2.get_pos_y())
             leds_colours = ET.SubElement(leds, f'led{i+1}_colours')
             for j in range(0, aux2._n_colour):
-                aux3 = aux._leds[i].get_colours()
+                aux3 = model._leds[i].get_colours()
                 led_colour = ET.SubElement(leds_colours, f'led{i+1}_colour{j+1}')
                 led_colour.text = str(aux3[j].get_name())
         
 
-        buttons = ET.SubElement(model, 'buttons')
-        nButtons = aux.get_n_buttons()
+        buttons = ET.SubElement(model_root, 'buttons')
+        nButtons = model.get_n_buttons()
         for i in range(0, nButtons):
-            aux2 = aux._buttons[i]
+            aux2 = model._buttons[i]
             button_name = ET.SubElement(buttons, f'button{i+1}_name')
-            button_name.text = str(aux._buttons[i].get_name())
+            button_name.text = str(model._buttons[i].get_name())
             button_x = ET.SubElement(buttons, f'button{i+1}_x')
-            button_x.text = str(aux._buttons[i].get_pos_x())
+            button_x.text = str(model._buttons[i].get_pos_x())
             button_y = ET.SubElement(buttons, f'button{i+1}_y')
-            button_y.text = str(aux._buttons[i].get_pos_y())
-
+            button_y.text = str(model._buttons[i].get_pos_y())
 
         # Create the XML document and write it to a file
-        tree = ET.ElementTree(model)
+        tree = ET.ElementTree(model_root)
         ET.indent(tree, '  ')
-        tree.write(f"{M.path.get_xml_directory()}/{name_model}.xml")
+        tree.write(f"{Settings.path.get_xml_directory()}/{name_model}.xml")
 
     @staticmethod
-    def delete_xml(M: Settings, name_model):
+    def delete_xml(name_model):
         
-        file_path = f"{M.path.get_xml_directory()}/{name_model}.xml"
+        file_path = f"{Settings.path.get_xml_directory()}/{name_model}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):
@@ -215,9 +216,9 @@ class DefineAndFillModel:
             return -1
 
     @staticmethod
-    def get_all_xml_file_names(M: Settings):
+    def get_all_xml_file_names():
         try:
-            files = os.listdir(M.path.get_xml_directory())   # files in directory
+            files = os.listdir(Settings.path.get_xml_directory())   # files in directory
         except:
             return None
                 

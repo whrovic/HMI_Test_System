@@ -3,46 +3,54 @@ import logging
 
 class LogLeds:
 
-    # prints for LEDs tests
+    logger = logging.getLogger('LogLeds')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
-    def __init__(self):
-        self.logger = logging.getLogger('LogLeds')
-        self.logger.setLevel(logging.DEBUG)
-        self.handler = logging.StreamHandler()
-        self.handler.setLevel(logging.DEBUG)
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-        self.logger.addHandler(self.handler)
-
-    def test_leds_sequence_colour_failed(self, model_LED, state_model_LED, state_failed_LED):
-        self.logger.info(f"Error on LED: {model_LED}. It should be {state_model_LED}, got {state_failed_LED} instead.")
+    @staticmethod
+    def test_leds_sequence_colour_failed(model_LED, state_model_LED, state_failed_LED):
+        LogLeds.logger.info(f"Error on LED: {model_LED}. It should be {state_model_LED}, got {state_failed_LED} instead.")
     
-    def test_leds_sequence_state_failed(self, model_LED, state_model_LED, state_failed_LED):
-        self.logger.info(f"Error on LED: {model_LED}. It should be {state_model_LED}, got {state_failed_LED} instead.")
+    @staticmethod
+    def test_leds_sequence_state_failed(model_LED, state_model_LED, state_failed_LED):
+        LogLeds.logger.info(f"Error on LED: {model_LED}. It should be {state_model_LED}, got {state_failed_LED} instead.")
     
-    def test_failed(self, led_name):
-        self.logger.error(f"Test Failed in LED {led_name}")
+    @staticmethod
+    def test_failed(led_name):
+        LogLeds.logger.error(f"Test Failed in LED {led_name}")
 
-    def test_failed_off(self):
-        self.logger.info("Test LEDs OFF Failed")
+    @staticmethod
+    def test_failed_off():
+        LogLeds.logger.info("Test LEDs OFF Failed")
 
-    def test_failed_on(self):
-        self.logger.info("Test LEDs ON Failed")
+    @staticmethod
+    def test_failed_on():
+        LogLeds.logger.info("Test LEDs ON Failed")
 
-    def test_leds_on_passed(self):
-        self.logger.info("All the LEDs turned ON")
+    @staticmethod
+    def test_leds_on_passed():
+        LogLeds.logger.info("All the LEDs turned ON")
 
-    def test_leds_off_passed(self):
-        self.logger.info("All the LEDs turned OFF")
+    @staticmethod
+    def test_leds_off_passed():
+        LogLeds.logger.info("All the LEDs turned OFF")
 
-    def test_leds_sequence_passed(self):
-        self.logger.info("Right Sequence: Yes")
+    @staticmethod
+    def test_leds_sequence_passed():
+        LogLeds.logger.info("Right Sequence: Yes")
 
-    def test_leds_sequence_failed(self):
-        self.logger.info("Right Sequence: No")
+    @staticmethod
+    def test_leds_sequence_failed():
+        LogLeds.logger.info("Right Sequence: No")
 
-    def test_leds_finished(self):
-        self.logger.info("TestLeds Finished")
+    @staticmethod
+    def test_leds_finished():
+        LogLeds.logger.info("TestLeds Finished")
 
-    def test_leds_timeout(self):
-        self.logger.info("Error Timeout")
+    @staticmethod
+    def test_leds_timeout():
+        LogLeds.logger.info("Error Timeout")

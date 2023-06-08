@@ -4,7 +4,7 @@ from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
 from main.main_settings import *
-from main.main_test.library_test import test_menu
+from main.main_test import *
 from report import ExitCode
 
 '''from tkinter import Tk
@@ -15,10 +15,8 @@ filename = askdirectory() # Isto te permite selecionar um arquivo
 print(filename) # printa o arquivo selecionado      
 menu_choice = input()'''
 
-M = Settings()
-
 # Read all the colors from the local file
-ListOfColors.read_from_file(M.path.get_settings_directory() + "/colors.json")
+ListOfColors.read_from_file(Settings.path.get_settings_directory() + "/colors.json")
 
 def arguments_help():
     print("HELP")
@@ -42,12 +40,12 @@ if len(sys.argv) < 2:
 value = sys.argv[1]
 if value == TYPE_TEST:
     
-    exit_code = test_menu(M)
+    exit_code = LT.test_menu(Settings)
     print("Test Exit Code =", exit_code)
     
 elif value == TYPE_SET:
     # Menu Settings
-    MS.settings_menu(M)
+    MS.settings_menu(Settings)
 elif value == TYPE_HELP:
     # Menu Settings
     arguments_help()

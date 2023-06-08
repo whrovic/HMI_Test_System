@@ -1,6 +1,8 @@
 import queue
 from abc import ABC, abstractmethod
+
 import cv2
+
 
 class VideoCapture(ABC):
 

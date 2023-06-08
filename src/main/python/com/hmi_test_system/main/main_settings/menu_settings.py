@@ -1,18 +1,18 @@
 import os
 
-from data.settings import Settings
 from main.constant_main import *
+
+from .library_edit_model import LibraryEditModel as LEM
 from .library_settings import LibrarySettings as LS
 from main.library import Library as L
 from .menu_prints import MenuPrints as MP
 from .library_edit_model import LibraryEditModel as LEM
 from data.define_and_fill_model import DefineAndFillModel as df
 
-#count = 0
 class MenuSettings:
 
     @staticmethod
-    def settings_menu(M: Settings):
+    def settings_menu():
         count = 0
         while True:
             MP.settings()        
@@ -23,7 +23,7 @@ class MenuSettings:
                 #new model
                 case '1':
                     count = 0
-                    if ( MenuSettings.new_model(M) == -1 ):
+                    if ( MenuSettings.new_model() == -1 ):
                         return -1
                 
                 # color
@@ -35,7 +35,7 @@ class MenuSettings:
                 # edit model 
                 case '3':
                     count = 0
-                    if ( LS.edit_model(M) == -1 ):
+                    if ( LEM.edit_model() == -1 ):
                         return -1
 
                 # test setting
@@ -47,7 +47,7 @@ class MenuSettings:
                 # directory
                 case '5':
                     count = 0
-                    if ( MenuSettings.directory_menu(M) == -1 ):
+                    if ( MenuSettings.directory_menu() == -1 ):
                         return -1
 
                 # exit 
@@ -62,7 +62,7 @@ class MenuSettings:
                     continue
     
     @staticmethod
-    def new_model(M: Settings):
+    def new_model():
         count = 0
         while True:
             MP.new_model()
@@ -72,12 +72,12 @@ class MenuSettings:
                 # create
                 case '1':
                     count = 0
-                    LS.add_models_mannually(M)
+                    LS.add_models_mannually()
 
                 # Import XML  
                 case '2':
                     count = 0
-                    LS.add_models_xml(M)
+                    LS.add_models_xml()
             
                 # back  
                 case '3':
@@ -96,7 +96,7 @@ class MenuSettings:
                     continue
 
     @staticmethod
-    def directory_menu(M: Settings):
+    def directory_menu():
         count = 0
         while True:
             MP.directory()        
@@ -129,7 +129,8 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
-                    
+                               
+    
     @staticmethod
     def edit_model_menu(M: Settings, index: int, image):
         count = 0
@@ -182,3 +183,4 @@ class MenuSettings:
                     
                 
 
+    

@@ -1,8 +1,9 @@
-from .led import Led
+from .boot_loader_info import BootLoaderInfo
 from .button import Button
 from .display import Display
 from .info import Info
-from .boot_loader_info import BootLoaderInfo
+from .led import Led
+
 
 class Model:
     
@@ -107,7 +108,3 @@ class Model:
         
     def get_boot_loader_info(self):
         return self._boot_loader_info
-    
-    
-    
-    

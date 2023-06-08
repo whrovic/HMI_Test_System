@@ -10,10 +10,9 @@ from data.settings import Settings
 import os
 
 from data import *
+from data.define_and_fill_model import DefineAndFillModel as df
 from main.constant_main import *
 from main.library import Library as L
-from opencv.define_model_cv import DefineModelCV
-from video.image_files import ImageFiles
 
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
@@ -24,11 +23,12 @@ from .menu_settings import MenuSettings as MS
 
 class LibrarySettings:
     
-    def edit_camara_settings(M: Settings):
+    @staticmethod
+    def edit_camara_settings():
         pass
 
-
-    def edit_SP_settings(M: Settings):
+    @staticmethod
+    def edit_SP_settings():
         pass
 
     
@@ -118,12 +118,12 @@ class LibrarySettings:
                 break
             
             # model doesn't exist -> new configuration
-            elif (df.open_model_xml(M, name_model) is None):
+            elif (df.open_model_xml(name_model) is None):
                 os.system('cls') 
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
-                if ( LNM.create_model_manual(M, name_model) == 0):
-                    df.create_xml(M, name_model)
+                if ( LNM.create_model_manual(name_model) == 0):
+                    df.create_xml(name_model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
@@ -137,9 +137,10 @@ class LibrarySettings:
                 L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
                 break
 
-    
-    def add_models_xml(M: Settings):
-         #------------------------------------ADD NEW MODEL------------------------------------#
+    @staticmethod
+    def add_models_xml():
+        
+        #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
                 
@@ -149,13 +150,13 @@ class LibrarySettings:
                 break
             
             # model doesn't exist -> new configuration
-            elif (df.open_model_xml(M, name_model) is None):
+            elif (df.open_model_xml(name_model) is None):
                 os.system('cls') 
                 print("Insert the path of the XML file")
                 directory = str(input())
 
-                if (LNM.create_model_xml(M, directory, name_model) == 0):
-                    df.create_xml(M, name_model)
+                if (LNM.create_model_xml(directory, name_model) == 0):
+                    df.create_xml(name_model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break

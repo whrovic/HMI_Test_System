@@ -1,5 +1,6 @@
 from time import sleep, time
 
+from data.hardware_settings.parameter import Parameter
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
@@ -11,7 +12,7 @@ from serial_port.serial_port import SerialPort
 
 from .setup_test import SetupTest
 from .test import Test
-from data.hardware_settings.parameter import Parameter
+
 
 class SequenceTest:
 
@@ -583,3 +584,4 @@ class SequenceTest:
         
         # Return -1 in case of error or 0 if success
         return result
+    

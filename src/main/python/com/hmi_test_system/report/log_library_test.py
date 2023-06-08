@@ -3,28 +3,31 @@ import logging
 
 class LogLibraryTest:
 
-    # prints for library tests
+    logger = logging.getLogger('LogLibraryTest')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
-    def __init__(self):
-        self.logger = logging.getLogger('LogLibraryTest')
-        self.logger.setLevel(logging.DEBUG)
-        self.handler = logging.StreamHandler()
-        self.handler.setLevel(logging.DEBUG)
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-        self.logger.addHandler(self.handler)
+    @staticmethod
+    def test_library_missing_name():
+        LogLibraryTest.logger.info("No model name")
 
-    def test_library_missing_name(self):
-        self.logger.info("No model name")
+    @staticmethod
+    def test_library_invalid_name():
+        LogLibraryTest.logger.info("Invalid model name")
 
-    def test_library_invalid_name(self):
-        self.logger.info("Invalid model name")
+    @staticmethod
+    def test_library_error_name(name_model):
+        LogLibraryTest.logger.info(f"Model {name_model} doesn't exist")
 
-    def test_library_error_name(self, name_model):
-        self.logger.info(f"Model {name_model} doesn't exist")
+    @staticmethod
+    def test_library_invalid_argument():
+        LogLibraryTest.logger.info("Invalid Argument")
 
-    def test_library_invalid_argument(self):
-        self.logger.info("Invalid Argument")
-
-    def test_library_invalid_number_argument(self):
-        self.logger.info("Invalid Number Arguments")
+    @staticmethod
+    def test_library_invalid_number_argument():
+        LogLibraryTest.logger.info("Invalid Number Arguments")
+    

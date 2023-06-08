@@ -1,5 +1,7 @@
-from .video_device import VideoDevice
 import cv2
+
+from .video_device import VideoDevice
+
 
 class Camera(VideoDevice):
 
@@ -7,6 +9,8 @@ class Camera(VideoDevice):
 
     def __init__(self, device=0, interval=0.5, width=1920, height=1080):
         super().__init__(interval, width, height)
+
+        self._device_id = device
         self._cap = cv2.VideoCapture(device, cv2.CAP_DSHOW)
 
     def get_frame(self):
@@ -56,3 +60,4 @@ class Camera(VideoDevice):
         self.clear_queue()
         if self._cap is not None:
             self._cap.release()
+    
