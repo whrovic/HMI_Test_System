@@ -138,7 +138,11 @@ class LibraryNewModel:
     @staticmethod
     def create_model_xml(directory: str, name_model: str):
         
-        tree = ET.parse(directory)
+        try:
+            tree = ET.parse(directory)
+        except:
+            return -1
+
         model = tree.getroot()
         name = model.find('name')
         name = str(name.text.strip())

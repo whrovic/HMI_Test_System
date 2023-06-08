@@ -13,10 +13,12 @@ class MenuSettings:
     def settings_menu():
         count = 0
         while True:
-            MP.settings()        
-            menu_choice = input()
+            MP.settings()
+            menu_choice = input().strip()
             
-            
+            if len(menu_choice) == 0:
+                continue
+
             match (menu_choice):
                 #new model
                 case '1':
@@ -25,31 +27,31 @@ class MenuSettings:
                         return -1
                 
                 # color
-                case 2:                    
+                case '2':                    
                     count = 0
                     print("In construction")
                     menu_choice = input('Press Enter')
             
                 # edit model 
-                case 3:
+                case '3':
                     count = 0
                     if ( LEM.edit_model() == -1 ):
                         return -1
 
                 # test setting
-                case 4:
+                case '4':
                     count = 0
                     print("In construction")
                     menu_choice = input('Press Enter')
             
                 # directory
-                case 5:
+                case '5':
                     count = 0
                     if ( MenuSettings.directory_menu() == -1 ):
                         return -1
 
                 # exit 
-                case 6:
+                case '6':
                     os.system('cls')
                     return 0
             
@@ -57,6 +59,8 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
+                    print("Invalid input")
+                    input("Press Enter to continue...")
                     continue
     
     @staticmethod

@@ -47,25 +47,34 @@ class LibraryEditModel:
                 os.system('cls') 
 
                 print("Available models:")
-                for n in name_models:
-                    print(n)
+                for i, name in enumerate(name_models):
+                    print(str(i) + ' - ' + name)
                 print("\nWhat model do you want to edit?")
                 print("(Write 'q' to back to menu)")
                 name_model = input()
                 
+                if name_model.isdigit():
+                    model_index = int(name_model)
+                    if model_index >= 0 and model_index <= len(name_models):
+                        name_model = name_models[model_index]
+                    else:
+                        print("Invalid input")
+                        input("Press Enter to continue...")
+                        continue
+
                 # back to menu
                 if(name_model == 'q'):
                     return 0
-
+                
                 # model doesn't exist
                 elif(df.open_model_xml(name_model) is None):
                     os.system('cls') 
-                    print(f"{name_model} DOESN'T EXIST\n")
+                    print(f"{name_model} doesn't exist\n")
                     input("Press Enter to continue..." )
                 
                 # model  exists
                 else:
-                    #df.delete_xml(name_model, directory) # Delete the xml file
+                    
                     index = Settings.index_model(name_model)
 
                     if(index == -1):
