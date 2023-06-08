@@ -5,6 +5,7 @@ from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.model import Model
 from data.settings import Settings
 from main.constant_main import *
+from report.exit_code import ExitCode
 
 def test_menu(M: Settings):
 
@@ -39,7 +40,7 @@ def test_menu(M: Settings):
 
 
     # Specific tests
-    if sys.argv[2].startswith('-'):
+    if sys.argv[3].startswith('-'):
         
         args = []
         for i in range(3, len(sys.argv)):
@@ -196,6 +197,7 @@ def test_menu(M: Settings):
                 if(result_led == 0):
                     exit_code = 0     # Test passed
                 elif(result_led == -1): 
+                    print(ExitCode.exit_code)
                     exit_code = 8     # Led test failed
 
 

@@ -14,7 +14,7 @@ class VideoCapture(ABC):
 
     def get_image(self):
         if (self._frame_queue.empty()):
-            return None
+            return None, None
         else:
             return self._frame_queue.get()
     

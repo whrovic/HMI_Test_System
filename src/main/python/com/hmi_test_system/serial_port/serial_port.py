@@ -57,4 +57,4 @@ class SerialPort:
             self._serial.close()
 
     def closed(self):
-        return ((self._serial is None) or (not self._serial.is_open()))
+        return ((self._serial is None) or (not self._serial.is_open))
