@@ -1,11 +1,13 @@
 import sys
+from test.sequence_test import SequenceTest
 
-from data.report.log_library_test import LogLibraryTest
 from data.define_and_fill_model import DefineAndFillModel as df
 from data.model.model import Model
+from data.report.log_library_test import LogLibraryTest
 from data.settings import Settings
 from main.constant_main import *
 from report.exit_code import ExitCode
+
 
 def test_menu(M: Settings):
 
@@ -192,7 +194,7 @@ def test_menu(M: Settings):
                 if(len(leds_name) == 0):
                     leds_name = None
 
-                result_led = M.test.seq_led(model, leds_name)
+                result_led = SequenceTest.seq_led(model, leds_name)
                 
                 if(result_led == 0):
                     exit_code = 0     # Test passed
@@ -204,7 +206,7 @@ def test_menu(M: Settings):
             # LCD test
             elif(test_type[i] == TEST_TYPE_DISPLAY):
 
-                result_display = M.test.seq_display(model)
+                result_display = SequenceTest.seq_display(model)
                 
                 if(result_display == 0):
                     exit_code = 0     # Test passed
@@ -219,7 +221,7 @@ def test_menu(M: Settings):
                 if(len(buttons_name) == 0):
                     buttons_name = None 
 
-                result_button = M.test.seq_button(model, buttons_name, key_code)      
+                result_button = SequenceTest.seq_button(model, buttons_name, key_code)      
                 
                 if(result_button == 0):
                     exit_code = 0     # Test passed
@@ -230,7 +232,7 @@ def test_menu(M: Settings):
             # Board_info test
             elif(test_type[i] == TEST_TYPE_BOARD_INFO):
 
-                result_board = M.test.seq_board_info(model, serial_number, manufacture_date, board_code)
+                result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
 
                 if(result_board == 0):
                     exit_code = 0     # Test passed
@@ -241,7 +243,7 @@ def test_menu(M: Settings):
             # Bootloader_info test
             elif(test_type[i] == TEST_TYPE_BOOTLOADER_INFO):
 
-                result_bootloader = M.test.seq_boot_loader_info(model, bootloader_code)
+                result_bootloader = SequenceTest.seq_boot_loader_info(model, bootloader_code)
 
                 if(result_bootloader == 0):
                     exit_code = 0     # Test passed
@@ -252,7 +254,7 @@ def test_menu(M: Settings):
             # Alight test
             elif(test_type[i] == TEST_TYPE_ALIGHT):
 
-                result_alight = M.test.seq_alight(alight_code)
+                result_alight = SequenceTest.seq_alight(alight_code)
 
                 if(result_alight == 0):
                     exit_code = 0     # Test passed
@@ -270,7 +272,7 @@ def test_menu(M: Settings):
         manufacture_date = sys.argv[3]
         manufacture_date = str(manufacture_date)
 
-        result_all = M.test.seq_all(model, serial_number, manufacture_date)   
+        result_all = SequenceTest.seq_all(model, serial_number, manufacture_date)   
 
         if(result_all == 0):
             exit_code = 0     # Test passed

@@ -583,3 +583,4 @@ class SequenceTest:
         
         # Return -1 in case of error or 0 if success
         return result
+    
