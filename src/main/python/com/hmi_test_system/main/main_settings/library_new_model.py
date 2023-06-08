@@ -28,7 +28,10 @@ class LibraryNewModel:
                 print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
 
                 if (LibraryNewModel.create_model_manually(name_model) == 0):
-                    df.create_xml(name_model)
+                    model = Settings.get_model(name_model)
+                    if model is None: return -1
+                    
+                    df.create_xml(model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break
@@ -61,7 +64,9 @@ class LibraryNewModel:
                 directory = str(input())
 
                 if (LibraryNewModel.create_model_import_xml(directory, name_model) == 0):
-                    df.create_xml(name_model)
+                    model = Settings.get_model(name_model)
+                    if model is None: return -1
+                    df.create_xml(model)
                     os.system('cls')
                     L.exit_input(f"{name_model} IS ADDED \n\n")
                     break

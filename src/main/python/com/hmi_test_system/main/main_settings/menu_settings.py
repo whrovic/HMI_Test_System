@@ -50,7 +50,7 @@ class MenuSettings:
                 # directory
                 case '5':
                     count = 0
-                    if ( MenuSettings.directory_menu() == -1 ):
+                    if ( MenuSettings.edit_directory_menu() == -1 ):
                         return -1
 
                 # exit 
@@ -103,14 +103,12 @@ class MenuSettings:
     
     @staticmethod
     def edit_model_menu():
-        input("f")
+        
         model = MenuSettings.edit_model_choose_model()
         if model is None:
             return 0
-        input("f")
-        count = 0
-        name_model = model.get_name()
         
+        count = 0        
         while True:
             
             MP.edit_menu()
@@ -120,7 +118,6 @@ class MenuSettings:
                 # edit model info
                 case '1':
                     LEM.edit_model_info(model)
-                    name_model = model.get_name()
                         
                 # edit led
                 case '2':
@@ -136,18 +133,18 @@ class MenuSettings:
                 
                 # save
                 case '5':
-                    df.create_xml(name_model)
+                    df.create_xml(model)
                     L.exit_input("Changes saved!")
                     continue
                 
                 #back
                 case '6':
-                    LEM.save_changes(name_model)
+                    LEM.save_changes(model)
                     return 0
                 
                 #exit
                 case '7':
-                    LEM.save_changes(name_model)
+                    LEM.save_changes(model)
                     return -1
                 
                 case _:
@@ -212,17 +209,11 @@ class MenuSettings:
         input("Please come later...")
         pass
     
-    # TODO
     @staticmethod
     def edit_test_settings():
-        print("In construction")
-        input('Press come later...')
-        pass
-    
-    @staticmethod
-    def directory_menu():
         count = 0
         while True:
+            
             MP.directory()        
             menu_choice = input()
             
@@ -253,3 +244,11 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
+
+    # TODO
+    @staticmethod
+    def edit_directory_menu():
+        print("In construction")
+        input('Press come later...')
+        pass
+    

@@ -2,6 +2,7 @@ import os
 import xml.etree.ElementTree as ET
 
 from data.color.list_of_colors import ListOfColors
+from data.model.model import Model
 
 from .model.boot_loader_info import BootLoaderInfo
 from .model.button import Button
@@ -123,11 +124,13 @@ class DefineAndFillModel:
             return None
 
     @staticmethod
-    def create_xml(name_model):
+    def create_xml(model: Model):
 
-        model = Settings.get_model(name_model)
-        if model is None: return -1
-
+        if model is None:
+            return -1
+        
+        name_model = model.get_name()
+        
         # create an XML representation of the object
         model_root = ET.Element(f'{model.get_name()}')
         name = ET.SubElement(model_root, 'name')

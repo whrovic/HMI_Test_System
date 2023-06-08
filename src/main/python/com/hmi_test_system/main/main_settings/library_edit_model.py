@@ -322,11 +322,11 @@ class LibraryEditModel:
     
     #---------------------------------AUXILIAR FUNCTIONS ---------------------------------#
     @staticmethod
-    def save_changes(name_model):
+    def save_changes(model: Model):
         while True:
             resp = input("Do you want to save the changes before leaving? [y/n] ")
             if (resp.lower() == 'y'):
-                df.create_xml(name_model)
+                df.create_xml(model)
                 break
             elif (resp.lower() == 'n'):
                 break
