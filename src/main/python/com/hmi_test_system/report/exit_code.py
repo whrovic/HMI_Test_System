@@ -2,16 +2,8 @@ from .constant_exit_code import *
 
 
 class ExitCode:
-    
-    _instance = None
-    
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
 
-    def __init__(self):
-        ExitCode.exit_code = OK
+    exit_code = OK
     
     def get_current_value():
         return ExitCode.exit_code
@@ -148,3 +140,4 @@ class ExitCode:
     def update_value(new):
         if ExitCode.exit_code is OK:
             ExitCode.exit_code = new
+    

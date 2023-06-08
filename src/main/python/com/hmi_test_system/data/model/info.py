@@ -21,3 +21,4 @@ class Info:
     
     def get_lcd_type(self):
         return self._lcd_type
+    

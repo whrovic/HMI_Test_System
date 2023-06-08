@@ -32,5 +32,4 @@ class Parameter:
             "sharpness": self._sharpness
         }
         return parameters
-
     

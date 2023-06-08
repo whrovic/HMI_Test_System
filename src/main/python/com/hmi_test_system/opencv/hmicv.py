@@ -110,3 +110,4 @@ class HMIcv():
     @staticmethod
     def read_image_from_file(filepath):
         return cv2.imread(filepath)
+    

@@ -44,3 +44,4 @@ class SetupTest:
         if sp_usb and SetupTest.__sp_usb is not None:
             SetupTest.__sp_usb._serial.close()
             SetupTest.__sp_main = None
+    

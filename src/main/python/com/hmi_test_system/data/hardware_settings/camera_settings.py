@@ -1,4 +1,3 @@
-from .dimension import Dimension
 from .parameter import Parameter
 
 class CameraSettings:

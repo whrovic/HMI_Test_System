@@ -1,9 +1,10 @@
-from .model.model import Model
-from .model.display import Display
-from .path import Path
 from .hardware_settings.test_settings import TestSettings
-from .model.info import Info
 from .model.boot_loader_info import BootLoaderInfo
+from .model.display import Display
+from .model.info import Info
+from .model.model import Model
+from .path import Path
+
 
 class Settings:
 
@@ -22,11 +23,10 @@ class Settings:
             Settings.model.append(model)
 
     @staticmethod
-    def call_model(name):
-        for i in range(0, len(Settings.model)):
-            model_name = Settings.model[int(i)].get_name()
-            if(name == model_name):
-                return Settings.model[i]
+    def get_model(name):
+        for model in Settings.model:
+            if model.get_name() == name:
+                return model
         # Model not found
         return None
     

@@ -2,29 +2,31 @@ import logging
 
 class LogDisplay:
 
-     #prints for display tests
+    logger = logging.getLogger('LogDisplay')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
-    def __init__(self):
-        self.logger = logging.getLogger('LogDisplay')
-        self.logger.setLevel(logging.DEBUG)
-        self.handler = logging.StreamHandler()
-        self.handler.setLevel(logging.DEBUG)
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-        self.logger.addHandler(self.handler)
+    @staticmethod
+    def start_test(test_name):
+        LogDisplay.logger.info(f"Starting {test_name}")
 
-    def start_test(self, test_name):
-        self.logger.info(f"Starting {test_name}")
+    @staticmethod
+    def test_failed(test_name):
+        LogDisplay.logger.warning(f"{test_name} Test Failed")
 
-    def test_failed(self, test_name):
-        self.logger.warning(f"{test_name} Test Failed")
+    @staticmethod
+    def test_passed(test_name):
+        LogDisplay.logger.info(f"{test_name} Test Passed")
 
-    def test_passed(self, test_name):
-        self.logger.info(f"{test_name} Test Passed")
+    @staticmethod
+    def test_canceled():
+        LogDisplay.logger.warning("TestDisplay Canceled")
 
-    def test_canceled(self):
-        self.logger.warning("TestDisplay Canceled")
-
-    def test_finished(self):
-        self.logger.info("TestDisplay Finished")
-   
+    @staticmethod
+    def test_finished():
+        LogDisplay.logger.info("TestDisplay Finished")
+    

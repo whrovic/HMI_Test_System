@@ -11,6 +11,8 @@ from .menu_prints import MenuPrints as MP
 
 class LibraryEditModel:
     
+    #------------------------------------EDIT MODEL------------------------------------#
+    @staticmethod
     def edit_model():
 
         os.system('cls') 
@@ -126,9 +128,9 @@ class LibraryEditModel:
                                     continue
 
                             return -1
-                        
-                        
+                                
     #------------------------------------EDIT MODEL INFO------------------------------------#
+    @staticmethod
     def edit_model_info(index: int):
 
         while True:
@@ -214,8 +216,8 @@ class LibraryEditModel:
         print("To go to the edit menu insert anything\n")
         c = input()
 
-
     #------------------------------------EDIT LED------------------------------------#
+    @staticmethod
     def edit_led_settings(index: int, index_led: int, image):
         while True:
             MP.edit_led()
@@ -269,7 +271,7 @@ class LibraryEditModel:
             elif menu_choice =='3':
                 os.system('cls') 
                 print("Select the led central position and press ENTER")
-                pos_vector= DefineModelCV.click_pos(image)
+                pos_vector = DefineModelCV.click_pos(image)
 
                 Settings.model[index]._leds[index_led].set_pos(pos_vector[0], pos_vector[1])
 
@@ -282,6 +284,7 @@ class LibraryEditModel:
             elif menu_choice == '4':
                 break
 
+    @staticmethod
     def edit_led(name_model, index: int, image):
         
         while True:
@@ -303,12 +306,11 @@ class LibraryEditModel:
                 print("To edit another one or go to the edit menu insert anything\n")
                 c = input()
                 continue
-
             else:
                 LibraryEditModel.edit_led_settings(index, index_led, image)
 
-
     #------------------------------------EDIT BUTTON------------------------------------#
+    @staticmethod
     def edit_button(name_model, index: int, image):
 
         while True:
@@ -365,8 +367,8 @@ class LibraryEditModel:
                     elif c == '3':
                         break
 
-
     #------------------------------------EDIT LCD------------------------------------#
+    @staticmethod
     def edit_display(index: int, image):
         os.system('cls')
         print("Select the LCD initial position and press ENTER")

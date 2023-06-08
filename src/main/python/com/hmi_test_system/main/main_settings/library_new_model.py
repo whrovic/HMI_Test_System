@@ -1,25 +1,23 @@
 import xml.etree.ElementTree as ET
 
 from data import *
+from data.hardware_settings.parameter import Parameter
+from data.model.model import Model
 from main.constant_main import *
 from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
 
 from .menu_prints import MenuPrints as MP
-from data.hardware_settings.parameter import Parameter
 
 
 class LibraryNewModel:
     
-    def create_model_manual(M: Settings, name_model):
+    # Manually
+    @staticmethod
+    def create_model_manual(name_model):
 
-        n_buttons = L.until_find_int("Number of buttons: ")
-        if (n_buttons) == -1: return -1
-        n_leds = L.until_find_int("Number of leds: ")
-        if (n_leds) == -1: return -1
-
-        # Info configuration
-        print("\n\nINFO CONFIGURATION\n")       
+        # Board Info Configuration
+        print("\n\nBOARD INFO CONFIGURATION\n")       
 
         board = L.until_find_str("Board: ")
         if board is None: return -1
@@ -31,114 +29,115 @@ class LibraryNewModel:
         if edition is None: return -1
         lcd_type = L.until_find_str("LCD Type: ")
         if lcd_type is None: return -1
+
+        info = Info(board, option, revision, edition, lcd_type)
+
+        # Bootloader Info Configuration
+        print("\n\nBOOTLOADER INFO CONFIGURATION\n")
+
         boot_version = L.until_find_str("Boot loader version: ")
         if boot_version is None: return -1
         boot_date = L.until_find_str("Boot loader date: ")
         if boot_date is None: return -1
         
-        info = Info(board, option, revision, edition, lcd_type)
-        boot_info = BootLoaderInfo(boot_version, boot_date)
-    
+        boot_info = BootLoaderInfo(boot_version, boot_date)     
 
         # LCD configuration
         print("\n\nLCD CONFIGURATION\n")
 
+        print("Before continuing, please make sure that the display camera is ready")
+        input("Press Enter to continue...")
+
         # Gets the image of the display
         display_img = DefineModelCV.get_display_board_image()
 
-        print("Select the LCD initial position and press ENTER")
+        print("Select the LCD initial position and press Enter to continue...")
         pos_vector_init = DefineModelCV.click_pos(display_img)
         
-
-        print("Select the LCD final position and press ENTER")
+        print("Select the LCD final position and press Enter to continue...")
         pos_vector_final= DefineModelCV.click_pos(display_img)
         
         dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
         display = Display('display', int(pos_vector_init[0]) , int(pos_vector_init[1]) , dim_x, dim_y)
 
-        # add model 
-        M.new_model(name_model, n_leds, n_buttons, display, info, boot_info)
 
-        index = M.index_model(name_model)
+        n_buttons = L.until_find_int("Number of buttons: ")
+        if (n_buttons) == -1: return -1
+        n_leds = L.until_find_int("Number of leds: ")
+        if (n_leds) == -1: return -1
 
-        # model exists 
-        if(index != -1):
-            
-            # leds configuration
-            print("\n\nLEDS CONFIGURATION\n")
-
-            parameters_leds = Parameter(1080, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
-
-            leds_img = DefineModelCV.get_leds_board_image(parameters_leds)
-
-            if(n_leds > 0):
-                for i in range(0, n_leds):
-                    print(f"\nLed {i+1} name: ")
-                    led_name = input()
-                    while True:
-                        print(f"How many colours have the led {i+1}?")
-                        n_colours = input()
-                        if n_colours.isdigit():
-                            n_colours = int(n_colours)
-                            break
-                        else: 
-                            continue
-
-                    print(f"Select the led {i+1} central position and press ENTER")
-                    pos_vector= DefineModelCV.click_pos(leds_img)
-                        
-
-                    led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
-                    for j in range(0, n_colours):
-                        print(f"Colour {j+1} of led {i+1}:")
-                        for i , color in enumerate(ListOfColors.get_list_of_colors()):
-                            print(f'{i+1} - {color.get_name()}')
-                        while True:
-                            print('Type which number you want')
-                            new_colour = input()
-                            if new_colour.isdigit():
-                                new_colour = int(new_colour)
-                                led.new_colour(ListOfColors.get_color_index(new_colour-1))
-                                break
-                            else:
-                                continue
-                        
-                    M.model[int(index)].set_led(led)
-            else:
-                print("\nModel doesn't have leds\n")
-
-
-            # buttons configuration
-            print("\n\nBUTTONS CONFIGURATION\n")
-
-            # Get the image for the buttons
-            buttons_img = DefineModelCV.get_leds_board_image()
-
-            if(n_buttons > 0):
-                for i in range(0, n_buttons):
-                    print(f"\nButton {i+1} name: ")
-                    button_name = input()
-                    print(f"Select the button {i+1} central position and press ENTER")
-                    pos_vector= DefineModelCV.click_pos(buttons_img)
-
-                    M.model[int(index)].set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
-            else:
-                print("\nModel doesn't have buttons\n")
-
-            
-            return 0
+        # add model
+        new_model = Model(name_model, n_leds, n_buttons, display, info, boot_info)
         
+        # buttons configuration
+        print("\n\nBUTTONS CONFIGURATION\n")
 
-        # model doesn't exist
+        # Get the image for the buttons
+        buttons_img = DefineModelCV.get_leds_board_image()
+
+        if(n_buttons > 0):
+            for i in range(0, n_buttons):
+                print(f"\nButton {i+1} name: ")
+                button_name = input()
+                print(f"Select the button {i+1} central position and press ENTER")
+                pos_vector= DefineModelCV.click_pos(buttons_img)
+
+                new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
         else:
-            print("ERROR - Model creation failed")
-            M.delete_model(name_model)
-            return -1
+            print("\nModel doesn't have buttons\n")
 
+        # leds configuration
+        print("\n\nLEDS CONFIGURATION\n")
 
-    def create_model_xml(M: Settings, directory: str, name_model: str):
+        parameters_leds = Parameter(1080, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
+        leds_img = DefineModelCV.get_leds_board_image(parameters_leds)
 
+        if(n_leds > 0):
+            for i in range(0, n_leds):
+                print(f"\nLed {i+1} name: ")
+                led_name = input()
+                while True:
+                    print(f"How many colours have the led {i+1}?")
+                    n_colours = input()
+                    if n_colours.isdigit():
+                        n_colours = int(n_colours)
+                        break
+                    else: 
+                        continue
+
+                print(f"Select the led {i+1} central position and press ENTER")
+                pos_vector= DefineModelCV.click_pos(leds_img)
+                    
+
+                led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
+                for j in range(0, n_colours):
+                    print(f"Colour {j+1} of led {i+1}:")
+                    for i , color in enumerate(ListOfColors.get_list_of_colors()):
+                        print(f'{i+1} - {color.get_name()}')
+                    while True:
+                        print('Type which number you want')
+                        new_colour = input()
+                        if new_colour.isdigit():
+                            new_colour = int(new_colour)
+                            led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                            break
+                        else:
+                            continue
+                    
+                new_model.set_led(led)
+        else:
+            print("\nModel doesn't have leds\n")
+
+        # Add model to settings        
+        Settings.add_model(new_model)
+
+        return 0
+
+    # Import from xml file
+    @staticmethod
+    def create_model_xml(directory: str, name_model: str):
+        
         tree = ET.parse(directory)
         model = tree.getroot()
         name = model.find('name')
@@ -226,8 +225,8 @@ class LibraryNewModel:
             
             BOOT_INFO = BootLoaderInfo(boot_version, boot_date)
             
-            M.new_model(name, int(n_leds), int(n_buttons), LCD, INFO, BOOT_INFO)
-            index = M.index_model(name)
+            Settings.new_model(name, int(n_leds), int(n_buttons), LCD, INFO, BOOT_INFO)
+            index = Settings.index_model(name)
 
             leds = model.find('leds')
             for i in range(0, int(n_leds)):
@@ -262,7 +261,7 @@ class LibraryNewModel:
                     
                     led.new_colour(ListOfColors.get_color(led_colour))
                 
-                M.model[index].set_led(led) 
+                Settings.model[index].set_led(led) 
 
 
             buttons = model.find('buttons')
@@ -283,9 +282,10 @@ class LibraryNewModel:
                     return -1
                 
                 button = Button(button_name, int(button_x), int(button_y))
-                M.model[index].set_button(button)
+                Settings.model[index].set_button(button)
 
             return 0
         
         else:
             return -1
+    

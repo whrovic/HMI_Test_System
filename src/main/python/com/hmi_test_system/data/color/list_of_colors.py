@@ -1,10 +1,9 @@
 import json
 from .color import Color
-from typing import List
 
 class ListOfColors:
     
-    _list_of_colors: List[Color]= []
+    _list_of_colors: list[Color]= []
 
     @staticmethod
     def get_n_colors():

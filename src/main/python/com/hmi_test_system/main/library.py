@@ -1,10 +1,9 @@
-from data import *
-
 from .constant_main import *
 
 
 class Library:
 
+    @staticmethod
     def get_input(print_str: str):
         count = 0
         while True:
@@ -31,11 +30,13 @@ class Library:
                 break
         return name_model
     
+    @staticmethod
     def exit_input(print_str: str):
         print(print_str)
         input('Press Enter ')
         return
-        
+    
+    @staticmethod
     def until_find_str(print_str: str):
         count = 0
         while True:
@@ -52,6 +53,7 @@ class Library:
                 break
         return data
 
+    @staticmethod
     def until_find_int(print_str: str):
         count = 0
         while True:

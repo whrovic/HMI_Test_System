@@ -25,13 +25,13 @@ from data.color.color import Color, OffColor
 from data.model.button import Button
 from data.model.display import Display
 from data.model.led import Led
+from opencv.displaycv import Displaycv
 from opencv.hmicv import HMIcv
 from report import *
+from report.exit_code import ExitCode
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
-from opencv.displaycv import Displaycv
 from video.camera import Camera
-from report.exit_code import ExitCode
 
 
 class Test:
@@ -43,7 +43,7 @@ class Test:
     # return: 0 - Test passed, -1 not passed
     @staticmethod
     def test_button_serial_port(serial: SerialPort, button_sequence: list[Button]):
-        log_button = LogButton()
+        
         for button in button_sequence:
             data = None
             while data is None:
@@ -56,16 +56,16 @@ class Test:
                     d, _ = serial.get_serial()
                 continue
             else:
-                log_button.button_test_serial_error(button.get_name())
+                LogButton.button_test_serial_error(button.get_name())
                 # TODO: missing exitcode
                 return -1
 
         data, time = serial.get_serial()
         if data != TEST_BUTTONS_OK:
-            log_button.button_test_serial_error_final()
+            LogButton.button_test_serial_error_final()
             # TODO: missing exitcode
             return -1
-        log_button.button_test_serial_pass()
+        LogButton.button_test_serial_pass()
         return 0
 
     @staticmethod
@@ -74,7 +74,6 @@ class Test:
         if serial is not None:
             return Test.test_button_serial_port(serial, button_sequence)
         return -1
-
 
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, display: Display):
@@ -88,9 +87,6 @@ class Test:
         new_test_name = None
         new_test_start_time = None
 
-        # Debug
-        log_display = LogDisplay()
-
         while True:
             # Get the data from the serial port with a timeout
             data, data_time = serial.get_serial(timeout=0.1)
@@ -101,20 +97,20 @@ class Test:
                 if PIXEL in data:
                     new_test_name = PIXEL
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
+                    LogDisplay.start_test(new_test_name)
 
                 elif CHAR in data:
                     new_test_name = CHAR
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
+                    LogDisplay.start_test(new_test_name)
 
                 elif COLOR in data:
                     new_test_name = COLOR
                     new_test_start_time = data_time
-                    log_display.start_test(new_test_name)
+                    LogDisplay.start_test(new_test_name)
 
                 elif TEST_DISPLAY_ENTER in data:
-                    log_display.test_finished()
+                    LogDisplay.test_finished()
                     break
 
             # Start the first test
@@ -133,18 +129,18 @@ class Test:
                     continue
                 elif frame_time >= new_test_start_time:
                     # Start the next test
-                    log_display.test_failed(test_name)
+                    LogDisplay.test_failed(test_name)
                     test_failed = True
                     test_name = new_test_name
                     test_start_time = new_test_start_time
                     if test_name is None:
                         break
-                    log_display.start_test(test_name)
+                    LogDisplay.start_test(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == PIXEL:
                         if HMIcv.display_backlight_test(frame, display):
-                            log_display.test_passed(test_name)
+                            LogDisplay.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
@@ -152,7 +148,7 @@ class Test:
 
                     elif test_name == CHAR:
                         if HMIcv.display_characters_test(frame, display):
-                            log_display.test_passed(test_name)
+                            LogDisplay.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
@@ -160,7 +156,7 @@ class Test:
 
                     elif test_name == COLOR:
                         if HMIcv.display_color_pattern_test(frame, display):
-                            log_display.test_passed(test_name)
+                            LogDisplay.test_passed(test_name)
                             test_name = None
                             test_start_time = None
                         else:
@@ -267,9 +263,7 @@ class Test:
                 ExitCode.bootloader_test_not_passed()
                 return -1
 
-    
     @staticmethod
-
     def test_board_info(cam: Camera, serial: SerialPort, board, serial_number, manufacture_date, option, revision, edition, lcd_type):
          
         if cam is not None:
@@ -400,7 +394,6 @@ class Test:
             print("Board Info Test passed")
             return 0
 
-    
     @staticmethod
     def test_alight(cam, serial):
 
@@ -544,8 +537,7 @@ class Test:
                 print("ALight sensor test failed: 'Cover up the ALight Sensor' prompt not received")
                 ExitCode.alight_test_not_passed()
                 return -1
-            
-
+    
     @staticmethod
     def test_led(cam: Camera, serial: SerialPort, leds_test: list[Led]):
         
@@ -581,7 +573,6 @@ class Test:
 
         # Current state of the FSM
         state = 0
-        log_leds = LogLeds()
 
         sequence_state = 0
 
@@ -594,7 +585,7 @@ class Test:
             img, arrive_time_img = cam.get_image()
             if img is None:
                 if time() - old_arrive_time_img > TIMEOUT:
-                    log_leds.test_leds_timeout()
+                    LogLeds.test_leds_timeout()
                     ExitCode.camera_timeout_stopped()
                     return -1
                 else:
@@ -610,12 +601,12 @@ class Test:
                 serial_data, serial_data_time = serial.get_serial()
             # Check for the end of the tests
             if (serial_data == TEST_LEDS_OK) and (serial_data_time < arrive_time_img):
-                log_leds.test_leds_sequence_passed()
-                log_leds.test_leds_finished()
+                LogLeds.test_leds_sequence_passed()
+                LogLeds.test_leds_finished()
                 return 0
             elif sequence_state == total_n_colours:
-                log_leds.test_leds_sequence_passed()
-                log_leds.test_leds_finished()
+                LogLeds.test_leds_sequence_passed()
+                LogLeds.test_leds_finished()
                 return 0
 
             # Test All Leds ON
@@ -623,11 +614,11 @@ class Test:
                 
                 for i in range(0, n_leds_test):
                     if isinstance(vet_cor[i], OffColor):
-                        log_leds.test_failed(vet_cor[i].get_name())
+                        LogLeds.test_failed(vet_cor[i].get_name())
                         ExitCode.leds_test_not_turn_all_on()
                         return -1
 
-                log_leds.test_leds_on_passed()
+                LogLeds.test_leds_on_passed()
                 state = 1
 
             # Test All Leds OFF
@@ -644,12 +635,12 @@ class Test:
                     continue
                 # If all the leds are off procceed to the next state
                 elif n_off == n_leds_test:
-                    log_leds.test_leds_off_passed()
+                    LogLeds.test_leds_off_passed()
                     state = 2
                 # TODO: Add timeout
                 # If at least one led failed, return
                 else:
-                    log_leds.test_failed_off()
+                    LogLeds.test_failed_off()
                     ExitCode.leds_test_not_turn_all_off()
                     return -1
 
@@ -666,12 +657,12 @@ class Test:
                     continue
                 # If all the leds are on procceed to the next state
                 elif n_on == n_leds_test:
-                    log_leds.test_leds_off_passed()
+                    LogLeds.test_leds_off_passed()
                     state = 2
                 # TODO: Add timeout
                 # If at least one led failed, return
                 else:
-                    log_leds.test_failed_on()
+                    LogLeds.test_failed_on()
                     ExitCode.leds_test_not_turn_all_on()
                     return -1
 
@@ -700,25 +691,23 @@ class Test:
                 for i in range(n_leds_test):
                     # It was supposed for the led to be turned Off but he is On
                     if isinstance(matrix_ref[sequence_state][i], OffColor) and not isinstance(vet_cor[i], OffColor):
-                        log_leds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                        LogLeds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
                                                                     vet_cor[i].get_name())
                         ExitCode.leds_test_state_sequence_error()
                         return -1
                     # It was supposed for the led to be turned On but he is Off
                     elif not isinstance(matrix_ref[sequence_state][i], OffColor) and isinstance(vet_cor[i], OffColor):
-                        log_leds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                        LogLeds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
                                                                     vet_cor[i].get_name())
                         ExitCode.leds_test_state_sequence_error()
                         return -1
                     # The colour doesn't match with the sequence
                     elif matrix_ref[sequence_state][i].get_name() != vet_cor[i].get_name():
-                        log_leds.test_leds_sequence_colour_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                        LogLeds.test_leds_sequence_colour_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
                                                                     vet_cor[i].get_name())
                         ExitCode.leds_test_colour_sequence_error()
                         return -1
                 else:
-                    log_leds.test_leds_sequence_failed()
+                    LogLeds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
-
-                

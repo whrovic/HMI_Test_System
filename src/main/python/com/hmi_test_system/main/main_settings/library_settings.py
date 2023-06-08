@@ -10,27 +10,26 @@ from data.settings import Settings
 import os
 
 from data import *
+from data.define_and_fill_model import DefineAndFillModel as df
 from main.constant_main import *
 from main.library import Library as L
-from opencv.define_model_cv import DefineModelCV
-from video.image_files import ImageFiles
 
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
-from data.define_and_fill_model import DefineAndFillModel as df
 
 
 class LibrarySettings:
     
+    @staticmethod
     def edit_camara_settings():
         pass
 
-
+    @staticmethod
     def edit_SP_settings():
         pass
 
-    
+    @staticmethod
     def add_models_mannually():
         #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
@@ -61,9 +60,10 @@ class LibrarySettings:
                 L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
                 break
 
-    
+    @staticmethod
     def add_models_xml():
-         #------------------------------------ADD NEW MODEL------------------------------------#
+        
+        #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
                 

@@ -123,3 +123,4 @@ class Displaycv():
         corrected_image = (corrected_image * 255).astype(np.uint8)
 
         return corrected_image
+    

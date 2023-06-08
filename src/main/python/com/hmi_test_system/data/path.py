@@ -1,5 +1,6 @@
 import os
 
+
 class Path:
     def __init__(self):
         file_path = os.path.dirname(__file__)

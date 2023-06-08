@@ -1,7 +1,9 @@
-from .video_capture import VideoCapture
+import time
 from abc import ABC, abstractmethod
 from threading import Thread
-import time
+
+from .video_capture import VideoCapture
+
 
 class VideoDevice(VideoCapture, ABC):
     
@@ -38,3 +40,4 @@ class VideoDevice(VideoCapture, ABC):
     @abstractmethod
     def get_frame(self):
         pass
+    

@@ -32,7 +32,3 @@ class Led(Position):
     def get_colours(self):
         return self._colours
     
-
-
-    
-    

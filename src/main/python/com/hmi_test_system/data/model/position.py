@@ -15,5 +15,4 @@ class Position:
     
     def get_pos_y(self):
         return self._y
-        
-        
+    

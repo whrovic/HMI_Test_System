@@ -4,7 +4,7 @@ from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
 from main.main_settings import *
-from main.main_test.library_test import test_menu
+from main.main_test import *
 from report import ExitCode
 
 '''from tkinter import Tk
@@ -40,7 +40,7 @@ if len(sys.argv) < 2:
 value = sys.argv[1]
 if value == TYPE_TEST:
     
-    exit_code = test_menu(Settings)
+    exit_code = LT.test_menu(Settings)
     print("Test Exit Code =", exit_code)
     
 elif value == TYPE_SET:

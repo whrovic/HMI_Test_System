@@ -1,7 +1,9 @@
-from threading import Thread
-import serial
 import queue
 import time
+from threading import Thread
+
+import serial
+
 
 class SerialPort:
 
@@ -58,3 +60,4 @@ class SerialPort:
 
     def closed(self):
         return ((self._serial is None) or (not self._serial.is_open))
+    
