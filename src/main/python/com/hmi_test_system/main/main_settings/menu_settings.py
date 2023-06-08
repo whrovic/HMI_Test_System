@@ -1,9 +1,12 @@
 import os
 
+from data.define_and_fill_model import DefineAndFillModel as df
+from data.settings import Settings
 from main.constant_main import *
+from main.library import Library as L
 
 from .library_edit_model import LibraryEditModel as LEM
-from .library_settings import LibrarySettings as LS
+from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
 
 
@@ -23,26 +26,26 @@ class MenuSettings:
                 #new model
                 case '1':
                     count = 0
-                    if ( MenuSettings.new_model() == -1 ):
+                    if ( MenuSettings.new_model_menu() == -1 ):
                         return -1
                 
                 # color
                 case '2':                    
                     count = 0
-                    print("In construction")
-                    menu_choice = input('Press Enter')
+                    if (MenuSettings.edit_color_menu() == -1):
+                        return -1
             
                 # edit model 
                 case '3':
                     count = 0
-                    if ( LEM.edit_model() == -1 ):
+                    if ( MenuSettings.edit_model_menu() == -1 ):
                         return -1
 
                 # test setting
                 case '4':
                     count = 0
-                    print("In construction")
-                    menu_choice = input('Press Enter')
+                    if ( MenuSettings.edit_test_settings() == -1 ):
+                        return -1
             
                 # directory
                 case '5':
@@ -64,9 +67,10 @@ class MenuSettings:
                     continue
     
     @staticmethod
-    def new_model():
+    def new_model_menu():
         count = 0
         while True:
+            
             MP.new_model()
             menu_choice = input()
             
@@ -74,12 +78,12 @@ class MenuSettings:
                 # create
                 case '1':
                     count = 0
-                    LS.add_models_mannually()
+                    LNM.new_model_mannually()
 
                 # Import XML  
                 case '2':
                     count = 0
-                    LS.add_models_xml()
+                    LNM.new_model_import_xml()
             
                 # back  
                 case '3':
@@ -96,7 +100,125 @@ class MenuSettings:
                     if (count > NTIMEOUT_MENUS):
                         return -1
                     continue
+    
+    @staticmethod
+    def edit_model_menu():
+        input("f")
+        model = MenuSettings.edit_model_choose_model()
+        if model is None:
+            return 0
+        input("f")
+        count = 0
+        name_model = model.get_name()
+        
+        while True:
+            
+            MP.edit_menu()
+            menu_choice = input()
 
+            match (menu_choice):
+                # edit model info
+                case '1':
+                    LEM.edit_model_info(model)
+                    name_model = model.get_name()
+                        
+                # edit led
+                case '2':
+                    LEM.edit_model_led(model)
+                
+                # edit button
+                case '3':
+                    LEM.edit_model_button(model)
+                
+                # edit display
+                case '4':
+                    LEM.edit_model_display(model)
+                
+                # save
+                case '5':
+                    df.create_xml(name_model)
+                    L.exit_input("Changes saved!")
+                    continue
+                
+                #back
+                case '6':
+                    LEM.save_changes(name_model)
+                    return 0
+                
+                #exit
+                case '7':
+                    LEM.save_changes(name_model)
+                    return -1
+                
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+
+    @staticmethod
+    def edit_model_choose_model():
+        
+        os.system('cls')
+
+        # Get list of available models
+        name_models = df.get_all_xml_file_names()
+        if name_models is None:
+            # TODO: Error code
+            print("Error path don't exist")
+            input("Press Enter to continue...")
+            return None
+        elif len(name_models) == 0:
+            print("No available models to edit")
+            input("Press Enter to continue...")
+            return None
+        
+        # Choose which model to edit
+        while True:
+
+            os.system('cls') 
+
+            # Print all available models
+            print("Available models:")
+            for i, name in enumerate(name_models):
+                print(str(i+1) + ' - ' + name)
+            
+            print("\nWhat model do you want to edit?")
+            print("(Write 'q' to back to menu)")
+            name_model = input()
+
+            if name_model.isdigit():
+                model_index = int(name_model)
+                if model_index > 0 and model_index <= len(name_models):
+                    name_model = name_models[model_index - 1]
+                else:
+                    print("Invalid input")
+                    input("Press Enter to continue...")
+                    continue
+            
+            # Return to menu
+            if (name_model == 'q'):
+                return None
+            elif (df.open_model_xml(name_model) is None):
+                os.system('cls')
+                L.exit_input(f"{name_model} doesn't exist\n")
+                continue
+            else:
+                return Settings.get_model(name_model)
+    
+    #TODO
+    @staticmethod
+    def edit_color_menu():
+        print("In construction")
+        input("Please come later...")
+        pass
+    
+    # TODO
+    @staticmethod
+    def edit_test_settings():
+        print("In construction")
+        input('Press come later...')
+        pass
+    
     @staticmethod
     def directory_menu():
         count = 0
@@ -131,5 +253,3 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
-                        return -1
-    

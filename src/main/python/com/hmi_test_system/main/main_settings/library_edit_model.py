@@ -3,7 +3,6 @@ import os
 from data import *
 from data.model.model import Model
 from main.constant_main import *
-from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 
@@ -11,136 +10,7 @@ from .menu_prints import MenuPrints as MP
 
 
 class LibraryEditModel:
-    
-    #------------------------------------EDIT MODEL------------------------------------#
-    @staticmethod
-    def edit_model():
 
-        os.system('cls')
-
-        # TODO: Change this
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
-
-        # Get list of available models
-        name_models = DefineAndFillModel.get_all_xml_file_names()
-        if name_models is None:
-            # TODO: Error code
-            print("Error path don't exist")
-            input("Press Enter to continue...")
-            return -1
-        elif len(name_models) == 0:
-            print("No available models to edit")
-            input("Press Enter to continue...")
-            return 0
-
-        #------------------------------------EDIT MENU------------------------------------#
-        while True:
-                
-                os.system('cls') 
-
-                # Print all available models
-                print("Available models:")
-                for i, name in enumerate(name_models):
-                    print(str(i+1) + ' - ' + name)
-                
-                print("\nWhat model do you want to edit?")
-                print("(Write 'q' to back to menu)")
-                name_model = input()
-                
-                # Check if the user wrote the index of the model
-                if name_model.isdigit():
-                    model_index = int(name_model)
-                    if model_index > 0 and model_index <= len(name_models):
-                        name_model = name_models[model_index - 1]
-                    else:
-                        print("Invalid input")
-                        input("Press Enter to continue...")
-                        continue
-
-                # back to menu
-                if(name_model == 'q'):
-                    return 0
-                
-                # model doesn't exist
-                elif(df.open_model_xml(name_model) is None):
-                    os.system('cls') 
-                    print(f"{name_model} doesn't exist\n")
-                    input("Press Enter to continue..." )
-                
-                # model  exists
-                else:
-
-                    model = Settings.get_model(name_model)
-                    if model is None:
-                        return -1
-
-                    name_model = model.get_name()
-
-                    #TODO: not good pratic while inside while
-                    while True:
-                        MP.edit_menu()                
-                        menu_choice = input()
-
-                        # edit model info
-                        if menu_choice == '1':
-                            LibraryEditModel.edit_model_info(model)
-                            name_model = model.get_name()
-                                
-                        # edit led
-                        elif menu_choice == '2':
-                            LibraryEditModel.edit_led(model, image)
-                        
-                        # edit button
-                        elif menu_choice == '3':
-                            LibraryEditModel.edit_button(model, image)
-                        
-                        # edit LCD
-                        elif menu_choice == '4':
-                            LibraryEditModel.edit_display(model, image)
-                        
-                        # save
-                        elif menu_choice == '5':
-                            df.create_xml(name_model)
-                            print("Changes saved!")
-                            input("Press Enter to continue...")
-                            continue
-                        
-                        #back
-                        elif menu_choice == '6':
-                            while True:
-                                resp = input("Do you want to save the changes before leaving? [y/n] ")
-                                if (resp.lower() == 'y'):
-                                    df.create_xml(name_model)
-                                    break
-                                elif (resp.lower() == 'n'):
-                                    break
-                                else: 
-                                    continue
-                            return 0
-                        
-                        #exit
-                        elif menu_choice == '7':
-                            while True:
-                                resp = input("Do you want to save the changes before leaving? [y/n]")
-                                if (resp.lower() == "y"):
-                                    df.create_xml(name_model)
-                                    break
-                                elif (resp.lower() == 'n'):
-                                    break
-                                else:
-                                    continue
-
-                            return -1
-                                
     #------------------------------------EDIT MODEL INFO------------------------------------#
     @staticmethod
     def edit_model_info(model: Model):
@@ -239,8 +109,21 @@ class LibraryEditModel:
 
     #------------------------------------EDIT LED------------------------------------#
     @staticmethod
-    def edit_led(model: Model, image):
+    def edit_model_led(model: Model):
         
+        # TODO: Change this
+        img_path = "test_images/HMI.png"
+
+        cap = ImageFiles([img_path])
+
+        cap.start_capture()
+
+        image = cap.get_image()
+
+        cap.stop_capture()
+        cap.clear_queue()
+
+
         while True:
 
             os.system('cls')
@@ -260,10 +143,11 @@ class LibraryEditModel:
                 input("Press Enter to continue...\n")
                 continue
             else:
-                LibraryEditModel.edit_led_settings(led, image)
+                LibraryEditModel.edit_model_led_settings(led, image)
 
     @staticmethod
-    def edit_led_settings(led: Led, image):
+    def edit_model_led_settings(led: Led, image):
+        
         while True:
 
             MP.edit_led()
@@ -334,7 +218,19 @@ class LibraryEditModel:
 
     #------------------------------------EDIT BUTTON------------------------------------#
     @staticmethod
-    def edit_button(model: Model, image):
+    def edit_model_button(model: Model):
+
+        # TODO: Change this
+        img_path = "test_images/HMI.png"
+
+        cap = ImageFiles([img_path])
+
+        cap.start_capture()
+
+        image = cap.get_image()
+
+        cap.stop_capture()
+        cap.clear_queue()
 
         while True:
             os.system('cls')
@@ -392,8 +288,20 @@ class LibraryEditModel:
 
     #------------------------------------EDIT LCD------------------------------------#
     @staticmethod
-    def edit_display(model: Model, image):
+    def edit_model_display(model: Model):
         
+        # TODO: Change this
+        img_path = "test_images/HMI.png"
+
+        cap = ImageFiles([img_path])
+
+        cap.start_capture()
+
+        image = cap.get_image()
+
+        cap.stop_capture()
+        cap.clear_queue()
+
         display = model.get_display()
 
         os.system('cls')
@@ -411,5 +319,17 @@ class LibraryEditModel:
         os.system('cls')
         print("LCD POSITION CHANGED\n")
         input("Press Enter to continue...")
-        return 0
+    
+    #---------------------------------AUXILIAR FUNCTIONS ---------------------------------#
+    @staticmethod
+    def save_changes(name_model):
+        while True:
+            resp = input("Do you want to save the changes before leaving? [y/n] ")
+            if (resp.lower() == 'y'):
+                df.create_xml(name_model)
+                break
+            elif (resp.lower() == 'n'):
+                break
+            else: 
+                continue
     

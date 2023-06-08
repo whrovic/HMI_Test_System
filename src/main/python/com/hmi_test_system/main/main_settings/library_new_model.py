@@ -1,3 +1,4 @@
+import os
 import xml.etree.ElementTree as ET
 
 from data import *
@@ -7,14 +8,75 @@ from main.constant_main import *
 from main.library import Library as L
 from opencv.define_model_cv import DefineModelCV
 
-from .menu_prints import MenuPrints as MP
-
 
 class LibraryNewModel:
     
-    # Manually
     @staticmethod
-    def create_model_manual(name_model):
+    def new_model_mannually():
+        #------------------------------------ADD NEW MODEL------------------------------------#
+        while True:
+            os.system('cls') 
+                
+            name_model = L.get_input("Insert the name of the new model:")
+            if (name_model is None):
+                # back to menu
+                break
+            
+            # model doesn't exist -> new configuration
+            elif (df.open_model_xml(name_model) is None):
+                os.system('cls') 
+                print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
+
+                if (LibraryNewModel.create_model_manually(name_model) == 0):
+                    df.create_xml(name_model)
+                    os.system('cls')
+                    L.exit_input(f"{name_model} IS ADDED \n\n")
+                    break
+                else:
+                    os.system('cls')
+                    L.exit_input(f"{name_model} IS NOT ADDED \n\n")
+                    break
+            # model already exists
+            else:
+                os.system('cls')
+                L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
+                break
+    
+    @staticmethod
+    def new_model_import_xml():
+        
+        #------------------------------------ADD NEW MODEL------------------------------------#
+        while True:
+            os.system('cls') 
+                
+            name_model = L.get_input("Insert the name of the new model:")
+            if (name_model is None):
+                # back to menu
+                break
+            
+            # model doesn't exist -> new configuration
+            elif (df.open_model_xml(name_model) is None):
+                os.system('cls') 
+                print("Insert the path of the XML file")
+                directory = str(input())
+
+                if (LibraryNewModel.create_model_import_xml(directory, name_model) == 0):
+                    df.create_xml(name_model)
+                    os.system('cls')
+                    L.exit_input(f"{name_model} IS ADDED \n\n")
+                    break
+                else:
+                    os.system('cls')
+                    L.exit_input(f"{name_model} IS NOT ADDED \n\n")
+                    break
+            # model already exists
+            else:
+                os.system('cls')
+                L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
+                break
+    
+    @staticmethod
+    def create_model_manually(name_model):
 
         # Board Info Configuration
         print("BOARD INFO CONFIGURATION\n")       
@@ -134,9 +196,8 @@ class LibraryNewModel:
 
         return 0
 
-    # Import from xml file
     @staticmethod
-    def create_model_xml(directory: str, name_model: str):
+    def create_model_import_xml(directory: str, name_model: str):
         
         try:
             tree = ET.parse(directory)
