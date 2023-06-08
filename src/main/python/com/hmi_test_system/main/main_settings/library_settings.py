@@ -13,11 +13,11 @@ from data import *
 from data.define_and_fill_model import DefineAndFillModel as df
 from main.constant_main import *
 from main.library import Library as L
+from video.image_files import ImageFiles
 
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
-from data.define_and_fill_model import DefineAndFillModel as df
 from .menu_settings import MenuSettings as MS
 
 
