@@ -48,15 +48,15 @@ class LibraryEditModel:
 
                 print("Available models:")
                 for i, name in enumerate(name_models):
-                    print(str(i) + ' - ' + name)
+                    print(str(i+1) + ' - ' + name)
                 print("\nWhat model do you want to edit?")
                 print("(Write 'q' to back to menu)")
                 name_model = input()
                 
                 if name_model.isdigit():
                     model_index = int(name_model)
-                    if model_index >= 0 and model_index <= len(name_models):
-                        name_model = name_models[model_index]
+                    if model_index > 0 and model_index <= len(name_models):
+                        name_model = name_models[model_index - 1]
                     else:
                         print("Invalid input")
                         input("Press Enter to continue...")
@@ -74,7 +74,7 @@ class LibraryEditModel:
                 
                 # model  exists
                 else:
-                    
+
                     index = Settings.index_model(name_model)
 
                     if(index == -1):
@@ -196,6 +196,16 @@ class LibraryEditModel:
                 continue
 
         while True:
+            os.system('cls')
+            print("What is the new lcd type:")
+            lcd_type = str(input())       # lcd_type of model
+            lcd_type = lcd_type.strip()
+            if (len(lcd_type) > 0):
+                break
+            else:
+                continue
+
+        while True:
             print("What is the new boot loader version:")
             boot_version = str(input())       # boot loader boot_version of model
             boot_version = boot_version.strip()
@@ -213,7 +223,7 @@ class LibraryEditModel:
             else:
                 continue
 
-        info = Info(board, option, revision, edition)
+        info = Info(board, option, revision, edition, lcd_type)
         Settings.model[index].set_info(info)
 
         boot_info = BootLoaderInfo(boot_version, boot_date)
@@ -222,8 +232,7 @@ class LibraryEditModel:
         
         os.system('cls')
         print("INFO CHANGED\n")
-        print("To go to the edit menu insert anything\n")
-        c = input()
+        input("Press Enter to continue...\n")
 
     #------------------------------------EDIT LED------------------------------------#
     @staticmethod

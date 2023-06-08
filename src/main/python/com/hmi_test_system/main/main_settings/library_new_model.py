@@ -17,7 +17,7 @@ class LibraryNewModel:
     def create_model_manual(name_model):
 
         # Board Info Configuration
-        print("\n\nBOARD INFO CONFIGURATION\n")       
+        print("BOARD INFO CONFIGURATION\n")       
 
         board = L.until_find_str("Board: ")
         if board is None: return -1
