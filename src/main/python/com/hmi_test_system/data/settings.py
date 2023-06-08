@@ -11,8 +11,7 @@ class Settings:
     model: list[Model] = []
     path = Path()
     test_settings = TestSettings()
-
-    #------------------------------------Model------------------------------------#
+    
     @staticmethod
     def new_model(name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
         Settings.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))

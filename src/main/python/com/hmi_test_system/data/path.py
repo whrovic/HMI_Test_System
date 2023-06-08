@@ -2,6 +2,7 @@ import os
 
 
 class Path:
+    
     def __init__(self):
         file_path = os.path.dirname(__file__)
 
@@ -32,3 +33,4 @@ class Path:
     @staticmethod
     def get_xml_directory():
         return Path.xml_directory
+    

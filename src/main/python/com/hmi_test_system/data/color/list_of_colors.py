@@ -58,7 +58,6 @@ class ListOfColors:
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
 
-    
     @staticmethod
     def read_from_file(filename):
         with open(filename, 'r') as f:
@@ -75,3 +74,4 @@ class ListOfColors:
                 if (hsv_max2 is not None):
                     hsv_max2 = tuple(hsv_max2)
                 ListOfColors.add_color(name, hsv_min1, hsv_max1, hsv_min2, hsv_max2)
+    

@@ -2,6 +2,7 @@ from .position import Position
 
 
 class Display(Position):
+    
     def __init__(self, name: str, pos_init_x: int, pos_init_y: int, dim_x: int, dim_y: int, chr_reference_path: str = None, pal_reference_path: str = None):
         super().__init__(pos_init_x, pos_init_y)
         self._name = name
@@ -38,3 +39,4 @@ class Display(Position):
     
     def set_pal_reference_path(self, pal_reference_path):
         self._pal_reference_path = pal_reference_path
+    

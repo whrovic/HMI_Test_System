@@ -12,3 +12,4 @@ class Button(Position):
     
     def set_name(self, name: str):
         self._name = name
+    

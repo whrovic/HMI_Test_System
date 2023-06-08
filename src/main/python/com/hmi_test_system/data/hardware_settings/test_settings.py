@@ -83,3 +83,4 @@ class TestSettings:
     def delete_cam_settings(name: str):
         cam_index = TestSettings.get_index_cam(name)
         TestSettings._cam.pop(cam_index)
+    

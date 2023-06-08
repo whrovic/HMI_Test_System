@@ -17,3 +17,4 @@ class CameraSettings:
     
     def set_parameters(self, position: str, parameters: Parameter):
         self._parameters[position] = parameters
+    

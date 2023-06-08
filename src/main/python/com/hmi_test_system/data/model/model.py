@@ -108,3 +108,4 @@ class Model:
         
     def get_boot_loader_info(self):
         return self._boot_loader_info
+    

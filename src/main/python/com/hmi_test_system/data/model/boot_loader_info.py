@@ -15,3 +15,4 @@ class BootLoaderInfo:
     
     def set_date(self, date):
         self._date = date
+    

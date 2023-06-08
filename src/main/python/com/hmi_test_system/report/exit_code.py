@@ -3,10 +3,11 @@ from .constant_exit_code import *
 
 class ExitCode:
 
-    exit_code = OK
+    _exit_code = OK
     
+    @staticmethod
     def get_current_value():
-        return ExitCode.exit_code
+        return ExitCode._exit_code
     
     @staticmethod
     def aborted():
@@ -138,6 +139,6 @@ class ExitCode:
     
     @staticmethod
     def update_value(new):
-        if ExitCode.exit_code is OK:
-            ExitCode.exit_code = new
+        if ExitCode._exit_code is OK:
+            ExitCode._exit_code = new
     

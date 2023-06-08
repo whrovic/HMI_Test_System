@@ -14,34 +14,29 @@ class LibraryTest:
     @staticmethod
     def test_menu():
 
-        exit_code = 0
-
         # No model name
         if len(sys.argv) < 3:
             LogLibraryTest.test_library_missing_name()
-            exit_code = 3
-            return exit_code
+            ExitCode.invalid_argument()
+            return
         
         name_model = sys.argv[2]
 
         # Checks for bad model format
         if name_model[0].isdigit():
-            # TODO: Move this print to logs
             LogLibraryTest.test_library_invalid_name()
-            exit_code = 3   # invalid argument
-            return exit_code
+            ExitCode.invalid_argument
+            return
 
         # Model doesn't exist
         if(df.open_model_xml(name_model) is None):
-            # TODO: Move this print to logs
             LogLibraryTest.test_library_error_name(name_model)
-            exit_code = 2   # model doesn't exist
-            return exit_code
+            ExitCode.model_not_found()
+            return
 
         model = Settings.get_model(name_model)
         leds_name = []
         buttons_name = [] 
-
 
         # Specific tests
         if sys.argv[3].startswith('-'):
@@ -61,8 +56,8 @@ class LibraryTest:
                 # Check if it's a declaration of a new test
                 if not t_type.startswith('-'):
                     LogLibraryTest.test_library_invalid_argument()
-                    exit_code = 3      # invalid argument
-                    return exit_code
+                    ExitCode.invalid_argument()
+                    return
                 
                 test_type.append(t_type)
 
@@ -77,8 +72,8 @@ class LibraryTest:
                         if not n_leds.isdigit():
                             if len(args) == 1:
                                 LogLibraryTest.test_library_invalid_argument()
-                                exit_code = 3      # Invalid argument
-                                return exit_code
+                                ExitCode.invalid_argument()
+                                return
                             else:
                                 continue
 
@@ -87,8 +82,8 @@ class LibraryTest:
                         n_leds = int(n_leds)
                         if len(args) < n_leds:
                             LogLibraryTest.test_library_invalid_number_argument()
-                            exit_code = 4      # Invalid number of arguments
-                            return exit_code
+                            ExitCode.invalid_number_of_arguments()
+                            return
 
                         for i in range(n_leds):
                             led_name = args[0]
@@ -106,8 +101,8 @@ class LibraryTest:
                         if not n_buttons.isdigit():
                             if len(args) == 1:
                                 LogLibraryTest.test_library_invalid_argument()
-                                exit_code = 3      # Invalid argument
-                                return exit_code
+                                ExitCode.invalid_argument()
+                                return
                             else:
                                 continue
                         
@@ -116,8 +111,8 @@ class LibraryTest:
                         n_buttons = int(n_buttons)
                         if len(args) < n_buttons-1:
                             LogLibraryTest.test_library_invalid_number_argument()
-                            exit_code = 4      # Invalid number of arguments
-                            return exit_code
+                            ExitCode.invalid_number_of_arguments()
+                            return
 
                         buttons_name = []
                         for i in range(n_buttons):
@@ -157,8 +152,7 @@ class LibraryTest:
                         else:
                             board_code = 1    # Serial port and display test
 
-                    
-
+                
                 # Bootloader_info test type
                 elif(test_type[i] == TEST_TYPE_BOOTLOADER_INFO):
                     
@@ -180,41 +174,39 @@ class LibraryTest:
                     
                 else:
                     LogLibraryTest.test_library_invalid_argument()
-                    exit_code = 3      # invalid argument
-                    return exit_code
+                    ExitCode.invalid_argument()
+                    return
                     
 
 
             # Execute the tests
             for i in range(len(test_type)):
 
-
                 # Led test
-                if(test_type[i] == TEST_TYPE_LEDS):
+                if (test_type[i] == TEST_TYPE_LEDS):
 
                     # If user doesnt't choose the leds
-                    if(len(leds_name) == 0):
+                    if (len(leds_name) == 0):
                         leds_name = None
 
                     result_led = SequenceTest.seq_led(model, leds_name)
                     
-                    if(result_led == 0):
-                        exit_code = 0     # Test passed
-                    elif(result_led == -1): 
-                        print(ExitCode.exit_code)
-                        exit_code = 8     # Led test failed
-
+                    # TODO: Log this
+                    if (result_led == 0):
+                        print("Leds tests passed sucessfully")
+                    elif (result_led == -1): 
+                        print("Leds test failed")
 
                 # LCD test
-                elif(test_type[i] == TEST_TYPE_DISPLAY):
+                elif (test_type[i] == TEST_TYPE_DISPLAY):
 
                     result_display = SequenceTest.seq_display(model)
                     
-                    if(result_display == 0):
-                        exit_code = 0     # Test passed
-                    elif(result_display == -1): 
-                        exit_code = 9     # LCD test failed  
-
+                    # TODO: Log this
+                    if (result_display == 0):
+                        print("Display tests passed successfully")
+                    elif (result_display == -1): 
+                        print("Display tests failed")
 
                 # Button test
                 elif(test_type[i] == TEST_TYPE_BUTTONS):
@@ -225,43 +217,44 @@ class LibraryTest:
 
                     result_button = SequenceTest.seq_button(model, buttons_name, key_code)      
                     
+                    # TODO: Log this
                     if(result_button == 0):
-                        exit_code = 0     # Test passed
+                        print("Buttons test passed successfully")
                     elif(result_button == -1): 
-                        exit_code = 10    # Button test failed
-
+                        print("Buttons test failed")
 
                 # Board_info test
                 elif(test_type[i] == TEST_TYPE_BOARD_INFO):
 
                     result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
 
+                    # TODO: Log this
                     if(result_board == 0):
-                        exit_code = 0     # Test passed
+                        print("BoardInfo test passed successfully")
                     elif(result_board == -1): 
-                        exit_code = 10    # Button test failed
-
+                        print("BoardInfo test failed")
 
                 # Bootloader_info test
                 elif(test_type[i] == TEST_TYPE_BOOTLOADER_INFO):
 
                     result_bootloader = SequenceTest.seq_boot_loader_info(model, bootloader_code)
 
+                    # TODO: Log this
                     if(result_bootloader == 0):
-                        exit_code = 0     # Test passed
+                        print("BootloaderInfo test passed successfully")
                     elif(result_bootloader == -1): 
-                        exit_code = 10    # Button test failed
-
+                        print("BootloaderInfo test failed")
 
                 # Alight test
                 elif(test_type[i] == TEST_TYPE_ALIGHT):
 
                     result_alight = SequenceTest.seq_alight(alight_code)
 
+                    # TODO: Log this
                     if(result_alight == 0):
-                        exit_code = 0     # Test passed
+                        print("Alight test passed successfully")
                     elif(result_alight == -1): 
-                        exit_code = 10    # Button test failed            
+                        print("Alight test failed")           
         
         # Default -> all tests
         else:
@@ -276,9 +269,10 @@ class LibraryTest:
 
             result_all = SequenceTest.seq_all(model, serial_number, manufacture_date)   
 
+            # TODO: Log this
             if(result_all == 0):
-                exit_code = 0     # Test passed
+                print("All the tests passed successfully")
             elif(result_all == -1): 
-                exit_code = 10    # Button test failed                    
+                print("At least one of the tests failed")                  
 
-        return exit_code
+        return

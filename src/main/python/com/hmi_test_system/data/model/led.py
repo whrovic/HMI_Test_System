@@ -2,6 +2,7 @@ from .position import Position
 from data.color.color import Color
 
 class Led(Position):
+    
     def __init__(self, name: str, n_colour, x: int, y: int):
         super().__init__(x, y)
         self._name = name

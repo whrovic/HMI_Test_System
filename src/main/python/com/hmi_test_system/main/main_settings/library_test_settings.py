@@ -9,7 +9,6 @@ class LibraryTestSettings:
     def add_param_camera():
         pass
     
-
     def add_sp():
         pass
 
