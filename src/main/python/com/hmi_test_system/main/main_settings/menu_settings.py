@@ -16,46 +16,48 @@ class MenuSettings:
             MP.settings()        
             menu_choice = input()
             
-            # new model
-            if (menu_choice == '1'):
-                count = 0
-                if ( MenuSettings.new_model() == -1 ):
-                    return -1
-
-            # color
-            elif (menu_choice == '2'):
-                count = 0
-                print("In construction")
-                menu_choice = input('Press Enter')
             
-            # edit model    
-            elif (menu_choice == '3'):
-                count = 0
-                if ( LEM.edit_model() == -1 ):
-                    return -1
-
-            # test setting
-            elif (menu_choice == '4'):
-                count = 0
-                print("In construction")
-                menu_choice = input('Press Enter')
+            match (menu_choice):
+                #new model
+                case '1':
+                    count = 0
+                    if ( MenuSettings.new_model() == -1 ):
+                        return -1
+                
+                # color
+                case 2:                    
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
             
-            # directory
-            elif(menu_choice == '5'):
-                count = 0
-                if ( MenuSettings.directory_menu() == -1 ):
-                    return -1
+                # edit model 
+                case 3:
+                    count = 0
+                    if ( LEM.edit_model() == -1 ):
+                        return -1
 
-            # exit 
-            elif(menu_choice == '6'):
-                os.system('cls')
-                return 0
+                # test setting
+                case 4:
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
             
-            else:
-                count = count + 1
-                if (count > NTIMEOUT_MENUS):
-                    return -1
-                continue
+                # directory
+                case 5:
+                    count = 0
+                    if ( MenuSettings.directory_menu() == -1 ):
+                        return -1
+
+                # exit 
+                case 6:
+                    os.system('cls')
+                    return 0
+            
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    continue
     
     @staticmethod
     def new_model():
@@ -64,37 +66,32 @@ class MenuSettings:
             MP.new_model()
             menu_choice = input()
             
-            # manually
-            if (menu_choice == '1'):
-                count = 0
-                LS.add_models_mannually()
+            match (menu_choice):
+                # create
+                case '1':
+                    count = 0
+                    LS.add_models_mannually()
 
-            # automatic
-            elif (menu_choice == '2'):
-                count = 0
-                print("In construction")
-                menu_choice = input('Press Enter')
-
-            # XML  
-            elif (menu_choice == '3'):
-                count = 0
-                LS.add_models_xml()
+                # Import XML  
+                case '2':
+                    count = 0
+                    LS.add_models_xml()
             
-            # back  
-            elif(menu_choice == '4'):
-                os.system('cls')
-                return 0
+                # back  
+                case '3':
+                    os.system('cls')
+                    return 0
 
-            # exit  
-            elif(menu_choice == '5'):
-                os.system('cls')
-                return -1
-            
-            else:
-                count = count + 1
-                if (count > NTIMEOUT_MENUS):
+                # exit  
+                case '4':
+                    os.system('cls')
                     return -1
-                continue
+                
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    continue
 
     @staticmethod
     def directory_menu():
@@ -129,5 +126,6 @@ class MenuSettings:
                 case _:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
+                        return -1
                         return -1
     

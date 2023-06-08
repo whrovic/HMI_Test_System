@@ -6,7 +6,7 @@ from data.model.model import Model
 from report.log_library_test import LogLibraryTest
 from data.settings import Settings
 from main.constant_main import *
-from report.exit_code import ExitCode
+from report import *
 
 
 class LibraryTest:
