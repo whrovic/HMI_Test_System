@@ -5,6 +5,7 @@ from data.settings import Settings
 from main.constant_main import *
 from main.library import Library as L
 
+from .library_directory import LibraryDirectory as LD
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
@@ -243,26 +244,34 @@ class MenuSettings:
             menu_choice = input()
             
             match (menu_choice):
-                #camera
+                #settings
                 case '1':
                     count = 0
+                    LD.change_settings_directory()
                     print("In construction")
                     menu_choice = input('Press Enter')
                     continue
                 
-                #serial port
+                #resource
                 case '2':
                     count = 0
                     print("In construction")
                     menu_choice = input('Press Enter')
                     continue
                 
-                #back
+                #xml
                 case '3':
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
+                    continue
+                
+                #back
+                case '4':
                     return 0
                 
                 #exit
-                case '4':
+                case '5':
                     return -1
                 
                 case _:

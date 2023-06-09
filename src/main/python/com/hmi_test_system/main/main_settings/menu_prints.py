@@ -32,8 +32,9 @@ class MenuPrints:
     def directory():
         os.system('cls')
         print("------------ Test Settings ------------\n\n")
-        print("1- Camera           2- Serial Port     \n")
-        print("3- Back             4- Exit            \n\n")
+        print("1- Settings         2- Resource     \n")
+        print("               3- XML                 \n")
+        print("4- Back             5- Exit            \n\n")
         print("---------------------------------------\n")
     
     @staticmethod

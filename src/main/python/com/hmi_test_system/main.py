@@ -7,14 +7,6 @@ from main.main_settings import *
 from main.main_test import *
 from report import ExitCode
 
-'''from tkinter import Tk
-from tkinter.filedialog import askdirectory
-
-Tk().withdraw() # Isto torna oculto a janela principal
-filename = askdirectory() # Isto te permite selecionar um arquivo
-print(filename) # printa o arquivo selecionado      
-menu_choice = input()'''
-
 # Read all the colors from the local file
 ListOfColors.read_from_file(Settings.path.get_settings_directory() + "/colors.json")
 
