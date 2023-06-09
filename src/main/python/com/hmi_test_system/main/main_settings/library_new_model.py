@@ -24,25 +24,22 @@ class LibraryNewModel:
             
             # model doesn't exist -> new configuration
             elif (df.open_model_xml(name_model) is None):
-                os.system('cls') 
-                print("\n\n----------------------NEW MODEL CONFIGURATION----------------------\n")
-
                 if (LibraryNewModel.create_model_manually(name_model) == 0):
                     model = Settings.get_model(name_model)
                     if model is None: return -1
                     
                     df.create_xml(model)
                     os.system('cls')
-                    L.exit_input(f"{name_model} IS ADDED \n\n")
+                    L.exit_input(f"The model {name_model} added successfully")
                     break
                 else:
                     os.system('cls')
-                    L.exit_input(f"{name_model} IS NOT ADDED \n\n")
+                    L.exit_input(f"The model {name_model} wasn't created")
                     break
             # model already exists
             else:
                 os.system('cls')
-                L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
+                L.exit_input(f"The name {name_model} is already in use")
                 break
     
     @staticmethod
@@ -82,9 +79,12 @@ class LibraryNewModel:
     
     @staticmethod
     def create_model_manually(name_model):
-
+        
+        os.system('cls') 
+        print("----------------------NEW MODEL CONFIGURATION----------------------\n")
+        
         # Board Info Configuration
-        print("BOARD INFO CONFIGURATION\n")       
+        print("BOARD INFO CONFIGURATION\n")
 
         board = L.until_find_str("Board: ")
         if board is None: return -1
@@ -107,16 +107,16 @@ class LibraryNewModel:
         boot_date = L.until_find_str("Boot loader date: ")
         if boot_date is None: return -1
         
-        boot_info = BootLoaderInfo(boot_version, boot_date)     
+        boot_info = BootLoaderInfo(boot_version, boot_date)
 
         # LCD configuration
         print("\n\nLCD CONFIGURATION\n")
 
-        print("Before continuing, please make sure that the display camera is ready")
-        input("Press Enter to continue...")
+        # Inform user about the need of the camera
+        L.exit_input("Before continuing, please make sure that the display camera is ready and the display tests are ready to start")
 
         # Gets the image of the display
-        display_img = DefineModelCV.get_display_board_image()
+        display_img = DefineModelCV.get_display_image()
 
         print("Select the LCD initial position and press Enter to continue...")
         pos_vector_init = DefineModelCV.click_pos(display_img)
@@ -128,6 +128,9 @@ class LibraryNewModel:
         dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
         display = Display('display', int(pos_vector_init[0]) , int(pos_vector_init[1]) , dim_x, dim_y)
 
+        # Get reference images
+        chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
+        if chr_ref_img is None or pal_ref_img is None: return -1
 
         n_buttons = L.until_find_int("Number of buttons: ")
         if (n_buttons) == -1: return -1
@@ -140,10 +143,11 @@ class LibraryNewModel:
         # buttons configuration
         print("\n\nBUTTONS CONFIGURATION\n")
 
-        # Get the image for the buttons
-        buttons_img = DefineModelCV.get_leds_board_image()
-
         if(n_buttons > 0):
+            
+            # Get the image for the buttons
+            buttons_img = DefineModelCV.get_buttons_image()
+
             for i in range(0, n_buttons):
                 print(f"\nButton {i+1} name: ")
                 button_name = input()
@@ -157,10 +161,11 @@ class LibraryNewModel:
         # leds configuration
         print("\n\nLEDS CONFIGURATION\n")
 
-        parameters_leds = Parameter(1080, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
-        leds_img = DefineModelCV.get_leds_board_image(parameters_leds)
-
         if(n_leds > 0):
+            
+            # Get the image for the leds
+            leds_img = DefineModelCV.get_leds_image()
+
             for i in range(0, n_leds):
                 print(f"\nLed {i+1} name: ")
                 led_name = input()
@@ -172,10 +177,9 @@ class LibraryNewModel:
                         break
                     else: 
                         continue
-
+                
                 print(f"Select the led {i+1} central position and press ENTER")
                 pos_vector= DefineModelCV.click_pos(leds_img)
-                    
 
                 led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
                 for j in range(0, n_colours):
@@ -196,7 +200,13 @@ class LibraryNewModel:
         else:
             print("\nModel doesn't have leds\n")
 
-        # Add model to settings        
+        # Save reference images
+        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
+            return -1
+        elif not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
+            return -1
+        
+        # Add model to settings
         Settings.add_model(new_model)
 
         return 0

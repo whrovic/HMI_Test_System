@@ -2,8 +2,9 @@ from .parameter import Parameter
 
 class CameraSettings:
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, device_id = 0):
         self._name = name
+        self._device_id = device_id
         self._parameters: dict[str, Parameter] = {}
 
     def get_name(self):
@@ -12,6 +13,12 @@ class CameraSettings:
     def set_name(self, name: str):
         self._name = name
     
+    def get_device_id(self):
+        return self._device_id
+    
+    def set_device_id(self, device_id):
+        self._device_id = device_id
+
     def get_parameters(self, position: str):
         return self._parameters.get(position, None)
     

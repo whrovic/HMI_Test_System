@@ -1,3 +1,5 @@
+from time import sleep
+
 import cv2
 
 from .video_device import VideoDevice
@@ -7,11 +9,13 @@ class Camera(VideoDevice):
 
     _device_id: int
 
-    def __init__(self, device=0, interval=0.5, width=1920, height=1080):
+    def __init__(self, device=0, interval=0.5, width=1280, height=720):
         super().__init__(interval, width, height)
 
         self._device_id = device
         self._cap = cv2.VideoCapture(device, cv2.CAP_DSHOW)
+        self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
     def get_frame(self):
         _, frame = self._cap.read()
@@ -51,6 +55,8 @@ class Camera(VideoDevice):
         self._cap.set(cv2.CAP_PROP_CONTRAST, contrast)
         self._cap.set(cv2.CAP_PROP_SATURATION, saturation)
         self._cap.set(cv2.CAP_PROP_SHARPNESS, sharpness)
+
+        sleep(2.0)
 
     def closed(self):
         return ((self._cap is None) or (not self._cap.isOpened()))

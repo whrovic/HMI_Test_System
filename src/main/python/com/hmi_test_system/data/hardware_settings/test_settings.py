@@ -20,7 +20,6 @@ class TestSettings:
     def set_cam_display(name: str):
         cam_index = TestSettings.get_index_cam(name)
         if cam_index == -1:
-            # TODO: Error Code
             return -1
         else:
             TestSettings._cam_display = TestSettings._cam[cam_index]
