@@ -9,7 +9,7 @@ from .path import Path
 class Settings:
 
     model: list[Model] = []
-    path = Path()
+    path = Path
     test_settings = TestSettings()
     
     @staticmethod

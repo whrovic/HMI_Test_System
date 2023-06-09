@@ -3,12 +3,10 @@ import os
 
 class Path:
     
-    def __init__(self):
-        file_path = os.path.dirname(__file__)
-
-        Path.xml_directory = os.path.join(file_path, '../../../../../../xml_files')
-        Path.resources_directory = os.path.join(file_path, '../../../../resources')
-        Path.settings_directory = os.path.join(file_path, '../../../../../../settings')
+    file_path = os.path.dirname(__file__)
+    xml_directory = os.path.join(file_path, '../../../../../../xml_files')
+    resources_directory = os.path.join(file_path, '../../../../resources')
+    settings_directory = os.path.join(file_path, '../../../../../../settings')
 
     @staticmethod
     def set_settings_directory(settings_directory):
