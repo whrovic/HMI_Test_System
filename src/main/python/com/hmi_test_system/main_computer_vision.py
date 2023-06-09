@@ -271,7 +271,7 @@ if (__name__ == "__main__"):
     from data.color.list_of_colors import ListOfColors
     Path()
 
-    ListOfColors.read_from_file(Path.get_settings_directory() + "/colors.json")
+    ListOfColors.read_from_file()
     
     #test_read_colours()
 

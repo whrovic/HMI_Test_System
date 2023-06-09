@@ -29,6 +29,24 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
+    def color():
+        os.system('cls')
+        print("------------ Color Settings -----------\n\n")
+        print("1 - Edit Colors      2 - Add Color     \n")
+        print("3 - Delete a color                     \n")
+        print("4 - Back             5 - Exit          \n")
+        print("---------------------------------------\n")
+
+    @staticmethod
+    def edit_color():
+        os.system('cls')
+        print("--------- Edit Color Settings ---------\n\n")
+        print("1 - Edit name        2 - Edit 1st range\n")
+        print("3 - Edit 2nd range   4 - Delete color  \n")
+        print("               5 - Back                \n")
+        print("---------------------------------------\n")
+
+    @staticmethod
     def directory():
         os.system('cls')
         print("------------ Test Settings ------------\n\n")
@@ -52,7 +70,7 @@ class MenuPrints:
         os.system('cls') 
         print("--------------- Edit Led --------------\n\n")
         print("1- Name             2- Colours         \n")
-        print("3- Position         4- Edit menu       \n\n")
+        print("3- Position         4- Back            \n\n")
         print("---------------------------------------\n")
     
     @staticmethod
@@ -60,6 +78,6 @@ class MenuPrints:
         os.system('cls') 
         print("------------- Edit button -------------\n\n")
         print("1- Name             2- Position        \n")
-        print("             3- Edit menu              \n\n")
+        print("               3- Back                 \n\n")
         print("---------------------------------------\n")
     

@@ -8,7 +8,7 @@ from main.main_test import *
 from report import ExitCode
 
 # Read all the colors from the local file
-ListOfColors.read_from_file(Settings.path.get_settings_directory() + "/colors.json")
+ListOfColors.read_from_file()
 
 def arguments_help():
     print("HELP")

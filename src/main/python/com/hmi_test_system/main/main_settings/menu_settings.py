@@ -5,6 +5,7 @@ from data.settings import Settings
 from main.constant_main import *
 from main.library import Library as L
 
+from .library_color import LibraryColor as LC
 from .library_directory import LibraryDirectory as LD
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
@@ -195,9 +196,37 @@ class MenuSettings:
     #TODO
     @staticmethod
     def edit_color_menu():
-        print("In construction")
-        input("Please come later...")
-        pass
+        
+        count = 0
+        while True:
+
+            MP.color()
+            menu_choice = input()
+
+            match (menu_choice):
+                # Edit colors
+                case '1':
+                    count = 0
+                    LC.edit_color_edit_color()
+                # New color
+                case '2':
+                    count = 0
+                    LC.edit_color_new_color()
+                # Delete color
+                case '3':
+                    count = 0
+                    LC.edit_color_delete_color()
+                # Back
+                case '4':
+                    return 0
+                # Exit
+                case '5':
+                    return -1
+                case _:
+                    count += 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+
     
     @staticmethod
     def edit_test_settings():

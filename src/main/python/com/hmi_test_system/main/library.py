@@ -68,6 +68,23 @@ class Library:
         return name_model
     
     @staticmethod
+    def get_yes_no_confirmation(print_str: str):
+        count = 0
+        while True:
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS):
+                return None
+            input_value = input(print_str).strip()
+
+            if input_value.lower() == 'y':
+                return True
+            elif input_value.lower() == 'n':
+                return False
+            else:
+                print("Invalid input! Please insert y or n")
+                count += 1
+                continue
+
+    @staticmethod
     def exit_input(print_str: str):
         print(print_str)
         input('Press Enter to continue... ')
@@ -109,3 +126,46 @@ class Library:
                 value_input = int(value_input)
                 break
         return value_input
+
+    @staticmethod
+    def get_hsv_values(print_str: str):
+        count = 0
+        while True:
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS): return (-1,)
+
+            # Ask for three ints
+            print(print_str)
+            print("(Write \'q\' to cancel and return to menu)")
+            value_input = input().strip()
+
+            if value_input == 'q':
+                return (-1,)
+
+            # Check if it's three integer
+            int_values = value_input.split()
+            
+            if len(int_values) != 3:
+                print("Invalid input! Please insert three integer values, separated by a whitespace")
+                count += 1
+                continue
+            elif not (int_values[0].isdigit() and int_values[1].isdigit() and int_values[2].isdigit()):
+                print("Invalid input! Please insert three integer values, separated by a whitespace")
+                count += 1
+                continue
+            else:
+                h, s, v = int(int_values[0]), int(int_values[1]), int(int_values[2])
+                
+                if h < 0 or h > 180:
+                    print("Invalid input! H value should be between 0 to 180")
+                    count += 1
+                    continue
+                elif s < 0 or s > 255:
+                    print("Invalid input! S value should be between 0 to 255")
+                    count += 1
+                    continue
+                elif v < 0 or v > 255:
+                    print("Invalid input! V value should be between 0 to 255")
+                    count += 1
+                    continue
+                else:
+                    return h, s, v

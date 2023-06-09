@@ -1,9 +1,11 @@
 import json
 from .color import Color
+from data.path import Path
 
 class ListOfColors:
     
     _list_of_colors: list[Color]= []
+    _path = Path.get_settings_directory() + '/colors.json'
 
     @staticmethod
     def get_n_colors():
@@ -44,7 +46,7 @@ class ListOfColors:
         return False
 
     @staticmethod
-    def save_to_file(filename):
+    def save_to_file():
         data = []
         for color in ListOfColors._list_of_colors:
             data.append({
@@ -55,12 +57,12 @@ class ListOfColors:
                 "hsv_max2": color.get_hsv_max2()
             })
 
-        with open(filename, 'w') as f:
+        with open(ListOfColors._path, 'w') as f:
             json.dump(data, f, indent=4)
 
     @staticmethod
-    def read_from_file(filename):
-        with open(filename, 'r') as f:
+    def read_from_file():
+        with open(ListOfColors._path, 'r') as f:
             data = json.load(f)
         
             for color_data in data:

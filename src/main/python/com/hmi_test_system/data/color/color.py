@@ -11,6 +11,9 @@ class Color:
     def get_name(self):
         return self._name
     
+    def set_name(self, name):
+        self._name = name
+
     def get_hsv_min1(self):
         return self._hsv_min_1
     
