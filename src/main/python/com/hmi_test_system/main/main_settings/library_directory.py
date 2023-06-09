@@ -1,22 +1,27 @@
+import os
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
 from main.library import Library as L
+from data.settings import Settings
 
 
 class LibraryDirectory:
     def change_settings_directory():
+        os.system('cls') 
         filename = LibraryDirectory._ask_directory()
         if filename is None:
             return -1
-        
-        return 0
+        elif os.path.exists(filename):
+            Settings.path.set_settings_directory(filename)
+            return 0
+        else:
+            return -1
     
     def _ask_directory():
-        Tk().withdraw() # Isto torna oculto a janela principal
-        filename = askdirectory() # Isto te permite selecionar um path
-        #print(filename) # printa o arquivo selecionado   
-        L.exit_input(f'Path: {filename}')  
+        #Tk().withdraw() 
+        filename = askdirectory()    
+        L.exit_input(f"Path choose: {filename} \n\n")  
         #menu_choice = input()
         return filename
         
