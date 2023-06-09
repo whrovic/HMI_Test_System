@@ -5,6 +5,7 @@ from skimage.metrics import structural_similarity as ssim
 
 from .displaycv import Displaycv
 from .ledcv import LEDcv
+from data.path import Path
 
 
 class HMIcv():
@@ -108,6 +109,10 @@ class HMIcv():
         return (mse <= threshold)
     
     @staticmethod
-    def read_image_from_file(filepath):
-        return cv2.imread(filepath)
-    
+    def read_ref_images_from_file(model_name):
+        try:
+            chr_ref_img = cv2.imread(Path.get_model_images_directory() + '/' + model_name + '_chr.png')
+            pal_ref_img = cv2.imread(Path.get_model_images_directory() + '/' + model_name + '_pal.png')
+            return chr_ref_img, pal_ref_img
+        except:
+            return None, None    

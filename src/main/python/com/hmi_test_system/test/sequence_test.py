@@ -6,6 +6,7 @@ from data.model.display import Display
 from data.model.led import Led
 from data.model.model import Model
 from opencv.displaycv import Displaycv
+from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
@@ -402,6 +403,12 @@ class SequenceTest:
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
 
+        # Get reference images from local files
+        chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
+        if chr_ref_img is None or pal_ref_img is None:
+            # TODO: Error code
+            return -1
+
         # Open the needed connections
         SetupTest.setup(False, True, True, False)
 
@@ -456,7 +463,7 @@ class SequenceTest:
         print("Display Tests started")
 
         # Start led test
-        result = Test.test_display(cam, serial_port, model.get_display())
+        result = Test.test_display(cam, serial_port, model, chr_ref_img, pal_ref_img)
 
         # Close all the opened connections
         SetupTest.close()
@@ -469,6 +476,12 @@ class SequenceTest:
         
         # TODO: This shouldn't be defined here
         TIMEOUT = 10
+
+        # Get reference images from local files
+        chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
+        if chr_ref_img is None or pal_ref_img is None:
+            # TODO: Error code
+            return -1
 
         # Open the needed connections
         SetupTest.setup(True, True, True, False)
@@ -573,7 +586,7 @@ class SequenceTest:
             elif data.startswith(TEST_DISPLAY_BEGIN):
                 print("Display Tests started")
                 # Start led test
-                result = Test.test_display(cam_display, serial_port, model.get_display())
+                result = Test.test_display(cam_display, serial_port, model, chr_ref_img, pal_ref_img)
             
             if result == -1:
                 break

@@ -7,6 +7,7 @@ from opencv.define_model_cv import DefineModelCV
 from video.image_files import ImageFiles
 
 from .menu_prints import MenuPrints as MP
+from data.path import Path
 
 
 class LibraryEditModel:
@@ -21,6 +22,8 @@ class LibraryEditModel:
             name_model = str(input())
             name_model = name_model.strip()
             if(len(name_model)>0):
+                os.rename(Path.get_model_images_directory()+'/'+model.get_name()+'_chr.png', Path.get_model_images_directory()+'/'+name_model+'_chr.png')
+                os.rename(Path.get_model_images_directory()+'/'+model.get_name()+'_pal.png', Path.get_model_images_directory()+'/'+name_model+'_pal.png')
                 model.set_name(name_model)
                 break
             else:

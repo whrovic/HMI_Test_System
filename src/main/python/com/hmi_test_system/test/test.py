@@ -76,7 +76,7 @@ class Test:
         return -1
 
     @staticmethod
-    def test_display(cam: Camera, serial: SerialPort, display: Display):
+    def test_display(cam: Camera, serial: SerialPort, display: Display, chr_ref_img, pal_ref_img):
 
         # Initializing the test variables
         test_name = None
@@ -147,7 +147,7 @@ class Test:
                             continue
 
                     elif test_name == CHAR:
-                        if HMIcv.display_characters_test(frame, display):
+                        if HMIcv.display_characters_test(frame, chr_ref_img):
                             LogDisplay.test_passed(test_name)
                             test_name = None
                             test_start_time = None
@@ -155,7 +155,7 @@ class Test:
                             continue
 
                     elif test_name == COLOR:
-                        if HMIcv.display_color_pattern_test(frame, display):
+                        if HMIcv.display_color_pattern_test(frame, pal_ref_img):
                             LogDisplay.test_passed(test_name)
                             test_name = None
                             test_start_time = None
