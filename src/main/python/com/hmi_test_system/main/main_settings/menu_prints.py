@@ -30,7 +30,6 @@ class MenuPrints:
     
     @staticmethod
     def directory():
-        # TODO: is create but not complete
         os.system('cls')
         print("------------ Test Settings ------------\n\n")
         print("1- Camera           2- Serial Port     \n")

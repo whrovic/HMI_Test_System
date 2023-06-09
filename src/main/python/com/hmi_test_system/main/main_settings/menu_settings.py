@@ -203,7 +203,7 @@ class MenuSettings:
         count = 0
         while True:
             
-            MP.directory()        
+            MP.test_settings()        
             menu_choice = input()
             
             match (menu_choice):
