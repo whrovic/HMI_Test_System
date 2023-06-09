@@ -70,10 +70,8 @@ class SequenceTest:
         begin_waiting_time = time()
         received_sp = False
         while True:
-            now = time()
-
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
+            if (not received_sp and (time() - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
