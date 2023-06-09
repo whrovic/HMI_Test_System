@@ -10,21 +10,22 @@ from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
-
+from data.hardware_settings.test_settings import TestSettings
 from .setup_test import SetupTest
 from .test import Test
 
 
 class SequenceTest:
 
-    parameters_leds = Parameter(1280, 720, 0.0, 30, 0.0, -11, 0, 0.0, 3760, 80, 128, 255, 128)
-    parameters_default = Parameter(1280, 720, 1.0, 0, 1.0, 0, 0, 1.0, 0, 128, 128, 128, 128)
-
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
 
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+        # Get camera parameters if needed
+        if dsp:
+            parameters = SequenceTest._get_display_camera_parameters('display')
+            if parameters is None:
+                # TODO: Error Code
+                return -1
 
         # Gets the buttons to test
         if buttons_test is None:
@@ -57,6 +58,8 @@ class SequenceTest:
             SetupTest.close()
             ExitCode.camera_connection_failure()
             return -1
+        if dsp:
+            cam.set_settings(parameters)
         
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -70,7 +73,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -107,8 +110,12 @@ class SequenceTest:
     @staticmethod
     def seq_boot_loader_info(model: Model, dsp = False):
 
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+        # Get camera parameters if needed
+        if dsp:
+            parameters = SequenceTest._get_display_camera_parameters('display')
+            if parameters is None:
+                # TODO: Error Code
+                return -1
 
         # Open the needed connections
         SetupTest.setup(False, dsp, True, False)
@@ -126,6 +133,8 @@ class SequenceTest:
             SetupTest.close()
             ExitCode.camera_connection_failure()
             return -1
+        if dsp:
+            cam.set_settings(parameters)
         
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -139,7 +148,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -175,9 +184,13 @@ class SequenceTest:
     
     @staticmethod
     def seq_board_info(model: Model, serial_number : str, manufacture_date : str, dsp = False):
-        
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+
+        # Get camera parameters if needed
+        if dsp:
+            parameters = SequenceTest._get_display_camera_parameters('display')
+            if parameters is None:
+                # TODO: Error Code
+                return -1
 
         # Open the needed connections
         SetupTest.setup(False, dsp, True, False)
@@ -195,6 +208,8 @@ class SequenceTest:
             SetupTest.close()
             ExitCode.camera_connection_failure()
             return -1
+        if dsp:
+            cam.set_settings(parameters)
         
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -208,7 +223,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -244,9 +259,13 @@ class SequenceTest:
     
     @staticmethod
     def seq_alight(dsp = False):
-        
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+
+        # Get camera parameters if needed
+        if dsp:
+            parameters = SequenceTest._get_display_camera_parameters('display')
+            if parameters is None:
+                # TODO: Error Code
+                return -1
 
         # Open the needed connections
         SetupTest.setup(False, dsp, True, False)
@@ -264,6 +283,8 @@ class SequenceTest:
             SetupTest.close()
             ExitCode.camera_connection_failure()
             return -1
+        if dsp:
+            cam.set_settings(parameters)
         
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -277,7 +298,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -313,9 +334,12 @@ class SequenceTest:
     
     @staticmethod
     def seq_led(model: Model, leds_test = None):
-        
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+
+        # Get camera parameters
+        parameters = SequenceTest._get_leds_camera_parameters('leds')
+        if parameters is None:
+            # TODO: Error Code
+            return -1
 
         # Gets the leds to test
         if leds_test is None:
@@ -350,7 +374,7 @@ class SequenceTest:
             return -1
         
         # Set settings
-        cam.set_settings(SequenceTest.parameters_leds.get_parameters())
+        cam.set_settings(parameters)
 
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -364,7 +388,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -399,9 +423,12 @@ class SequenceTest:
     
     @staticmethod
     def seq_display(model: Model):
-    
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
+
+        # Get camera parameters if needed
+        parameters = SequenceTest._get_display_camera_parameters('display')
+        if parameters is None:
+            # TODO: Error Code
+            return -1
 
         # Get reference images from local files
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
@@ -426,6 +453,9 @@ class SequenceTest:
             ExitCode.camera_connection_failure()
             return -1
         
+        # Set camera parameters
+        cam.set_settings(parameters)
+        
         # Start receiving data from serial port
         serial_port.start_receive()
 
@@ -438,7 +468,7 @@ class SequenceTest:
             now = time()
 
             # Check if the serial port timed out waiting for the first received data
-            if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+            if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                 # No data was received from the serial port
                 # TODO: Catch this error
                 SetupTest.close()
@@ -473,9 +503,6 @@ class SequenceTest:
     
     @staticmethod
     def seq_all(model: Model, serial_number : str, manufacture_date : str):
-        
-        # TODO: This shouldn't be defined here
-        TIMEOUT = 10
 
         # Get reference images from local files
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
@@ -521,7 +548,7 @@ class SequenceTest:
                 now = time()
 
                 # Check if the serial port timed out waiting for the first received data
-                if (not received_sp and (now - begin_waiting_time > TIMEOUT)):
+                if (not received_sp and (now - begin_waiting_time > TIMEOUT_SP_BEGIN)):
                     # No data was received from the serial port
                     # TODO: Catch this error
                     SetupTest.close()
@@ -598,3 +625,22 @@ class SequenceTest:
         # Return -1 in case of error or 0 if success
         return result
     
+    @staticmethod
+    def _get_display_camera_parameters(position):
+        settings = TestSettings.get_cam_display()
+        if settings is None:
+            return None
+        parameters = settings.get_parameters(position)
+        if parameters is None:
+            return None
+        return parameters
+
+    @staticmethod
+    def _get_leds_camera_parameters(position):
+        settings = TestSettings.get_cam_leds()
+        if settings is None:
+            return None
+        parameters = settings.get_parameters(position)
+        if parameters is None:
+            return None
+        return parameters

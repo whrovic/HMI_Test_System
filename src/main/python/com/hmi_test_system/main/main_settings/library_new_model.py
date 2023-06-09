@@ -117,6 +117,7 @@ class LibraryNewModel:
 
         # Gets the image of the display
         display_img = DefineModelCV.get_display_image()
+        if display_img is None: return -1
 
         print("Select the LCD initial position and press Enter to continue...")
         pos_vector_init = DefineModelCV.click_pos(display_img)
@@ -147,6 +148,7 @@ class LibraryNewModel:
             
             # Get the image for the buttons
             buttons_img = DefineModelCV.get_buttons_image()
+            if buttons_img is None: return -1
 
             for i in range(0, n_buttons):
                 print(f"\nButton {i+1} name: ")
@@ -165,6 +167,7 @@ class LibraryNewModel:
             
             # Get the image for the leds
             leds_img = DefineModelCV.get_leds_image()
+            if leds_img is None: return -1
 
             for i in range(0, n_leds):
                 print(f"\nLed {i+1} name: ")
@@ -201,10 +204,8 @@ class LibraryNewModel:
             print("\nModel doesn't have leds\n")
 
         # Save reference images
-        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
-            return -1
-        elif not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
-            return -1
+        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'): return -1
+        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'): return -1
         
         # Add model to settings
         Settings.add_model(new_model)
@@ -367,4 +368,3 @@ class LibraryNewModel:
         
         else:
             return -1
-    

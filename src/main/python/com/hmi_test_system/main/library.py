@@ -112,6 +112,7 @@ class Library:
         count = 0
         while True:
             if (count >= NTIMEOUT_LIBRARY_SETTINGS):
+                Library.exit_input("Maximum number of invalid inputs exceeded!")
                 return -1
             
             # Ask for int

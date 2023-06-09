@@ -6,6 +6,7 @@ import numpy as np
 from data.hardware_settings.camera_settings import CameraSettings
 from data.hardware_settings.test_settings import TestSettings
 from data.path import Path
+from main.library import Library as L
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
 from video.camera import Camera
@@ -19,11 +20,15 @@ class DefineModelCV():
     def get_leds_image(use_parameters = False):
         # Get parameters from camera
         settings = TestSettings.get_cam_leds()
-        if settings is None: return None
+        if settings is None:
+            L.exit_input("No camera settings available. Please check the device settings")
+            return None
         
         if use_parameters:
             parameters = settings.get_parameters('leds')
-            if parameters is None: return None
+            if parameters is None:
+                L.exit_input("Leds parameters not available. Please check the device settings")
+                return None
         else:
             parameters = settings.get_parameters('default')
 
@@ -39,7 +44,9 @@ class DefineModelCV():
     def get_buttons_image():
         # Get parameters from camera
         settings = TestSettings.get_cam_leds()
-        if settings is None: return None
+        if settings is None:
+            L.exit_input("No camera settings available. Please check the device settings")
+            return None
         parameters = settings.get_parameters('default')
 
         camera_id = settings.get_device_id()
@@ -54,11 +61,15 @@ class DefineModelCV():
     def get_display_image(use_parameters = False):
 
         settings = TestSettings.get_cam_display()
-        if settings is None: return None
+        if settings is None:
+            L.exit_input("No camera settings available. Please check the device settings")
+            return None
         
         if use_parameters:
             parameters = settings.get_parameters('display')
-            if parameters is None: return None
+            if parameters is None:
+                L.exit_input("Display parameters not available. Please check the device settings")
+                return None
         else:
             parameters = settings.get_parameters('default')
 
@@ -152,12 +163,15 @@ class DefineModelCV():
         # Calculate the transformation matrix
         transformation_matrix, coordinates = Displaycv.get_transformation_matrix(image)
         if transformation_matrix is None:
+            L.exit_input("Couldn't save the reference images")
             return False
 
         # Extract display
         display_image = Displaycv.extract_display(image, transformation_matrix, coordinates)
 
         ret_val = cv2.imwrite(Path.get_model_images_directory() + '/' + filename + '.png', display_image)
+        if not ret_val:
+            L.exit_input("Couldn't save the reference images")
 
         return ret_val
 
@@ -348,3 +362,38 @@ class DefineModelCV():
         cv2.destroyAllWindows()
         return choosen_img
     
+    @staticmethod
+    def create_model_automatically():
+
+        # TODO: Check if he wants to insert positions
+        
+        # TODO: Instructions about SP
+
+        # TODO: Setup SP
+        
+        # TODO: Detect buttons
+
+        # TODO: Detect board info
+
+        # TODO: Detect bootloader info
+
+        # TODO: Instructions about leds cam
+
+        # TODO: Setup leds cam
+
+        # TODO: Detect leds
+
+        # TODO: Close leds cam
+
+        # TODO: Instructions about display cam
+
+        # TODO: Detect display
+
+        # TODO: Close SP
+
+        # TODO: Close display cam
+
+        # TODO: Create model
+
+        pass
+        
