@@ -62,8 +62,9 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
-                    print("Invalid input")
-                    input("Press Enter to continue...")
+                    L.exit_input("Invalid input")
+                    #print("Invalid input")
+                    #input("Press Enter to continue...")
                     continue
     
     @staticmethod
@@ -99,6 +100,7 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
+                    L.exit_input("Invalid input")
                     continue
     
     @staticmethod
@@ -151,6 +153,8 @@ class MenuSettings:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
                         return -1
+                    L.exit_input("Invalid input")
+                    continue
 
     @staticmethod
     def edit_model_choose_model():
@@ -161,12 +165,14 @@ class MenuSettings:
         name_models = df.get_all_xml_file_names()
         if name_models is None:
             # TODO: Error code
-            print("Error path don't exist")
-            input("Press Enter to continue...")
+            L.exit_input("Error path don't exist")
+            #print("Error path don't exist")
+            #input("Press Enter to continue...")
             return None
         elif len(name_models) == 0:
-            print("No available models to edit")
-            input("Press Enter to continue...")
+            L.exit_input("No available models to edit")
+            #print("No available models to edit")
+            #input("Press Enter to continue...")
             return None
         
         # Choose which model to edit
@@ -179,23 +185,26 @@ class MenuSettings:
             for i, name in enumerate(name_models):
                 print(str(i+1) + ' - ' + name)
             
-            print("\nWhat model do you want to edit?")
+            '''print("\nWhat model do you want to edit?")
             print("(Write 'q' to back to menu)")
             name_model = input()
-
-            if name_model.isdigit():
+            # Return to menu
+            if (name_model == 'q'):
+                return None'''
+            name_model=L.get_name_or_index("\nWhat model do you want to edit?", name_models)
+            if (name_model is None):
+                # back to menu
+                return None
+            
+            '''if name_model.isdigit():
                 model_index = int(name_model)
                 if model_index > 0 and model_index <= len(name_models):
                     name_model = name_models[model_index - 1]
                 else:
-                    print("Invalid input")
-                    input("Press Enter to continue...")
-                    continue
+                    L.exit_input("Invalid input")
+                    continue'''
             
-            # Return to menu
-            if (name_model == 'q'):
-                return None
-            elif (df.open_model_xml(name_model) is None):
+            if (df.open_model_xml(name_model) is None):
                 os.system('cls')
                 L.exit_input(f"{name_model} doesn't exist\n")
                 continue
@@ -248,7 +257,37 @@ class MenuSettings:
     # TODO
     @staticmethod
     def edit_directory_menu():
-        print("In construction")
-        input('Press come later...')
-        pass
-    
+        count = 0
+        while True:
+            MP.directory()        
+            menu_choice = input()
+            
+            match (menu_choice):
+                #camera
+                case '1':
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
+                    continue
+                
+                #serial port
+                case '2':
+                    count = 0
+                    print("In construction")
+                    menu_choice = input('Press Enter')
+                    continue
+                
+                #back
+                case '3':
+                    return 0
+                
+                #exit
+                case '4':
+                    return -1
+                
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    L.exit_input("Invalid input")
+                    continue

@@ -17,7 +17,7 @@ class LibraryNewModel:
         while True:
             os.system('cls') 
                 
-            name_model = L.get_input("Insert the name of the new model:")
+            name_model = L.get_input_str("Insert the name of the new model:")
             if (name_model is None):
                 # back to menu
                 break
@@ -52,7 +52,7 @@ class LibraryNewModel:
         while True:
             os.system('cls') 
                 
-            name_model = L.get_input("Insert the name of the new model:")
+            name_model = L.get_input_str("Insert the name of the new model:")
             if (name_model is None):
                 # back to menu
                 break
