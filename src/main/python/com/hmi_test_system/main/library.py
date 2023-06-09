@@ -55,7 +55,7 @@ class Library:
                 else:
                     Library.exit_input("Invalid input")
                     continue
-            elif '''name_model.isdigit() or''' (len(name_model) > 0 and name_model[0].isdigit()):
+            elif (len(name_model) > 0 and name_model[0].isdigit()):
                 print("Name cannot start with integer")
                 count += 1
                 continue

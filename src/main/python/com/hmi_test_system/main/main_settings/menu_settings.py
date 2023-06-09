@@ -63,8 +63,6 @@ class MenuSettings:
                     if (count > NTIMEOUT_MENUS):
                         return -1
                     L.exit_input("Invalid input")
-                    #print("Invalid input")
-                    #input("Press Enter to continue...")
                     continue
     
     @staticmethod
@@ -166,13 +164,9 @@ class MenuSettings:
         if name_models is None:
             # TODO: Error code
             L.exit_input("Error path don't exist")
-            #print("Error path don't exist")
-            #input("Press Enter to continue...")
             return None
         elif len(name_models) == 0:
             L.exit_input("No available models to edit")
-            #print("No available models to edit")
-            #input("Press Enter to continue...")
             return None
         
         # Choose which model to edit
@@ -185,25 +179,11 @@ class MenuSettings:
             for i, name in enumerate(name_models):
                 print(str(i+1) + ' - ' + name)
             
-            '''print("\nWhat model do you want to edit?")
-            print("(Write 'q' to back to menu)")
-            name_model = input()
-            # Return to menu
-            if (name_model == 'q'):
-                return None'''
             name_model=L.get_name_or_index("\nWhat model do you want to edit?", name_models)
             if (name_model is None):
                 # back to menu
                 return None
-            
-            '''if name_model.isdigit():
-                model_index = int(name_model)
-                if model_index > 0 and model_index <= len(name_models):
-                    name_model = name_models[model_index - 1]
-                else:
-                    L.exit_input("Invalid input")
-                    continue'''
-            
+                        
             if (df.open_model_xml(name_model) is None):
                 os.system('cls')
                 L.exit_input(f"{name_model} doesn't exist\n")
