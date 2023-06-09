@@ -79,17 +79,17 @@ class Test:
     def test_display(cam: Camera, serial: SerialPort, display: Display, chr_ref_img, pal_ref_img):
 
         # Initializing the test variables
-        test_name = None
-        test_start_time = None
-        test_failed = False
-
+        test_name = test_start_time = None
         # Variables for the next test
-        new_test_name = None
-        new_test_start_time = None
+        new_test_name = new_test_start_time = None
+    
+        ret_value = 0
 
         while True:
             # Get the data from the serial port with a timeout
-            data, data_time = serial.get_serial(timeout=0.1)
+            data = data_time = None
+            if new_test_name != TEST_DISPLAY_OK:
+                data, data_time = serial.get_serial()
 
             # Check if the data is related to the display test
             if data is not None:
@@ -97,76 +97,68 @@ class Test:
                 if PIXEL in data:
                     new_test_name = PIXEL
                     new_test_start_time = data_time
-                    LogDisplay.start_test(new_test_name)
-
                 elif CHAR in data:
                     new_test_name = CHAR
                     new_test_start_time = data_time
-                    LogDisplay.start_test(new_test_name)
-
                 elif COLOR in data:
                     new_test_name = COLOR
                     new_test_start_time = data_time
-                    LogDisplay.start_test(new_test_name)
-
-                elif TEST_DISPLAY_ENTER in data:
-                    LogDisplay.test_finished()
-                    break
+                elif TEST_DISPLAY_OK in data:
+                    new_test_name = TEST_DISPLAY_OK
+                    new_test_start_time = data_time
 
             # Start the first test
             if test_name is None and new_test_name is not None:
-                test_name = new_test_name
-                test_start_time = new_test_start_time
-                new_test_name = None
-                new_test_start_time = None
+                if new_test_name == TEST_DISPLAY_OK:
+                    LogDisplay.test_finished()
+                    break
+                else:
+                    test_name, test_start_time = new_test_name, new_test_start_time
+                    new_test_name = new_test_start_time = None
+                    LogDisplay.start_test(test_name)
 
             # If a test is currently running
             if test_name is not None:
                 frame, frame_time = cam.get_image()
+                if frame is None: continue
 
                 # Check if the frame is related to the current test
                 if frame_time < test_start_time:
                     continue
-                elif frame_time >= new_test_start_time:
+                elif new_test_start_time is not None and frame_time >= new_test_start_time:
                     # Start the next test
                     LogDisplay.test_failed(test_name)
-                    test_failed = True
-                    test_name = new_test_name
-                    test_start_time = new_test_start_time
-                    if test_name is None:
+                    ret_value = -1
+                    if new_test_name == TEST_DISPLAY_OK:
+                        LogDisplay.test_finished()
                         break
-                    LogDisplay.start_test(test_name)
+                    else:
+                        test_name, test_start_time = new_test_name, new_test_start_time
+                        new_test_name = new_test_start_time = None
+                        LogDisplay.start_test(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == PIXEL:
                         if HMIcv.display_backlight_test(frame, display):
                             LogDisplay.test_passed(test_name)
-                            test_name = None
-                            test_start_time = None
+                            test_name = test_start_time = None
                         else:
                             continue
-
                     elif test_name == CHAR:
                         if HMIcv.display_characters_test(frame, chr_ref_img):
                             LogDisplay.test_passed(test_name)
-                            test_name = None
-                            test_start_time = None
+                            test_name = test_start_time = None
                         else:
                             continue
-
                     elif test_name == COLOR:
                         if HMIcv.display_color_pattern_test(frame, pal_ref_img):
                             LogDisplay.test_passed(test_name)
-                            test_name = None
-                            test_start_time = None
+                            test_name = test_start_time = None
                         else:
                             continue
 
         # Return 0 if all tests passed, -1 if any test failed
-        if test_failed:
-            return -1
-        else:
-            return 0
+        return ret_value
 
     @staticmethod
     def test_boot_loader_info(cam : Camera, serial : SerialPort, version, date):

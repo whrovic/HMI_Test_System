@@ -1,5 +1,6 @@
-__all__=['ExitCode', 'LogButton', 'LogDisplay', 'LogLeds', 'LogLibraryTest']
+__all__=['ExitCode', 'LogButton', 'LogDisplay', 'LogLeds', 'LogLibraryTest', 'Log']
 
+from .log import Log
 from .exit_code import ExitCode
 from .log_button import LogButton
 from .log_display import LogDisplay

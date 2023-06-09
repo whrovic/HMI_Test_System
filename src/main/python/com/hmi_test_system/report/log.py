@@ -21,3 +21,15 @@ class Log:
     @staticmethod
     def error_log(message):
         Log.logger.error(message)
+
+    @staticmethod
+    def serial_port_connected():
+        Log.info_log("Serial port connected successfully")
+    
+    @staticmethod
+    def display_camera_connected():
+        Log.info_log("Display camera connected successfully")
+
+    @staticmethod
+    def leds_camera_connected():
+        Log.info_log("Leds camera connected successfully")

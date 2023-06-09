@@ -267,7 +267,7 @@ class DefineModelCV():
 
             # Get the data from the serial port
             data = data_time = None
-            if new_test_name != 'END':
+            if new_test_name != TEST_DISPLAY_OK:
                 data, data_time = serial.get_serial()
 
             # Check if the data is related to the display test
