@@ -9,6 +9,7 @@ from .model.button import Button
 from .model.display import Display
 from .model.info import Info
 from .model.led import Led
+from .path import Path
 from .settings import Settings
 
 
@@ -25,37 +26,36 @@ class DefineAndFillModel:
             return -1
 
         filename = name_model + '.xml'
-        if  name_model in xml_filenames:
+        if name_model in xml_filenames:
             # open a model with the xml file
-            xml_file = os.path.join(Settings.path.get_xml_directory(), filename)
+            xml_file = os.path.join(Path.get_xml_directory(), filename)
             tree = ET.parse(xml_file)
-            model = tree.getroot()
-            name = model.find('name')
-            n_leds = model.find('n_leds')
-            n_buttons = model.find('n_buttons')
-            display = model.find('display')
+            model_root = tree.getroot()
+            name = model_root.find('name')
+            n_leds = model_root.find('n_leds')
+            n_buttons = model_root.find('n_buttons')
+            display = model_root.find('display')
             display_name = display.find('display_name')
             display_x = display.find('display_x')
             display_y = display.find('display_y')
             display_dimx = display.find('display_dimx')
             display_dimy = display.find('display_dimy')
             LCD = Display(display_name.text, int(display_x.text), int(display_y.text), int(display_dimx.text), int(display_dimy.text))
-            info = model.find('info')
+            info = model_root.find('info')
             info_board = info.find('board')
             info_option = info.find('option')
             info_revision = info.find('revision')
             info_edition = info.find('edition')
             info_lcd_type = info.find('lcd_type')
             INFO = Info(info_board.text, info_option.text, info_revision.text, info_edition.text, info_lcd_type.text)
-            boot_info = model.find('boot_loader_info')
+            boot_info = model_root.find('boot_loader_info')
             boot_version = boot_info.find('version')
             boot_date = boot_info.find('date')
             BOOT_INFO = BootLoaderInfo(boot_version.text, boot_date.text)
-            Settings.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
             
-            index = Settings.index_model(name.text)
+            model = Settings.new_model(name.text, int(n_leds.text), int(n_buttons.text), LCD, INFO, BOOT_INFO)
 
-            leds = model.find('leds')
+            leds = model_root.find('leds')
             for i in range(0, int(n_leds.text)):
                 led_name = leds.find(f'led{i+1}_name')
                 led_nColour = leds.find(f'led{i+1}_nColour')
@@ -66,15 +66,15 @@ class DefineAndFillModel:
                 for j in range(0, int(led_nColour.text)):   
                     led_colour = leds_colours.find(f'led{i+1}_colour{j+1}')
                     led.new_colour(ListOfColors.get_color(led_colour.text))
-                Settings.model[index].set_led(led) 
+                model.set_led(led) 
 
-            buttons = model.find('buttons')
+            buttons = model_root.find('buttons')
             for i in range(0, int(n_buttons.text)):
                 button_name = buttons.find(f'button{i+1}_name')
                 button_x = buttons.find(f'button{i+1}_x')
                 button_y = buttons.find(f'button{i+1}_y')
                 button = Button(button_name.text, int(button_x.text), int(button_y.text))
-                Settings.model[index].set_button(button)
+                model.set_button(button)
 
             return 1
         else:
@@ -160,12 +160,12 @@ class DefineAndFillModel:
         # Create the XML document and write it to a file
         tree = ET.ElementTree(model_root)
         ET.indent(tree, '  ')
-        tree.write(f"{Settings.path.get_xml_directory()}/{name_model}.xml")
+        tree.write(f"{Path.get_xml_directory()}/{name_model}.xml")
 
     @staticmethod
     def delete_xml(name_model):
         
-        file_path = f"{Settings.path.get_xml_directory()}/{name_model}.xml"
+        file_path = f"{Path.get_xml_directory()}/{name_model}.xml"
 
         # check if the file exists
         if os.path.exists(file_path):
@@ -178,7 +178,7 @@ class DefineAndFillModel:
     @staticmethod
     def get_all_xml_file_names():
         try:
-            files = os.listdir(Settings.path.get_xml_directory())   # files in directory
+            files = os.listdir(Path.get_xml_directory())   # files in directory
         except:
             return None
                 

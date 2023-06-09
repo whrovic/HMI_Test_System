@@ -208,7 +208,7 @@ class LibraryNewModel:
             tree = ET.parse(directory)
         except:
             return -1
-
+        
         model = tree.getroot()
         name = model.find('name')
         name = str(name.text.strip())
@@ -295,8 +295,7 @@ class LibraryNewModel:
             
             BOOT_INFO = BootLoaderInfo(boot_version, boot_date)
             
-            Settings.new_model(name, int(n_leds), int(n_buttons), LCD, INFO, BOOT_INFO)
-            index = Settings.index_model(name)
+            new_model = Settings.new_model(name, int(n_leds), int(n_buttons), LCD, INFO, BOOT_INFO)
 
             leds = model.find('leds')
             for i in range(0, int(n_leds)):
@@ -331,7 +330,7 @@ class LibraryNewModel:
                     
                     led.new_colour(ListOfColors.get_color(led_colour))
                 
-                Settings.model[index].set_led(led) 
+                new_model.set_led(led)
 
 
             buttons = model.find('buttons')
@@ -352,7 +351,7 @@ class LibraryNewModel:
                     return -1
                 
                 button = Button(button_name, int(button_x), int(button_y))
-                Settings.model[index].set_button(button)
+                new_model.set_button(button)
 
             return 0
         

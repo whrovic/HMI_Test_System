@@ -9,12 +9,13 @@ from .path import Path
 class Settings:
 
     model: list[Model] = []
-    path = Path
     test_settings = TestSettings()
     
     @staticmethod
     def new_model(name: str, n_leds: int, n_buttons: int, display: Display, info: Info, boot_loader_info: BootLoaderInfo):
-        Settings.model.append(Model(name, n_leds, n_buttons, display, info, boot_loader_info))
+        new_model = Model(name, n_leds, n_buttons, display, info, boot_loader_info)
+        Settings.model.append(new_model)
+        return new_model
     
     @staticmethod
     def add_model(model: Model):
@@ -32,7 +33,7 @@ class Settings:
     @staticmethod
     def index_model(name):
         for i in range(len(Settings.model)):
-            model_name = Settings.model[int(i)].get_name()
+            model_name = Settings.model[i].get_name()
             if(name == model_name):
                 return i
         # Model not found
