@@ -5,11 +5,11 @@ from data import *
 from data.hardware_settings.parameter import Parameter
 from data.model.model import Model
 from main.constant_main import *
-from main.library import Library as L
+from main.library import Library as Lib
 from opencv.define_model_cv import DefineModelCV
 
 
-class LibraryNewModel:
+class LibraryNewModel(Lib):
     
     @staticmethod
     def new_model_mannually():
@@ -17,7 +17,7 @@ class LibraryNewModel:
         while True:
             os.system('cls') 
                 
-            name_model = L.get_input_str("Insert the name of the new model:")
+            name_model = Lib.get_input_str("Insert the name of the new model:")
             if (name_model is None):
                 # back to menu
                 break
@@ -30,26 +30,25 @@ class LibraryNewModel:
                     
                     df.create_xml(model)
                     os.system('cls')
-                    L.exit_input(f"The model {name_model} added successfully")
+                    Lib.exit_input(f"The model {name_model} added successfully")
                     break
                 else:
                     os.system('cls')
-                    L.exit_input(f"The model {name_model} wasn't created")
+                    Lib.exit_input(f"The model {name_model} wasn't created")
                     break
             # model already exists
             else:
                 os.system('cls')
-                L.exit_input(f"The name {name_model} is already in use")
+                Lib.exit_input(f"The name {name_model} is already in use")
                 break
     
     @staticmethod
     def new_model_import_xml():
-        
         #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
                 
-            name_model = L.get_input_str("Insert the name of the new model:")
+            name_model = Lib.get_input_str("Insert the name of the new model:")
             if (name_model is None):
                 # back to menu
                 break
@@ -65,16 +64,16 @@ class LibraryNewModel:
                     if model is None: return -1
                     df.create_xml(model)
                     os.system('cls')
-                    L.exit_input(f"{name_model} IS ADDED \n\n")
+                    Lib.exit_input(f"{name_model} IS ADDED \n\n")
                     break
                 else:
                     os.system('cls')
-                    L.exit_input(f"{name_model} IS NOT ADDED \n\n")
+                    Lib.exit_input(f"{name_model} IS NOT ADDED \n\n")
                     break
             # model already exists
             else:
                 os.system('cls')
-                L.exit_input(f"{name_model} ALREADY EXISTS\n\n")
+                Lib.exit_input(f"{name_model} ALREADY EXISTS\n\n")
                 break
     
     @staticmethod
@@ -86,15 +85,15 @@ class LibraryNewModel:
         # Board Info Configuration
         print("BOARD INFO CONFIGURATION\n")
 
-        board = L.until_find_str("Board: ")
+        board = Lib.until_find_str("Board: ")
         if board is None: return -1
-        option = L.until_find_str("Option: ")
+        option = Lib.until_find_str("Option: ")
         if option is None: return -1
-        revision = L.until_find_str("Revision: ")
+        revision = Lib.until_find_str("Revision: ")
         if revision is None: return -1
-        edition = L.until_find_str("Edition: ")
+        edition = Lib.until_find_str("Edition: ")
         if edition is None: return -1
-        lcd_type = L.until_find_str("LCD Type: ")
+        lcd_type = Lib.until_find_str("LCD Type: ")
         if lcd_type is None: return -1
 
         info = Info(board, option, revision, edition, lcd_type)
@@ -102,9 +101,9 @@ class LibraryNewModel:
         # Bootloader Info Configuration
         print("\n\nBOOTLOADER INFO CONFIGURATION\n")
 
-        boot_version = L.until_find_str("Boot loader version: ")
+        boot_version = Lib.until_find_str("Boot loader version: ")
         if boot_version is None: return -1
-        boot_date = L.until_find_str("Boot loader date: ")
+        boot_date = Lib.until_find_str("Boot loader date: ")
         if boot_date is None: return -1
         
         boot_info = BootLoaderInfo(boot_version, boot_date)
@@ -113,7 +112,7 @@ class LibraryNewModel:
         print("\n\nLCD CONFIGURATION\n")
 
         # Inform user about the need of the camera
-        L.exit_input("Before continuing, please make sure that the display camera is ready and the display tests are ready to start")
+        Lib.exit_input("Before continuing, please make sure that the display camera is ready and the display tests are ready to start")
 
         # Gets the image of the display
         display_img = DefineModelCV.get_display_image()
@@ -133,9 +132,9 @@ class LibraryNewModel:
         chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
         if chr_ref_img is None or pal_ref_img is None: return -1
 
-        n_buttons = L.until_find_int("Number of buttons: ")
+        n_buttons = Lib.until_find_int("Number of buttons: ")
         if (n_buttons) == -1: return -1
-        n_leds = L.until_find_int("Number of leds: ")
+        n_leds = Lib.until_find_int("Number of leds: ")
         if (n_leds) == -1: return -1
 
         # add model

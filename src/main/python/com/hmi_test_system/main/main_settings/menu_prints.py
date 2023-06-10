@@ -13,7 +13,7 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
-    def new_model():
+    def new_model(): #sett_newmodel
         os.system('cls')
         print("-------------- New Model --------------\n\n")
         print("1- Create           2- Import XML   \n")
@@ -21,7 +21,7 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
-    def test_settings():
+    def test_settings(): #sett_testsettings
         os.system('cls')
         print("------------ Test Settings ------------\n\n")
         print("1- Camera           2- Serial Port     \n")
@@ -29,7 +29,7 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
-    def color():
+    def color(): #sett_color
         os.system('cls')
         print("------------ Color Settings -----------\n\n")
         print("1 - Edit Colors      2 - Add Color     \n")
@@ -38,7 +38,7 @@ class MenuPrints:
         print("---------------------------------------\n")
 
     @staticmethod
-    def edit_color():
+    def edit_color(): #sett_color_editcolor
         os.system('cls')
         print("--------- Edit Color Settings ---------\n\n")
         print("1 - Edit name        2 - Edit 1st range\n")
@@ -47,7 +47,7 @@ class MenuPrints:
         print("---------------------------------------\n")
 
     @staticmethod
-    def directory():
+    def directory(): #sett_directory
         os.system('cls')
         print("------------ Test Settings ------------\n\n")
         print("1- Settings         2- Resource     \n")
@@ -56,7 +56,7 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
-    def edit_menu():
+    def edit_menu(): #sett_editmenu
         os.system('cls')
         print("-------------- Edit Menu --------------\n\n")
         print("1- Edit model info  2- Edit led        \n")
@@ -66,7 +66,7 @@ class MenuPrints:
         print("---------------------------------------\n")
 
     @staticmethod
-    def edit_led():
+    def edit_led(): #sett_editmenu_editled
         os.system('cls') 
         print("--------------- Edit Led --------------\n\n")
         print("1- Name             2- Colours         \n")
@@ -74,7 +74,7 @@ class MenuPrints:
         print("---------------------------------------\n")
     
     @staticmethod
-    def edit_button():
+    def edit_button(): #sett_editmenu_editbutton
         os.system('cls') 
         print("------------- Edit button -------------\n\n")
         print("1- Name             2- Position        \n")

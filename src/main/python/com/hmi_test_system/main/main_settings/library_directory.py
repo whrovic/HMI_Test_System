@@ -2,11 +2,11 @@ import os
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
-from main.library import Library as L
 from data.path import Path
+from main.library import Library as Lib
 
 
-class LibraryDirectory:
+class LibraryDirectory(Lib):
     @staticmethod
     def change_settings_directory():
         os.system('cls') 
@@ -43,7 +43,7 @@ class LibraryDirectory:
     def _ask_directory():
         #Tk().withdraw() 
         filename = askdirectory()    
-        L.exit_input(f"Path choose: {filename} \n\n")  
+        Lib.exit_input(f"Path choose: {filename} \n\n")  
         #menu_choice = input()
         return filename
         

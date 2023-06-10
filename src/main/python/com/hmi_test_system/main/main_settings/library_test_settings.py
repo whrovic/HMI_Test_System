@@ -1,4 +1,6 @@
-class LibraryTestSettings:
+from main.library import Library as Lib
+
+class LibraryTestSettings(Lib):
 
     def add_camera():
         pass
