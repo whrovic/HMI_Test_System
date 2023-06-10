@@ -14,6 +14,7 @@ Tk().withdraw()
 # Read all the colors from the local file
 ListOfColors.read_from_file()
 
+#TODO: Change the local go to Library class or Log class and complete
 def arguments_help():
     print("HELP")
     print("main.py [type: set or test]")

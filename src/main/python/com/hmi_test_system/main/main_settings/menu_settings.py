@@ -276,23 +276,22 @@ class MenuSettings:
                 #settings
                 case '1':
                     count = 0
+                    #TODO: Log of not sucessly change
                     LD.change_settings_directory()
-                    print("In construction")
-                    menu_choice = input('Press Enter')
+                    #print("In construction")
+                    #menu_choice = input('Press Enter')
                     continue
                 
                 #resource
                 case '2':
                     count = 0
-                    print("In construction")
-                    menu_choice = input('Press Enter')
+                    LD.change_resource_directory()
                     continue
                 
                 #xml
                 case '3':
                     count = 0
-                    print("In construction")
-                    menu_choice = input('Press Enter')
+                    LD.change_xml_directory()
                     continue
                 
                 #back

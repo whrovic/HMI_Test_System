@@ -3,21 +3,43 @@ from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
 from main.library import Library as L
-from data.settings import Settings
+from data.path import Path
 
 
 class LibraryDirectory:
+    @staticmethod
     def change_settings_directory():
         os.system('cls') 
         filename = LibraryDirectory._ask_directory()
         if filename is None:
             return -1
         elif os.path.exists(filename):
-            Settings.path.set_settings_directory(filename)
+            Path.set_settings_directory(filename)
             return 0
         else:
             return -1
     
+    @staticmethod
+    def change_resource_directory():
+        os.system('cls') 
+        filename = LibraryDirectory._ask_directory()
+        if os.path.exists(filename):
+            Path.set_resources_directory(filename)
+            return 0
+        else:
+            return -1
+    
+    @staticmethod
+    def change_xml_directory():
+        os.system('cls') 
+        filename = LibraryDirectory._ask_directory()
+        if os.path.exists(filename):
+            Path.set_xml_direcory(filename)
+            return 0
+        else:
+            return -1
+    
+    @staticmethod
     def _ask_directory():
         #Tk().withdraw() 
         filename = askdirectory()    
