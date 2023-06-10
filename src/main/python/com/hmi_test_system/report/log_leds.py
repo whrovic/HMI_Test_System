@@ -37,7 +37,11 @@ class LogLeds(Log):
 
     @staticmethod
     def test_leds_sequence_failed():
-        Log.info_log("Right Sequence: No")
+        Log.error_log("Right Sequence: No")
+
+    @staticmethod
+    def test_leds_sequence_not_completed():
+        Log.error_log("The sequence wasn't completed before the end of the tests")
 
     @staticmethod
     def test_leds_finished():

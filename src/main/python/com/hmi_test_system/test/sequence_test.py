@@ -383,7 +383,7 @@ class SequenceTest:
         print("Display Tests started")
 
         # Start led test
-        result = Test.test_display(cam, serial_port, model, chr_ref_img, pal_ref_img)
+        result = Test.test_display(cam, serial_port, chr_ref_img, pal_ref_img)
 
         # Close all the opened connections
         SetupTest.close()
@@ -530,7 +530,7 @@ class SequenceTest:
                 # TODO: Log this
                 print("Display Tests started")
                 # Start led test
-                result = Test.test_display(cam_display, serial_port, model, chr_ref_img, pal_ref_img)
+                result = Test.test_display(cam_display, serial_port, chr_ref_img, pal_ref_img)
             
             if result == -1:
                 break
