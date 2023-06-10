@@ -21,6 +21,7 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 # TODO: Log this
+                print("Parameters is None")
                 # TODO: Error Code
                 return -1
 
@@ -35,6 +36,7 @@ class SequenceTest:
                 if button is None:
                     # If the button name was not found in the model, return
                     # TODO: Log this
+                    print("Button not found")
                     ExitCode.key_name_not_found()
                     return -1
                 # Add the button to the sequence
@@ -44,21 +46,23 @@ class SequenceTest:
         SetupTest.setup(False, dsp, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             LogButton.serial_port_connected()
 
-        cam = SetupTest.__cam_display
+        cam = SetupTest.get_cam_display()
         if dsp and cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         if dsp:
@@ -68,13 +72,17 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
         # Wait for button tests to begin
-        if SequenceTest.wait_start_test(serial_port, TEST_BUTTONS_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_BUTTONS_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
 
         # If the test will use both serial port and display, start recording images
         if dsp:
             cam.start_capture()
 
-        # TODO: Log
+        # TODO: Log this
         print("Buttons Tests started")
 
         # Start button test
@@ -94,6 +102,7 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 # TODO: Log this
+                print("Parameters is None")
                 # TODO: Error Code
                 return -1
 
@@ -101,21 +110,23 @@ class SequenceTest:
         SetupTest.setup(False, dsp, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             Log.serial_port_connected()
 
-        cam = SetupTest.__cam_display
+        cam = SetupTest.get_cam_display()
         if dsp and cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         if dsp:
@@ -126,7 +137,11 @@ class SequenceTest:
         serial_port.start_receive()
 
         # Waits for serial port TestBoardInfo begin
-        if SequenceTest.wait_start_test(serial_port, TEST_BOARD_INFO_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_BOARD_INFO_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
 
         # If the test will use both serial port and display, start recording images
         if dsp:
@@ -152,6 +167,7 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 # TODO: Log this
+                print("Parameters is None")
                 # TODO: Error Code
                 return -1
 
@@ -159,21 +175,23 @@ class SequenceTest:
         SetupTest.setup(False, dsp, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             Log.serial_port_connected()
 
-        cam = SetupTest.__cam_display
+        cam = SetupTest.get_cam_display()
         if dsp and cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         if dsp:
@@ -183,7 +201,11 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
         # Waits for serial port TestBootloaderInfo begin
-        if SequenceTest.wait_start_test(serial_port, TEST_BOOT_LOADER_INFO_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_BOOT_LOADER_INFO_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
 
         # If the test will use both serial port and display, start recording images
         if dsp:
@@ -209,6 +231,7 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 # TODO: Log this
+                print("Parameters is None")
                 # TODO: Error Code
                 return -1
 
@@ -216,21 +239,23 @@ class SequenceTest:
         SetupTest.setup(False, dsp, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             Log.serial_port_connected()
 
-        cam = SetupTest.__cam_display
+        cam = SetupTest.get_cam_display()
         if dsp and cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         if dsp:
@@ -240,7 +265,11 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
         # Waits for serial port TestALight begin
-        if SequenceTest.wait_start_test(serial_port, TEST_ALIGHT_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_ALIGHT_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
 
         # If the test will use both serial port and display, start recording images
         if dsp:
@@ -265,6 +294,7 @@ class SequenceTest:
         parameters = SequenceTest._get_leds_camera_parameters('leds')
         if parameters is None:
             # TODO: Log this
+            print("Parameters is None")
             # TODO: Error Code
             return -1
 
@@ -279,6 +309,7 @@ class SequenceTest:
                 if led is None:
                     # If the led name was not found in the model, return
                     # TODO: Log this
+                    print("Led name not found")
                     ExitCode.key_name_not_found()
                     return -1
                 # Add the led to the sequence
@@ -293,6 +324,7 @@ class SequenceTest:
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
@@ -303,6 +335,7 @@ class SequenceTest:
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         else:
@@ -312,7 +345,11 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
         # Waits for serial port TestLeds begin
-        if SequenceTest.wait_start_test(serial_port, TEST_LEDS_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_LEDS_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
 
         # Start recording images
         cam.start_capture()
@@ -336,6 +373,7 @@ class SequenceTest:
         parameters = SequenceTest._get_display_camera_parameters('display')
         if parameters is None:
             # TODO: Log this
+            print("Parameters is None")
             # TODO: Error Code
             return -1
 
@@ -343,6 +381,7 @@ class SequenceTest:
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
         if chr_ref_img is None or pal_ref_img is None:
             # TODO: Log this
+            print("Images Ref is None")
             # TODO: Error code
             return -1
 
@@ -350,21 +389,23 @@ class SequenceTest:
         SetupTest.setup(False, True, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             Log.serial_port_connected()
         
-        cam = SetupTest.__cam_display
+        cam = SetupTest.get_cam_display()
         if cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Cam closed")
             ExitCode.camera_connection_failure()
             return -1
         else:
@@ -374,7 +415,11 @@ class SequenceTest:
         # Start receiving data from serial port
         serial_port.start_receive()
         # Waits for serial port DisplayTest begin
-        if SequenceTest.wait_start_test(serial_port, TEST_DISPLAY_BEGIN) == -1: return -1
+        if SequenceTest.wait_start_test(serial_port, TEST_DISPLAY_BEGIN) == -1:
+            # TODO: Log this
+            print("Timeout tests didn't start")
+            # TODO: Error code
+            return -1
         
         # Start recording images
         cam.start_capture()
@@ -393,23 +438,27 @@ class SequenceTest:
     
     @staticmethod
     def seq_all(model: Model, serial_number : str, manufacture_date : str):
+        # TODO: add option of sp only
 
         # Get leds camera parameters
         led_parameters = SequenceTest._get_leds_camera_parameters('leds')
         if led_parameters is None:
             # TODO: Log this
+            print("Parameters is None")
             # TODO: Error Code
             return -1
         # Get display camera parameters
         dsp_parameters = SequenceTest._get_display_camera_parameters('display')
         if dsp_parameters is None:
             # TODO: Log this
+            print("Parameters is None")
             # TODO: Error Code
             return -1
         # Get reference images from local files
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
         if chr_ref_img is None or pal_ref_img is None:
             # TODO: Log this
+            print("Ref imgs is None")
             # TODO: Error code
             return -1
 
@@ -417,32 +466,35 @@ class SequenceTest:
         SetupTest.setup(True, True, True, False)
 
         # Check connections status
-        serial_port = SetupTest.__sp_main
+        serial_port = SetupTest.get_sp_main()
         if serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
+            print("SP closed")
             ExitCode.serialport_connection_failure()
             return -1
         else:
             Log.serial_port_connected()
         
-        cam_leds = SetupTest.__cam_leds
+        cam_leds = SetupTest.get_cam_leds()
         if cam_leds.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Leds cam closed")
             ExitCode.camera_connection_failure()
             return -1
         else:
             cam_leds.set_settings(led_parameters)
             Log.leds_camera_connected()
 
-        cam_display = SetupTest.__cam_display
+        cam_display = SetupTest.get_cam_display()
         if cam_display.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
+            print("Dsp cam closed")
             ExitCode.camera_connection_failure()
             return -1
         else:
@@ -463,6 +515,7 @@ class SequenceTest:
                     # No data was received from the serial port
                     SetupTest.close()
                     # TODO: Log this
+                    print("Timeout never received anything in sp")
                     ExitCode.serialport_timeout_reception()
                     return -1
                 
@@ -499,25 +552,21 @@ class SequenceTest:
                 print("Buttons Tests started")
                 # Start button test
                 result = Test.test_button(cam_display, serial_port, button_sequence)
-
             elif data.startswith(TEST_BOOT_LOADER_INFO_BEGIN):
                 # TODO: Log this
                 print("Bootloader Test started")
                 # Start bootloader test
                 result = Test.test_boot_loader_info(cam_display, serial_port, model.get_boot_loader_info().get_version(), model.get_boot_loader_info().get_date())
-
             elif data.startswith(TEST_BOARD_INFO_BEGIN):
                 # TODO: Log this
                 print("Board Info Test started")
                 # Start board info test
                 result = Test.test_board_info(cam_display, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
-
             elif data.startswith(TEST_ALIGHT_BEGIN):
                 # TODO: Log this
                 print("Light Test started")
                 # Start light test
                 result = Test.test_alight(cam_display, serial_port)
-
             elif data.startswith(TEST_LEDS_BEGIN):
                 # Gets the leds to test
                 leds_sequence = model.get_leds()
@@ -525,13 +574,11 @@ class SequenceTest:
                 print("Leds Tests started")
                 # Start led test
                 result = Test.test_led(cam_leds, serial_port, leds_sequence)
-
             elif data.startswith(TEST_DISPLAY_BEGIN):
                 # TODO: Log this
                 print("Display Tests started")
                 # Start led test
                 result = Test.test_display(cam_display, serial_port, chr_ref_img, pal_ref_img)
-            
             if result == -1:
                 break
 
