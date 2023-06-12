@@ -1,6 +1,7 @@
 import os
 
 from data.define_and_fill_model import DefineAndFillModel as df
+from data.model.model import Model
 from data.settings import Settings
 from main.constant_main import *
 from main.library import Library as Lib
@@ -10,7 +11,6 @@ from .library_directory import LibraryDirectory as LD
 from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
-from data.color.list_of_colors import ListOfColors
 
 
 class MenuSettings:
@@ -138,7 +138,6 @@ class MenuSettings:
         while True:            
             MP.sett_color_editcolor()
             menu_choice = input().strip()
-            if len(menu_choice) == 0: continue
 
             match (menu_choice):
                 # Edit name
@@ -169,14 +168,15 @@ class MenuSettings:
     
     @staticmethod
     def sett_editmenu():
+        #TODO: changes not discard in the atual session
+        # must replace them by the original xml (??)
         count = 0    
         save = False    
         model = LEM.sett_editmenu_first()
         if model is None: return 0
         while True:            
             MP.sett_editmenu()
-            menu_choice = input()
-            if len(menu_choice) == 0: continue
+            menu_choice = input().strip()
 
             match (menu_choice):
                 # edit model info
@@ -184,10 +184,10 @@ class MenuSettings:
                     LEM.edit_model_info(model)
                 # edit led
                 case '2':
-                    LEM.edit_model_led(model)
+                    MenuSettings.sett_editmenu_editled(model)
                 # edit button
                 case '3':
-                    LEM.edit_model_button(model)
+                    MenuSettings.sett_editmenu_editbutton(model)
                 # edit display
                 case '4':
                     LEM.edit_model_display(model)
@@ -214,6 +214,71 @@ class MenuSettings:
                     Lib.exit_input("Invalid input")
                     continue
 
+    @staticmethod
+    def sett_editmenu_editled(model: Model):
+        led, image = LEM.sett_editmenu_editled_first(model)
+        if led is None: return 0
+        #TODO confirm is led is the type Led
+        while True:
+            MP.sett_editmenu_editled()
+            menu_choice = input()
+
+            match(menu_choice):
+                # edit name
+                case '1':
+                    LEM.edit_menu_edit_led_name(led)
+                # edit colours
+                case '2':
+                    LEM.edit_menu_edit_led_colours(led)
+                # edit position 
+                case '3':
+                    LEM.edit_menu_edit_led_position(led, image)
+                # save
+                case '4':
+                    #df.create_xml(model)
+                    #Lib.exit_input("Changes saved!")
+                    save = True
+                    continue
+                #back
+                case '5':
+                    #if not save:
+                        #LEM.save_changes(model)
+                    return 0
+                #exit
+                case '6':
+                    #if not save:
+                        #LEM.save_changes(model)
+                    return -1
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    Lib.exit_input("Invalid input")
+                    continue
+                
+    
+    @staticmethod
+    def sett_editmenu_editbutton(model: Model):
+
+        image, button = LEM.sett_editmenu_editbutton_first(model)
+        while True:
+            
+            MP.sett_editmenu_editbutton()
+            c = input()
+
+            # edit name
+            if c=='1':
+                c = LEM.edit_model_edit_button_name(button)
+                continue
+
+            # edit position 
+            elif c=='2':
+                c = LEM.edit_model_edit_button_position(image, button)
+            
+            # back to menu
+            elif c == '3':
+                break
+    
     @staticmethod
     def sett_testsettings():
         count = 0
@@ -251,7 +316,6 @@ class MenuSettings:
                     Lib.exit_input("Invalid input")
                     continue
 
-    # TODO
     @staticmethod
     def sett_directory():
         count = 0

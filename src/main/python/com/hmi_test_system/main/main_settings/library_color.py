@@ -14,7 +14,7 @@ class LibraryColor(Lib):
         os.system('cls')
         # Print current available colors
         LibraryColor._print_available_colors()        
-        color_name = Lib.get_name_or_index("Insert the index or the name of the color you want to delete", [c.get_name() for c in ListOfColors.get_list_of_colors()])
+        color_name = Lib.get_name_or_index("Insert the index or the name of the color", [c.get_name() for c in ListOfColors.get_list_of_colors()])
         if color_name is None: return None
         color = ListOfColors.get_color(color_name)
         return color

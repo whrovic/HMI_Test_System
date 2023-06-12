@@ -53,7 +53,8 @@ class MenuPrints:
         os.system('cls') 
         print("--------------- Edit Led --------------\n\n")
         print("1- Name             2- Colours         \n")
-        print("3- Position         4- Back            \n\n")
+        print("3- Position         4- Save            \n\n")
+        print("6- Back             7- Exit            \n\n")
         print("---------------------------------------\n")
     
     @staticmethod
