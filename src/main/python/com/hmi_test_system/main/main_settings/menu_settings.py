@@ -108,14 +108,16 @@ class MenuSettings:
                 case '1':
                     count = 0
                     MenuSettings.sett_color_editcolors()
-                # New color
+                # Add color
                 case '2':
                     count = 0
-                    LC.edit_color_new_color()
+                    if (LC.edit_color_new_color() == -1):
+                        Lib.exit_input("Was not possible add the Color")
                 # Delete color
                 case '3':
                     count = 0
-                    LC.edit_color_delete_color()
+                    if (LC.edit_color_delete_color() == -1):
+                        Lib.exit_input("Was not possible delete the Color")  
                 # Back
                 case '4':
                     return 0
@@ -128,14 +130,12 @@ class MenuSettings:
                     Lib.exit_input("Invalid input")
                     continue
 
-
     @staticmethod
     def sett_color_editcolors():
-        color = LC.sett_color_editcolor_first()
-        if color is None: return -1
         count = 0
-        while True:
-            
+        color = LC.sett_color_editcolor_first()
+        if color is None: return 0
+        while True:            
             MP.sett_color_editcolor()
             menu_choice = input().strip()
             if len(menu_choice) == 0: continue
@@ -143,16 +143,20 @@ class MenuSettings:
             match (menu_choice):
                 # Edit name
                 case '1':
-                    LC.edit_color_edit_color_edit_name(color)
+                    if (LC.edit_color_edit_color_edit_name(color) == -1):
+                        Lib.exit_input("Was not possible to edit the name")
                 # Edit 1st range
                 case '2':
-                    LC.edit_color_edit_color_edit_1st_range(color)
+                    if (LC.edit_color_edit_color_edit_1st_range(color) == -1):
+                        Lib.exit_input("Was not possible to edit 1st range")
                 # Edit 2nd range
                 case '3':
-                    LC.edit_color_edit_color_edit_2nd_range(color)
+                    if (LC.edit_color_edit_color_edit_2nd_range(color) == -1):
+                        Lib.exit_input("Was not possible to edit 2st range")
                 # Delete
                 case '4':
-                    LC.edit_color_edit_color_edit_delete(color)
+                    if (LC.edit_color_edit_color_edit_delete(color) == -1):
+                        Lib.exit_input("Was not possible to delete")
                 # Back
                 case '5':
                     break
@@ -165,50 +169,44 @@ class MenuSettings:
     
     @staticmethod
     def sett_editmenu():
-        
+        count = 0    
+        save = False    
         model = LEM.sett_editmenu_first()
-        if model is None:
-            return 0
-        
-        count = 0        
-        while True:
-            
+        if model is None: return 0
+        while True:            
             MP.sett_editmenu()
             menu_choice = input()
+            if len(menu_choice) == 0: continue
 
             match (menu_choice):
                 # edit model info
                 case '1':
                     LEM.edit_model_info(model)
-                        
                 # edit led
                 case '2':
                     LEM.edit_model_led(model)
-                
                 # edit button
                 case '3':
                     LEM.edit_model_button(model)
-                
                 # edit display
                 case '4':
                     LEM.edit_model_display(model)
-                
                 # save
                 case '5':
                     df.create_xml(model)
                     Lib.exit_input("Changes saved!")
+                    save = True
                     continue
-                
                 #back
                 case '6':
-                    LEM.save_changes(model)
+                    if not save:
+                        LEM.save_changes(model)
                     return 0
-                
                 #exit
                 case '7':
-                    LEM.save_changes(model)
+                    if not save:
+                        LEM.save_changes(model)
                     return -1
-                
                 case _:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
@@ -220,7 +218,6 @@ class MenuSettings:
     def sett_testsettings():
         count = 0
         while True:
-            
             MP.sett_testsettings()        
             menu_choice = input()
             

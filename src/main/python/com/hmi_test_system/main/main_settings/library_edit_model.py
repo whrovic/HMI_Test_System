@@ -16,9 +16,7 @@ class LibraryEditModel(Lib):
     
     @staticmethod
     def sett_editmenu_first():
-        
         os.system('cls')
-
         # Get list of available models
         name_models = df.get_all_xml_file_names()
         if name_models is None:
@@ -30,26 +28,25 @@ class LibraryEditModel(Lib):
             return None
         
         # Choose which model to edit
-        while True:
+        #while True:
+        os.system('cls') 
 
-            os.system('cls') 
-
-            # Print all available models
-            print("Available models:")
-            for i, name in enumerate(name_models):
-                print(str(i+1) + ' - ' + name)
-            
-            name_model=Lib.get_name_or_index("\nWhat model do you want to edit?", name_models)
-            if (name_model is None):
-                # back to menu
-                return None
-                        
-            if (df.open_model_xml(name_model) is None):
-                os.system('cls')
-                Lib.exit_input(f"{name_model} doesn't exist\n")
-                continue
-            else:
-                return Settings.get_model(name_model)
+        # Print all available models
+        print("Available models:")
+        for i, name in enumerate(name_models):
+            print(str(i+1) + ' - ' + name)
+        
+        name_model=Lib.get_name_or_index("\nWhat model do you want to edit?", name_models)
+        if (name_model is None):
+            # back to menu
+            return None
+                    
+        if (df.open_model_xml(name_model) is None):
+            os.system('cls')
+            Lib.exit_input(f"{name_model} doesn't exist\n")
+            return None
+        else:
+            return Settings.get_model(name_model)
     
     
     #------------------------------------EDIT MODEL INFO------------------------------------#

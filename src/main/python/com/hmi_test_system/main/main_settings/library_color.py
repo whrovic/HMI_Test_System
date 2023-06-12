@@ -1,3 +1,5 @@
+import os
+
 from data.color.color import Color
 from data.color.list_of_colors import ListOfColors
 from main.constant_main import *
@@ -7,17 +9,16 @@ from .menu_prints import MenuPrints as MP
 
 
 class LibraryColor(Lib):
-
     @staticmethod
     def sett_color_editcolor_first():
+        os.system('cls')
         # Print current available colors
         LibraryColor._print_available_colors()        
         color_name = Lib.get_name_or_index("Insert the index or the name of the color you want to delete", [c.get_name() for c in ListOfColors.get_list_of_colors()])
         if color_name is None: return None
         color = ListOfColors.get_color(color_name)
         return color
-    
-
+      
     @staticmethod
     def edit_color_edit_color_edit_name(color: Color):
         # Get the name of the new color
@@ -122,6 +123,7 @@ class LibraryColor(Lib):
         Lib.exit_input("2st HSV range changed successfully")
         return 0
 
+    @staticmethod
     def edit_color_edit_color_edit_delete(color: Color):
         color_name = color.get_name()
         remove = Lib.get_yes_no_confirmation(f"Are you really sure you want to delete color {color.get_name()} [y|n] ? ")
@@ -130,7 +132,7 @@ class LibraryColor(Lib):
             ListOfColors.save_to_file()
             Lib.exit_input(f"Color {color_name} deleted successfully")
         
-        
+    
     @staticmethod
     def edit_color_new_color():
         
@@ -228,6 +230,7 @@ class LibraryColor(Lib):
         
         return 0
 
+ 
     @staticmethod
     def check_hsv_ranges(hsv_min1, hsv_max1, hsv_min2, hsv_max2):
         if hsv_min1 is None or hsv_max1 is None or hsv_min2 is None or hsv_max2 is None:
