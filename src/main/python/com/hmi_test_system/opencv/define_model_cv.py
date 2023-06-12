@@ -198,22 +198,40 @@ class DefineModelCV():
         # Get the display camera parameters
         # TODO: Print error
         camera_settings = TestSettings.get_cam_display()
-        if camera_settings is None: return None, None
+        if camera_settings is None:
+            input("cam settings is none")
+            return None, None
         camera_parameters = camera_settings.get_parameters('display')
-        if camera_parameters is None: return None, None
+        if camera_parameters is None:
+            input("cam parameters is none")
+            return None, None
+
+        # Get the sp parameters
+        sp_settings = TestSettings.get_sp_main()
+        if sp_settings is None:
+            input("sp_settings is none")
+            return None, None
 
         # Turn serial port on
-        # TODO: Define port
-        serial = SerialPort('COM4')
+        sp_port = sp_settings.get_port()
+        try:
+           serial = SerialPort(sp_port)
+        except:
+            # TODO
+            input("Couldn't open sp")
+            return None, None
         # TODO: Print error
-        if serial.closed(): return None, None
+        if serial.closed():
+            input("Sp is closed")
+            return None, None
 
         # Turn display camera on
-        # TODO: Define index
-        cam = Camera(0)
+        camera_id = camera_settings.get_device_id()
+        cam = Camera(camera_id)
         # TODO: Print error
         if cam.closed():
             serial.close()
+            input("cam is closed")
             return None, None
         # Apply display camera parameters
         cam.set_settings(camera_parameters)
@@ -235,6 +253,7 @@ class DefineModelCV():
                 # TODO: Print error
                 cam.close()
                 serial.close()
+                input("SP TIMEOUT")
                 return -1
             
             # Get data from serial port

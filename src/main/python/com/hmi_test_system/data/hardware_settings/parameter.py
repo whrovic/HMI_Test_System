@@ -1,6 +1,9 @@
 class Parameter:
 
-    def __init__(self, width: int, height: int, auto_focus: bool, manual_focus: int, auto_exposure: bool, exposure: int, gain: int, auto_white_balance: bool, white_balance: int, brightness: int, contrast: int, saturation: int, sharpness: int):
+    def __init__(self, width = 1920, height = 1080, auto_focus = 1.0, manual_focus = 0,
+                 auto_exposure = 1.0, exposure = 0, gain = 0,
+                 auto_white_balance = 1.0, white_balance = 3500,
+                 brightness = 128, contrast = 128, saturation = 128, sharpness = 128):
         self._width = width
         self._height = height
         self._auto_focus = auto_focus
