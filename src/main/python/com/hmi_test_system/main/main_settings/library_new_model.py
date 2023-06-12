@@ -12,7 +12,7 @@ from opencv.define_model_cv import DefineModelCV
 class LibraryNewModel(Lib):
     
     @staticmethod
-    def new_model_mannually():
+    def new_model_create():
         #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
@@ -24,7 +24,7 @@ class LibraryNewModel(Lib):
             
             # model doesn't exist -> new configuration
             elif (df.open_model_xml(name_model) is None):
-                if (LibraryNewModel.create_model_manually(name_model) == 0):
+                if (LibraryNewModel._create_model_manually(name_model) == 0):
                     model = Settings.get_model(name_model)
                     if model is None: return -1
                     
@@ -59,7 +59,7 @@ class LibraryNewModel(Lib):
                 print("Insert the path of the XML file")
                 directory = str(input())
 
-                if (LibraryNewModel.create_model_import_xml(directory, name_model) == 0):
+                if (LibraryNewModel._create_model_import_xml(directory, name_model) == 0):
                     model = Settings.get_model(name_model)
                     if model is None: return -1
                     df.create_xml(model)
@@ -77,7 +77,7 @@ class LibraryNewModel(Lib):
                 break
     
     @staticmethod
-    def create_model_manually(name_model):
+    def _create_model_manually(name_model):
         
         os.system('cls') 
         print("----------------------NEW MODEL CONFIGURATION----------------------\n")
@@ -212,7 +212,7 @@ class LibraryNewModel(Lib):
         return 0
 
     @staticmethod
-    def create_model_import_xml(directory: str, name_model: str):
+    def _create_model_import_xml(directory: str, name_model: str):
         
         try:
             tree = ET.parse(directory)

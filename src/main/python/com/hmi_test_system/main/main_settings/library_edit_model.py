@@ -13,6 +13,45 @@ from .menu_prints import MenuPrints as MP
 
 class LibraryEditModel(Lib):
 
+    
+    @staticmethod
+    def sett_editmenu_first():
+        
+        os.system('cls')
+
+        # Get list of available models
+        name_models = df.get_all_xml_file_names()
+        if name_models is None:
+            # TODO: Error code
+            Lib.exit_input("Error path don't exist")
+            return None
+        elif len(name_models) == 0:
+            Lib.exit_input("No available models to edit")
+            return None
+        
+        # Choose which model to edit
+        while True:
+
+            os.system('cls') 
+
+            # Print all available models
+            print("Available models:")
+            for i, name in enumerate(name_models):
+                print(str(i+1) + ' - ' + name)
+            
+            name_model=Lib.get_name_or_index("\nWhat model do you want to edit?", name_models)
+            if (name_model is None):
+                # back to menu
+                return None
+                        
+            if (df.open_model_xml(name_model) is None):
+                os.system('cls')
+                Lib.exit_input(f"{name_model} doesn't exist\n")
+                continue
+            else:
+                return Settings.get_model(name_model)
+    
+    
     #------------------------------------EDIT MODEL INFO------------------------------------#
     @staticmethod
     def edit_model_info(model: Model):
@@ -92,7 +131,7 @@ class LibraryEditModel(Lib):
         #TODO: Menu choise is not here
         while True:
 
-            MP.edit_led()
+            MP.sett_editmenu_editled()
             menu_choice = input()
 
             match(menu_choice):

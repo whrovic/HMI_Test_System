@@ -9,51 +9,14 @@ from .menu_prints import MenuPrints as MP
 class LibraryColor(Lib):
 
     @staticmethod
-    def edit_color_edit_color():
-        
+    def sett_color_editcolor_first():
         # Print current available colors
-        LibraryColor._print_available_colors()
+        LibraryColor._print_available_colors()        
         color_name = Lib.get_name_or_index("Insert the index or the name of the color you want to delete", [c.get_name() for c in ListOfColors.get_list_of_colors()])
-        if color_name is None: return -1
-
+        if color_name is None: return None
         color = ListOfColors.get_color(color_name)
-        
-        count = 0
-        while True:
-            
-            MP.edit_color()
-            menu_choice = input().strip()
-
-            if len(menu_choice) == 0:
-                continue
-
-            match (menu_choice):
-                # Edit name
-                case '1':
-                    LibraryColor.edit_color_edit_color_edit_name(color)
-                # Edit 1st range
-                case '2':
-                    LibraryColor.edit_color_edit_color_edit_1st_range(color)
-                # Edit 2nd range
-                case '3':
-                    LibraryColor.edit_color_edit_color_edit_2nd_range(color)
-                # Delete
-                case '4':
-                    remove = Lib.get_yes_no_confirmation(f"Are you really sure you want to delete color {color.get_name()} [y|n] ? ")
-                    if remove:
-                        ListOfColors.remove_color(color_name)
-                        ListOfColors.save_to_file()
-                        Lib.exit_input(f"Color {color_name} deleted successfully")
-                        break
-                # Back
-                case '5':
-                    break
-                case _:
-                    count += 1
-                    if (count >= NTIMEOUT_LIBRARY_SETTINGS): return -1
-                    Lib.exit_input("Invalid input")
-                    continue
-        return 0
+        return color
+    
 
     @staticmethod
     def edit_color_edit_color_edit_name(color: Color):
@@ -159,6 +122,15 @@ class LibraryColor(Lib):
         Lib.exit_input("2st HSV range changed successfully")
         return 0
 
+    def edit_color_edit_color_edit_delete(color: Color):
+        color_name = color.get_name()
+        remove = Lib.get_yes_no_confirmation(f"Are you really sure you want to delete color {color.get_name()} [y|n] ? ")
+        if remove:
+            ListOfColors.remove_color(color_name)
+            ListOfColors.save_to_file()
+            Lib.exit_input(f"Color {color_name} deleted successfully")
+        
+        
     @staticmethod
     def edit_color_new_color():
         

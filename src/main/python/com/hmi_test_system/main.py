@@ -42,7 +42,7 @@ if value == TYPE_TEST:
     
 elif value == TYPE_SET:
     # Menu Settings
-    MS.settings_menu()
+    MS.sett()
 elif value == TYPE_HELP:
     # Menu Settings
     arguments_help()
