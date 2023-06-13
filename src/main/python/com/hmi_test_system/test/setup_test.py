@@ -1,6 +1,7 @@
 from main.constant_main import *
 from serial_port.serial_port import SerialPort
 from video.camera import Camera
+from data.hardware_settings.test_settings import TestSettings
 
 
 class SetupTest:
@@ -14,13 +15,26 @@ class SetupTest:
     def setup(cam_leds = False, cam_display = False, sp_main = False, sp_usb = False):
         # TODO: Ir buscar as definições das camaras e dos serial ports
         if cam_leds and (SetupTest._cam_leds is None or SetupTest._cam_leds.closed()):
-            SetupTest._cam_leds = Camera(0)
+            cam_leds_settings = TestSettings.get_cam_leds()
+            if cam_leds_settings is not None:
+                camera_id = cam_leds_settings.get_device_id()
+                SetupTest._cam_leds = Camera(camera_id)
         if cam_display and (SetupTest._cam_display is None or SetupTest._cam_display.closed()):
-            SetupTest._cam_display = Camera(0)
+            cam_dsp_settings = TestSettings.get_cam_display()
+            if cam_dsp_settings is not None:
+                camera_id = cam_dsp_settings.get_device_id()
+                SetupTest._cam_display = Camera(camera_id)
         if sp_main and (SetupTest._sp_main is None or SetupTest._sp_main.closed()):
-            SetupTest._sp_main = SerialPort('COM5')
+            try:
+                sp_main_settings = TestSettings.get_sp_main()
+                if sp_main_settings is not None:
+                    sp_port = sp_main_settings.get_port()
+                    SetupTest._sp_main = SerialPort(sp_port)
+            except:
+                print("Couldn't open sp")
+                pass
         if sp_usb and (SetupTest._sp_usb is None or SetupTest._sp_main.closed()):
-            SetupTest._sp_usb = SerialPort('COM4')
+            pass
     
     @staticmethod
     def close(cam_leds = True, cam_display = True, sp_main = True, sp_usb = True):
