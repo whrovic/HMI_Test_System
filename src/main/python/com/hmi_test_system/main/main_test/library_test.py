@@ -2,7 +2,6 @@ import sys
 from test.sequence_test import SequenceTest
 
 from data.define_and_fill_model import DefineAndFillModel as df
-from data.model.model import Model
 from report.log_library_test import LogLibraryTest
 from data.settings import Settings
 from main.constant_main import *
@@ -36,150 +35,128 @@ class LibraryTest:
 
         model = Settings.get_model(name_model)
         leds_name = []
-        buttons_name = [] 
-       
+        buttons_name = []
+        
         if(sys.argv[3] is None):
             ExitCode.invalid_number_of_arguments()
             return
         
-        
         # Specific tests
         if sys.argv[3].startswith('-'):
             
-            args = []
-            for i in range(3, len(sys.argv)):
-                args.append(sys.argv[i])
-
-            # Check what test  
-            t_type = args[0]
-            t_type = str(t_type)
-            args.pop(0)
-
-            # Check if it's a declaration of a new test
-            if not t_type.startswith('-'):
-                LogLibraryTest.test_library_invalid_argument()
-                ExitCode.invalid_argument()
-                return
-
-
+            t_type = sys.argv[3]
+            
             # Leds test type
             if (t_type == TEST_TYPE_LEDS):
+                
+                if len(sys.argv) > 4:                
 
-                if len(args) > 0:                
-
-                    n_leds = args[0]
-                    n_leds = str(n_leds)
+                    n_leds = sys.argv[4]
 
                     if not n_leds.isdigit():
-                        if len(args) == 1:
-                            LogLibraryTest.test_library_invalid_argument()
-                            ExitCode.invalid_argument()
-                            return
-                        else:
-                            pass
-
-                    args.pop(0)
+                        LogLibraryTest.test_library_invalid_argument()
+                        ExitCode.invalid_argument()
+                        return
                     
                     n_leds = int(n_leds)
-                    if len(args) < n_leds:
+                    if len(sys.argv) - 5 != n_leds:
                         LogLibraryTest.test_library_invalid_number_argument()
                         ExitCode.invalid_number_of_arguments()
                         return
 
                     for i in range(n_leds):
-                        led_name = args[0]
-                        args.pop(0)
+                        led_name = sys.argv[i+5]
                         leds_name.append(led_name)
-            
 
             # Buttons test type
             elif (t_type == TEST_TYPE_BUTTONS):
 
-                if len(args) > 1:
-                    n_buttons = args[0]
-                    n_buttons = str(n_buttons)
+                if len(sys.argv) > 4:
+
+                    n_buttons = sys.argv[4]
 
                     if not n_buttons.isdigit():
-                        if len(args) == 1:
-                            LogLibraryTest.test_library_invalid_argument()
-                            ExitCode.invalid_argument()
-                            return
-                        else:
-                            pass
-                    
-                    args.pop(0)
+                        LogLibraryTest.test_library_invalid_argument()
+                        ExitCode.invalid_argument()
+                        return
 
                     n_buttons = int(n_buttons)
-                    if len(args) < n_buttons-1:
+                    if len(sys.argv) - 5 < n_buttons:
                         LogLibraryTest.test_library_invalid_number_argument()
                         ExitCode.invalid_number_of_arguments()
                         return
 
                     buttons_name = []
                     for i in range(n_buttons):
-                        button_name = args[0]
-                        args.pop(0)
+                        button_name = sys.argv[5+i]
                         buttons_name.append(button_name)
-                
-                else:
                     
-                    if(args[0] == '-sp'):
-                        args.pop(0)
-                        key_code = 0    # Only serial port test
-                    else:
-                        key_code = 1    # Serial port and display test
+                    key_code = 1
+                    if len(sys.argv) > 5 + n_buttons:
+                        if sys.argv[5+n_buttons] == '-sp':
+                            key_code = 0 # Only serial port test
+                        else:
+                            LogLibraryTest.test_library_invalid_argument()
+                            ExitCode.invalid_argument()
+                            return
 
-    
             # Display test type
             elif (t_type == TEST_TYPE_DISPLAY):
-                pass
+                if len(sys.argv) > 4:
+                    LogLibraryTest.test_library_invalid_number_argument()
+                    ExitCode.invalid_number_of_arguments()
+                    return
             
+            # Board_info test type
+            elif (t_type == TEST_TYPE_BOARD_INFO):
+                
+                if len(sys.argv) < 6:
+                    LogLibraryTest.test_library_invalid_number_argument()
+                    ExitCode.invalid_number_of_arguments()
+                    return
+                
 
-                # Board_info test type
-                elif (t_type == TEST_TYPE_BOARD_INFO):
-                    if len(args) > 0:
-                        
-                        serial_number = args[0]
-                        serial_number = str(serial_number)
-                        args.pop(0)
+                serial_number = sys.argv[5]
+                manufacture_date = sys.argv[6]
 
-                    manufacture_date = args[0]
-                    manufacture_date = str(manufacture_date)
-                    args.pop(0)
-
-                    if(args[0] == '-sp'):
-                        args.pop(0)
-                        board_code = 0    # Only serial port test
+                board_code = 1
+                if len(sys.argv) > 6:
+                    if sys.argv[7] == '-sp':
+                        board_code = 0          # Only serial port test
                     else:
-                        board_code = 1    # Serial port and display test
+                        LogLibraryTest.test_library_invalid_argument()
+                        ExitCode.invalid_argument()
+                        return
 
-            
             # Bootloader_info test type
             elif(t_type == TEST_TYPE_BOOTLOADER_INFO):
                 
-                if(args[0] == '-sp'):
-                    args.pop(0)
-                    bootloader_code = 0    # Only serial port test
-                else:
-                    bootloader_code = 1    # Serial port and display test
-
-
-                # Alight test type
-                elif(t_type == TEST_TYPE_ALIGHT):
-                    
-                    if(args[0] == '-sp'):
-                        args.pop(0)
-                        alight_code = 0    # Only serial port test
+                bootloader_code = 1             # Serial port and display test
+                if len(sys.argv) > 4:
+                    if sys.argv[4] == '-sp':
+                        bootloader_code = 0     # Only serial port test
                     else:
-                        alight_code = 1    # Serial port and display test
-                    
-                else:
-                    LogLibraryTest.test_library_invalid_argument()
-                    ExitCode.invalid_argument()
-                    return
-                    
+                        LogLibraryTest.test_library_invalid_argument()
+                        ExitCode.invalid_argument()
+                        return
 
-        
+            # Alight test type
+            elif(t_type == TEST_TYPE_ALIGHT):
+                
+                alight_code = 1                 # Serial port and display test
+                if len(sys.argv) > 4:
+                    if sys.argv[4] == '-sp':
+                        alight_code = 0         # Only serial port test
+                    else:
+                        LogLibraryTest.test_library_invalid_argument()
+                        ExitCode.invalid_argument()
+                        return
+
+            else:
+                LogLibraryTest.test_library_invalid_argument()
+                ExitCode.invalid_argument()
+                return
+            
             # Execute the tests
 
             # Led test
@@ -199,7 +176,7 @@ class LibraryTest:
 
             # LCD test
             elif (t_type == TEST_TYPE_DISPLAY):
-
+                
                 result_display = SequenceTest.seq_display(model)
                 
                 # TODO: Log this
@@ -225,7 +202,7 @@ class LibraryTest:
 
             # Board_info test
             elif(t_type == TEST_TYPE_BOARD_INFO):
-
+                
                 result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
 
                 # TODO: Log this
@@ -253,9 +230,9 @@ class LibraryTest:
                 # TODO: Log this
                 if(result_alight == 0):
                     print("Alight test passed successfully")
-                elif(result_alight == -1): 
-                    print("Alight test failed")           
-        
+                elif(result_alight == -1):
+                    print("Alight test failed")
+
         # Default -> all tests
         else:
 
@@ -274,7 +251,7 @@ class LibraryTest:
             manufacture_date = sys.argv[4]
             manufacture_date = str(manufacture_date)
             
-            if len(sys.argv) == 6:
+            if len(sys.argv) > 5:
                 if sys.argv[5] == '-sp':
                     all_code = False
                 else:
@@ -287,7 +264,7 @@ class LibraryTest:
             # TODO: Log this
             if(result_all == 0):
                 print("All the tests passed successfully")
-            elif(result_all == -1): 
-                print("At least one of the tests failed")                  
+            elif(result_all == -1):
+                print("At least one of the tests failed")
 
         return
