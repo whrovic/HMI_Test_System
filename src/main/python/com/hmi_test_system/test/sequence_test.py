@@ -13,6 +13,7 @@ from .test import Test
 
 class SequenceTest:
 
+    #Log_sequencetest =
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
 

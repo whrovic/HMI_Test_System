@@ -8,7 +8,6 @@ class Led(Position):
         self._name = name
         self._n_colour = n_colour
         self._colours: list[Color] = []
-        self.colours_cv: list[Color] = []
     
     def set_name(self, name: str):
         self._name = name
