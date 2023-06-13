@@ -16,10 +16,6 @@ class LogDisplay(Log):
         Log.info_log(f"{test_name} Test Passed")
 
     @staticmethod
-    def test_canceled():
-        Log.error_log("TestDisplay Canceled")
-
-    @staticmethod
     def test_finished():
         Log.info_log("TestDisplay Finished")
     
