@@ -36,7 +36,7 @@ class LibraryTest:
 
         model = Settings.get_model(name_model)
         leds_name = []
-        buttons_name = [] 
+        buttons_name = []
 
         # Specific tests
         if sys.argv[3].startswith('-'):
@@ -255,16 +255,31 @@ class LibraryTest:
         
         # Default -> all tests
         else:
+
+            if len(sys.argv) < 5 or len(sys.argv) > 6:
+                LogLibraryTest.test_library_invalid_number_argument()
+                ExitCode.invalid_number_of_arguments()
+                return
+
             leds_name = None
             buttons_name = None
+            all_code = True
 
-            serial_number = sys.argv[2]
+            serial_number = sys.argv[3]
             serial_number = str(serial_number)
 
-            manufacture_date = sys.argv[3]
+            manufacture_date = sys.argv[4]
             manufacture_date = str(manufacture_date)
-
-            result_all = SequenceTest.seq_all(model, serial_number, manufacture_date)   
+            
+            if len(sys.argv) == 6:
+                if sys.argv[5] == '-sp':
+                    all_code = False
+                else:
+                    LogLibraryTest.test_library_invalid_argument()
+                    ExitCode.invalid_argument()
+                    return
+            
+            result_all = SequenceTest.seq_all(model, serial_number, manufacture_date, all_code)   
 
             # TODO: Log this
             if(result_all == 0):

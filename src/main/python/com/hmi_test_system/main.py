@@ -34,8 +34,8 @@ logi_cam.set_parameters('default', def_params)
 logi_cam.set_parameters('display', dsp_params)
 logi_cam.set_parameters('leds', led_params)
 TestSettings.add_new_cam_settings(logi_cam)
-print(TestSettings.set_cam_display('LogiCam'))
-print(TestSettings.set_cam_leds('LogiCam'))
+TestSettings.set_cam_display('LogiCam')
+TestSettings.set_cam_leds('LogiCam')
 
 TestSettings.add_new_sp_settings('SerialPort', 'COM5', 115200)
 TestSettings.set_sp_main('SerialPort')
@@ -51,7 +51,9 @@ def arguments_help():
     print("   test [model_name] [serial_number] [manufacture_date] - Tests everything sequentially as defined in the model and the actual firmware")
     print("TYPE_TEST:")
     print("        KEYS		: -key \n 	BOOTLOADER INFO	: -bootloader \n	BOARD INFO	: -board")
-    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display")
+    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display\n")
+    print("        -sp             : The performed tests will only use serial port")
+    print("                          Available in key, bootload, board and alight tests")
 
 #------------------------------------CODE BEGIN------------------------------------#
 
