@@ -135,12 +135,12 @@ class LibraryColor(Lib):
     
     @staticmethod
     def edit_color_new_color():
-        
+        os.system('cls')
         # Print current available colors
         LibraryColor._print_available_colors()
 
         # Get the name of the new color
-        new_color_name = Lib.get_input_str("Write the name of the new color: ")
+        new_color_name = Lib.get_input_str("Name of the new color: ")
         if new_color_name is None: return -1
 
         # Check if the name is already in use
@@ -174,7 +174,7 @@ class LibraryColor(Lib):
 
         # Check if there is a second range of hsv values
         is_there_a_second_range = Lib.get_yes_no_confirmation("Is there a second range of hsv values [y|n]? ")
-        if is_there_a_second_range is None: return -1
+        if is_there_a_second_range is False: return -1
 
         # Get the hsv values for the 2nd range
         if is_there_a_second_range:

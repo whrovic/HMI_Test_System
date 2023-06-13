@@ -1,3 +1,6 @@
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
+
 from .constant_main import *
 
 
@@ -72,7 +75,7 @@ class Library:
         count = 0
         while True:
             if (count >= NTIMEOUT_LIBRARY_SETTINGS):
-                return None
+                return False
             input_value = input(print_str).strip()
 
             if input_value.lower() == 'y':
@@ -170,3 +173,29 @@ class Library:
                     continue
                 else:
                     return h, s, v
+    
+    
+    @staticmethod
+    def ask_directory():        
+        count = 0
+        while True:
+            filename = askdirectory()    
+            print(f"Path choose: {filename} \n\n")
+            if filename is None:
+                count +=1
+                print("Inalid path")
+                continue
+            
+            if (count >= NTIMEOUT_LIBRARY_SETTINGS):
+                Library.exit_input("Reach the limit of trys")
+                return None
+            
+            print("Do you want save the path [y|n]?")
+            input_value = input().strip()
+            if input_value.lower() == 'y':
+                return filename
+            else:
+                print("Path not save")
+                count += 1
+                continue
+        
