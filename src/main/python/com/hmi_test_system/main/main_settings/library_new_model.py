@@ -203,8 +203,12 @@ class LibraryNewModel(Lib):
             print("\nModel doesn't have leds\n")
 
         # Save reference images
-        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'): return -1
-        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'): return -1
+        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
+            input("Couldn't write chr img")
+            return -1
+        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
+            input("Couldn't write pal img")
+            return -1
         
         # Add model to settings
         Settings.add_model(new_model)

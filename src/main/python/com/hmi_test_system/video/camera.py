@@ -22,6 +22,9 @@ class Camera(VideoDevice):
         return frame
 
     def set_settings(self, settings: dict[str, any]):
+
+        # TODO: Add warning when opencv can't apply all the settings
+
         if settings is None:
             settings = {}
         
