@@ -135,7 +135,7 @@ class LibraryTest:
                 
 
                 # Board_info test type
-                elif(test_type[i] == TEST_TYPE_BOARD_INFO):
+                elif (t_type == TEST_TYPE_BOARD_INFO):
                     if len(args) > 0:
                         
                         serial_number = args[0]
@@ -154,7 +154,7 @@ class LibraryTest:
 
                 
                 # Bootloader_info test type
-                elif(test_type[i] == TEST_TYPE_BOOTLOADER_INFO):
+                elif (t_type == TEST_TYPE_BOOTLOADER_INFO):
                     
                     if(args[0] == '-sp'):
                         args.pop(0)
@@ -164,7 +164,7 @@ class LibraryTest:
 
 
                 # Alight test type
-                elif(test_type[i] == TEST_TYPE_ALIGHT):
+                elif(t_type == TEST_TYPE_ALIGHT):
                     
                     if(args[0] == '-sp'):
                         args.pop(0)
@@ -179,82 +179,79 @@ class LibraryTest:
                     
 
 
-            # Execute the tests
-            for i in range(len(test_type)):
+            # Led test
+            if (t_type == TEST_TYPE_LEDS):
 
-                # Led test
-                if (test_type[i] == TEST_TYPE_LEDS):
+                # If user doesnt't choose the leds
+                if (len(leds_name) == 0):
+                    leds_name = None
 
-                    # If user doesnt't choose the leds
-                    if (len(leds_name) == 0):
-                        leds_name = None
+                result_led = SequenceTest.seq_led(model, leds_name)
+                
+                # TODO: Log this
+                if (result_led == 0):
+                    print("Leds tests passed sucessfully")
+                elif (result_led == -1): 
+                    print("Leds test failed")
 
-                    result_led = SequenceTest.seq_led(model, leds_name)
-                    
-                    # TODO: Log this
-                    if (result_led == 0):
-                        print("Leds tests passed sucessfully")
-                    elif (result_led == -1): 
-                        print("Leds test failed")
+            # LCD test
+            elif (t_type == TEST_TYPE_DISPLAY):
 
-                # LCD test
-                elif (test_type[i] == TEST_TYPE_DISPLAY):
+                result_display = SequenceTest.seq_display(model)
+                
+                # TODO: Log this
+                if (result_display == 0):
+                    print("Display tests passed successfully")
+                elif (result_display == -1): 
+                    print("Display tests failed")
 
-                    result_display = SequenceTest.seq_display(model)
-                    
-                    # TODO: Log this
-                    if (result_display == 0):
-                        print("Display tests passed successfully")
-                    elif (result_display == -1): 
-                        print("Display tests failed")
+            # Button test
+            elif(t_type == TEST_TYPE_BUTTONS):
+                
+                # If user doesnt't choose the buttons
+                if(len(buttons_name) == 0):
+                    buttons_name = None 
 
-                # Button test
-                elif(test_type[i] == TEST_TYPE_BUTTONS):
-                    
-                    # If user doesnt't choose the buttons
-                    if(len(buttons_name) == 0):
-                        buttons_name = None 
+                result_button = SequenceTest.seq_button(model, buttons_name, key_code)      
+                
+                # TODO: Log this
+                if(result_button == 0):
+                    print("Buttons test passed successfully")
+                elif(result_button == -1): 
+                    print("Buttons test failed")
 
-                    result_button = SequenceTest.seq_button(model, buttons_name, key_code)      
-                    
-                    # TODO: Log this
-                    if(result_button == 0):
-                        print("Buttons test passed successfully")
-                    elif(result_button == -1): 
-                        print("Buttons test failed")
+            # Board_info test
+            elif(t_type == TEST_TYPE_BOARD_INFO):
 
-                # Board_info test
-                elif(test_type[i] == TEST_TYPE_BOARD_INFO):
+                result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
 
-                    result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
+                # TODO: Log this
+                if(result_board == 0):
+                    print("BoardInfo test passed successfully")
+                elif(result_board == -1): 
+                    print("BoardInfo test failed")
 
-                    # TODO: Log this
-                    if(result_board == 0):
-                        print("BoardInfo test passed successfully")
-                    elif(result_board == -1): 
-                        print("BoardInfo test failed")
+            # Bootloader_info test
+            elif(t_type == TEST_TYPE_BOOTLOADER_INFO):
 
-                # Bootloader_info test
-                elif(test_type[i] == TEST_TYPE_BOOTLOADER_INFO):
+                result_bootloader = SequenceTest.seq_boot_loader_info(model, bootloader_code)
 
-                    result_bootloader = SequenceTest.seq_boot_loader_info(model, bootloader_code)
+                # TODO: Log this
+                if(result_bootloader == 0):
+                    print("BootloaderInfo test passed successfully")
+                elif(result_bootloader == -1): 
+                    print("BootloaderInfo test failed")
 
-                    # TODO: Log this
-                    if(result_bootloader == 0):
-                        print("BootloaderInfo test passed successfully")
-                    elif(result_bootloader == -1): 
-                        print("BootloaderInfo test failed")
+            # Alight test
+            elif(t_type == TEST_TYPE_ALIGHT):
 
-                # Alight test
-                elif(test_type[i] == TEST_TYPE_ALIGHT):
+                result_alight = SequenceTest.seq_alight(alight_code)
 
-                    result_alight = SequenceTest.seq_alight(alight_code)
-
-                    # TODO: Log this
-                    if(result_alight == 0):
-                        print("Alight test passed successfully")
-                    elif(result_alight == -1): 
-                        print("Alight test failed")           
+                # TODO: Log this
+                if(result_alight == 0):
+                    print("Alight test passed successfully")
+                elif(result_alight == -1): 
+                    print("Alight test failed")           
         
         # Default -> all tests
         else:
