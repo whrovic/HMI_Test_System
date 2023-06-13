@@ -20,8 +20,12 @@ class CameraSettings:
         self._device_id = device_id
 
     def get_parameters(self, position: str):
-        return self._parameters.get(position, None)
+        parameters = self._parameters.get(position, None)
+        if parameters is None:
+            return None
+        else:
+            return parameters.get_parameters()
     
-    def set_parameters(self, position: str, parameters: Parameter):
+    def set_parameters(self, position: str, parameters: Parameter = Parameter()):
         self._parameters[position] = parameters
     
