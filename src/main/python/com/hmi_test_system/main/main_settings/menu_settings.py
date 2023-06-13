@@ -168,6 +168,7 @@ class MenuSettings:
     
     @staticmethod
     def sett_editmenu():
+        #TODO: menu print was update
         #TODO: changes not discard in the atual session
         # must replace them by the original xml (??)
         count = 0    

@@ -44,8 +44,9 @@ class MenuPrints:
         print("-------------- Edit Menu --------------\n\n")
         print("1- Edit model info  2- Edit led        \n")
         print("3- Edit button      4- Edit Display    \n")
-        print("               5- Save                 \n")
-        print("6- Back             7- Exit            \n\n")
+        print("5- Delete           6- Edit ref image  \n")
+        print("               7- Save                 \n")
+        print("8- Back             9- Exit            \n\n")
         print("---------------------------------------\n")
 
     @staticmethod
