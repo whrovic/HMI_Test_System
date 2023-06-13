@@ -6,7 +6,6 @@ from opencv.hmicv import HMIcv
 from report import *
 from serial_port.constant_test import *
 from serial_port.serial_port import SerialPort
-from ..report import log_sequence_test
 
 from .setup_test import SetupTest
 from .test import Test
@@ -14,7 +13,7 @@ from .test import Test
 
 class SequenceTest:
 
-    Log_sequencetest =
+    #Log_sequencetest =
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
 
