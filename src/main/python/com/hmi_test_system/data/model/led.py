@@ -36,6 +36,7 @@ class Led(Position):
 
     def delete_colours(self):
         self._colours = []
+        
 
     def get_colours(self):
         return self._colours

@@ -260,7 +260,6 @@ class MenuSettings:
                     Lib.exit_input("Invalid input")
                     continue
                 
-    
     @staticmethod
     def sett_editmenu_editbutton(model: Model):
         count = 0
