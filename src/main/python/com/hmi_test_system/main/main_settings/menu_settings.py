@@ -111,13 +111,11 @@ class MenuSettings:
                 # Add color
                 case '2':
                     count = 0
-                    if (LC.edit_color_new_color() == -1):
-                        Lib.exit_input("Was not possible add the Color")
+                    LC.edit_color_new_color()
                 # Delete color
                 case '3':
                     count = 0
-                    if (LC.edit_color_delete_color() == -1):
-                        Lib.exit_input("Was not possible delete the Color")  
+                    LC.edit_color_delete_color()
                 # Back
                 case '4':
                     return 0
@@ -182,18 +180,23 @@ class MenuSettings:
             match (menu_choice):
                 # edit model info
                 case '1':
+                    count = 0
                     LEM.edit_model_info(model)
                 # edit led
                 case '2':
+                    count = 0
                     MenuSettings.sett_editmenu_editled(model)
                 # edit button
                 case '3':
+                    count = 0
                     MenuSettings.sett_editmenu_editbutton(model)
                 # edit display
                 case '4':
+                    count = 0
                     LEM.edit_model_display(model)
                 # save
                 case '5':
+                    count = 0
                     df.create_xml(model)
                     Lib.exit_input("Changes saved!")
                     save = True
@@ -222,7 +225,7 @@ class MenuSettings:
         #TODO confirm is led is the type Led
         while True:
             MP.sett_editmenu_editled()
-            menu_choice = input()
+            menu_choice = input().strip()
 
             match(menu_choice):
                 # edit name
@@ -260,25 +263,35 @@ class MenuSettings:
     
     @staticmethod
     def sett_editmenu_editbutton(model: Model):
-
+        count = 0
         image, button = LEM.sett_editmenu_editbutton_first(model)
-        while True:
-            
+        if image is None: return 0
+        
+        while True:            
             MP.sett_editmenu_editbutton()
-            c = input()
+            menu_choice = input().strip()
 
-            # edit name
-            if c=='1':
-                c = LEM.edit_model_edit_button_name(button)
-                continue
-
-            # edit position 
-            elif c=='2':
-                c = LEM.edit_model_edit_button_position(image, button)
-            
-            # back to menu
-            elif c == '3':
-                break
+            match(menu_choice):
+                # edit name
+                case '1':
+                    count = 0
+                    LEM.edit_model_edit_button_name(button)
+                # edit position 
+                case '2':
+                    count = 0
+                    LEM.edit_model_edit_button_position(image, button)
+                # back to menu
+                case '3':
+                    return 0
+                #exit
+                case '4':
+                    return -1
+                case _:
+                    count = count + 1
+                    if (count > NTIMEOUT_MENUS):
+                        return -1
+                    Lib.exit_input("Invalid input")
+                    continue
     
     @staticmethod
     def sett_testsettings():
@@ -330,8 +343,6 @@ class MenuSettings:
                     count = 0
                     #TODO: Log of not sucessly change
                     LD.change_settings_directory()
-                    #print("In construction")
-                    #menu_choice = input('Press Enter')
                     continue
                 
                 #resource

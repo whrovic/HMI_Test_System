@@ -13,7 +13,6 @@ class LibraryNewModel(Lib):
     
     @staticmethod
     def new_model_create():
-        #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
                 
@@ -44,20 +43,23 @@ class LibraryNewModel(Lib):
     
     @staticmethod
     def new_model_import_xml():
-        #------------------------------------ADD NEW MODEL------------------------------------#
         while True:
             os.system('cls') 
                 
             name_model = Lib.get_input_str("Insert the name of the new model:")
             if (name_model is None):
                 # back to menu
-                break
+                return -1
             
             # model doesn't exist -> new configuration
             elif (df.open_model_xml(name_model) is None):
                 os.system('cls') 
-                print("Insert the path of the XML file")
-                directory = str(input())
+                #print("Insert the path of the XML file")
+                #directory = str(input())
+                directory = Lib.ask_directory()
+                if directory is None:
+                    Lib.exit_input("Path doesn't exits")
+                    return -1
 
                 if (LibraryNewModel._create_model_import_xml(directory, name_model) == 0):
                     model = Settings.get_model(name_model)
@@ -65,16 +67,16 @@ class LibraryNewModel(Lib):
                     df.create_xml(model)
                     os.system('cls')
                     Lib.exit_input(f"{name_model} IS ADDED \n\n")
-                    break
+                    return 0
                 else:
                     os.system('cls')
                     Lib.exit_input(f"{name_model} IS NOT ADDED \n\n")
-                    break
+                    return -1
             # model already exists
             else:
                 os.system('cls')
                 Lib.exit_input(f"{name_model} ALREADY EXISTS\n\n")
-                break
+                return -1
     
     @staticmethod
     def _create_model_manually(name_model):
@@ -203,8 +205,12 @@ class LibraryNewModel(Lib):
             print("\nModel doesn't have leds\n")
 
         # Save reference images
-        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'): return -1
-        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'): return -1
+        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
+            input("Couldn't write chr img")
+            return -1
+        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
+            input("Couldn't write pal img")
+            return -1
         
         # Add model to settings
         Settings.add_model(new_model)

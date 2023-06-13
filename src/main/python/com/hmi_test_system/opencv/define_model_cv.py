@@ -193,6 +193,9 @@ class DefineModelCV():
     @staticmethod
     def get_reference_display_images():
 
+        # TODO: Add prints and that stuff
+        # TODO: Search for prints and inputs and change that to L.exit_input or something like that
+
         TIMEOUT = 10
         
         # Get the display camera parameters
@@ -263,7 +266,13 @@ class DefineModelCV():
                 received_sp = True
                 
                 data = str(data)
+
+                # TODO: Remove this
+                print(data)
+
                 if data.startswith(TEST_DISPLAY_BEGIN):
+                    # TODO: Maybe log this
+                    print("TEST_DISPLAY_BEGIN")
                     break
             
             sleep(0.1)
@@ -291,6 +300,7 @@ class DefineModelCV():
 
             # Check if the data is related to the display test
             if data is not None:
+                print(data)
                 # Determine which type of test is being performed
                 if CHAR in data:
                     new_test_name = CHAR
@@ -310,6 +320,7 @@ class DefineModelCV():
                 new_test_start_time = None
                 if test_name == TEST_DISPLAY_OK:
                     break
+                print(test_name)
 
             # If a test is currently running
             if test_name is not None:
@@ -325,12 +336,15 @@ class DefineModelCV():
                     test_start_time = new_test_start_time
                     if test_name == TEST_DISPLAY_OK:
                         break
+                    print(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == CHAR:
                         chr_img_list.append(frame)
+                        print("Added chr img")
                     elif test_name == COLOR:
                         pal_img_list.append(frame)
+                        print("Added pal img")
 
         cam.close()
         serial.close()

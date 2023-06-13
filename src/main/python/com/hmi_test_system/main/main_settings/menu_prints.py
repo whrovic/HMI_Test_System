@@ -63,7 +63,7 @@ class MenuPrints:
         os.system('cls') 
         print("------------- Edit button -------------\n\n")
         print("1- Name             2- Position        \n")
-        print("               3- Back                 \n\n")
+        print("3- Back             4- Exit            \n\n")
         print("---------------------------------------\n")
     
     @staticmethod
