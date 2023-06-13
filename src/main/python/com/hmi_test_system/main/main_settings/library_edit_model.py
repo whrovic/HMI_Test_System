@@ -20,7 +20,6 @@ class LibraryEditModel(Lib):
         # Get list of available models
         name_models = df.get_all_xml_file_names()
         if name_models is None:
-            # TODO: Error code
             Lib.exit_input("Error path don't exist")
             return None
         elif len(name_models) == 0:
@@ -28,7 +27,6 @@ class LibraryEditModel(Lib):
             return None
         
         # Choose which model to edit
-        #while True:
         os.system('cls') 
 
         # Print all available models
@@ -48,6 +46,8 @@ class LibraryEditModel(Lib):
         else:
             return Settings.get_model(name_model)
     
+
+    # Info
     @staticmethod
     def edit_model_info(model: Model):
         os.system('cls')
@@ -92,21 +92,13 @@ class LibraryEditModel(Lib):
         Lib.exit_input("INFO CHANGED")
         return 0
 
+
+    # LED
     @staticmethod
     def sett_editmenu_editled_first(model: Model):
         
         os.system('cls')
-        # TODO: Change this
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
+        image = DefineModelCV.get_leds_image()
 
         led_name=Lib.get_input_str("What led do you want to edit?")
         if (led_name is None):
@@ -135,8 +127,6 @@ class LibraryEditModel(Lib):
 
     @staticmethod
     def edit_menu_edit_led_colours(led: Led):
-        #TODO: not working correctly in some specific situations
-        #because of control of n_colours save on model
         led.delete_colours()
         os.system('cls')
         
@@ -148,7 +138,6 @@ class LibraryEditModel(Lib):
         if (led.set_n_Colour(n_colours) == -1):
             Lib.exit_input("Error: not possible to change")
             return -1
-        #led._n_colour = n_colours
                     
         for i in range(n_colours):
             print(f"Colour {i+1} of led:")
@@ -159,17 +148,6 @@ class LibraryEditModel(Lib):
             if new_color is None: return 0
             
             led.new_colour(new_color)
-            
-            '''while True:
-                print('Type which number you want')
-                new_colour = input()
-                if new_colour.isdigit():
-                    new_colour = int(new_colour)
-                    led.new_colour(ListOfColors.get_color_index(new_colour-1))
-                    break
-                else:
-                    continue'''
-
                     
         Lib.exit_input("LED COLOURS CHANGED")
 
@@ -184,79 +162,59 @@ class LibraryEditModel(Lib):
         Lib.exit_input("LED POSITION CHANGED")
 
 
+
+    # Button
     @staticmethod
-    def sett_editmenu_editbutton_first(model):
-        # TODO: Change this
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
-
-        while True:
-            os.system('cls')
-            print("What button do you want to edit?")
-            print("(to go to the menu insert q)\n" )
-            button_name = input()
-
-            # back to menu
-            if(button_name == 'q'):
-                break
-            
-            button = model.get_button(button_name)            
-            if (button is None):
-                os.system('cls')
-                print(f"{button_name} doesn't exist")
-                input("Press Enter to continue...")
-                continue
-        return image,button
-
-    @staticmethod
-    def edit_model_edit_button_name(button):
-        os.system('cls') 
-        print("What is the new button name?\n")
-        button_name = input()
-        button.set_name(button_name)
-
+    def sett_editmenu_editbutton_first(model: Model):
+        
         os.system('cls')
-        print("BUTTON NAME CHANGED")
-        print("To continue insert anything\n")
-        c= input()
-        return c
+        image = DefineModelCV.get_buttons_image()
+
+        
+        button_name = Lib.get_input_str("What button do you want to edit?")
+
+        if (button_name is None):
+            # back to menu
+            return None, None
+        
+        button = model.get_button(button_name)
+        if button is None:
+            Lib.exit_input(f"{button_name} doesn't exist")
+            return None, None
+        else:
+            return button, image  
 
     @staticmethod
-    def edit_model_edit_button_position(image, button):
+    def edit_model_edit_button_name(button: Button):
         os.system('cls') 
-        print(f"Select the button central position and press ENTER")
-        pos_vector= DefineModelCV.click_pos(image)
+        print("What is the new button name?")
+        button_name = Lib.get_input_str("What is the new button name?\n").strip()
+                    
+        if (button_name is not None):
+            button.set_name(button_name)
+            Lib.exit_input("BUTTON NAME CHANGED")
+            return 0
+        else:
+            Lib.exit_input("Error to change name")
+            return -1
+
+    @staticmethod
+    def edit_model_edit_button_position(image, button: Button):
+        os.system('cls') 
+        print("Select the button central position and press ENTER")
+        pos_vector = DefineModelCV.click_pos(image)
 
         button.set_pos(pos_vector[0], pos_vector[1])
 
-        os.system('cls')
-        print("BUTTON POSTION CHANGED")
-        print("To continue insert anything\n")
-        c= input()
-        return c
+        Lib.exit_input("BUTTON POSITION CHANGED")
 
+
+    # Display
     @staticmethod
     def edit_model_display(model: Model):
         
-        # TODO: Change this
-        img_path = "test_images/HMI.png"
-
-        cap = ImageFiles([img_path])
-
-        cap.start_capture()
-
-        image = cap.get_image()
-
-        cap.stop_capture()
-        cap.clear_queue()
+        os.system('cls')
+        image = DefineModelCV.get_display_image()
 
         display = model.get_display()
 
@@ -276,6 +234,9 @@ class LibraryEditModel(Lib):
         print("LCD POSITION CHANGED\n")
         input("Press Enter to continue...")
     
+
+
+    # Save
     @staticmethod
     def save_changes(model: Model):
         while True:
