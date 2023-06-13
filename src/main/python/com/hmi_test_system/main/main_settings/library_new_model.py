@@ -144,6 +144,7 @@ class LibraryNewModel(Lib):
         
         # buttons configuration
         print("\n\nBUTTONS CONFIGURATION\n")
+        input("Please make sure that the camera is positioned in the leds board...")
 
         if(n_buttons > 0):
             
@@ -203,7 +204,7 @@ class LibraryNewModel(Lib):
                 new_model.set_led(led)
         else:
             print("\nModel doesn't have leds\n")
-
+        
         # Save reference images
         if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
             input("Couldn't write chr img")
@@ -211,7 +212,6 @@ class LibraryNewModel(Lib):
         if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
             input("Couldn't write pal img")
             return -1
-        
         # Add model to settings
         Settings.add_model(new_model)
 

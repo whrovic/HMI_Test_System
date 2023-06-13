@@ -37,13 +37,16 @@ class SerialPort:
             self._read_port()
 
     def _read_port(self):
-        if self._serial.in_waiting != 0:
-            data = self._serial.readline().decode()
-            current_time = time.time()
-            data = data.strip()
-            if len(data) > 0:
-                self._port_queue_data.put(data)
-                self._port_queue_time.put(current_time)
+        try:
+            if not self.closed() and self._serial.in_waiting != 0:
+                data = self._serial.readline().decode()
+                current_time = time.time()
+                data = data.strip()
+                if len(data) > 0:
+                    self._port_queue_data.put(data)
+                    self._port_queue_time.put(current_time)
+        except:
+            self.close()
 
     def write_port(self, data: str):
         self._serial.write(data.encode('utf-8'))

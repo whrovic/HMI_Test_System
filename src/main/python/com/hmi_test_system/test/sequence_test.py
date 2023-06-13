@@ -151,7 +151,7 @@ class SequenceTest:
         print("Board Info Test started")
 
         # Start board info test
-        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
+        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
 
         # Close all the opened connections
         SetupTest.close()
@@ -340,7 +340,8 @@ class SequenceTest:
             return -1
         else:
             cam.set_settings(parameters)
-            Log.leds_camera_connected()       
+            Log.leds_camera_connected()
+            cam._interval = 0.1
 
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -561,7 +562,7 @@ class SequenceTest:
                 # TODO: Log this
                 print("Board Info Test started")
                 # Start board info test
-                result = Test.test_board_info(cam_display, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
+                result = Test.test_board_info(cam_display, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
             elif data.startswith(TEST_ALIGHT_BEGIN):
                 # TODO: Log this
                 print("Light Test started")
@@ -630,6 +631,8 @@ class SequenceTest:
                 received_sp = True
                 
                 data = str(data)
+                # TODO: Delete this
+                print(data)
                 if data.startswith(TEST_BEGIN):
                     return 0
             

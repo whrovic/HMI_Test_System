@@ -5,6 +5,9 @@ import pytesseract
 
 class Displaycv():
 
+    display_transformation_matrix = None
+    display_coordinates = None
+
     @staticmethod
     def read_char(display):
 
@@ -38,6 +41,9 @@ class Displaycv():
     @staticmethod
     def get_transformation_matrix(image):
 
+        if Displaycv.display_transformation_matrix is not None:
+            return Displaycv.display_transformation_matrix, Displaycv.display_coordinates
+
         # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -56,7 +62,7 @@ class Displaycv():
         # Approximate the contour with a 4-sided polygon
         epsilon = 0.1 * cv2.arcLength(largest_contour, True)
         approx = cv2.approxPolyDP(largest_contour, epsilon, True)
-
+        
         # Define the coordinates of the display's vertices 
         top_right = approx[0][0]
         top_left = approx[1][0]
@@ -72,6 +78,8 @@ class Displaycv():
         # Calculate the perspective transform matrix
         transform_matrix = cv2.getPerspectiveTransform(display_coords, rectangle_coords)
 
+        Displaycv.display_transformation_matrix = transform_matrix
+        Displaycv.display_coordinates = rectangle_coords
         return transform_matrix, rectangle_coords
 
     @staticmethod

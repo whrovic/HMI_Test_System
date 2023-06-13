@@ -1,5 +1,6 @@
 from time import time
 
+import cv2
 from data.color.color import Color, OffColor
 from data.model.button import Button
 from data.model.led import Led
@@ -26,6 +27,7 @@ class Test:
         old_data_time = old_frame_time = time()
         sequence_no_sp = sequence_no_dsp = 0
         previous_button_dsp = None
+        button_sequence_name = [b.get_name() for b in button_sequence]
 
         while True:
 
@@ -59,26 +61,26 @@ class Test:
                             print(f"Keys Test [SP]: Received {button_name} but all the buttons were already received")
                             ExitCode.keys_test_not_passed()
                             return -1
-                        if button_name == button_sequence[sequence_no_sp]:
+                        if button_name == button_sequence_name[sequence_no_sp]:
                             sequence_no_sp += 1
                             print(f"Keys Test [SP]: Received {button_name}")
                             if sequence_no_sp >= n_buttons:
                                 LogButton.button_test_serial_pass()
                         else:
                             # Check if the button was detected consectivelly
-                            if sequence_no_sp > 0 and (button_name == button_sequence[sequence_no_sp - 1]):
+                            if sequence_no_sp > 0 and (button_name == button_sequence_name[sequence_no_sp - 1]):
                                 # TODO: Log this
-                                print(f"Keys Test [SP]: Error received {button_name} consecutivelly, instead of {button_sequence[sequence_no_sp]}")
+                                print(f"Keys Test [SP]: Error received {button_name} consecutivelly, instead of {button_sequence_name[sequence_no_sp]}")
                                 ExitCode.keys_test_key_detected_consecutivelly()
                                 return -1
                             # Check if the button was detected before
-                            elif button_name in button_sequence[:sequence_no_sp]:
+                            elif button_name in button_sequence_name[:sequence_no_sp]:
                                 # TODO: Log this
-                                print(f"Keys Test [SP]: Error received {button_name} for the 2nd time, instead of {button_sequence[sequence_no_sp]}")
+                                print(f"Keys Test [SP]: Error received {button_name} for the 2nd time, instead of {button_sequence_name[sequence_no_sp]}")
                                 ExitCode.keys_test_key_detected_consecutivelly()
                                 return -1
                             else:
-                                print(f"Keys Test [SP]: Error received {button_name} instead of {button_sequence[sequence_no_sp]}")
+                                print(f"Keys Test [SP]: Error received {button_name} instead of {button_sequence_name[sequence_no_sp]}")
                                 ExitCode.keys_test_sequence_error()
                                 return -1
                     elif not data.startswith(TEST_BUTTONS):
@@ -141,6 +143,8 @@ class Test:
     @staticmethod
     def test_display(cam: Camera, serial: SerialPort, chr_ref_img, pal_ref_img):
 
+        # TODO: Add error code
+
         # Initializing the test variables
         test_name = test_start_time = None
         # Variables for the next test
@@ -188,7 +192,8 @@ class Test:
                 frame, frame_time = cam.get_image()
                 if frame is not None:
                     old_frame_time = frame_time
-
+                    Displaycv.get_transformation_matrix(frame)
+                    
                     # Check if the frame is related to the current test
                     if frame_time < test_start_time:
                         continue
@@ -607,7 +612,7 @@ class Test:
                             # Extract the ALight sensor value from the received info
                             # Get last word (13669.36Lux)
                             info_words = data.split()
-                            if len(info_words <= 1):
+                            if len(info_words) <= 1:
                                 # TODO: Log this
                                 print("Didn't find enough words")
                                 ExitCode.alight_test_not_passed()
@@ -818,7 +823,7 @@ class Test:
                 # If at least one of the leds are turned off, return
                 for i in range(n_leds_test):
                     if isinstance(vet_cor[i], OffColor):
-                        LogLeds.test_failed(vet_cor[i].get_name())
+                        LogLeds.test_failed(leds_test[i].get_name())
                         ExitCode.leds_test_not_turn_all_on()
                         return -1
                 # All leds are turned on
