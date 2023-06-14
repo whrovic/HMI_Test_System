@@ -180,14 +180,6 @@ class LibraryNewModel(Lib):
                 led_name = 'L' + str(i+1)
                 n_colours=Lib.until_find_int(f"How many colours have the led {i+1}?")
                 if (n_colours) == -1: return -1
-                '''while True:
-                    print()
-                    n_colours = input()
-                    if n_colours.isdigit():
-                        n_colours = int(n_colours)
-                        break
-                    else: 
-                        continue'''
 
                 led = Led(led_name, n_colours, int(leds_coordinates[i][0]), int(leds_coordinates[i][1]))
 
@@ -200,20 +192,7 @@ class LibraryNewModel(Lib):
                     
                     if  0 < new_colour <= len(ListOfColors.get_list_of_colors()):
                         led.new_colour(ListOfColors.get_color_index(new_colour-1))
-            
-                        
-                    '''while True:
-                        print('Type which number you want')
-                        new_colour = input()
-                        if new_colour.isdigit():
-                            new_colour = int(new_colour)
-
-                            if 0 < new_colour <= len(ListOfColors.get_list_of_colors()):
-                                led.new_colour(ListOfColors.get_color_index(new_colour-1))
-                                break
-                        else:
-                            continue'''
-                    
+                               
                 new_model.set_led(led)
         else:
             print("\nModel doesn't have leds\n")
