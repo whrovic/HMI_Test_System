@@ -2,16 +2,18 @@ import sys
 from test.sequence_test import SequenceTest
 
 from data.define_and_fill_model import DefineAndFillModel as df
-from report.log_library_test import LogLibraryTest
 from data.settings import Settings
 from main.constant_main import *
 from report import *
 
 
 class LibraryTest:
+    
 
     @staticmethod
     def test_menu():
+        leds_name = []
+        buttons_name = []
 
         # No model name
         if len(sys.argv) < 3:
@@ -19,38 +21,20 @@ class LibraryTest:
             ExitCode.invalid_argument()
             return
         
-        name_model = sys.argv[2]
-
-        # Checks for bad model format
-        if name_model[0].isdigit():
-            LogLibraryTest.test_library_invalid_name()
-            ExitCode.invalid_argument
-            return
-
-        # Model doesn't exist
-        if(df.open_model_xml(name_model) is None):
-            LogLibraryTest.test_library_error_name(name_model)
-            ExitCode.model_not_found()
-            return
-
-        model = Settings.get_model(name_model)
-        leds_name = []
-        buttons_name = []
+        model = LibraryTest.check_model_name()
+        if model is None: return
         
         if(sys.argv[3] is None):
             ExitCode.invalid_number_of_arguments()
             return
         
         # Specific tests
-        if sys.argv[3].startswith('-'):
-            
+        if sys.argv[3].startswith('-'):            
             t_type = sys.argv[3]
             
             # Leds test type
-            if (t_type == TEST_TYPE_LEDS):
-                
-                if len(sys.argv) > 4:                
-
+            if (t_type == TEST_TYPE_LEDS):                
+                if len(sys.argv) > 4:  
                     n_leds = sys.argv[4]
 
                     if not n_leds.isdigit():
@@ -70,9 +54,7 @@ class LibraryTest:
 
             # Buttons test type
             elif (t_type == TEST_TYPE_BUTTONS):
-
                 if len(sys.argv) > 4:
-
                     key_code = 1
 
                     n_buttons = sys.argv[4]
@@ -84,7 +66,6 @@ class LibraryTest:
                         ExitCode.invalid_argument()
                         return
                     else:
-
                         n_buttons = int(n_buttons)
                         if len(sys.argv) - 5 < n_buttons:
                             LogLibraryTest.test_library_invalid_number_argument()
@@ -272,3 +253,20 @@ class LibraryTest:
                 print("At least one of the tests failed")
 
         return
+    
+    @staticmethod
+    def check_model_name():
+        name_model = sys.argv[2]        
+        # Checks for bad model format
+        if name_model[0].isdigit():
+            LogLibraryTest.test_library_invalid_name()
+            ExitCode.invalid_argument
+            return None
+
+        # Model doesn't exist
+        if(df.open_model_xml(name_model) is None):
+            LogLibraryTest.test_library_error_name(name_model)
+            ExitCode.model_not_found()
+            return None
+        
+        return Settings.get_model(name_model)

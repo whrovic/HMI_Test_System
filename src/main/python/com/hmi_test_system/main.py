@@ -55,7 +55,7 @@ if len(sys.argv) < 2:
 value = sys.argv[1]
 if value == TYPE_TEST:
     # Test    
-    exit_code = LT.test_menu()
+    LT.test_menu()
     print("Test Exit Code =", ExitCode.get_current_value())
 elif value == TYPE_SET:
     # Menu Settings
