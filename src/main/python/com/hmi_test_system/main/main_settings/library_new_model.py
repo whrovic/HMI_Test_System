@@ -7,6 +7,7 @@ from data.model.model import Model
 from main.constant_main import *
 from main.library import Library as Lib
 from opencv.define_model_cv import DefineModelCV
+import cv2
 
 
 class LibraryNewModel(Lib):
@@ -168,12 +169,15 @@ class LibraryNewModel(Lib):
         if(n_leds > 0):
             
             # Get the image for the leds
-            leds_img = DefineModelCV.get_leds_image()
-            if leds_img is None: return -1
+            # leds_img = DefineModelCV.get_leds_image()
+            # if leds_img is None: return -1
 
-            for i in range(0, n_leds):
-                print(f"\nLed {i+1} name: ")
-                led_name = input()
+            leds_img_detect = DefineModelCV.get_leds_image(True)
+            if leds_img_detect is None: return -1
+            leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
+
+            for i in range(len(leds_coordinates)):
+                led_name = 'L' + str(i+1)
                 while True:
                     print(f"How many colours have the led {i+1}?")
                     n_colours = input()
@@ -182,11 +186,9 @@ class LibraryNewModel(Lib):
                         break
                     else: 
                         continue
-                
-                print(f"Select the led {i+1} central position and press ENTER")
-                pos_vector= DefineModelCV.click_pos(leds_img)
 
-                led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
+                led = Led(led_name, n_colours, int(leds_coordinates[i][0]), int(leds_coordinates[i][1]))
+
                 for j in range(0, n_colours):
                     print(f"Colour {j+1} of led {i+1}:")
                     for i , color in enumerate(ListOfColors.get_list_of_colors()):
@@ -196,8 +198,10 @@ class LibraryNewModel(Lib):
                         new_colour = input()
                         if new_colour.isdigit():
                             new_colour = int(new_colour)
-                            led.new_colour(ListOfColors.get_color_index(new_colour-1))
-                            break
+
+                            if 0 < new_colour <= len(ListOfColors.get_list_of_colors()):
+                                led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                                break
                         else:
                             continue
                     

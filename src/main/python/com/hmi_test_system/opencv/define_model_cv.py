@@ -84,8 +84,8 @@ class DefineModelCV():
     @staticmethod
     def click_pos(image):
 
-        original_width, original_height = len(image[0], len(image))
-        width, height = 640, 480
+        original_width, original_height = len(image[0]), len(image)
+        width, height = 720, 480
 
         coordenadas = [0, 0, False]
         cv2.namedWindow("HMI")
@@ -113,14 +113,23 @@ class DefineModelCV():
 
     @staticmethod
     def detect_pos_leds(image):
+
+        orig_img = DefineModelCV.get_leds_image()
+
         # Creates a copy to avoid changing the original one
         img = image.copy()
+        
         
         # Convert to grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Threshold the image to separate circles from the black background
-        _, threshold = cv2.threshold(gray, 30, 255, cv2.THRESH_BINARY)
+        _, threshold = cv2.threshold(gray, 31, 255, cv2.THRESH_BINARY)
+
+        cv2.imshow("I", image)
+        cv2.imshow("T", threshold)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
         # Find contours in the edge image
         contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -133,7 +142,7 @@ class DefineModelCV():
             led_coordinates.append((int(x), int(y)))
 
         # Display the image with detected circles
-        DefineModelCV.show_coordinates(img, led_coordinates)
+        led_coordinates = DefineModelCV.show_coordinates(orig_img, led_coordinates)
 
         return led_coordinates
 
@@ -179,16 +188,25 @@ class DefineModelCV():
     def show_coordinates(image, coordinates):
         # Copy original image to prevent changes
         img = image.copy()
-        
+        img = cv2.resize(img, (720, 480))
+        print(len(coordinates))
         # Draw circles in the coordinates
-        for (x, y) in coordinates:
-            print(x, y)
-            cv2.circle(img, (int(x), int(y)), 4, (0, 255, 0), 8)
+        for i, (x, y) in enumerate(coordinates):
+            cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 3, (0, 255, 0), 5)
+            cv2.putText(img, str(i+1), (int(x*720/1920-2), int(y*480/1080)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
 
         # Show resulting image
         cv2.imshow("HMI", img)
-        cv2.waitKey(0)
+
+        print("Insert the order of the leds")
+        out = []
+        for i in range(len(coordinates)):
+            n = int(input())
+            out.append(coordinates[n-1])
+
         cv2.destroyAllWindows()
+
+        return out
 
     @staticmethod
     def get_reference_display_images():
@@ -372,8 +390,8 @@ class DefineModelCV():
 
         choosen_img = img_list[0]
         for i, img in enumerate(img_list):
-            image = cv2.resize(img, (640, 360))
-            choosen_image = cv2.resize(choosen_img, (640, 360))
+            image = cv2.resize(img, (720, 480))
+            choosen_image = cv2.resize(choosen_img, (720, 480))
             
             cv2.imshow("Current Choosen Image", choosen_image)
             cv2.moveWindow("Current Choosen Image", 0, 0)
@@ -432,4 +450,3 @@ class DefineModelCV():
         # TODO: Create model
 
         pass
-        

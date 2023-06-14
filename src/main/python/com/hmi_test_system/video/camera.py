@@ -59,6 +59,8 @@ class Camera(VideoDevice):
         if not self._cap.set(cv2.CAP_PROP_SATURATION, saturation): ret_val = False
         if not self._cap.set(cv2.CAP_PROP_SHARPNESS, sharpness): ret_val = False
 
+        sleep(0.5)
+
         return ret_val
 
     def closed(self):
