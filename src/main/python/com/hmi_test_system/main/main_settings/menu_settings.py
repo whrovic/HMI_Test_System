@@ -12,6 +12,7 @@ from .library_edit_model import LibraryEditModel as LEM
 from .library_new_model import LibraryNewModel as LNM
 from .menu_prints import MenuPrints as MP
 
+from copy import deepcopy
 
 class MenuSettings:
 
@@ -166,12 +167,11 @@ class MenuSettings:
     
     @staticmethod
     def sett_editmenu():
-        #TODO: menu print was update
-        #TODO: changes not discard in the atual session
-        # must replace them by the original xml (??)
         count = 0    
         save = False    
         model = LEM.sett_editmenu_first()
+        #TODO: use a copy instead original model
+        model_copy = deepcopy(model)
         if model is None: return 0
         while True:            
             MP.sett_editmenu()
@@ -194,20 +194,32 @@ class MenuSettings:
                 case '4':
                     count = 0
                     LEM.edit_model_display(model)
-                # save
+                # edit ref image
                 case '5':
+                    #TODO
+                    print("Error")
+                    menu_choice = input('Press Enter')
+                    continue                
+                # delete
+                case '6':
+                    #TODO
+                    print("Error")
+                    menu_choice = input('Press Enter')
+                    continue
+                # save
+                case '7':
                     count = 0
                     df.create_xml(model)
                     Lib.exit_input("Changes saved!")
                     save = True
                     continue
                 #back
-                case '6':
+                case '8':
                     if not save:
                         LEM.save_changes(model)
                     return 0
                 #exit
-                case '7':
+                case '9':
                     if not save:
                         LEM.save_changes(model)
                     return -1
@@ -222,37 +234,23 @@ class MenuSettings:
     def sett_editmenu_editled(model: Model):
         led, image = LEM.sett_editmenu_editled_first(model)
         if led is None: return 0
-        #TODO confirm is led is the type Led
         while True:
             MP.sett_editmenu_editled()
             menu_choice = input().strip()
 
             match(menu_choice):
-                # edit name
+                # Name
                 case '1':
                     LEM.edit_menu_edit_led_name(led)
-                # edit colours
+                # Colours
                 case '2':
                     LEM.edit_menu_edit_led_colours(led)
-                # edit position 
+                # Position 
                 case '3':
                     LEM.edit_menu_edit_led_position(led, image)
-                # save
-                case '4':
-                    #df.create_xml(model)
-                    #Lib.exit_input("Changes saved!")
-                    save = True
-                    continue
                 #back
                 case '5':
-                    #if not save:
-                        #LEM.save_changes(model)
                     return 0
-                #exit
-                case '6':
-                    #if not save:
-                        #LEM.save_changes(model)
-                    return -1
                 case _:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
@@ -282,9 +280,6 @@ class MenuSettings:
                 # back to menu
                 case '3':
                     return 0
-                #exit
-                case '4':
-                    return -1
                 case _:
                     count = count + 1
                     if (count > NTIMEOUT_MENUS):
@@ -303,14 +298,16 @@ class MenuSettings:
                 #camera
                 case '1':
                     count = 0
-                    print("In construction")
+                    #TODO
+                    print("Error")
                     menu_choice = input('Press Enter')
                     continue
                 
                 #serial port
                 case '2':
+                    #TODO
                     count = 0
-                    print("In construction")
+                    print("Error")
                     menu_choice = input('Press Enter')
                     continue
                 
@@ -332,6 +329,7 @@ class MenuSettings:
     @staticmethod
     def sett_directory():
         count = 0
+        #TODO: changes discardts when program ended
         while True:
             MP.sett_directory()        
             menu_choice = input()
@@ -340,7 +338,6 @@ class MenuSettings:
                 #settings
                 case '1':
                     count = 0
-                    #TODO: Log of not sucessly change
                     LD.change_settings_directory()
                     continue
                 

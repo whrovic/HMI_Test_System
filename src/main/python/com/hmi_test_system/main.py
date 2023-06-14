@@ -1,12 +1,13 @@
 import sys
+from tkinter import Tk
 
 from data.color.list_of_colors import ListOfColors
 from data.settings import Settings
 from main.constant_main import *
+from main.library import Library as Lib
 from main.main_settings import *
 from main.main_test import *
 from report import ExitCode
-from tkinter import Tk
 from report.exit_code import ExitCode
 
 # Necessary to choose or change path on the settings
@@ -17,9 +18,9 @@ ListOfColors.read_from_file()
 
 # TODO: This code is temporary
 
-from data.hardware_settings.test_settings import TestSettings
 from data.hardware_settings.camera_settings import CameraSettings
 from data.hardware_settings.parameter import Parameter
+from data.hardware_settings.test_settings import TestSettings
 
 def_params = Parameter()
 dsp_params = Parameter(auto_focus=0.0, manual_focus=20, 
@@ -43,19 +44,6 @@ TestSettings.set_sp_main('SerialPort')
 
 #################################
 
-#TODO: Change the local go to Library class or Log class and complete
-def arguments_help():
-    print("HELP")
-    print("main.py [type: set or test]")
-    print("   set - Initialize the user friendly menu of settings")
-    print("   test [name_model] [(optional)type_test] [optionals]")
-    print("   test [model_name] [serial_number] [manufacture_date] - Tests everything sequentially as defined in the model and the actual firmware")
-    print("TYPE_TEST:")
-    print("        KEYS		: -key \n 	BOOTLOADER INFO	: -bootloader \n	BOARD INFO	: -board")
-    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display\n")
-    print("        -sp             : The performed tests will only use serial port")
-    print("                          Available in key, bootload, board and alight tests")
-
 #------------------------------------CODE BEGIN------------------------------------#
 
 if len(sys.argv) < 2:
@@ -67,19 +55,16 @@ if len(sys.argv) < 2:
 
 value = sys.argv[1]
 if value == TYPE_TEST:
-    
-    exit_code = LT.test_menu()
+    # Test    
+    LT.test_menu()
     print("Test Exit Code =", ExitCode.get_current_value())
-    
 elif value == TYPE_SET:
     # Menu Settings
     MS.sett()
 elif value == TYPE_HELP:
     # Menu Settings
-    arguments_help()
+    Lib.arguments_help()
 else:
-    print("Wrong arguments, write main.py -help for help")
-    menu_choice = input('Press Enter to exit ')
-
+    Lib.exit_input("Wrong arguments, write main.py -help for help")
 
 sys.exit(ExitCode.get_current_value())
