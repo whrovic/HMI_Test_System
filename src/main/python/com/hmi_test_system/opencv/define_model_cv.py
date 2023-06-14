@@ -119,14 +119,17 @@ class DefineModelCV():
         # Creates a copy to avoid changing the original one
         img = image.copy()
 
-        
         # Convert to grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Threshold the image to separate circles from the black background
-        _, threshold = cv2.threshold(gray, 32, 255, cv2.THRESH_BINARY)
+        _, threshold = cv2.threshold(gray, 30, 255, cv2.THRESH_BINARY)
 
-        eroded = cv2.erode(threshold, (3,3))
+        cv2.imshow("Threshold", threshold)
+
+        eroded = cv2.erode(threshold, (7,7))
+
+        cv2.imshow("After kernel", eroded)
 
         # Find contours in the edge image
         contours, _ = cv2.findContours(eroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
