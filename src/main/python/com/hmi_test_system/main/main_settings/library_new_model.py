@@ -178,14 +178,16 @@ class LibraryNewModel(Lib):
                 DefineModelCV.show_coordinate(leds_img, leds_coordinates[i])
 
                 led_name = 'L' + str(i+1)
-                while True:
-                    print(f"How many colours have the led {i+1}?")
+                n_colours=Lib.until_find_int(f"How many colours have the led {i+1}?")
+                if (n_colours) == -1: return -1
+                '''while True:
+                    print()
                     n_colours = input()
                     if n_colours.isdigit():
                         n_colours = int(n_colours)
                         break
                     else: 
-                        continue
+                        continue'''
 
                 led = Led(led_name, n_colours, int(leds_coordinates[i][0]), int(leds_coordinates[i][1]))
 
@@ -193,7 +195,14 @@ class LibraryNewModel(Lib):
                     print(f"Colour {j+1} of led {i+1}:")
                     for i , color in enumerate(ListOfColors.get_list_of_colors()):
                         print(f'{i+1} - {color.get_name()}')
-                    while True:
+                    new_colour = Lib.get_name_or_index("Insert the index or the name of the color", [c.get_name() for c in ListOfColors.get_list_of_colors()])
+                    if new_colour is None: return -1
+                    
+                    if  0 < new_colour <= len(ListOfColors.get_list_of_colors()):
+                        led.new_colour(ListOfColors.get_color_index(new_colour-1))
+            
+                        
+                    '''while True:
                         print('Type which number you want')
                         new_colour = input()
                         if new_colour.isdigit():
@@ -203,7 +212,7 @@ class LibraryNewModel(Lib):
                                 led.new_colour(ListOfColors.get_color_index(new_colour-1))
                                 break
                         else:
-                            continue
+                            continue'''
                     
                 new_model.set_led(led)
         else:
