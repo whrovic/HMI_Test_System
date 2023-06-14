@@ -84,21 +84,27 @@ class DefineModelCV():
     @staticmethod
     def click_pos(image):
 
+        original_width, original_height = len(image[0], len(image))
+        width, height = 640, 480
+
         coordenadas = [0, 0, False]
         cv2.namedWindow("HMI")
 
         def callback(event, x, y, flags, params):
             if(event == cv2.EVENT_LBUTTONDOWN):
-                coordenadas[0] = x
-                coordenadas[1] = y
+                coordenadas[0] = x * (original_width / width)
+                coordenadas[1] = y * (original_height / height)
                 coordenadas[2] = True
 
                 img_aux = np.copy(image)
+                img_aux = cv2.resize(img_aux, (width, height))
                 img_aux[y-2:y+2, x-2:x+2] = (0,0,0)
                 cv2.imshow("HMI", img_aux)
 
         while(not coordenadas[2]):
-            cv2.imshow("HMI", image)
+            img_aux = np.copy(image)
+            img_aux = cv2.resize(img_aux, (width, height))
+            cv2.imshow("HMI", img_aux)
             cv2.setMouseCallback("HMI", callback)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -159,15 +165,9 @@ class DefineModelCV():
     
     @staticmethod
     def write_reference_image_to_file(image, filename):
-        
-        # Calculate the transformation matrix
-        transformation_matrix, coordinates = Displaycv.get_transformation_matrix(image)
-        if transformation_matrix is None:
-            L.exit_input("Couldn't save the reference images")
-            return False
 
         # Extract display
-        display_image = Displaycv.extract_display(image, transformation_matrix, coordinates)
+        display_image = Displaycv.extract_display(image)
 
         ret_val = cv2.imwrite(Path.get_model_images_directory() + '/' + filename + '.png', display_image)
         if not ret_val:
@@ -320,7 +320,6 @@ class DefineModelCV():
                 new_test_start_time = None
                 if test_name == TEST_DISPLAY_OK:
                     break
-                print(test_name)
 
             # If a test is currently running
             if test_name is not None:
@@ -334,9 +333,9 @@ class DefineModelCV():
                     # Start the next test
                     test_name = new_test_name
                     test_start_time = new_test_start_time
+                    new_test_name = new_test_start_time = None
                     if test_name == TEST_DISPLAY_OK:
                         break
-                    print(test_name)
                 else:
                     # Perform the appropriate test based on the current test type
                     if test_name == CHAR:
@@ -351,9 +350,13 @@ class DefineModelCV():
 
         # Choose images from the set
         chr_img = DefineModelCV.choose_img(chr_img_list)
-        if chr_img is None: return None, None
+        if chr_img is None:
+            input("CHR IMG NONE")
+            return None, None
         pal_img = DefineModelCV.choose_img(pal_img_list)
-        if pal_img is None: return None, None
+        if pal_img is None:
+            input("PAL IMG NONE")
+            return None, None
 
         return chr_img, pal_img
 

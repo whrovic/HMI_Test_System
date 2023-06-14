@@ -7,6 +7,7 @@ from main.main_settings import *
 from main.main_test import *
 from report import ExitCode
 from tkinter import Tk
+from report.exit_code import ExitCode
 
 # Necessary to choose or change path on the settings
 Tk().withdraw() 
@@ -21,10 +22,10 @@ from data.hardware_settings.camera_settings import CameraSettings
 from data.hardware_settings.parameter import Parameter
 
 def_params = Parameter()
-dsp_params = Parameter(auto_focus=0.0, manual_focus=25, 
+dsp_params = Parameter(auto_focus=0.0, manual_focus=20, 
                        auto_exposure=0.0, exposure=-9, gain=0,
-                       auto_white_balance=0.0, white_balance=7000)
-led_params = Parameter(auto_focus=0.0, manual_focus=35,
+                       auto_white_balance=0.0, white_balance=6500)
+led_params = Parameter(auto_focus=0.0, manual_focus=45,
                        auto_exposure=0.0, exposure=-11, gain=0,
                        auto_white_balance=0.0, white_balance=3800,
                        brightness=80, saturation=255)
@@ -33,8 +34,8 @@ logi_cam.set_parameters('default', def_params)
 logi_cam.set_parameters('display', dsp_params)
 logi_cam.set_parameters('leds', led_params)
 TestSettings.add_new_cam_settings(logi_cam)
-print(TestSettings.set_cam_display('LogiCam'))
-print(TestSettings.set_cam_leds('LogiCam'))
+TestSettings.set_cam_display('LogiCam')
+TestSettings.set_cam_leds('LogiCam')
 
 TestSettings.add_new_sp_settings('SerialPort', 'COM3', 115200)
 TestSettings.set_sp_main('SerialPort')
@@ -50,7 +51,9 @@ def arguments_help():
     print("   test [model_name] [serial_number] [manufacture_date] - Tests everything sequentially as defined in the model and the actual firmware")
     print("TYPE_TEST:")
     print("        KEYS		: -key \n 	BOOTLOADER INFO	: -bootloader \n	BOARD INFO	: -board")
-    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display")
+    print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display\n")
+    print("        -sp             : The performed tests will only use serial port")
+    print("                          Available in key, bootload, board and alight tests")
 
 #------------------------------------CODE BEGIN------------------------------------#
 
@@ -65,7 +68,7 @@ value = sys.argv[1]
 if value == TYPE_TEST:
     
     exit_code = LT.test_menu()
-    print("Test Exit Code =", exit_code)
+    print("Test Exit Code =", ExitCode.get_current_value())
     
 elif value == TYPE_SET:
     # Menu Settings

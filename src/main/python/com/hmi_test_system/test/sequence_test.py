@@ -13,6 +13,7 @@ from .test import Test
 
 class SequenceTest:
 
+    #Log_sequencetest =
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
 
@@ -151,7 +152,7 @@ class SequenceTest:
         print("Board Info Test started")
 
         # Start board info test
-        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
+        result = Test.test_board_info(cam, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
 
         # Close all the opened connections
         SetupTest.close()
@@ -340,7 +341,8 @@ class SequenceTest:
             return -1
         else:
             cam.set_settings(parameters)
-            Log.leds_camera_connected()       
+            Log.leds_camera_connected()
+            cam._interval = 0.1
 
         # Start receiving data from serial port
         serial_port.start_receive()
@@ -437,7 +439,7 @@ class SequenceTest:
         return result
     
     @staticmethod
-    def seq_all(model: Model, serial_number : str, manufacture_date : str):
+    def seq_all(model: Model, serial_number : str, manufacture_date : str, dsp = False):
         # TODO: add option of sp only
 
         # Get leds camera parameters
@@ -551,33 +553,51 @@ class SequenceTest:
                 # TODO: Log this
                 print("Buttons Tests started")
                 # Start button test
-                result = Test.test_button(cam_display, serial_port, button_sequence)
+                if dsp:
+                    cam_display.set_settings(dsp_parameters)
+                    result = Test.test_button(cam_display, serial_port, button_sequence)
+                else:
+                    result = Test.test_button(None, serial_port, button_sequence)
             elif data.startswith(TEST_BOOT_LOADER_INFO_BEGIN):
                 # TODO: Log this
                 print("Bootloader Test started")
                 # Start bootloader test
-                result = Test.test_boot_loader_info(cam_display, serial_port, model.get_boot_loader_info().get_version(), model.get_boot_loader_info().get_date())
+                if dsp:
+                    cam_display.set_settings(dsp_parameters)
+                    result = Test.test_boot_loader_info(cam_display, serial_port, model.get_boot_loader_info().get_version(), model.get_boot_loader_info().get_date())
+                else:
+                    result = Test.test_boot_loader_info(None, serial_port, model.get_boot_loader_info().get_version(), model.get_boot_loader_info().get_date())
             elif data.startswith(TEST_BOARD_INFO_BEGIN):
                 # TODO: Log this
                 print("Board Info Test started")
                 # Start board info test
-                result = Test.test_board_info(cam_display, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type)
+                if dsp:
+                    cam_display.set_settings(dsp_parameters)
+                    result = Test.test_board_info(cam_display, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
+                else:
+                    result = Test.test_board_info(None, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
             elif data.startswith(TEST_ALIGHT_BEGIN):
                 # TODO: Log this
                 print("Light Test started")
                 # Start light test
-                result = Test.test_alight(cam_display, serial_port)
+                if dsp:
+                    cam_display.set_settings(dsp_parameters)
+                    result = Test.test_alight(cam_display, serial_port)
+                else:
+                    result = Test.test_alight(None, serial_port)
             elif data.startswith(TEST_LEDS_BEGIN):
                 # Gets the leds to test
                 leds_sequence = model.get_leds()
                 # TODO: Log this
                 print("Leds Tests started")
                 # Start led test
+                cam_leds.set_settings(led_parameters)
                 result = Test.test_led(cam_leds, serial_port, leds_sequence)
             elif data.startswith(TEST_DISPLAY_BEGIN):
                 # TODO: Log this
                 print("Display Tests started")
                 # Start led test
+                cam_display.set_settings(dsp_parameters)
                 result = Test.test_display(cam_display, serial_port, chr_ref_img, pal_ref_img)
             if result == -1:
                 break
@@ -630,6 +650,8 @@ class SequenceTest:
                 received_sp = True
                 
                 data = str(data)
+                # TODO: Delete this
+                print(data)
                 if data.startswith(TEST_BEGIN):
                     return 0
             

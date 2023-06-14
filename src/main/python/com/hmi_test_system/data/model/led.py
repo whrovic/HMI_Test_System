@@ -8,7 +8,6 @@ class Led(Position):
         self._name = name
         self._n_colour = n_colour
         self._colours: list[Color] = []
-        self.colours_cv: list[Color] = []
     
     def set_name(self, name: str):
         self._name = name
@@ -36,6 +35,7 @@ class Led(Position):
 
     def delete_colours(self):
         self._colours = []
+        
 
     def get_colours(self):
         return self._colours

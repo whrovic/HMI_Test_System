@@ -23,7 +23,7 @@ class Camera(VideoDevice):
 
     def set_settings(self, settings: dict[str, any]):
 
-        # TODO: Add warning when opencv can't apply all the settings
+        ret_val = True
 
         if settings is None:
             settings = {}
@@ -42,24 +42,24 @@ class Camera(VideoDevice):
         saturation = settings.get('saturation', 128)
         sharpness = settings.get('sharpness', 128)
 
-        self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self._cap.set(cv2.CAP_PROP_AUTOFOCUS, auto_focus)
+        if not self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, width): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_AUTOFOCUS, auto_focus): ret_val = False
         if not auto_focus:
-            self._cap.set(cv2.CAP_PROP_FOCUS, manual_focus)
-        self._cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, auto_exposure)
+            if not self._cap.set(cv2.CAP_PROP_FOCUS, manual_focus): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, auto_exposure): ret_val = False
         if not auto_exposure:
-            self._cap.set(cv2.CAP_PROP_EXPOSURE, exposure)
-            self._cap.set(cv2.CAP_PROP_GAIN, gain)
-        self._cap.set(cv2.CAP_PROP_AUTO_WB, auto_white_balance)
+            if not self._cap.set(cv2.CAP_PROP_EXPOSURE, exposure): ret_val = False
+            if not self._cap.set(cv2.CAP_PROP_GAIN, gain): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_AUTO_WB, auto_white_balance): ret_val = False
         if not auto_white_balance:
-            self._cap.set(cv2.CAP_PROP_WB_TEMPERATURE, white_balance)
-        self._cap.set(cv2.CAP_PROP_BRIGHTNESS, brightness)
-        self._cap.set(cv2.CAP_PROP_CONTRAST, contrast)
-        self._cap.set(cv2.CAP_PROP_SATURATION, saturation)
-        self._cap.set(cv2.CAP_PROP_SHARPNESS, sharpness)
+            if not self._cap.set(cv2.CAP_PROP_WB_TEMPERATURE, white_balance): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_BRIGHTNESS, brightness): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_CONTRAST, contrast): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_SATURATION, saturation): ret_val = False
+        if not self._cap.set(cv2.CAP_PROP_SHARPNESS, sharpness): ret_val = False
 
-        sleep(2.0)
+        return ret_val
 
     def closed(self):
         return ((self._cap is None) or (not self._cap.isOpened()))
