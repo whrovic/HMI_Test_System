@@ -640,7 +640,7 @@ class Test:
                                 print("ALight sensor test passed (Covered)")
                             else:
                                 # TODO: Log this
-                                print("ALight sensor test failed: Incorrect covered ALight value")
+                                print(f"ALight sensor test failed: Incorrect covered ALight value {covered_alight_value_sp}")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                         # The received data is related to the instructions

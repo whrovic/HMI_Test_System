@@ -38,7 +38,7 @@ TestSettings.add_new_cam_settings(logi_cam)
 TestSettings.set_cam_display('LogiCam')
 TestSettings.set_cam_leds('LogiCam')
 
-TestSettings.add_new_sp_settings('SerialPort', 'COM3', 115200)
+TestSettings.add_new_sp_settings('SerialPort', 'COM5', 115200)
 TestSettings.set_sp_main('SerialPort')
 
 #################################

@@ -1,59 +1,68 @@
 import cv2
+from time import sleep
 
-cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cam = cv2.VideoCapture(1, cv2.CAP_DSHOW)
 
 # Default all the camara parameters
 # Enable auto focus
-cam.set(cv2.CAP_PROP_AUTOFOCUS, 1)
+print(cam.set(cv2.CAP_PROP_AUTOFOCUS, 1.0))
 # Enable auto exposure
-cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+print(cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1.0))
 # Enable auto white balance
-cam.set(cv2.CAP_PROP_AUTO_WB, 1)
+print(cam.set(cv2.CAP_PROP_AUTO_WB, 1.0))
 # Default Brightness
-cam.set(cv2.CAP_PROP_BRIGHTNESS, 128)
+print(cam.set(cv2.CAP_PROP_BRIGHTNESS, 128))
 # Default Contrast
-cam.set(cv2.CAP_PROP_CONTRAST, 128)
+print(cam.set(cv2.CAP_PROP_CONTRAST, 32))
 # Default Saturation
-cam.set(cv2.CAP_PROP_SATURATION, 128)
+print(cam.set(cv2.CAP_PROP_SATURATION, 32))
 # Default Sharpness
-cam.set(cv2.CAP_PROP_SHARPNESS, 128)
+print(cam.set(cv2.CAP_PROP_SHARPNESS, 22))
 
 # Take a picture and show
+cam.release()
+cam = cv2.VideoCapture(1, cv2.CAP_DSHOW)
 
 _, img = cam.read()
-print(img)
 
 cv2.imshow("Original Image", img)
-cv2.waitKey(0)
 
 cam.release()
-cam = None
-cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cam = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+
+print("n")
 
 # Changes parameters for the display settings
 
 # Disable auto focus
-cam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+print(cam.set(cv2.CAP_PROP_AUTOFOCUS, 0))
 # Set manually focus [0:255, step=5]
-cam.set(cv2.CAP_PROP_FOCUS, 15)
+print(cam.set(cv2.CAP_PROP_FOCUS, 102))
 # Disable auto exposure
-cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+print(cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0))
 # Set manually exposure
-cam.set(cv2.CAP_PROP_EXPOSURE, -8)
+print(cam.set(cv2.CAP_PROP_EXPOSURE, -11))
 # Set manually exposure gain
-cam.set(cv2.CAP_PROP_GAIN, 3)
+print(cam.set(cv2.CAP_PROP_GAIN, 0))
 
 # (Default other parameters)
 # Enable auto white balance
-cam.set(cv2.CAP_PROP_AUTO_WB, 1)
+print(cam.set(cv2.CAP_PROP_AUTO_WB, 0))
+
+print(cam.set(cv2.CAP_PROP_WB_TEMPERATURE, 6500))
 # Default Brightness
-cam.set(cv2.CAP_PROP_BRIGHTNESS, 128)
+print(cam.set(cv2.CAP_PROP_BRIGHTNESS, 80))
 # Default Contrast
-cam.set(cv2.CAP_PROP_CONTRAST, 128)
+print(cam.set(cv2.CAP_PROP_CONTRAST, 128))
 # Default Saturation
-cam.set(cv2.CAP_PROP_SATURATION, 128)
+print(cam.set(cv2.CAP_PROP_SATURATION, 255))
 # Default Sharpness
-cam.set(cv2.CAP_PROP_SHARPNESS, 128)
+print(cam.set(cv2.CAP_PROP_SHARPNESS, 128))
+
+cam.release()
+cam = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+
+cam.set(cv2.CAP_PROP_SETTINGS, 1.0)
 
 # Take a picture and show
 _, img2 = cam.read()
