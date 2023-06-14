@@ -25,7 +25,7 @@ class MenuPrints:
         os.system('cls')
         print("------------ Color Settings -----------\n\n")
         print("1 - Edit Colors      2 - Add Color     \n")
-        print("3 - Delete a color                     \n")
+        print("           3 - Delete a color                     \n")
         print("4 - Back             5 - Exit          \n")
         print("---------------------------------------\n")
 
@@ -44,7 +44,7 @@ class MenuPrints:
         print("-------------- Edit Menu --------------\n\n")
         print("1- Edit model info  2- Edit led        \n")
         print("3- Edit button      4- Edit Display    \n")
-        print("5- Delete           6- Edit ref image  \n")
+        print("5- Edit ref image   6- Delete           \n")
         print("               7- Save                 \n")
         print("8- Back             9- Exit            \n\n")
         print("---------------------------------------\n")
@@ -54,8 +54,7 @@ class MenuPrints:
         os.system('cls') 
         print("--------------- Edit Led --------------\n\n")
         print("1- Name             2- Colours         \n")
-        print("3- Position         4- Save            \n\n")
-        print("6- Back             7- Exit            \n\n")
+        print("3- Position         4- Back            \n\n")
         print("---------------------------------------\n")
     
     @staticmethod
@@ -63,7 +62,7 @@ class MenuPrints:
         os.system('cls') 
         print("------------- Edit button -------------\n\n")
         print("1- Name             2- Position        \n")
-        print("3- Back             4- Exit            \n\n")
+        print("              3- Back                       \n\n")
         print("---------------------------------------\n")
     
     @staticmethod
