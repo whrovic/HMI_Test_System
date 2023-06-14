@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from data.model.display import Display
 
 from .displaycv import Displaycv
 from .ledcv import LEDcv

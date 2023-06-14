@@ -166,14 +166,8 @@ class DefineModelCV():
     @staticmethod
     def write_reference_image_to_file(image, filename):
 
-        # Calculate the transformation matrix
-        transformation_matrix, coordinates = Displaycv.get_transformation_matrix(image)
-        if transformation_matrix is None:
-            L.exit_input("Couldn't save the reference images")
-            return False
-
         # Extract display
-        display_image = Displaycv.extract_display(image, transformation_matrix, coordinates)
+        display_image = Displaycv.extract_display(image)
 
         ret_val = cv2.imwrite(Path.get_model_images_directory() + '/' + filename + '.png', display_image)
         if not ret_val:
