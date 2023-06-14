@@ -118,21 +118,18 @@ class DefineModelCV():
 
         # Creates a copy to avoid changing the original one
         img = image.copy()
-        
+
         
         # Convert to grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Threshold the image to separate circles from the black background
-        _, threshold = cv2.threshold(gray, 31, 255, cv2.THRESH_BINARY)
+        _, threshold = cv2.threshold(gray, 32, 255, cv2.THRESH_BINARY)
 
-        cv2.imshow("I", image)
-        cv2.imshow("T", threshold)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        eroded = cv2.erode(threshold, (3,3))
 
         # Find contours in the edge image
-        contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(eroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         led_coordinates = []
         # Iterate over the contours and fit circles to them
@@ -192,8 +189,8 @@ class DefineModelCV():
         print(len(coordinates))
         # Draw circles in the coordinates
         for i, (x, y) in enumerate(coordinates):
-            cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 3, (0, 255, 0), 5)
-            cv2.putText(img, str(i+1), (int(x*720/1920-2), int(y*480/1080)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
+            cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
+            cv2.putText(img, str(i+1), (int(x*720/1920-5), int(y*480/1080+5)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,0,0), 1)
 
         # Show resulting image
         cv2.imshow("HMI", img)
