@@ -127,18 +127,17 @@ class LibraryEditModel(Lib):
 
     @staticmethod
     def edit_menu_edit_led_colours(led: Led):
-        led.delete_colours()
         os.system('cls')
         
         n_colours = Lib.until_find_int("How many colours have the led?")
         if n_colours is None: 
             return -1
 
-        led.delete_colours()
-        if (led.set_n_Colour(n_colours) == -1):
+        led.set_n_Colour(n_colours)
+        if (led.get_n_Colour() != n_colours):
             Lib.exit_input("Error: not possible to change")
             return -1
-                    
+           
         for i in range(n_colours):
             print(f"Colour {i+1} of led:")
             for i, color in enumerate(ListOfColors.get_list_of_colors()):
@@ -214,24 +213,25 @@ class LibraryEditModel(Lib):
     def edit_model_display(model: Model):
         
         os.system('cls')
-        image = DefineModelCV.get_display_image()
+        name_model = model.get_name()
 
-        display = model.get_display()
+        # Gets the image of the display
+        display_img = DefineModelCV.get_display_image()
+        if display_img is None: return -1
+        
+        # Get reference images
+        chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
+        if chr_ref_img is None or pal_ref_img is None: return -1
+        
+        # Save reference images
+        if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
+            input("Couldn't write chr img")
+            return -1
+        if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
+            input("Couldn't write pal img")
+            return -1
 
         os.system('cls')
-        print("Select the Display initial position and press ENTER")
-        pos_vector_init= DefineModelCV.click_pos(image)
-        
-        print("Select the LCD final position")
-        pos_vector_final= DefineModelCV.click_pos(image)
-        
-        dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
-        dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
-        
-        display.set_new_pos(int(pos_vector_init[0]), int(pos_vector_init[1]), dim_x, dim_y)
-
-        os.system('cls')
-        print("LCD POSITION CHANGED\n")
         input("Press Enter to continue...")
     
 
