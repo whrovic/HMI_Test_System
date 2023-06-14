@@ -5,7 +5,19 @@ from .constant_main import *
 
 
 class Library:
-
+    @staticmethod
+    def arguments_help():
+        print("HELP")
+        print("main.py [type: set or test]")
+        print("   set - Initialize the user friendly menu of settings")
+        print("   test [name_model] [(optional)type_test] [optionals]")
+        print("   test [model_name] [serial_number] [manufacture_date] - Tests everything sequentially as defined in the model and the actual firmware")
+        print("TYPE_TEST:")
+        print("        KEYS		: -key \n 	BOOTLOADER INFO	: -bootloader \n	BOARD INFO	: -board")
+        print("        ALIGHT	        : -alight \n	LEDS		: -led\n 	DISPLAY		: -display\n")
+        print("        -sp             : The performed tests will only use serial port")
+        print("                          Available in key, bootload, board and alight tests")
+    
     @staticmethod
     def get_input_str(print_str: str):
         count = 0
