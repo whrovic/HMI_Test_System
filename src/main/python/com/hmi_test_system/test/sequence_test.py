@@ -21,7 +21,7 @@ class SequenceTest:
         if dsp:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
-                # TODO: Log this
+                LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
                 # TODO: Error Code
                 return -1
@@ -102,7 +102,7 @@ class SequenceTest:
         if dsp:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
-                # TODO: Log this
+                LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
                 # TODO: Error Code
                 return -1
@@ -167,7 +167,7 @@ class SequenceTest:
         if dsp:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
-                # TODO: Log this
+                LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
                 # TODO: Error Code
                 return -1
@@ -231,7 +231,7 @@ class SequenceTest:
         if dsp:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
-                # TODO: Log this
+                LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
                 # TODO: Error Code
                 return -1
@@ -294,7 +294,7 @@ class SequenceTest:
         # Get camera parameters
         parameters = SequenceTest._get_leds_camera_parameters('leds')
         if parameters is None:
-            # TODO: Log this
+            LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
             # TODO: Error Code
             return -1
@@ -374,7 +374,7 @@ class SequenceTest:
         # Get camera parameters if needed
         parameters = SequenceTest._get_display_camera_parameters('display')
         if parameters is None:
-            # TODO: Log this
+            LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
             # TODO: Error Code
             return -1
@@ -445,21 +445,21 @@ class SequenceTest:
         # Get leds camera parameters
         led_parameters = SequenceTest._get_leds_camera_parameters('leds')
         if led_parameters is None:
-            # TODO: Log this
+            LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
             # TODO: Error Code
             return -1
         # Get display camera parameters
         dsp_parameters = SequenceTest._get_display_camera_parameters('display')
         if dsp_parameters is None:
-            # TODO: Log this
+            LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
             # TODO: Error Code
             return -1
         # Get reference images from local files
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
         if chr_ref_img is None or pal_ref_img is None:
-            # TODO: Log this
+            LogSequenceTest.sequence_test_invalid_parameters()
             print("Ref imgs is None")
             # TODO: Error code
             return -1

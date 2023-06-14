@@ -214,6 +214,10 @@ class LibraryEditModel(Lib):
         
         os.system('cls')
         name_model = model.get_name()
+
+        # Gets the image of the display
+        display_img = DefineModelCV.get_display_image()
+        if display_img is None: return -1
         
         # Get reference images
         chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
