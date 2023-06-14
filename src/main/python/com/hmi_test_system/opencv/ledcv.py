@@ -21,7 +21,7 @@ class LEDcv:
         colors = ListOfColors.get_list_of_colors()
 
         # Check if the LED is off ( if the image is completely black)
-        if cv2.countNonZero(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)) == sum([len(row) for row in image]):
+        if cv2.countNonZero(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)) == 0:
             return OffColor()
 
         # Check each color in the ListOfColor to see if it matches the image
@@ -46,5 +46,5 @@ class LEDcv:
                 return color
         
         # If no color is found with a match less than 50%, return UnknownColor
-        return UnknownColor()
+        return OffColor()
     

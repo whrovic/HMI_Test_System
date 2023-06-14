@@ -92,8 +92,8 @@ class DefineModelCV():
 
         def callback(event, x, y, flags, params):
             if(event == cv2.EVENT_LBUTTONDOWN):
-                coordenadas[0] = x * (original_width / width)
-                coordenadas[1] = y * (original_height / height)
+                coordenadas[0] = int(x * (original_width / width))
+                coordenadas[1] = int(y * (original_height / height))
                 coordenadas[2] = True
 
                 img_aux = np.copy(image)

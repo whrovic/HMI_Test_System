@@ -764,6 +764,12 @@ class Test:
         # Saves the expected sequence of colours in each led
         matrix_ref: list[list[Color]] = [[OffColor()] * n_leds_test] * total_n_colours
 
+        matrix_ref = []
+        for i in range(total_n_colours):
+            matrix_ref.append([])
+            for j in range(n_leds_test):
+                matrix_ref[i].append(OffColor())
+
         pos = 0
         for i in range(n_leds_test):
             colours = leds_test[i].get_colours()
@@ -891,8 +897,8 @@ class Test:
                 
                 # If all the leds are on procceed to the next state
                 if n_on == n_leds_test:
-                    LogLeds.test_leds_off_passed()
-                    state = 2
+                    LogLeds.test_leds_on_passed()
+                    state = 3
                     entry_state_img_time = cur_img_time
                 # If all the leds still are turned off and didn't timed out, proceed
                 elif n_on == 0:
@@ -918,8 +924,37 @@ class Test:
                         LogLeds.test_failed_on()
                         ExitCode.leds_test_not_turn_all_on()
                         return -1
-            # Test the Sequence
+            # LEDS Off
             elif state == 3:
+                
+                # Counts the number of leds turned off
+                n_off = 0
+                for i in range(n_leds_test):
+                    if isinstance(vet_cor[i], OffColor):
+                        n_off += 1
+                    else:
+                        # If one of the leds was turned off and now is turned on
+                        if isinstance(old_vet_cor[i], OffColor):
+                            LogLeds.test_failed_off()
+                            ExitCode.leds_test_not_turn_all_off()
+                            return -1
+                
+                # If all the leds are off procceed to the next state
+                if n_off == n_leds_test:
+                    LogLeds.test_leds_off_passed()
+                    state = 4
+                    entry_state_img_time = cur_img_time
+                # If the leds still are all turned on and it didn't timed out, ignore this image and retry
+                elif n_off == 0:
+                    if (cur_img_time - entry_state_img_time > TIMEOUT_LEDS_START_TURNING_OFF):
+                        print("None turned off")
+                        LogLeds.test_failed_off()
+                        ExitCode.leds_test_not_turn_all_off()
+                        return -1
+                    else:
+                        continue
+            # Test the Sequence
+            elif state == 4:
 
                 # Check the current state with the reference state
                 for i in range(n_leds_test):
@@ -940,11 +975,19 @@ class Test:
                 else:
                     # The current state is still equal to the previous state
                     if (cur_img_time - entry_state_img_time > TIMEOUT_LEDS_SEQUENCE_CHANGE):
-                        LogLeds.test_leds_timeout()
+                        LogLeds.test_leds_sequence_state_failed(leds_test[i].get_name(), matrix_ref[sequence_state][i].get_name(),
+                                                                    vet_cor[i].get_name())
                         ExitCode.leds_test_no_changes_timeout()
                         return -1
                     else:
                         continue
+
+                for i in range(n_leds_test):
+                    if not isinstance(vet_cor[i], OffColor):
+                        break
+                else:
+                    # TODO: Add timeout
+                    continue
                 
                 # The current state is different from the expected one and the previous one, so a error happens
                 for i in range(n_leds_test):

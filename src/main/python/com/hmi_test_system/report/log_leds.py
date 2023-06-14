@@ -46,8 +46,4 @@ class LogLeds(Log):
     @staticmethod
     def test_leds_finished():
         Log.info_log("TestLeds Finished")
-
-    @staticmethod
-    def test_leds_timeout():
-        Log.error_log("Error Timeout")
     

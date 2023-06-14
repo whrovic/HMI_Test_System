@@ -234,6 +234,7 @@ class MenuSettings:
     def sett_editmenu_editled(model: Model):
         led, image = LEM.sett_editmenu_editled_first(model)
         if led is None: return 0
+        count = 0
         while True:
             MP.sett_editmenu_editled()
             menu_choice = input().strip()
@@ -249,7 +250,7 @@ class MenuSettings:
                 case '3':
                     LEM.edit_menu_edit_led_position(led, image)
                 #back
-                case '5':
+                case '4':
                     return 0
                 case _:
                     count = count + 1
