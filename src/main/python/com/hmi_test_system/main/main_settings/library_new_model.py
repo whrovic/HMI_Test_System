@@ -110,101 +110,114 @@ class LibraryNewModel(Lib):
         
         boot_info = BootLoaderInfo(boot_version, boot_date)
 
-        # LCD configuration
-        print("\n\nLCD CONFIGURATION\n")
 
-        # Inform user about the need of the camera
-        Lib.exit_input("Before continuing, please make sure that the display camera is ready and the display tests are ready to start")
-
-        # Gets the image of the display
-        display_img = DefineModelCV.get_display_image()
-        if display_img is None: return -1
-
-        print("Select the LCD initial position and press Enter to continue...")
-        pos_vector_init = DefineModelCV.click_pos(display_img)
+        chr_ref_img, pal_ref_img = None
+       
         
-        print("Select the LCD final position and press Enter to continue...")
-        pos_vector_final= DefineModelCV.click_pos(display_img)
+        aux = input("Do you want to configure the display? Press y if yes\n")
         
-        dim_x = int(pos_vector_final[0]) - int(pos_vector_init[0])
-        dim_y = int(pos_vector_final[1]) - int(pos_vector_init[1])
-        display = Display('display', int(pos_vector_init[0]) , int(pos_vector_init[1]) , dim_x, dim_y)
+        if aux == 'y':   # LCD configuration
+           
+            print("\n\nLCD CONFIGURATION\n")
 
-        # Get reference images
-        chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
-        if chr_ref_img is None or pal_ref_img is None: return -1
+            # Inform user about the need of the camera
+            Lib.exit_input("Before continuing, please make sure that the display camera is ready and the display tests are ready to start")
 
-        n_buttons = Lib.until_find_int("Number of buttons: ")
-        if (n_buttons) == -1: return -1
-        n_leds = Lib.until_find_int("Number of leds: ")
-        if (n_leds) == -1: return -1
-
-        # add model
-        new_model = Model(name_model, n_leds, n_buttons, display, info, boot_info)
-        
-        # buttons configuration
-        print("\n\nBUTTONS CONFIGURATION\n")
-        input("Please make sure that the camera is positioned in the leds board...")
-
-        if(n_buttons > 0):
+            # Gets the image of the display
+            display_img = DefineModelCV.get_display_image()
+            if display_img is None: return -1
             
-            # Get the image for the buttons
-            buttons_img = DefineModelCV.get_buttons_image()
-            if buttons_img is None: return -1
+            # Get reference images
+            chr_ref_img, pal_ref_img = DefineModelCV.get_reference_display_images()
+            if chr_ref_img is None or pal_ref_img is None: return -1
 
-            for i in range(0, n_buttons):
-                print(f"\nButton {i+1} name: ")
-                button_name = input()
-                print(f"Select the button {i+1} central position and press ENTER")
-                pos_vector= DefineModelCV.click_pos(buttons_img)
+        display = Display('display')
 
-                new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
-        else:
-            print("\nModel doesn't have buttons\n")
+        aux = input("Do you want to configure buttons and display? Press y if yes\n")
+        if aux == 'y':  # buttons and leds configuration
+        
+            n_buttons = Lib.until_find_int("Number of buttons: ")
+            if (n_buttons) == -1: return -1
+            n_leds = Lib.until_find_int("Number of leds: ")
+            if (n_leds) == -1: return -1
 
-        # leds configuration
-        print("\n\nLEDS CONFIGURATION\n")
+            # Add model
+            new_model = Model(name_model, n_leds, n_buttons, display, info, boot_info)
+        
+            # buttons configuration
+            print("\n\nBUTTONS CONFIGURATION\n")
+            input("Please make sure that the camera is positioned in the leds board...")
 
-        if(n_leds > 0):
-            
-            # Get the image for the leds
-            leds_img = DefineModelCV.get_leds_image()
-            if leds_img is None: return -1
-
-            for i in range(0, n_leds):
-                print(f"\nLed {i+1} name: ")
-                led_name = input()
-                while True:
-                    print(f"How many colours have the led {i+1}?")
-                    n_colours = input()
-                    if n_colours.isdigit():
-                        n_colours = int(n_colours)
-                        break
-                    else: 
-                        continue
+            if(n_buttons > 0):
                 
-                print(f"Select the led {i+1} central position and press ENTER")
-                pos_vector= DefineModelCV.click_pos(leds_img)
+                # Get the image for the buttons
+                buttons_img = DefineModelCV.get_buttons_image()
+                if buttons_img is None: return -1
 
-                led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
-                for j in range(0, n_colours):
-                    print(f"Colour {j+1} of led {i+1}:")
-                    for i , color in enumerate(ListOfColors.get_list_of_colors()):
-                        print(f'{i+1} - {color.get_name()}')
+                for i in range(0, n_buttons):
+                    print(f"\nButton {i+1} name: ")
+                    button_name = input()
+                    
+                    #print(f"Select the button {i+1} central position and press ENTER")
+                    #pos_vector= DefineModelCV.click_pos(buttons_img)
+                    # uncoment this two lines to  set buttons position
+
+                    new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
+            else:
+                print("\nModel doesn't have buttons\n")
+
+
+            # leds configuration
+            print("\n\nLEDS CONFIGURATION\n")
+
+            if(n_leds > 0):
+                
+                # Get the image for the leds
+                leds_img = DefineModelCV.get_leds_image()
+                if leds_img is None: return -1
+
+                for i in range(0, n_leds):
+                    print(f"\nLed {i+1} name: ")
+                    led_name = input()
                     while True:
-                        print('Type which number you want')
-                        new_colour = input()
-                        if new_colour.isdigit():
-                            new_colour = int(new_colour)
-                            led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                        print(f"How many colours have the led {i+1}?")
+                        n_colours = input()
+                        if n_colours.isdigit():
+                            n_colours = int(n_colours)
                             break
-                        else:
+                        else: 
                             continue
                     
-                new_model.set_led(led)
+                    print(f"Select the led {i+1} central position and press ENTER")
+                    pos_vector= DefineModelCV.click_pos(leds_img)
+
+                    led = Led(led_name, n_colours, int(pos_vector[0]), int(pos_vector[1]))
+                    for j in range(0, n_colours):
+                        print(f"Colour {j+1} of led {i+1}:")
+                        for i , color in enumerate(ListOfColors.get_list_of_colors()):
+                            print(f'{i+1} - {color.get_name()}')
+                        while True:
+                            print('Type which number you want')
+                            new_colour = input()
+                            if new_colour.isdigit():
+                                new_colour = int(new_colour)
+                                led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                                break
+                            else:
+                                continue
+                        
+                    new_model.set_led(led)
+            else:
+                print("\nModel doesn't have leds\n") 
+
         else:
-            print("\nModel doesn't have leds\n")
-        
+            n_leds = 0
+            n_buttons = 0
+
+            # Add model
+            new_model = Model(name_model, n_leds, n_buttons, display, info, boot_info)
+
+
         # Save reference images
         if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):
             input("Couldn't write chr img")
@@ -212,6 +225,8 @@ class LibraryNewModel(Lib):
         if not DefineModelCV.write_reference_image_to_file(pal_ref_img, name_model+'_pal'):
             input("Couldn't write pal img")
             return -1
+        
+
         # Add model to settings
         Settings.add_model(new_model)
 

@@ -15,12 +15,11 @@ class Led(Position):
     def get_name(self):
         return self._name
     
-    def set_n_Colour(self, n_colour):
-        if (len(self._colours) < n_colour):
-            self._n_colour = n_colour
-            return 0
-        else:
-            return -1
+    def set_n_Colour(self, n_colour: int):
+        
+        self.delete_colours()
+        self._n_colour = n_colour
+        return 0
     
     def get_n_Colour(self):
         return self._n_colour
@@ -35,6 +34,7 @@ class Led(Position):
 
     def delete_colours(self):
         self._colours = []
+        self._n_colour = 0
         
 
     def get_colours(self):
