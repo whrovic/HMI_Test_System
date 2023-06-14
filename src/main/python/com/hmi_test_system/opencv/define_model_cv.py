@@ -369,6 +369,8 @@ class DefineModelCV():
                 frame, frame_time = cam.get_image()
                 if frame is None: continue
 
+                Displaycv.get_transformation_matrix(frame)
+
                 # Check if the frame is related to the current test
                 if frame_time < test_start_time:
                     continue

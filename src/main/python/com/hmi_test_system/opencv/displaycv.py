@@ -29,7 +29,7 @@ class Displaycv():
         objp[:,:2] = np.mgrid[0:pattern_size[0], 0:pattern_size[1]].T.reshape(-1, 2)
 
         # Define the path to the calibration images folder
-        calibration_folder = "..\..\..\..\model_images\intrinsic_calibration"
+        calibration_folder = "..\..\..\..\..\model_images\intrinsic_calibration"
 
         # Get the list of image filenames in the calibration folder
         image_files = os.listdir(calibration_folder)
@@ -59,6 +59,8 @@ class Displaycv():
 
         return camera_matrix, dist_coeffs
 
+    camera_matrix, dist_coeffs = intrinsic_calibration()
+
     ## TRANSFORMATION MATRIX - only needs to be done at the start of each video, assuming the camera is static the entire time
     #                        - transform_matrix and rectangle_coords must be saved until the end of the test
     @staticmethod
@@ -66,6 +68,9 @@ class Displaycv():
 
         if Displaycv.display_transformation_matrix is not None:
             return Displaycv.display_transformation_matrix, Displaycv.display_coordinates
+
+
+        image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
 
         # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -89,10 +94,11 @@ class Displaycv():
             return None, None
 
         # Define the coordinates of the display's vertices 
-        top_left = approx[0][0]
-        bottom_left = approx[1][0]
-        bottom_right = approx[2][0]
-        top_right = approx[3][0]
+        top_left = approx[1][0]
+        bottom_left = approx[2][0]
+        bottom_right = approx[3][0]
+        top_right = approx[0][0]
+
         display_coords = np.float32([top_left, top_right, bottom_right, bottom_left])
 
         # Define the coordinates of the rectangle's vertices
@@ -107,21 +113,16 @@ class Displaycv():
         Displaycv.display_coordinates = rectangle_coords
         return transform_matrix, rectangle_coords
 
+    @staticmethod
+    def undistort_image(image):
+        return cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
+
     ## DISPLAY EXTRACTION - the display must be extracted from all images used by cv
     @staticmethod
     def extract_display(image):
 
-        #image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
+        image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
 
-        # If it's the first image, get transformation matrix and coordinates
-        if Displaycv.display_transformation_matrix is None:
-            transformation_matrix, display_coordinates = Displaycv.get_transformation_matrix(image)
-            if transformation_matrix is None:
-                return None
-            else:
-                Displaycv.display_transformation_matrix = transformation_matrix
-                Displaycv.display_coordinates = display_coordinates
-        
         # Apply the perspective transform matrix to the image
         corrected_image = cv2.warpPerspective(image, Displaycv.display_transformation_matrix, (image.shape[1], image.shape[0]))
 
@@ -154,7 +155,7 @@ class Displaycv():
     
     @staticmethod
     def compare_display(image, model, threshold_avg_ssim, threshold_min_ssim, threshold_mse):
-        
+
         # Perform image registration using SIFT
         sift = cv2.SIFT_create()
         keypoints_image, descriptors_image = sift.detectAndCompute(image, None)
@@ -215,6 +216,17 @@ class Displaycv():
         mse_a = np.mean((image_lab[:, :, 1] - model_lab[:, :, 1]) ** 2)
         mse_b = np.mean((image_lab[:, :, 2] - model_lab[:, :, 2]) ** 2)
         mse = (mse_a + mse_b) / 2
+
+        print(avg_ssim, threshold_avg_ssim)
+        print(min_ssim, threshold_min_ssim)
+        print(mse, threshold_mse)
+        print()
+        
+        cv2.imshow('IMG', image)
+        cv2.imshow('MODEL', model)
+
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
         return avg_ssim > threshold_avg_ssim and min_ssim > threshold_min_ssim and mse < threshold_mse
     

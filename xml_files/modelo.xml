@@ -4,10 +4,6 @@
   <n_buttons>19</n_buttons>
   <display>
     <display_name>display</display_name>
-    <display_x>175</display_x>
-    <display_y>77</display_y>
-    <display_dimx>303</display_dimx>
-    <display_dimy>308</display_dimy>
   </display>
   <info>
     <board>MAP8061</board>
