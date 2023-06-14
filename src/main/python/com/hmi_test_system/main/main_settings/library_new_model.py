@@ -112,7 +112,7 @@ class LibraryNewModel(Lib):
         boot_info = BootLoaderInfo(boot_version, boot_date)
 
 
-        chr_ref_img, pal_ref_img = None
+        chr_ref_img, pal_ref_img = None, None
        
         
         aux = input("Do you want to configure the display? Press y if yes\n")
@@ -133,6 +133,11 @@ class LibraryNewModel(Lib):
             if chr_ref_img is None or pal_ref_img is None: return -1
 
         display = Display('display')
+
+        n_buttons = Lib.until_find_int("Number of buttons: ")
+        if (n_buttons) == -1: return -1
+        n_leds = Lib.until_find_int("Number of leds: ")
+        if (n_leds) == -1: return -1
 
         aux = input("Do you want to configure buttons and display? Press y if yes\n")
         if aux == 'y':  # buttons and leds configuration
@@ -163,7 +168,7 @@ class LibraryNewModel(Lib):
                     #pos_vector= DefineModelCV.click_pos(buttons_img)
                     # uncoment this two lines to  set buttons position
 
-                    new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
+                    new_model.set_button(Button(button_name, 0, 0))
             else:
                 print("\nModel doesn't have buttons\n")
 
@@ -174,14 +179,17 @@ class LibraryNewModel(Lib):
         if(n_leds > 0):
             
             # Get the image for the leds
-            # leds_img = DefineModelCV.get_leds_image()
-            # if leds_img is None: return -1
+            leds_img = DefineModelCV.get_leds_image()
+            if leds_img is None: return -1
 
             leds_img_detect = DefineModelCV.get_leds_image(True)
             if leds_img_detect is None: return -1
             leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
 
             for i in range(len(leds_coordinates)):
+
+                DefineModelCV.show_coordinate(leds_img, leds_coordinates[i])
+
                 led_name = 'L' + str(i+1)
                 while True:
                     print(f"How many colours have the led {i+1}?")

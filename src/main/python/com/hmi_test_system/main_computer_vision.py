@@ -255,7 +255,7 @@ def test_read_colours():
         led = Led('L1', 0, int(c[0]), int(c[1]))
 
         print(HMIcv.led_test(img, led).get_name())
-        DefineModelCV.show_coordinates(img, [c,])
+        DefineModelCV.show_coordinates_and_choose_order(img, [c,])
 
     cv2.imshow("img1", img)
     cv2.waitKey(0)

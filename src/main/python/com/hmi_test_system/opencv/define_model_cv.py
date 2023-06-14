@@ -123,13 +123,9 @@ class DefineModelCV():
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Threshold the image to separate circles from the black background
-        _, threshold = cv2.threshold(gray, 30, 255, cv2.THRESH_BINARY)
-
-        cv2.imshow("Threshold", threshold)
+        _, threshold = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)
 
         eroded = cv2.erode(threshold, (7,7))
-
-        cv2.imshow("After kernel", eroded)
 
         # Find contours in the edge image
         contours, _ = cv2.findContours(eroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -142,7 +138,7 @@ class DefineModelCV():
             led_coordinates.append((int(x), int(y)))
 
         # Display the image with detected circles
-        led_coordinates = DefineModelCV.show_coordinates(orig_img, led_coordinates)
+        led_coordinates = DefineModelCV.show_coordinates_and_choose_order(orig_img, led_coordinates)
 
         return led_coordinates
 
@@ -185,7 +181,7 @@ class DefineModelCV():
         return ret_val
 
     @staticmethod
-    def show_coordinates(image, coordinates):
+    def show_coordinates_and_choose_order(image, coordinates):
         # Copy original image to prevent changes
         img = image.copy()
         img = cv2.resize(img, (720, 480))
@@ -207,6 +203,19 @@ class DefineModelCV():
         cv2.destroyAllWindows()
 
         return out
+    
+    @staticmethod
+    def show_coordinate(image, coordinates):
+        # Copy original image to prevent changes
+        img = image.copy()
+        img = cv2.resize(img, (720, 480))
+        x, y = coordinates
+        cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
+            
+        # Show resulting image
+        cv2.imshow("HMI", img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
     @staticmethod
     def get_reference_display_images():
