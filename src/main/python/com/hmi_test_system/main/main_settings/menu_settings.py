@@ -182,23 +182,28 @@ class MenuSettings:
                 case '1':
                     count = 0
                     LEM.edit_model_info(model)
+                    save = False
                 # edit led
                 case '2':
                     count = 0
                     MenuSettings.sett_editmenu_editled(model)
+                    save = False
                 # edit button
                 case '3':
                     count = 0
                     MenuSettings.sett_editmenu_editbutton(model)
+                    save = False
                 # edit display
                 case '4':
                     count = 0
                     LEM.edit_model_display(model)
+                    save = False
                 # edit ref image
                 case '5':
                     #TODO
                     print("Error")
                     menu_choice = input('Press Enter')
+                    save = False
                     continue                
                 # delete
                 case '6':
