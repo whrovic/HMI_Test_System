@@ -30,8 +30,11 @@ class SerialPort:
     def stop_receive(self):
         self._is_receiving = False
         if self._thread.is_alive():
-            self._thread.join()
-
+            try:
+                self._thread.join()
+            except RuntimeError:
+                pass
+    
     def _thread_loop(self):
         while self._is_receiving:
             self._read_port()

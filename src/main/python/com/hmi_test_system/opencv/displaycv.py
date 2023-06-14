@@ -85,6 +85,9 @@ class Displaycv():
         epsilon = 0.1 * cv2.arcLength(largest_contour, True)
         approx = cv2.approxPolyDP(largest_contour, epsilon, True)
         
+        if len(approx) < 4:
+            return None, None
+
         # Define the coordinates of the display's vertices 
         top_left = approx[0][0]
         bottom_left = approx[1][0]

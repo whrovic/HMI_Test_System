@@ -73,32 +73,36 @@ class LibraryTest:
 
                 if len(sys.argv) > 4:
 
-                    n_buttons = sys.argv[4]
+                    key_code = 1
 
-                    if not n_buttons.isdigit():
+                    n_buttons = sys.argv[4]
+                    if n_buttons == '-sp':
+                        n_buttons = 0
+                        key_code = 0
+                    elif not n_buttons.isdigit():
                         LogLibraryTest.test_library_invalid_argument()
                         ExitCode.invalid_argument()
                         return
+                    else:
 
-                    n_buttons = int(n_buttons)
-                    if len(sys.argv) - 5 < n_buttons:
-                        LogLibraryTest.test_library_invalid_number_argument()
-                        ExitCode.invalid_number_of_arguments()
-                        return
-
-                    buttons_name = []
-                    for i in range(n_buttons):
-                        button_name = sys.argv[5+i]
-                        buttons_name.append(button_name)
-                    
-                    key_code = 1
-                    if len(sys.argv) > 5 + n_buttons:
-                        if sys.argv[5+n_buttons] == '-sp':
-                            key_code = 0 # Only serial port test
-                        else:
-                            LogLibraryTest.test_library_invalid_argument()
-                            ExitCode.invalid_argument()
+                        n_buttons = int(n_buttons)
+                        if len(sys.argv) - 5 < n_buttons:
+                            LogLibraryTest.test_library_invalid_number_argument()
+                            ExitCode.invalid_number_of_arguments()
                             return
+
+                        buttons_name = []
+                        for i in range(n_buttons):
+                            button_name = sys.argv[5+i]
+                            buttons_name.append(button_name)
+                    
+                        if len(sys.argv) > 5 + n_buttons:
+                            if sys.argv[5+n_buttons] == '-sp':
+                                key_code = 0 # Only serial port test
+                            else:
+                                LogLibraryTest.test_library_invalid_argument()
+                                ExitCode.invalid_argument()
+                                return
 
             # Display test type
             elif (t_type == TEST_TYPE_DISPLAY):
@@ -116,12 +120,12 @@ class LibraryTest:
                     return
                 
 
-                serial_number = sys.argv[5]
-                manufacture_date = sys.argv[6]
+                serial_number = sys.argv[4]
+                manufacture_date = sys.argv[5]
 
                 board_code = 1
                 if len(sys.argv) > 6:
-                    if sys.argv[7] == '-sp':
+                    if sys.argv[6] == '-sp':
                         board_code = 0          # Only serial port test
                     else:
                         LogLibraryTest.test_library_invalid_argument()

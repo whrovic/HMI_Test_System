@@ -182,8 +182,9 @@ class Test:
             if test_name is not None:
                 frame, frame_time = cam.get_image()
                 if frame is not None:
-                    old_frame_time = frame_time
                     Displaycv.get_transformation_matrix(frame)
+
+                    old_frame_time = frame_time
                     
                     # Check if the frame is related to the current test
                     if frame_time < test_start_time:
