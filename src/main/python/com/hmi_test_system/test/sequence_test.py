@@ -13,7 +13,6 @@ from .test import Test
 
 class SequenceTest:
 
-    #Log_sequencetest =
     @staticmethod
     def seq_button(model: Model, buttons_test = None, dsp = False):
 
@@ -22,8 +21,7 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
-                print("Parameters is None")
-                # TODO: Error Code
+                ExitCode.camera_connection_failure()
                 return -1
 
         # Gets the buttons to test
@@ -76,7 +74,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_BUTTONS_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.keys_test_no_changes_timeout()
             return -1
 
         # If the test will use both serial port and display, start recording images
@@ -104,7 +102,7 @@ class SequenceTest:
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
-                # TODO: Error Code
+                ExitCode.camera_connection_failure()
                 return -1
 
         # Open the needed connections
@@ -141,7 +139,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_BOARD_INFO_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.board_info_test_not_passed()
             return -1
 
         # If the test will use both serial port and display, start recording images
@@ -169,7 +167,7 @@ class SequenceTest:
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
-                # TODO: Error Code
+                ExitCode.camera_connection_failure()
                 return -1
 
         # Open the needed connections
@@ -205,7 +203,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_BOOT_LOADER_INFO_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.bootloader_test_not_passed()
             return -1
 
         # If the test will use both serial port and display, start recording images
@@ -233,7 +231,7 @@ class SequenceTest:
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
                 print("Parameters is None")
-                # TODO: Error Code
+                ExitCode.camera_connection_failure()
                 return -1
 
         # Open the needed connections
@@ -269,7 +267,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_ALIGHT_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.serialport_timeout_reception()
             return -1
 
         # If the test will use both serial port and display, start recording images
@@ -296,7 +294,7 @@ class SequenceTest:
         if parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
-            # TODO: Error Code
+            ExitCode.camera_connection_failure()
             return -1
 
         # Gets the leds to test
@@ -350,7 +348,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_LEDS_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.serialport_timeout_reception()
             return -1
 
         # Start recording images
@@ -376,7 +374,7 @@ class SequenceTest:
         if parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
-            # TODO: Error Code
+            ExitCode.camera_connection_failure()
             return -1
 
         # Get reference images from local files
@@ -384,7 +382,7 @@ class SequenceTest:
         if chr_ref_img is None or pal_ref_img is None:
             # TODO: Log this
             print("Images Ref is None")
-            # TODO: Error code
+            ExitCode.display_bad_model_paramters()
             return -1
 
         # Open the needed connections
@@ -420,7 +418,7 @@ class SequenceTest:
         if SequenceTest.wait_start_test(serial_port, TEST_DISPLAY_BEGIN) == -1:
             # TODO: Log this
             print("Timeout tests didn't start")
-            # TODO: Error code
+            ExitCode.serialport_timeout_reception()
             return -1
         
         # Start recording images
@@ -447,21 +445,21 @@ class SequenceTest:
         if led_parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
-            # TODO: Error Code
+            ExitCode.camera_connection_failure()
             return -1
         # Get display camera parameters
         dsp_parameters = SequenceTest._get_display_camera_parameters('display')
         if dsp_parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
             print("Parameters is None")
-            # TODO: Error Code
+            ExitCode.camera_connection_failure()
             return -1
         # Get reference images from local files
         chr_ref_img, pal_ref_img = HMIcv.read_ref_images_from_file(model.get_name())
         if chr_ref_img is None or pal_ref_img is None:
             LogSequenceTest.sequence_test_invalid_parameters()
             print("Ref imgs is None")
-            # TODO: Error code
+            ExitCode.display_bad_model_paramters()
             return -1
 
         # Open the needed connections

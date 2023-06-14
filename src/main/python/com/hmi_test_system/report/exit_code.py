@@ -125,6 +125,9 @@ class ExitCode:
     def display_test_pal_not_passed():
         ExitCode.update_value(DISPLAY_TEST_PAL_NOT_PASSED)
 
+    def display_bad_model_paramters():
+        ExitCode.update_value(DISPLAY_BAD_MODEL_PARAMETERS)
+        
     @staticmethod
     def bootloader_test_not_passed():
         ExitCode.update_value(BOOTLOADER_TEST_NOT_PASSED)
