@@ -34,8 +34,7 @@ class SequenceTest:
                 button = model.get_button(button_name)
                 if button is None:
                     # If the button name was not found in the model, return
-                    # TODO: Log this
-                    print("Button not found")
+                    LogSequenceTest.button_not_found()
                     ExitCode.key_name_not_found()
                     return -1
                 # Add the button to the sequence
@@ -101,7 +100,6 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
-                print("Parameters is None")
                 ExitCode.camera_connection_failure()
                 return -1
 
@@ -166,7 +164,6 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
-                print("Parameters is None")
                 ExitCode.camera_connection_failure()
                 return -1
 
@@ -230,7 +227,6 @@ class SequenceTest:
             parameters = SequenceTest._get_display_camera_parameters('display')
             if parameters is None:
                 LogSequenceTest.sequence_test_invalid_parameters()
-                print("Parameters is None")
                 ExitCode.camera_connection_failure()
                 return -1
 
@@ -293,7 +289,6 @@ class SequenceTest:
         parameters = SequenceTest._get_leds_camera_parameters('leds')
         if parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
-            print("Parameters is None")
             ExitCode.camera_connection_failure()
             return -1
 
@@ -306,9 +301,7 @@ class SequenceTest:
             for led_name in leds_test:
                 led = model.get_led(led_name)
                 if led is None:
-                    # If the led name was not found in the model, return
-                    # TODO: Log this
-                    print("Led name not found")
+                    LogSequenceTest.led_not_found()
                     ExitCode.key_name_not_found()
                     return -1
                 # Add the led to the sequence
@@ -373,7 +366,6 @@ class SequenceTest:
         parameters = SequenceTest._get_display_camera_parameters('display')
         if parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
-            print("Parameters is None")
             ExitCode.camera_connection_failure()
             return -1
 
@@ -444,7 +436,6 @@ class SequenceTest:
         led_parameters = SequenceTest._get_leds_camera_parameters('leds')
         if led_parameters is None:
             LogSequenceTest.sequence_test_invalid_parameters()
-            print("Parameters is None")
             ExitCode.camera_connection_failure()
             return -1
         # Get display camera parameters
