@@ -160,7 +160,8 @@ class LibraryNewModel(Lib):
                     
                     #print(f"Select the button {i+1} central position and press ENTER")
                     #pos_vector= DefineModelCV.click_pos(buttons_img)
-                    # uncoment this two lines to  set buttons position
+                    # uncoment this two lines to set buttons position, and delete the next one
+                    pos_vector = [0, 0]
 
                     new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
             else:
