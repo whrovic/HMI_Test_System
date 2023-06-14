@@ -134,11 +134,6 @@ class LibraryNewModel(Lib):
 
         display = Display('display')
 
-        n_buttons = Lib.until_find_int("Number of buttons: ")
-        if (n_buttons) == -1: return -1
-        n_leds = Lib.until_find_int("Number of leds: ")
-        if (n_leds) == -1: return -1
-
         aux = input("Do you want to configure buttons and display? Press y if yes\n")
         if aux == 'y':  # buttons and leds configuration
         
@@ -177,51 +172,56 @@ class LibraryNewModel(Lib):
             # leds configuration
             print("\n\nLEDS CONFIGURATION\n")
 
-        if(n_leds > 0):
-            
-            # Get the image for the leds
-            leds_img = DefineModelCV.get_leds_image()
-            if leds_img is None: return -1
+            if(n_leds > 0):
+                
+                # Get the image for the leds
+                leds_img = DefineModelCV.get_leds_image()
+                if leds_img is None: return -1
 
-            leds_img_detect = DefineModelCV.get_leds_image(True)
-            if leds_img_detect is None: return -1
-            leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
+                leds_img_detect = DefineModelCV.get_leds_image(True)
+                if leds_img_detect is None: return -1
+                leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
 
-            for i in range(len(leds_coordinates)):
+                for i in range(len(leds_coordinates)):
 
-                DefineModelCV.show_coordinate(leds_img, leds_coordinates[i])
+                    DefineModelCV.show_coordinate(leds_img, leds_coordinates[i])
 
-                led_name = 'L' + str(i+1)
-                while True:
-                    print(f"How many colours have the led {i+1}?")
-                    n_colours = input()
-                    if n_colours.isdigit():
-                        n_colours = int(n_colours)
-                        break
-                    else: 
-                        continue
-
-                led = Led(led_name, n_colours, int(leds_coordinates[i][0]), int(leds_coordinates[i][1]))
-
-                for j in range(0, n_colours):
-                    print(f"Colour {j+1} of led {i+1}:")
-                    for i , color in enumerate(ListOfColors.get_list_of_colors()):
-                        print(f'{i+1} - {color.get_name()}')
+                    led_name = 'L' + str(i+1)
                     while True:
-                        print('Type which number you want')
-                        new_colour = input()
-                        if new_colour.isdigit():
-                            new_colour = int(new_colour)
-
-                            if 0 < new_colour <= len(ListOfColors.get_list_of_colors()):
-                                led.new_colour(ListOfColors.get_color_index(new_colour-1))
-                                break
-                        else:
+                        print(f"How many colours have the led {i+1}?")
+                        n_colours = input()
+                        if n_colours.isdigit():
+                            n_colours = int(n_colours)
+                            break
+                        else: 
                             continue
-                    
-                new_model.set_led(led)
+
+                    led = Led(led_name, n_colours, int(leds_coordinates[i][0]), int(leds_coordinates[i][1]))
+
+                    for j in range(0, n_colours):
+                        print(f"Colour {j+1} of led {i+1}:")
+                        for i , color in enumerate(ListOfColors.get_list_of_colors()):
+                            print(f'{i+1} - {color.get_name()}')
+                        while True:
+                            print('Type which number you want')
+                            new_colour = input()
+                            if new_colour.isdigit():
+                                new_colour = int(new_colour)
+
+                                if 0 < new_colour <= len(ListOfColors.get_list_of_colors()):
+                                    led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                                    break
+                            else:
+                                continue
+                        
+                    new_model.set_led(led)
+            else:
+                print("\nModel doesn't have leds\n")
+        
         else:
-            print("\nModel doesn't have leds\n")
+            n_leds = 0
+            n_buttons = 0
+            new_model = Model(name_model, n_leds, n_buttons, display, info, boot_info)
         
         # Save reference images
         if not DefineModelCV.write_reference_image_to_file(chr_ref_img, name_model+'_chr'):

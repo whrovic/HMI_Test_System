@@ -111,7 +111,7 @@ class Displaycv():
     @staticmethod
     def extract_display(image):
 
-        image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
+        #image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
 
         # If it's the first image, get transformation matrix and coordinates
         if Displaycv.display_transformation_matrix is None:

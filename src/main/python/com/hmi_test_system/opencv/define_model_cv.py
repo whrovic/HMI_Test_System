@@ -196,9 +196,25 @@ class DefineModelCV():
 
         print("Insert the order of the leds")
         out = []
-        for i in range(len(coordinates)):
-            n = int(input())
-            out.append(coordinates[n-1])
+        i = 0
+        while i < len(coordinates):
+            n = (input())
+            if n.isdigit():
+                out.append(coordinates[n-1])
+                i += 1
+            else:
+                n = n.split('-')
+                print(n)
+                init = int(n[0])
+                final = int(n[1])
+                if final > init:
+                    for j in range(init, final+1):
+                        out.append(coordinates[j-1])
+                        i += 1
+                else:
+                    for j in range(init, final-1, -1):
+                        out.append(coordinates[j-1])
+                        i += 1
 
         cv2.destroyAllWindows()
 
