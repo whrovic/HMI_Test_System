@@ -60,7 +60,7 @@ class Displaycv():
         return camera_matrix, dist_coeffs
 
     ## TRANSFORMATION MATRIX - only needs to be done at the start of each video, assuming the camera is static the entire time
-     #                       - transform_matrix and rectangle_coords must be saved until the end of the test
+    #                        - transform_matrix and rectangle_coords must be saved until the end of the test
     @staticmethod
     def get_transformation_matrix(image):
 
@@ -126,7 +126,7 @@ class Displaycv():
         # Extract the display region
         x, y, w, h = cv2.boundingRect(Displaycv.display_coordinates)
         display = corrected_image[y:y+h, x:x+w]
-
+        
         return display
 
     @staticmethod
