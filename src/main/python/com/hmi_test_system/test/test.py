@@ -106,7 +106,7 @@ class Test:
                         ExitCode.keys_test_not_passed()
                         return -1
                     
-                    text = str(Displaycv.read_char(frame))
+                    text = str(HMIcv.read_characters(frame))
 
                     lines = text.splitlines()
                     for line in lines:
