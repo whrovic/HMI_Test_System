@@ -111,7 +111,6 @@ class Displaycv():
 
         Displaycv.display_transformation_matrix = transform_matrix
         Displaycv.display_coordinates = rectangle_coords
-        return transform_matrix, rectangle_coords
 
     @staticmethod
     def undistort_image(image):

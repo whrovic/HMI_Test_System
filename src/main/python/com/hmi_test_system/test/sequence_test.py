@@ -639,8 +639,7 @@ class SequenceTest:
                 received_sp = True
                 
                 data = str(data)
-                # TODO: Delete this
-                print(data)
+                
                 if data.startswith(TEST_BEGIN):
                     return 0
             

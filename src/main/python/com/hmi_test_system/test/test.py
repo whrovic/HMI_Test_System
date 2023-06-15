@@ -37,9 +37,6 @@ class Test:
                     old_data_time = data_time
                     data = str(data)
 
-                    # TODO: Delete this
-                    print(data)
-
                     # Received Test OK before receiving all the buttons
                     if data.startswith(TEST_BUTTONS_OK):
                         if sequence_no_sp == n_buttons:
@@ -93,6 +90,8 @@ class Test:
                 # Read from camera until tests are finished
                 frame, frame_time = cam.get_image()
                 if frame is not None:
+                    Displaycv.get_transformation_matrix(frame)
+
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
                     if end_time_sp is not None and frame_time > end_time_sp:
@@ -259,9 +258,6 @@ class Test:
                     old_data_time = data_time
                     data = str(data)
 
-                    # TODO: Remove this
-                    print(data)
-
                     # Check the board information
                     if data.startswith(TEST_BOOT_LOADER_INFO_OK):
                         if (version_info and date_info) is None:
@@ -306,29 +302,35 @@ class Test:
                 # Read from camera until tests are finished
                 frame, frame_time = cam.get_image()
                 if frame is not None:
+
+                    Displaycv.get_transformation_matrix(frame)
+
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
-                    if end_time_sp is not None and frame_time > end_time_sp:
+                    if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
                         # TODO: Log this
                         print("BootLoader Info Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.bootloader_test_not_passed()
                         return -1
                     
                     # Read the text from the display
-                    text = str(Displaycv.read_char(frame))
+                    text = str(HMIcv.read_characters(frame))
 
                     # TODO: Delete this
                     print(text)
 
                     for line in text.splitlines():
-                        if version_dsp is not None and line.startswith('Version: ' + version):
-                            # TODO: Log this
-                            print(f"BootLoader Info Test [DSP]: Version {version} correctly received")
-                            version_dsp = version
-                        elif date_dsp is not None and line.startswith('Date: ' + date):
-                            # TODO: Log this
-                            print(f"BootLoader Info Test [DSP]: Date {date} correctly received")
-                            date_dsp = date
+                        info_recv = Test.split_double_dot(line)
+                        if version_dsp is None and line.startswith('Version:'):
+                            if Test.compare_strings(version, info_recv):
+                                # TODO: Log this
+                                print(f"BootLoader Info Test [DSP]: Version {version} correctly received")
+                                version_dsp = version
+                        elif date_dsp is None and line.startswith('Date:'):
+                            if Test.compare_strings(date, info_recv):
+                                # TODO: Log this
+                                print(f"BootLoader Info Test [DSP]: Date {date} correctly received")
+                                date_dsp = date
                     end_test_dsp = bool(version_dsp and date_dsp)
                     if end_test_dsp:
                         # TODO: Log this
@@ -365,9 +367,6 @@ class Test:
                 if data is not None:
                     old_data_time = data_time
                     data = str(data)
-
-                    # TODO: Remove this
-                    print(data)
 
                     # Check the board information
                     if data.startswith(TEST_BOARD_INFO_OK):
@@ -468,49 +467,57 @@ class Test:
                 # Read from camera until tests are finished
                 frame, frame_time = cam.get_image()
                 if frame is not None:
+
+                    Displaycv.get_transformation_matrix(frame)
+
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
-                    if end_time_sp is not None and frame_time > end_time_sp:
+                    if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
                         # TODO: Log this
                         print("Board Info Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.board_info_test_not_passed()
                         return -1
                     
                     # Read the text from the display
-                    text = str(Displaycv.read_char(frame))
-
-                    # TODO: Delete this
-                    print(text)
+                    text = str(HMIcv.read_characters(frame))
 
                     for line in text.splitlines():
-                        if board_dsp is not None and line.startswith('Board: ' + board):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Board {board} correctly received")
-                            board_dsp = board
-                        elif serial_number_dsp is not None and line.startswith('Serial Number: ' + serial_number):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Serial number {serial_number} correctly received")
-                            serial_number_dsp = serial_number
-                        elif manufacture_date_dsp is not None and line.startswith('Manufacture Date: ' + manufacture_date):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Manufacture data {manufacture_date} correctly received")
-                            manufacture_date_dsp = manufacture_date
-                        elif option_dsp is not None and line.startswith('Option: ' + option):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Option {option} correctly received")
-                            option_dsp = option
-                        elif revision_dsp is not None and line.startswith('Revision: ' + revision):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Revision {revision} correctly received")
-                            revision_dsp = revision
-                        elif edition_dsp is not None and line.startswith('Edition: ' + edition):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: Edition {edition} correctly received")
-                            edition_dsp = edition
-                        elif lcd_type_dsp is not None and line.startswith('LCD Type: ' + lcd_type):
-                            # TODO: Log this
-                            print(f"Board Info Test [DSP]: LCD Type {lcd_type} correctly received")
-                            lcd_type_dsp = lcd_type
+                        info_recv = Test.split_double_dot(line)
+                        if board_dsp is None and line.startswith('Board:'):
+                            if Test.compare_strings(board, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Board {board} correctly received")
+                                board_dsp = board
+                        elif serial_number_dsp is None and line.startswith('Serial Number:'):
+                            if Test.compare_strings(serial_number, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Serial number {serial_number} correctly received")
+                                serial_number_dsp = serial_number
+                        elif manufacture_date_dsp is None and line.startswith('Manufacture Date:'):
+                            if Test.compare_strings(manufacture_date, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Manufacture data {manufacture_date} correctly received")
+                                manufacture_date_dsp = manufacture_date
+                        elif option_dsp is None and line.startswith('Option:'):
+                            if Test.compare_strings(option, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Option {option} correctly received")
+                                option_dsp = option
+                        elif revision_dsp is None and line.startswith('Revision:'):
+                            if Test.compare_strings(revision, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Revision {revision} correctly received")
+                                revision_dsp = revision
+                        elif edition_dsp is None and line.startswith('Edition:'):
+                            if Test.compare_strings(edition, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: Edition {edition} correctly received")
+                                edition_dsp = edition
+                        elif lcd_type_dsp is None and line.startswith('LCD Type:'):
+                            if Test.compare_strings(lcd_type, info_recv):
+                                # TODO: Log this
+                                print(f"Board Info Test [DSP]: LCD Type {lcd_type} correctly received")
+                                lcd_type_dsp = lcd_type
                     end_test_dsp = bool(board_dsp and serial_number_dsp and manufacture_date_dsp and option_dsp and revision_dsp and edition_dsp and lcd_type_dsp)
                     if end_test_dsp:
                         # TODO: Log this
@@ -545,9 +552,6 @@ class Test:
                 if data is not None:
                     old_data_time = data_time
                     data = str(data)
-
-                    # TODO: Remove this
-                    print(data)
 
                     # When OK is received, the tests should stop
                     if data.startswith(TEST_ALIGHT_OK):
@@ -661,28 +665,28 @@ class Test:
                 # Read from camera until tests are finished
                 frame, frame_time = cam.get_image()
                 if frame is not None:
+
+                    Displaycv.get_transformation_matrix(frame)
+
                     old_frame_time = frame_time
                     # The time of the image is higher than the end of the tests
-                    if end_time_sp is not None and frame_time > end_time_sp:
+                    if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
                         # TODO: Log this
                         print("The serial port ended and the camera didn't")
                         ExitCode.alight_test_not_passed()
                         return -1
                     
                     # Read the text from the display
-                    text = str(Displaycv.read_char(frame))
+                    text = str(HMIcv.read_characters(frame))
 
                     # TODO: Remove this
                     print(text)
 
-
                     # Extract the lines from the text
-                    lines = text.splitlines()
-                    
-                    for line in lines:
+                    for line in text.splitlines():
                         if TEST_ALIGHT_ALIGHT in line:
                             # Covered value
-                            if '(Covered)' in line and covered_alight_value_dsp is None:
+                            if covered_alight_value_dsp is None and '(Covered)' in line:
                                 # Extract the ALight sensor value from the received info
                                 # Get last word (13669.36Lux)
                                 info_words = data.split()
@@ -1015,3 +1019,28 @@ class Test:
                     LogLeds.test_leds_sequence_failed()
                     ExitCode.leds_test_not_passed()
                     return -1
+
+    @staticmethod
+    def compare_strings(orig, string):
+        if len(orig) == len(string):
+            diff_ind = [i for i in range(len(orig)) if orig[i] != string[i]]
+            for i in diff_ind:
+                if orig[i] == '0' or orig[i] == 'O':
+                    if orig[i] == '0' and string[i] != 'O':
+                        return False
+                    elif orig[i] == 'O' and string[i] != '0':
+                        return False
+                else:
+                    return False
+            return True
+        else:
+            return False
+        
+    @staticmethod
+    def split_double_dot(string: str):
+        splited = string.split(':')
+        if len(splited) != 2:
+            return ''
+        else:
+            return splited[1].strip()
+    
