@@ -4,19 +4,19 @@ class LogSequenceTest(Log):
 
     @staticmethod
     def sequence_test_invalid_parameters():
-        Log.info_log("Invalid Parameter: Parameter is None")
+        Log.error_log("Invalid Parameter: Parameter is None")
 
     @staticmethod
     def image_none():
-        Log.info_log("Images Reference is None")
+        Log.error_log("Images Reference is None")
 
     @staticmethod
     def button_not_found():
-        Log.info_log("Button not found")
+        Log.error_log("Button not found")
 
     @staticmethod
     def led_not_found():
-        Log.info_log("Led not found")
+        Log.error_log("Led not found")
 
     @staticmethod
     def start_buttons_test():

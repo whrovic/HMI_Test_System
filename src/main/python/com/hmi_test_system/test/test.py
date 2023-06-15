@@ -115,12 +115,10 @@ class Test:
                                 previous_button_dsp = button_name
                                 if sequence_no_dsp >= n_buttons:
                                     end_test_dsp = True
-                                    # TODO: Log this
-                                    print("Key Tests [DSP]: Success")
+                                    LogButton.button_test_serial_pass('DSP')
                             # No changes in the display
                             elif not (previous_button_dsp is not None and button_name == previous_button_dsp):
-                                # TODO: Log this
-                                print(f"Keys Test [DSP]: Error received {button_name} instead of {button_sequence_name[sequence_no_sp]}")
+                                LogButton.button_test_sequence_failed('DSP', button_name, button_sequence_name[sequence_no_sp])
                                 ExitCode.keys_test_sequence_error()
                                 return -1
                             break
@@ -132,8 +130,7 @@ class Test:
                         return -1
             
             if end_test_sp and end_test_dsp:
-                # TODO: Log this
-                print("Keys Test: Success")
+                LogButton.button_test_serial_pass('DSP')
                 return 0
 
     @staticmethod
