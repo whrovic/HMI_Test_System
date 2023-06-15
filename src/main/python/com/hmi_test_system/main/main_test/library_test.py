@@ -153,22 +153,20 @@ class LibraryTest:
 
                 result_led = SequenceTest.seq_led(model, leds_name)
                 
-                # TODO: Log this
                 if (result_led == 0):
-                    print("Leds tests passed sucessfully")
+                    Log.generic("Leds tests passed sucessfully")
                 elif (result_led == -1): 
-                    print("Leds test failed")
+                    Log.generic("Leds test failed")
 
             # LCD test
             elif (t_type == TEST_TYPE_DISPLAY):
                 
                 result_display = SequenceTest.seq_display(model)
                 
-                # TODO: Log this
                 if (result_display == 0):
-                    print("Display tests passed successfully")
+                    Log.generic("Display tests passed successfully")
                 elif (result_display == -1): 
-                    print("Display tests failed")
+                    Log.generic("Display tests failed")
 
             # Button test
             elif(t_type == TEST_TYPE_BUTTONS):
@@ -179,44 +177,40 @@ class LibraryTest:
 
                 result_button = SequenceTest.seq_button(model, buttons_name, key_code)      
                 
-                # TODO: Log this
                 if(result_button == 0):
-                    print("Buttons test passed successfully")
+                    Log.generic("Buttons test passed successfully")
                 elif(result_button == -1): 
-                    print("Buttons test failed")
+                    Log.generic("Buttons test failed")
 
             # Board_info test
             elif(t_type == TEST_TYPE_BOARD_INFO):
                 
                 result_board = SequenceTest.seq_board_info(model, serial_number, manufacture_date, board_code)
 
-                # TODO: Log this
                 if(result_board == 0):
-                    print("BoardInfo test passed successfully")
+                    Log.generic("BoardInfo test passed successfully")
                 elif(result_board == -1): 
-                    print("BoardInfo test failed")
+                    Log.generic("BoardInfo test failed")
 
             # Bootloader_info test
             elif(t_type == TEST_TYPE_BOOTLOADER_INFO):
 
                 result_bootloader = SequenceTest.seq_boot_loader_info(model, bootloader_code)
 
-                # TODO: Log this
                 if(result_bootloader == 0):
-                    print("BootloaderInfo test passed successfully")
+                    Log.generic("BootloaderInfo test passed successfully")
                 elif(result_bootloader == -1): 
-                    print("BootloaderInfo test failed")
+                    Log.generic("BootloaderInfo test failed")
 
             # Alight test
             elif(t_type == TEST_TYPE_ALIGHT):
 
                 result_alight = SequenceTest.seq_alight(alight_code)
 
-                # TODO: Log this
                 if(result_alight == 0):
-                    print("Alight test passed successfully")
+                    Log.generic("Alight test passed successfully")
                 elif(result_alight == -1):
-                    print("Alight test failed")
+                    Log.generic("Alight test failed")
 
         # Default -> all tests
         else:
@@ -246,11 +240,10 @@ class LibraryTest:
             
             result_all = SequenceTest.seq_all(model, serial_number, manufacture_date, all_code)   
 
-            # TODO: Log this
             if(result_all == 0):
-                print("All the tests passed successfully")
+                Log.generic("All the tests passed successfully")
             elif(result_all == -1):
-                print("At least one of the tests failed")
+                Log.generic("At least one of the tests failed")
 
         return
     

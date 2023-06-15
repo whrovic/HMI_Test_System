@@ -93,8 +93,7 @@ class Test:
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
                     if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
-                        # TODO: Log this
-                        print("Keys Test [DSP]: The serial port ended and the camera didn't")
+                        Log.generic("Keys Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.keys_test_not_passed()
                         return -1
                     
@@ -125,8 +124,7 @@ class Test:
                             break
                 # Check for timeout
                 elif (time() - old_frame_time > TIMEOUT_LAST_RECEIVED_CAM):
-                        # TODO: Log this
-                        print("Keys Test [DSP]: Timeout unavailable cam")
+                        Log.generic("Keys Test [DSP]: Timeout unavailable cam")
                         ExitCode.camera_timeout_stopped()
                         return -1
             
@@ -164,8 +162,7 @@ class Test:
                         new_test_name = None
                     new_test_start_time = data_time
                 elif (time() - old_data_time > TIMEOUT_DISPLAY_TEST_CHANGE):
-                    # TODO: Log this
-                    print("Timeout SP")
+                    Log.generic("Timeout SP")
                     ExitCode.camera_timeout_stopped()
                     return -1
 
@@ -233,8 +230,7 @@ class Test:
                                 continue
                 # Check for camera timeout
                 elif (time() - old_frame_time > TIMEOUT_LAST_RECEIVED_CAM):
-                    # TODO: Log this
-                    print("Cam timeout")
+                    Log.generic("Cam timeout")
                     ExitCode.camera_timeout_stopped()
                     return -1
 
@@ -263,39 +259,33 @@ class Test:
                     # Check the board information
                     if data.startswith(TEST_BOOT_LOADER_INFO_OK):
                         if (version_info and date_info) is None:
-                            print("BootLoader Info Test [SP]: Received Test OK before the remaining information")
+                            Log.generic("BootLoader Info Test [SP]: Received Test OK before the remaining information")
                             ExitCode.bootloader_test_not_passed()
                             return -1
                         else:
-                            # TODO: Log this
-                            print("BBootLoader Info Test [SP]: Serial port succeeded")
+                            Log.generic("BBootLoader Info Test [SP]: Serial port succeeded")
                             end_test_sp = True
                             end_time_sp = data_time
                     elif version_info is None:
                         if data.startswith(TEST_BOOT_LOADER_INFO_VERSION + version):
                             version_info = version
-                            # TODO: Log this
-                            print(f"BootLoader Info Test [SP]: Version {version} correctly received")
+                            Log.generic(f"BootLoader Info Test [SP]: Version {version} correctly received")
                         else:
-                            # TODO: Log this
-                            print("BootLoader Info Test [SP]: Incorrect version information")
+                            Log.generic("BootLoader Info Test [SP]: Incorrect version information")
                             ExitCode.bootloader_test_not_passed()
                             return -1
                     # Check the serial number
                     elif date_info is None:
                         if data.startswith(TEST_BOOT_LOADER_INFO_DATE + date):
                             date_info = date
-                            # TODO: Log this
-                            print(f"BootLoader Info Test [SP]: Date {date} correctly received")
+                            Log.generic(f"BootLoader Info Test [SP]: Date {date} correctly received")
                         else:
-                            # TODO: Log this
-                            print("BootLoader Info Test [SP]: Incorrect date")
+                            Log.generic("BootLoader Info Test [SP]: Incorrect date")
                             ExitCode.bootloader_test_not_passed()
                             return -1
                 # If no info is received for the timeout, return
                 elif (time() - old_data_time > TIMEOUT_ALIGHT_NO_INFO):
-                    # TODO: Log this
-                    print("BootLoader Info Test [SP]: SP timeout")
+                    Log.generic("BootLoader Info Test [SP]: SP timeout")
                     ExitCode.serialport_timeout_reception()
                     return -1
 
@@ -310,8 +300,7 @@ class Test:
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
                     if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
-                        # TODO: Log this
-                        print("BootLoader Info Test [DSP]: The serial port ended and the camera didn't")
+                        Log.generic("BootLoader Info Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.bootloader_test_not_passed()
                         return -1
                     
@@ -322,29 +311,24 @@ class Test:
                         info_recv = Test.split_double_dot(line)
                         if version_dsp is None and line.startswith('Version:'):
                             if Test.compare_strings(version, info_recv):
-                                # TODO: Log this
-                                print(f"BootLoader Info Test [DSP]: Version {version} correctly received")
+                                Log.generic(f"BootLoader Info Test [DSP]: Version {version} correctly received")
                                 version_dsp = version
                         elif date_dsp is None and line.startswith('Date:'):
                             if Test.compare_strings(date, info_recv):
-                                # TODO: Log this
-                                print(f"BootLoader Info Test [DSP]: Date {date} correctly received")
+                                Log.generic(f"BootLoader Info Test [DSP]: Date {date} correctly received")
                                 date_dsp = date
                     end_test_dsp = bool(version_dsp and date_dsp)
                     if end_test_dsp:
-                        # TODO: Log this
-                        print("BootLoader Info Test [DSP]: Display succeeded")
+                        Log.generic("BootLoader Info Test [DSP]: Display succeeded")
                 # Check for timeout
                 elif (time() - old_frame_time > TIMEOUT_LAST_RECEIVED_CAM):
-                        # TODO: Log this
-                        print("BootLoader Info Test [DSP]: Timeout unavailable cam")
+                        Log.generic("BootLoader Info Test [DSP]: Timeout unavailable cam")
                         ExitCode.camera_timeout_stopped()
                         return -1
 
             # Return when all the tests have succeeded
             if end_test_sp and end_test_dsp:
-                # TODO: Log this
-                print("BootLoader Info Test: Success")
+                Log.generic("BootLoader Info Test: Success")
                 return 0
 
     @staticmethod
@@ -370,94 +354,78 @@ class Test:
                     # Check the board information
                     if data.startswith(TEST_BOARD_INFO_OK):
                         if (board_info and serial_number_info and manufacture_date_info and option_info and revision_info and edition_info and lcd_type_info) is None:
-                            print("Board Info Test: Received Test OK before the remaining information")
+                            Log.generic("Board Info Test: Received Test OK before the remaining information")
                             ExitCode.board_info_test_not_passed()
                             return -1
                         else:
-                            # TODO: Log this
-                            print("Board Info Test: Serial port succeeded")
+                            Log.generic("Board Info Test: Serial port succeeded")
                             end_test_sp = True
                             end_time_sp = data_time
                     elif board_info is None:
                         if data.startswith(TEST_BOARD_INFO_BOARD + board):
                             board_info = board
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Board {board} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Board {board} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect board information")
+                            Log.generic("Board Info Test [SP]: Incorrect board information")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the serial number
                     elif serial_number_info is None:
                         if data.startswith(TEST_BOARD_INFO_SERIAL_NUMBER + serial_number):
                             serial_number_info = serial_number
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Serial number {serial_number} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Serial number {serial_number} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect serial number")
+                            Log.generic("Board Info Test [SP]: Incorrect serial number")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the manufacture date
                     elif manufacture_date_info is None:
                         if data.startswith(TEST_BOARD_INFO_MANUFACTURE_DATE + manufacture_date):
                             manufacture_date_info = manufacture_date
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Manufacture data {manufacture_date} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Manufacture data {manufacture_date} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect manufacture date")
+                            Log.generic("Board Info Test [SP]: Incorrect manufacture date")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the option
                     elif option_info is None:
                         if data.startswith(TEST_BOARD_INFO_OPTION + option):
                             option_info = option
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Option {option} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Option {option} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect option")
+                            Log.generic("Board Info Test [SP]: Incorrect option")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the revision
                     elif revision_info is None:
                         if data.startswith(TEST_BOARD_INFO_REVISON + revision):
                             revision_info = revision
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Revision {revision} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Revision {revision} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect revision")
+                            Log.generic("Board Info Test [SP]: Incorrect revision")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the edition
                     elif edition_info is None:
                         if data.startswith(TEST_BOARD_INFO_EDITON + edition):
                             edition_info = edition
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: Edition {edition} correctly received")
+                            Log.generic(f"Board Info Test [SP]: Edition {edition} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect edition")
+                            Log.generic("Board Info Test [SP]: Incorrect edition")
                             ExitCode.board_info_test_not_passed()
                             return -1
                     # Check the LCD type
                     elif lcd_type_info is None:
                         if data.startswith(TEST_BOARD_INFO_LCD_TYPE + lcd_type):
                             lcd_type_info = lcd_type
-                            # TODO: Log this
-                            print(f"Board Info Test [SP]: LCD Type {lcd_type} correctly received")
+                            Log.generic(f"Board Info Test [SP]: LCD Type {lcd_type} correctly received")
                         else:
-                            # TODO: Log this
-                            print("Board Info Test [SP]: Incorrect LCD type")
+                            Log.generic("Board Info Test [SP]: Incorrect LCD type")
                             ExitCode.board_info_test_not_passed()
                             return -1
                 # If no info is received for the timeout, return
                 elif (time() - old_data_time > TIMEOUT_ALIGHT_NO_INFO):
-                    # TODO: Log this
-                    print("Board Info Test [SP]: SP timeout")
+                    Log.generic("Board Info Test [SP]: SP timeout")
                     ExitCode.serialport_timeout_reception()
                     return -1
 
@@ -472,8 +440,7 @@ class Test:
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
                     if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
-                        # TODO: Log this
-                        print("Board Info Test [DSP]: The serial port ended and the camera didn't")
+                        Log.generic("Board Info Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.board_info_test_not_passed()
                         return -1
                     
@@ -484,54 +451,44 @@ class Test:
                         info_recv = Test.split_double_dot(line)
                         if board_dsp is None and line.startswith('Board:'):
                             if Test.compare_strings(board, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Board {board} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Board {board} correctly received")
                                 board_dsp = board
                         elif serial_number_dsp is None and line.startswith('Serial Number:'):
                             if Test.compare_strings(serial_number, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Serial number {serial_number} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Serial number {serial_number} correctly received")
                                 serial_number_dsp = serial_number
                         elif manufacture_date_dsp is None and line.startswith('Manufacture Date:'):
                             if Test.compare_strings(manufacture_date, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Manufacture data {manufacture_date} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Manufacture data {manufacture_date} correctly received")
                                 manufacture_date_dsp = manufacture_date
                         elif option_dsp is None and line.startswith('Option:'):
                             if Test.compare_strings(option, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Option {option} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Option {option} correctly received")
                                 option_dsp = option
                         elif revision_dsp is None and line.startswith('Revision:'):
                             if Test.compare_strings(revision, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Revision {revision} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Revision {revision} correctly received")
                                 revision_dsp = revision
                         elif edition_dsp is None and line.startswith('Edition:'):
                             if Test.compare_strings(edition, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: Edition {edition} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: Edition {edition} correctly received")
                                 edition_dsp = edition
                         elif lcd_type_dsp is None and line.startswith('LCD Type:'):
                             if Test.compare_strings(lcd_type, info_recv):
-                                # TODO: Log this
-                                print(f"Board Info Test [DSP]: LCD Type {lcd_type} correctly received")
+                                Log.generic(f"Board Info Test [DSP]: LCD Type {lcd_type} correctly received")
                                 lcd_type_dsp = lcd_type
                     end_test_dsp = bool(board_dsp and serial_number_dsp and manufacture_date_dsp and option_dsp and revision_dsp and edition_dsp and lcd_type_dsp)
                     if end_test_dsp:
-                        # TODO: Log this
-                        print("Board Info Test [DSP]: Display succeeded")
+                        Log.generic("Board Info Test [DSP]: Display succeeded")
                 # Check for timeout
                 elif (time() - old_frame_time > TIMEOUT_LAST_RECEIVED_CAM):
-                        # TODO: Log this
-                        print("Board Info Test [DSP]: Timeout unavailable cam")
+                        Log.generic("Board Info Test [DSP]: Timeout unavailable cam")
                         ExitCode.camera_timeout_stopped()
                         return -1
 
             # Return when all the tests have succeeded
             if end_test_sp and end_test_dsp:
-                # TODO: Log this
-                print("Board Info Test: Success")
+                Log.generic("Board Info Test: Success")
                 return 0
 
     @staticmethod
@@ -555,12 +512,10 @@ class Test:
                     # When OK is received, the tests should stop
                     if data.startswith(TEST_ALIGHT_OK):
                         if (alight_value_sp and covered_alight_value_sp) is None:
-                            # TODO: Log this
-                            print("Received Test OK before info")
+                            Log.generic("Received Test OK before info")
                             ExitCode.alight_test_not_passed()
                         else:
-                            # TODO: Log this
-                            print("Alight Test [SP]: Serial port succeeded")
+                            Log.generic("Alight Test [SP]: Serial port succeeded")
                             end_test_sp = True
                             end_time_sp = data_time
                     # If the 1st value wasn't yet received
@@ -571,8 +526,7 @@ class Test:
                             # Get last word '13669.36Lux'
                             info_words = data.split()
                             if len(info_words) == 0:
-                                # TODO: Log this
-                                print("Didn't find any words")
+                                Log.generic("Didn't find any words")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                             alight_info = info_words[-1]
@@ -580,8 +534,7 @@ class Test:
                             end_index = alight_info.find('Lux')
                             # The string was not found, so return
                             if end_index == -1:
-                                # TODO: Log this
-                                print("Didn't find the lux sting")
+                                Log.generic("Didn't find the lux sting")
                                 ExitCode.alight_test_not_passed()
                                 return -1
 
@@ -590,23 +543,19 @@ class Test:
                                 alight_value_sp = float(alight_info)
                             except:
                                 # The value isn't a float value
-                                # TODO: Log this
-                                print("Didn't find any the float value")
+                                Log.generic("Didn't find any the float value")
                                 ExitCode.alight_test_not_passed()
                                 return -1
 
                             # Check if the ALight sensor value is within the expected range
                             if alight_value_sp > 1000:
-                                # TODO: Log this
-                                print(f"ALight Test [SP]: Received {alight_value_sp}Lux uncovered")
+                                Log.generic(f"ALight Test [SP]: Received {alight_value_sp}Lux uncovered")
                             else:
-                                # TODO: Log this
-                                print(f"ALight Test [SP]: Incorrect uncovered ALight value ({alight_value_sp}Lux)")
+                                Log.generic(f"ALight Test [SP]: Incorrect uncovered ALight value ({alight_value_sp}Lux)")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                         else:
-                            # TODO: Log this
-                            print("The first data received wasn't related")
+                            Log.generic("The first data received wasn't related")
                             ExitCode.alight_test_not_passed()
                             return -1
                     elif covered_alight_value_sp is None:
@@ -616,8 +565,7 @@ class Test:
                             # Get last word (13669.36Lux)
                             info_words = data.split()
                             if len(info_words) <= 1:
-                                # TODO: Log this
-                                print("Didn't find enough words")
+                                Log.generic("Didn't find enough words")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                             alight_info = info_words[-2]
@@ -625,8 +573,7 @@ class Test:
                             end_index = alight_info.find('Lux')
                             # The string was not found, so return
                             if end_index == -1:
-                                # TODO: Log this
-                                print("Didn't find the lux sting")
+                                Log.generic("Didn't find the lux sting")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                             alight_info = alight_info[:end_index]
@@ -634,28 +581,24 @@ class Test:
                                 covered_alight_value_sp = float(alight_info)
                             except:
                                 # The value isn't a float value
-                                # TODO: Log this
-                                print("Didn't find any the float value")
+                                Log.generic("Didn't find any the float value")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                             
                             if covered_alight_value_sp < alight_value_sp / 2:
-                                # TODO: Log this
-                                print(f"ALight Test [SP]: Received {covered_alight_value_sp}Lux covered")
+                                Log.generic(f"ALight Test [SP]: Received {covered_alight_value_sp}Lux covered")
                             else:
-                                # TODO: Log this
-                                print(f"ALight Test [SP]: Incorrect covered ALight value {covered_alight_value_sp}")
+                                Log.generic(f"ALight Test [SP]: Incorrect covered ALight value {covered_alight_value_sp}")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                         # The received data is related to the instructions
                         elif not data.startswith(TEST_ALIGHT):
-                            print("The received data is not related to the current tests")
+                            Log.generic("The received data is not related to the current tests")
                             ExitCode.alight_test_not_passed()
                             return -1
                 # If no info is received for the timeout, return
                 elif (time() - old_data_time > TIMEOUT_ALIGHT_NO_INFO):
-                    # TODO: Log this
-                    print("SP timeout")
+                    Log.generic("SP timeout")
                     ExitCode.serialport_timeout_reception()
                     return -1
 
@@ -670,8 +613,7 @@ class Test:
                     old_frame_time = frame_time
                     # The time of the image is higher than the end of the tests
                     if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
-                        # TODO: Log this
-                        print("The serial port ended and the camera didn't")
+                        Log.generic("The serial port ended and the camera didn't")
                         ExitCode.alight_test_not_passed()
                         return -1
                     
@@ -698,11 +640,9 @@ class Test:
                                         try:
                                             covered_alight_value_dsp = float(alight_info)
                                             if covered_alight_value_dsp < alight_value_dsp / 2:
-                                                # TODO: Log this
-                                                print(f"ALight Test [DSP]: Received {covered_alight_value_dsp}Lux covered")
+                                                Log.generic(f"ALight Test [DSP]: Received {covered_alight_value_dsp}Lux covered")
                                             else:
-                                                # TODO: Log this
-                                                print(f"ALight Test [DSP]: Incorrect covered ALight value ({covered_alight_value_dsp}Lux)")
+                                                Log.generic(f"ALight Test [DSP]: Incorrect covered ALight value ({covered_alight_value_dsp}Lux)")
                                                 ExitCode.alight_test_not_passed()
                                                 return -1
                                         except:
@@ -722,12 +662,10 @@ class Test:
                                             alight_value_dsp = float(alight_info)
                                             # Check if the ALight sensor value is within the expected range
                                             if alight_value_dsp > 1000:
-                                                # TODO: Log this
-                                                print(f"ALight Test [DSP]: Received {alight_value_dsp}Lux uncovered")
+                                                Log.generic(f"ALight Test [DSP]: Received {alight_value_dsp}Lux uncovered")
                                             else:
-                                                # TODO: Log this
                                                 print(alight_value_dsp)
-                                                print(f"ALight Test [DSP]: Incorrect uncovered ALight value ({alight_value_dsp}Lux)")
+                                                Log.generic(f"ALight Test [DSP]: Incorrect uncovered ALight value ({alight_value_dsp}Lux)")
                                                 ExitCode.alight_test_not_passed()
                                                 return -1
                                         except:
@@ -735,18 +673,15 @@ class Test:
                         
                     end_test_dsp = bool(alight_value_dsp and covered_alight_value_dsp)
                     if end_test_dsp:
-                        # TODO: Log this
-                        print("Alight dsp test passed")
+                        Log.generic("Alight dsp test passed")
                 # Check for camera timeout
                 elif (time() - old_frame_time > TIMEOUT_LAST_RECEIVED_CAM):
-                    # TODO: Log this
-                    print("Timeout unavailable cam")
+                    Log.generic("Timeout unavailable cam")
                     ExitCode.camera_timeout_stopped()
                     return -1
 
             if end_test_dsp and end_test_sp:
-                # TODO: log this
-                print("Alight tests passed")
+                Log.generic("Alight tests passed")
                 return 0
     
     @staticmethod
