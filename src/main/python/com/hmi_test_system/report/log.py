@@ -50,6 +50,7 @@ class Log:
     def timeout():
         Log.info_log("Timeout tests didn't start")
     
+    # TODO: not use generic log, swap all that using it
     @staticmethod
     def generic(str):
         Log.info_log(str)
