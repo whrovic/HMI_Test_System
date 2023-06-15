@@ -155,6 +155,7 @@ class LibraryEditModel(Lib):
         os.system('cls') 
         print("Select the led central position and press ENTER")
         pos_vector = DefineModelCV.click_pos(image)
+        if pos_vector is None: return -1
 
         led.set_pos(pos_vector[0], pos_vector[1])
 
@@ -202,6 +203,7 @@ class LibraryEditModel(Lib):
         os.system('cls') 
         print("Select the button central position and press ENTER")
         pos_vector = DefineModelCV.click_pos(image)
+        if pos_vector is None: return -1
 
         button.set_pos(pos_vector[0], pos_vector[1])
 

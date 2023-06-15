@@ -106,7 +106,8 @@ class DefineModelCV():
             img_aux = cv2.resize(img_aux, (width, height))
             cv2.imshow("HMI", img_aux)
             cv2.setMouseCallback("HMI", callback)
-            cv2.waitKey(0)
+            if (cv2.waitKey(0) == ord('q')):
+                return None
             cv2.destroyAllWindows()
 
         return coordenadas[:2]
@@ -230,12 +231,13 @@ class DefineModelCV():
         return out
     
     @staticmethod
-    def show_coordinate(image, coordinates):
+    def show_coordinates(image, coordinates):
         # Copy original image to prevent changes
         img = image.copy()
         img = cv2.resize(img, (720, 480))
-        x, y = coordinates
-        cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
+
+        for (x, y) in coordinates:
+            cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
             
         # Show resulting image
         cv2.imshow("HMI", img)

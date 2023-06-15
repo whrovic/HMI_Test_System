@@ -2,12 +2,11 @@ import os
 import xml.etree.ElementTree as ET
 
 from data import *
-from data.hardware_settings.parameter import Parameter
 from data.model.model import Model
 from main.constant_main import *
+from main.library import Library as L
 from main.library import Library as Lib
 from opencv.define_model_cv import DefineModelCV
-import cv2
 
 
 class LibraryNewModel(Lib):
@@ -127,7 +126,6 @@ class LibraryNewModel(Lib):
 
         display = Display('display')
 
-        
         n_buttons = Lib.until_find_int("Number of buttons: ")
         if (n_buttons) == -1: return -1
         n_leds = Lib.until_find_int("Number of leds: ")
@@ -142,23 +140,27 @@ class LibraryNewModel(Lib):
 
         if(n_buttons > 0):
             
-            # Get the image for the buttons
-            buttons_img = DefineModelCV.get_buttons_image()
-            if buttons_img is None: return -1
+            b_posit = input("Do you want to also configure the buttons position [y|n]?")
+            b_posit = bool(b_posit.lower() == 'y')
+            if b_posit:
+                # Get the image for the buttons
+                buttons_img = DefineModelCV.get_buttons_image()
+                if buttons_img is None: return -1
 
             for i in range(0, n_buttons):
                 print(f"\nButton {i+1} name: ")
                 button_name = input()
                 
-                #print(f"Select the button {i+1} central position and press ENTER")
-                #pos_vector= DefineModelCV.click_pos(buttons_img)
-                # uncoment this two lines to set buttons position, and delete the next one
-                pos_vector = [0, 0]
+                if b_posit:
+                    print(f"Select the button {button_name}'s central position and press ENTER")
+                    pos_vector= DefineModelCV.click_pos(buttons_img)
+                    if pos_vector is None: return -1
+                else:
+                    pos_vector = [0, 0]
 
                 new_model.set_button(Button(button_name, int(pos_vector[0]), int(pos_vector[1])))
         else:
             print("\nModel doesn't have buttons\n")
-
 
         # leds configuration
         print("\n\nLEDS CONFIGURATION\n")
@@ -172,10 +174,24 @@ class LibraryNewModel(Lib):
             leds_img_detect = DefineModelCV.get_leds_image(True)
             if leds_img_detect is None: return -1
             leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
+            
+            if len(leds_coordinates) < n_leds:
+                print("First, the system will show you the leds already positioned")
+                input("Press ENTER to continue and press in the position of the remaining leds, or 'q' to cancel")
+                for i in range(leds_coordinates, n_leds):
+                    DefineModelCV.show_coordinates(leds_img, leds_coordinates)
+                    coord = DefineModelCV.click_pos(leds_img)
+                    if coord is None: return -1
+                    leds_coordinates.append(coord)
+            elif len(leds_coordinates) > n_leds:
+                L.exit_input(f"The system detected {len(leds_coordinates)} instead of {n_leds} LEDs\nPlease, check the environment luminosity and retry later")
+                return -1
+
+            input("For the next step, check which LED is currently being configured and press ENTER...")
 
             for i in range(len(leds_coordinates)):
 
-                DefineModelCV.show_coordinate(leds_img, leds_coordinates[i])
+                DefineModelCV.show_coordinates(leds_img, [leds_coordinates[i],])
 
                 led_name = 'L' + str(i+1)
                 n_colours=Lib.until_find_int(f"How many colours have the led {i+1}?")

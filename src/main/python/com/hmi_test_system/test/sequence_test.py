@@ -129,7 +129,7 @@ class SequenceTest:
 
         # Waits for serial port TestBoardInfo begin
         if SequenceTest.wait_start_test(serial_port, TEST_BOARD_INFO_BEGIN) == -1:
-            Log.info_log()
+            Log.generic("Tests didn't start")
             ExitCode.board_info_test_not_passed()
             return -1
 
