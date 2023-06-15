@@ -36,21 +36,20 @@ class Log:
 
     @staticmethod
     def serial_port_closed():
-        Log.info_log("Serial Port closed")
+        Log.error_log("Serial Port closed")
 
     @staticmethod
     def display_camera_closed():
-        Log.info_log("Display camera closed")
+        Log.error_log("Display camera closed")
 
     @staticmethod
     def leds_camera_closed():
-        Log.info_log("Leds camera closed")
+        Log.error_log("Leds camera closed")
 
     @staticmethod
     def timeout():
         Log.info_log("Timeout tests didn't start")
-        
+    
     @staticmethod
     def generic(str):
         Log.info_log(str)
-    

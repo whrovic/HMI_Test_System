@@ -25,7 +25,7 @@ class LogButton(Log):
 
     @staticmethod
     def button_test_detected_two_times(type, button_name, expected_button):
-        Log.error_log(f"Keys Test [{type}]: Error received {button_name} for the 2nd time, instead of {expected_button}")
+        Log.error_log(f"Keys Test [{type}]: Received {button_name} for the 2nd time, instead of {expected_button}")
 
     @staticmethod
     def button_tests_canceled(type):
