@@ -123,9 +123,9 @@ class DefineModelCV():
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Threshold the image to separate circles from the black background
-        _, threshold = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)
+        _, threshold = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
 
-        eroded = cv2.erode(threshold, (7,7))
+        eroded = cv2.erode(threshold, (9,9))
 
         # Find contours in the edge image
         contours, _ = cv2.findContours(eroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -133,12 +133,21 @@ class DefineModelCV():
         led_coordinates = []
         # Iterate over the contours and fit circles to them
         for contour in contours:
+            if cv2.contourArea(contour) < 10:
+                continue
             # Fit a minimum enclosing circle to the contour
             (x, y), _ = cv2.minEnclosingCircle(contour)
             led_coordinates.append((int(x), int(y)))
 
         # Display the image with detected circles
         led_coordinates = DefineModelCV.show_coordinates_and_choose_order(orig_img, led_coordinates)
+
+        # print(len(led_coordinates))
+        # cv2.imshow("T", threshold)
+        # cv2.imshow("D", eroded)
+
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
         return led_coordinates
 
@@ -185,7 +194,7 @@ class DefineModelCV():
         # Copy original image to prevent changes
         img = image.copy()
         img = cv2.resize(img, (720, 480))
-        print(len(coordinates))
+        
         # Draw circles in the coordinates
         for i, (x, y) in enumerate(coordinates):
             cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
@@ -204,7 +213,7 @@ class DefineModelCV():
                 i += 1
             else:
                 n = n.split('-')
-                print(n)
+                
                 init = int(n[0])
                 final = int(n[1])
                 if final > init:
@@ -285,6 +294,8 @@ class DefineModelCV():
         # Start receiving from serial port
         serial.start_receive()
 
+        print("Serial port ready! Please, press CANCEL...")
+
         # TODO: Print instructions to the user
 
         # Waits for serial port TestKeys begin
@@ -310,12 +321,9 @@ class DefineModelCV():
                 
                 data = str(data)
 
-                # TODO: Remove this
-                print(data)
-
                 if data.startswith(TEST_DISPLAY_BEGIN):
                     # TODO: Maybe log this
-                    print("TEST_DISPLAY_BEGIN")
+                    print("Starting capturing the reference images...")
                     break
             
             sleep(0.1)
@@ -343,7 +351,7 @@ class DefineModelCV():
 
             # Check if the data is related to the display test
             if data is not None:
-                print(data)
+                
                 # Determine which type of test is being performed
                 if CHAR in data:
                     new_test_name = CHAR
@@ -385,10 +393,8 @@ class DefineModelCV():
                     # Perform the appropriate test based on the current test type
                     if test_name == CHAR:
                         chr_img_list.append(frame)
-                        print("Added chr img")
                     elif test_name == COLOR:
                         pal_img_list.append(frame)
-                        print("Added pal img")
 
         cam.close()
         serial.close()

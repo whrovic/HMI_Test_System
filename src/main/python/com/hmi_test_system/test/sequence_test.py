@@ -77,7 +77,7 @@ class SequenceTest:
         if dsp:
             cam.start_capture()
 
-        LogSequenceTest.start_button_test()
+        LogSequenceTest.start_buttons_test()
 
         # Start button test
         result = Test.test_button(cam, serial_port, button_sequence)

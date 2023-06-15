@@ -47,3 +47,6 @@ class LogLeds(Log):
     def test_leds_finished():
         Log.info_log("TestLeds Finished")
     
+    @staticmethod
+    def test_leds_detected(led_name, colour_name):
+        Log.info_log(f"Correctly detected {colour_name} in {led_name}")

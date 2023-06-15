@@ -111,6 +111,7 @@ class Test:
                                     break
                             
                             if button_name == button_sequence_name[sequence_no_dsp]:
+                                LogButton.button_test_received('DSP', button_name)
                                 sequence_no_dsp += 1
                                 previous_button_dsp = button_name
                                 if sequence_no_dsp >= n_buttons:
@@ -962,6 +963,7 @@ class Test:
                         break
                 else:
                     # The current img matches the current state, so procceed to the next one
+                    #LogLeds.test_leds_detected(leds_test[sequence_state//2].get_name(), vet_cor[sequence_state//2].get_name())
                     sequence_state += 1
                     entry_state_img_time = cur_img_time
                     continue

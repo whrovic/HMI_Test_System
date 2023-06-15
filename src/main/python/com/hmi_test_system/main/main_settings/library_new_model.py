@@ -189,9 +189,7 @@ class LibraryNewModel(Lib):
                         print(f'{i+1} - {color.get_name()}')
                     new_colour = Lib.get_name_or_index("Insert the index or the name of the color", [c.get_name() for c in ListOfColors.get_list_of_colors()])
                     if new_colour is None: return -1
-                    
-                    if  0 < new_colour <= len(ListOfColors.get_list_of_colors()):
-                        led.new_colour(ListOfColors.get_color_index(new_colour-1))
+                    led.new_colour(ListOfColors.get_color(new_colour))
                                
                 new_model.set_led(led)
         else:
