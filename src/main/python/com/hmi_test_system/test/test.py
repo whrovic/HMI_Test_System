@@ -261,12 +261,12 @@ class Test:
                     # Check the board information
                     if data.startswith(TEST_BOOT_LOADER_INFO_OK):
                         if (version_info and date_info) is None:
-                            print("BootLoader Info Test: Received Test OK before the remaining information")
+                            print("BootLoader Info Test [SP]: Received Test OK before the remaining information")
                             ExitCode.bootloader_test_not_passed()
                             return -1
                         else:
                             # TODO: Log this
-                            print("BootLoader Info Test: Serial port succeeded")
+                            print("BBootLoader Info Test [SP]: Serial port succeeded")
                             end_test_sp = True
                             end_time_sp = data_time
                     elif version_info is None:
@@ -315,9 +315,6 @@ class Test:
                     
                     # Read the text from the display
                     text = str(HMIcv.read_characters(frame))
-
-                    # TODO: Delete this
-                    print(text)
 
                     for line in text.splitlines():
                         info_recv = Test.split_double_dot(line)
