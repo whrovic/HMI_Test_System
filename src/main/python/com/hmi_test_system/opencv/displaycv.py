@@ -218,12 +218,5 @@ class Displaycv():
         mse_b = np.mean((image_lab[:, :, 2] - model_lab[:, :, 2]) ** 2)
         mse = (mse_a + mse_b) / 2
 
-        print(avg_ssim, threshold_avg_ssim)
-        print(min_ssim, threshold_min_ssim)
-        print(mse, threshold_mse)
-        print()
-
-        print(avg_ssim > threshold_avg_ssim and min_ssim > threshold_min_ssim and mse < threshold_mse)
-
         return avg_ssim > threshold_avg_ssim and min_ssim > threshold_min_ssim and mse < threshold_mse
     
