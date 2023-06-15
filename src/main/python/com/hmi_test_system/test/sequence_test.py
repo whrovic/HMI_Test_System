@@ -567,7 +567,7 @@ class SequenceTest:
                     result = Test.test_board_info(None, serial_port, model.get_info().get_board(), serial_number, manufacture_date, model.get_info().get_option(), model.get_info().get_revision(), model.get_info().get_edition(), model.get_info().get_lcd_type())
             elif data.startswith(TEST_ALIGHT_BEGIN):
                 # TODO: Log this
-                print("Light Test started")
+                print("ALight Test started")
                 # Start light test
                 if dsp:
                     cam_display.set_settings(dsp_parameters)
