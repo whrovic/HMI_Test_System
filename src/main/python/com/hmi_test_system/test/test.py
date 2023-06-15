@@ -178,7 +178,7 @@ class Test:
                     break
                 else:
                     test_name, test_start_time = new_test_name, new_test_start_time
-                    new_test_name = new_test_start_time = None
+                    new_test_name, new_test_start_time = None, None
                     LogDisplay.start_test(test_name)
 
             # If a test is currently running
@@ -210,7 +210,7 @@ class Test:
                             break
                         else:
                             test_name, test_start_time = new_test_name, new_test_start_time
-                            new_test_name = new_test_start_time = None
+                            new_test_name, new_test_start_time = None, None
                             if test_name is not None:
                                 LogDisplay.start_test(test_name)
                     else:
