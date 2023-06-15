@@ -261,12 +261,12 @@ class Test:
                     # Check the board information
                     if data.startswith(TEST_BOOT_LOADER_INFO_OK):
                         if (version_info and date_info) is None:
-                            print("BootLoader Info Test: Received Test OK before the remaining information")
+                            print("BootLoader Info Test [SP]: Received Test OK before the remaining information")
                             ExitCode.bootloader_test_not_passed()
                             return -1
                         else:
                             # TODO: Log this
-                            print("BootLoader Info Test: Serial port succeeded")
+                            print("BBootLoader Info Test [SP]: Serial port succeeded")
                             end_test_sp = True
                             end_time_sp = data_time
                     elif version_info is None:
@@ -315,9 +315,6 @@ class Test:
                     
                     # Read the text from the display
                     text = str(HMIcv.read_characters(frame))
-
-                    # TODO: Delete this
-                    print(text)
 
                     for line in text.splitlines():
                         info_recv = Test.split_double_dot(line)
@@ -599,10 +596,10 @@ class Test:
                             # Check if the ALight sensor value is within the expected range
                             if alight_value_sp > 1000:
                                 # TODO: Log this
-                                print("ALight sensor test passed")
+                                print(f"ALight Test [SP]: Received {alight_value_sp}Lux uncovered")
                             else:
                                 # TODO: Log this
-                                print(f"ALight sensor test failed: Incorrect ALight value {alight_value_sp}")
+                                print(f"ALight Test [SP]: Incorrect uncovered ALight value ({alight_value_sp}Lux)")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                         else:
@@ -642,10 +639,10 @@ class Test:
                             
                             if covered_alight_value_sp < alight_value_sp / 2:
                                 # TODO: Log this
-                                print("ALight sensor test passed (Covered)")
+                                print(f"ALight Test [SP]: Received {covered_alight_value_sp}Lux covered")
                             else:
                                 # TODO: Log this
-                                print(f"ALight sensor test failed: Incorrect covered ALight value {covered_alight_value_sp}")
+                                print(f"ALight Test [SP]: Incorrect covered ALight value {covered_alight_value_sp}")
                                 ExitCode.alight_test_not_passed()
                                 return -1
                         # The received data is related to the instructions
@@ -679,19 +676,18 @@ class Test:
                     # Read the text from the display
                     text = str(HMIcv.read_characters(frame))
 
-                    # TODO: Remove this
-                    print(text)
-
                     # Extract the lines from the text
                     for line in text.splitlines():
-                        if TEST_ALIGHT_ALIGHT in line:
+                        if 'ALight' in line:
                             # Covered value
-                            if covered_alight_value_dsp is None and '(Covered)' in line:
+                            if covered_alight_value_dsp is None and '(Covered)' in line and covered_alight_value_sp is not None:
                                 # Extract the ALight sensor value from the received info
                                 # Get last word (13669.36Lux)
-                                info_words = data.split()
-                                if len(info_words > 1):
-                                    alight_info = info_words[-2]
+                                info_words = line.split()
+                                if len(info_words) > 1:
+                                    alight_info = ''.join(info_words[1:]).replace(' ', '')
+                                    c_index = alight_info.find('(Covered)')
+                                    alight_info = alight_info[:c_index]
                                     # Get the index of the word 'Lux'
                                     end_index = alight_info.find('Lux')
                                     # The string was not found, so return
@@ -701,23 +697,21 @@ class Test:
                                             covered_alight_value_dsp = float(alight_info)
                                             if covered_alight_value_dsp < alight_value_dsp / 2:
                                                 # TODO: Log this
-                                                print(covered_alight_value_dsp)
-                                                print("ALight sensor dsp test passed (Covered)")
+                                                print(f"ALight Test [DSP]: Received {covered_alight_value_dsp}Lux covered")
                                             else:
                                                 # TODO: Log this
-                                                print(covered_alight_value_dsp)
-                                                print("ALight sensor dsp test failed: Incorrect covered ALight value")
+                                                print(f"ALight Test [DSP]: Incorrect covered ALight value ({covered_alight_value_dsp}Lux)")
                                                 ExitCode.alight_test_not_passed()
                                                 return -1
                                         except:
                                             pass    
                             # Uncovered value
-                            elif alight_value_dsp is None:
+                            elif alight_value_dsp is None and 'Covered' not in line and alight_value_sp is not None:
                                 # Extract the ALight sensor value from the received info
                                 # Get last word '13669.36Lux'
-                                info_words = data.split()
+                                info_words = line.split()
                                 if len(info_words) > 0:
-                                    alight_info = info_words[-1]
+                                    alight_info = ''.join(info_words[1:]).replace(' ', '')
                                     # Get the index of the word 'Lux'
                                     end_index = alight_info.find('Lux')
                                     if end_index != -1:
@@ -727,11 +721,11 @@ class Test:
                                             # Check if the ALight sensor value is within the expected range
                                             if alight_value_dsp > 1000:
                                                 # TODO: Log this
-                                                print("ALight sensor dsp test passed")
+                                                print(f"ALight Test [DSP]: Received {alight_value_dsp}Lux uncovered")
                                             else:
                                                 # TODO: Log this
                                                 print(alight_value_dsp)
-                                                print("ALight sensor dsp test failed: Incorrect ALight value")
+                                                print(f"ALight Test [DSP]: Incorrect uncovered ALight value ({alight_value_dsp}Lux)")
                                                 ExitCode.alight_test_not_passed()
                                                 return -1
                                         except:

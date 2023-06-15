@@ -67,9 +67,8 @@ class Displaycv():
     def get_transformation_matrix(image):
 
         if Displaycv.display_transformation_matrix is not None:
-            return Displaycv.display_transformation_matrix, Displaycv.display_coordinates
-
-
+            return
+        
         image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
 
         # Convert image to grayscale
