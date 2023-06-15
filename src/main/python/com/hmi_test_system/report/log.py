@@ -48,4 +48,8 @@ class Log:
 
     @staticmethod
     def timeout():
-        Log.error_log("Timeout tests didn't start")
+        Log.info_log("Timeout tests didn't start")
+    
+    @staticmethod
+    def generic(str):
+        Log.info_log(str)
