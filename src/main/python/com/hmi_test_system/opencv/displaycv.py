@@ -152,7 +152,7 @@ class Displaycv():
         return text
     
     @staticmethod
-    def compare_display(image, model, threshold_avg_ssim, threshold_min_ssim, threshold_mse):
+    def compare_display(image, model, threshold_avg_ssim, threshold_min_ssim, threshold_mse, use_l = True):
 
         # Perform image registration using SIFT
         sift = cv2.SIFT_create()
@@ -188,7 +188,6 @@ class Displaycv():
         rect_height = model.shape[0] // 16
 
         ssim_score = []
-        diff_image = np.zeros_like(image_lab[:, :, 1], dtype=np.float64)
 
         # Loop over each rectangle and calculate the structural similarity index (SSIM)
         for i in range(40):
@@ -200,22 +199,21 @@ class Displaycv():
                 image_rect = image_lab[y:y+rect_height, x:x+rect_width]
                 model_rect = model_lab[y:y+rect_height, x:x+rect_width]
                 # Calculate the SSIM score between the 'a' and 'b' channels
-                ssim_l, diff_l = ssim(image_rect[:, :, 0], model_rect[:, :, 0], win_size=3, full=True)
-                ssim_a, diff_a = ssim(image_rect[:, :, 1], model_rect[:, :, 1], win_size=3, full=True)
-                ssim_b, diff_b = ssim(image_rect[:, :, 2], model_rect[:, :, 2], win_size=3, full=True)
-                ssim_score.append((ssim_a + ssim_b + ssim_l) / 3)
-                # Add rectangle's difference to the difference image
-                diff_image[y:y + rect_height, x:x + rect_width] = diff_a + diff_b + diff_l
-
-        # Display the difference image
-        diff_image = cv2.convertScaleAbs(diff_image * 255)
+                if use_l:
+                    ssim_l, diff_l = ssim(image_rect[:, :, 0], model_rect[:, :, 0], win_size=3, full=True)
+                    ssim_a, diff_a = ssim(image_rect[:, :, 1], model_rect[:, :, 1], win_size=3, full=True)
+                    ssim_b, diff_b = ssim(image_rect[:, :, 2], model_rect[:, :, 2], win_size=3, full=True)
+                    ssim_score.append((ssim_a + ssim_b + ssim_l) / 3)
+                else:
+                    ssim_a, diff_a = ssim(image_rect[:, :, 1], model_rect[:, :, 1], win_size=3, full=True)
+                    ssim_b, diff_b = ssim(image_rect[:, :, 2], model_rect[:, :, 2], win_size=3, full=True)
+                    ssim_score.append((ssim_a + ssim_b) / 2)
 
         # Calculate the average and the minimum SSIM score
         avg_ssim = np.mean(ssim_score)
         min_ssim = np.min(ssim_score)
 
         # Calculate the MSE for channels 'a' and 'b'
-        mse_l = np.mean((image_lab[:, :, 0] - model_lab[:, :, 0]) ** 2)
         mse_a = np.mean((image_lab[:, :, 1] - model_lab[:, :, 1]) ** 2)
         mse_b = np.mean((image_lab[:, :, 2] - model_lab[:, :, 2]) ** 2)
         mse = (mse_a + mse_b) / 2
@@ -226,12 +224,6 @@ class Displaycv():
         print()
 
         print(avg_ssim > threshold_avg_ssim and min_ssim > threshold_min_ssim and mse < threshold_mse)
-
-        # cv2.imshow('IMG', image)
-        # cv2.imshow('MODEL', model)
-
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
 
         return avg_ssim > threshold_avg_ssim and min_ssim > threshold_min_ssim and mse < threshold_mse
     

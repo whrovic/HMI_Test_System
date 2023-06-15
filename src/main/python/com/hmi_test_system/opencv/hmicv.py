@@ -82,7 +82,7 @@ class HMIcv():
             return -1
 
         # Compare image_display with model_display
-        result = Displaycv.compare_display(image_display, model_display, threshold_avg_ssim=0.87, threshold_min_ssim=0.62, threshold_mse=20)
+        result = Displaycv.compare_display(image_display, model_display, threshold_avg_ssim=0.87, threshold_min_ssim=0.62, threshold_mse=19, use_l=False)
 
         return result
     
