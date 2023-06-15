@@ -15,8 +15,6 @@ from video.camera import Camera
 
 class Test:
 
-    # TODO: Make all logs similar
-
     @staticmethod
     def test_button(cam: Camera, serial: SerialPort, button_sequence: list[Button]):
 
@@ -44,7 +42,7 @@ class Test:
                             end_time_sp = data_time
                             LogButton.button_test_serial_pass('SP')
                         else:
-                            LogButton.button_test_serial_error_final(button_sequence_name[sequence_no_sp])
+                            LogButton.button_test_serial_error_final('SP', button_sequence_name[sequence_no_sp])
                             ExitCode.keys_test_not_passed('SP')
                             return -1
                     elif data.startswith(TEST_BUTTONS_CANCEL):
@@ -59,7 +57,7 @@ class Test:
                             return -1
                         if button_name == button_sequence_name[sequence_no_sp]:
                             sequence_no_sp += 1
-                            print(f"Keys Test [SP]: Received {button_name}")
+                            LogButton.button_test_received('SP', button_name)
                         else:
                             # Check if the button was detected consectivelly
                             if sequence_no_sp > 0 and (button_name == button_sequence_name[sequence_no_sp - 1]):
@@ -94,7 +92,7 @@ class Test:
 
                     old_frame_time = frame_time
                     # Check if the time of the image is higher than the end of the tests
-                    if end_time_sp is not None and frame_time > end_time_sp:
+                    if end_time_sp is not None and frame_time > end_time_sp + TIMEOUT_DISPLAY_READING_WAITING:
                         # TODO: Log this
                         print("Keys Test [DSP]: The serial port ended and the camera didn't")
                         ExitCode.keys_test_not_passed()
@@ -104,9 +102,15 @@ class Test:
 
                     lines = text.splitlines()
                     for line in lines:
-                        if 'Pressed' in text:
+                        if line.startswith('Pressed:'):
+                            line = line.replace('|', '').strip()
                             button_name = line.split()[-1]
-                            if button_name == button_sequence[sequence_no_dsp]:
+                            if button_name not in button_sequence_name:
+                                button_name = button_name.replace('l', '1')
+                                if button_name not in button_sequence_name:
+                                    break
+                            
+                            if button_name == button_sequence_name[sequence_no_dsp]:
                                 sequence_no_dsp += 1
                                 previous_button_dsp = button_name
                                 if sequence_no_dsp >= n_buttons:
@@ -116,7 +120,7 @@ class Test:
                             # No changes in the display
                             elif not (previous_button_dsp is not None and button_name == previous_button_dsp):
                                 # TODO: Log this
-                                print(f"Keys Test [DSP]: Error received {button_name} instead of {button_sequence[sequence_no_sp]}")
+                                print(f"Keys Test [DSP]: Error received {button_name} instead of {button_sequence_name[sequence_no_sp]}")
                                 ExitCode.keys_test_sequence_error()
                                 return -1
                             break

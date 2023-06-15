@@ -37,4 +37,8 @@ class LogButton(Log):
 
     @staticmethod
     def button_test_sp_timeout(type):
-        Log.error_log(f"Keys Test [{type}]: SP timeout")
+        Log.error_log(f"Keys Test [{type}]: TIMEOUT - Serial port didn't send any information for a long time")
+
+    @staticmethod
+    def button_test_received(type, button_name):
+        Log.info_log(f"Keys Test [{type}]: Received {button_name}")

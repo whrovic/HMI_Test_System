@@ -54,8 +54,8 @@ class LibraryTest:
 
             # Buttons test type
             elif (t_type == TEST_TYPE_BUTTONS):
+                key_code = 1
                 if len(sys.argv) > 4:
-                    key_code = 1
 
                     n_buttons = sys.argv[4]
                     if n_buttons == '-sp':

@@ -45,7 +45,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -56,7 +56,7 @@ class SequenceTest:
             LogButton.serial_port_connected()
 
         cam = SetupTest.get_cam_display()
-        if dsp and cam.closed():
+        if dsp and (cam is None or cam.closed()):
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
@@ -108,7 +108,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -119,7 +119,7 @@ class SequenceTest:
             Log.serial_port_connected()
 
         cam = SetupTest.get_cam_display()
-        if dsp and cam.closed():
+        if dsp and (cam is None or cam.closed()):
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
@@ -172,7 +172,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -183,7 +183,7 @@ class SequenceTest:
             Log.serial_port_connected()
 
         cam = SetupTest.get_cam_display()
-        if dsp and cam.closed():
+        if dsp and (cam is None or cam.closed()):
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
@@ -235,7 +235,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -246,7 +246,7 @@ class SequenceTest:
             Log.serial_port_connected()
 
         cam = SetupTest.get_cam_display()
-        if dsp and cam.closed():
+        if dsp and (cam is None or cam.closed()):
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
@@ -312,7 +312,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -323,7 +323,7 @@ class SequenceTest:
             Log.serial_port_connected()
 
         cam = SetupTest.get_cam_leds()
-        if cam.closed():
+        if (cam is None or cam.closed()):
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
@@ -382,7 +382,7 @@ class SequenceTest:
 
         # Check connections status
         serial_port = SetupTest.get_sp_main()
-        if serial_port.closed():
+        if serial_port is None or serial_port.closed():
             # Couldn't open serial port connection
             SetupTest.close()
             # TODO: Log this
@@ -393,7 +393,7 @@ class SequenceTest:
             Log.serial_port_connected()
         
         cam = SetupTest.get_cam_display()
-        if cam.closed():
+        if cam is None or cam.closed():
             # Couldn't open camera connection
             SetupTest.close()
             # TODO: Log this
