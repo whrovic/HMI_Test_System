@@ -122,6 +122,7 @@ class Displaycv():
         image = cv2.undistort(image, Displaycv.camera_matrix, Displaycv.dist_coeffs)
 
         # Apply the perspective transform matrix to the image
+        if Displaycv.display_transformation_matrix is None: return None
         corrected_image = cv2.warpPerspective(image, Displaycv.display_transformation_matrix, (image.shape[1], image.shape[0]))
 
         # Extract the display region

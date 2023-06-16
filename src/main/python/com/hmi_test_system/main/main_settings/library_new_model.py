@@ -167,25 +167,43 @@ class LibraryNewModel(Lib):
 
         if(n_leds > 0):
             
-            # Get the image for the leds
-            leds_img = DefineModelCV.get_leds_image()
-            if leds_img is None: return -1
+            count = 0
+            while True:
 
-            leds_img_detect = DefineModelCV.get_leds_image(True)
-            if leds_img_detect is None: return -1
-            leds_coordinates = DefineModelCV.detect_pos_leds(leds_img_detect)
-            
-            if len(leds_coordinates) < n_leds:
-                print("First, the system will show you the leds already positioned")
-                input("Press ENTER to continue and press in the position of the remaining leds, or 'q' to cancel")
-                for i in range(leds_coordinates, n_leds):
-                    DefineModelCV.show_coordinates(leds_img, leds_coordinates)
-                    coord = DefineModelCV.click_pos(leds_img)
-                    if coord is None: return -1
-                    leds_coordinates.append(coord)
-            elif len(leds_coordinates) > n_leds:
-                L.exit_input(f"The system detected {len(leds_coordinates)} instead of {n_leds} LEDs\nPlease, check the environment luminosity and retry later")
-                return -1
+                if count >= 5: return -1
+
+                # Get the image for the leds
+                leds_img = DefineModelCV.get_leds_image()
+                if leds_img is None: return -1
+
+                leds_img_detect = DefineModelCV.get_leds_image(True)
+                if leds_img_detect is None: return -1
+                leds_coordinates = DefineModelCV.detect_pos_leds(leds_img, leds_img_detect)
+                
+                print(f"The system detected {len(leds_coordinates)} Leds instead of {n_leds} Leds")
+
+                if len(leds_coordinates) < n_leds:
+                    c = input("Do you want to add the remaining ones manually [y|n]? ")
+                    
+                    if c.lower() == 'y':
+                        print("First, the system will show you the leds already positioned")
+                        c = input("Press ENTER to continue and press in the position of the remaining leds, or 'q' to cancel")
+                        if c == 'q': return -1
+                        for i in range(len(leds_coordinates), n_leds):
+                            DefineModelCV.show_coordinates(leds_img, leds_coordinates)
+                            coord = DefineModelCV.click_pos(leds_img)
+                            if coord is None: return -1
+                            leds_coordinates.append(coord)
+                        break
+                elif len(leds_coordinates) > n_leds:
+                    L.exit_input(f"The system detected {len(leds_coordinates)} instead of {n_leds} LEDs\nPlease, check the environment luminosity and retry later")
+                else:
+                    break
+
+                c = input("Do you want to try again [y|n]?")
+                if c.lower() != 'y': return -1
+
+            leds_coordinates = DefineModelCV.ask_leds_order(leds_img, leds_coordinates)
 
             input("For the next step, check which LED is currently being configured and press ENTER...")
 

@@ -38,7 +38,7 @@ class HMIcv():
         # Extract the display
         display = Displaycv.extract_display(img)
         if display is None:
-            return None
+            return False
 
         # Convert image to grayscale
         image_gray = cv2.cvtColor(display, cv2.COLOR_BGR2GRAY)
@@ -55,13 +55,13 @@ class HMIcv():
         
         if model_display is None:
             # TODO: Error Code
-            return -1
+            return False
 
         # Extract the display
         image_display = Displaycv.extract_display(img)
         if image_display is None:
             # TODO: Error Code
-            return -1
+            return False
 
         # Compare image_display with model_display
         result = Displaycv.compare_display(image_display, model_display, threshold_avg_ssim=0.93, threshold_min_ssim=0.84, threshold_mse=8)
@@ -73,13 +73,13 @@ class HMIcv():
         
         if model_display is None:
             # TODO: Error Code
-            return -1
+            return False
 
         # Extract the display
         image_display = Displaycv.extract_display(img)
         if image_display is None:
             # TODO: Error Code
-            return -1
+            return False
 
         # Compare image_display with model_display
         result = Displaycv.compare_display(image_display, model_display, threshold_avg_ssim=0.87, threshold_min_ssim=0.62, threshold_mse=19, use_l=False)

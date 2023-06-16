@@ -113,9 +113,7 @@ class DefineModelCV():
         return coordenadas[:2]
 
     @staticmethod
-    def detect_pos_leds(image):
-
-        orig_img = DefineModelCV.get_leds_image()
+    def detect_pos_leds(orig_img, image):
 
         # Creates a copy to avoid changing the original one
         img = image.copy()
@@ -141,14 +139,7 @@ class DefineModelCV():
             led_coordinates.append((int(x), int(y)))
 
         # Display the image with detected circles
-        led_coordinates = DefineModelCV.show_coordinates_and_choose_order(orig_img, led_coordinates)
-
-        # print(len(led_coordinates))
-        # cv2.imshow("T", threshold)
-        # cv2.imshow("D", eroded)
-
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        DefineModelCV.show_coordinates_and_choose_order(orig_img, led_coordinates)
 
         return led_coordinates
 
@@ -193,13 +184,34 @@ class DefineModelCV():
     @staticmethod
     def show_coordinates_and_choose_order(image, coordinates):
         # Copy original image to prevent changes
-        img = image.copy()
-        img = cv2.resize(img, (720, 480))
+        img = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+        width = 420
+        height = 820
+        img = cv2.resize(img, (width, height))
         
         # Draw circles in the coordinates
         for i, (x, y) in enumerate(coordinates):
-            cv2.circle(img, (int(x*720/1920), int(y*480/1080)), 2, (0, 255, 0), 2)
-            cv2.putText(img, str(i+1), (int(x*720/1920-5), int(y*480/1080+5)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,0,0), 1)
+            cv2.circle(img, (int(width - y*width/1080), int(x*height/1920)), 2, (0, 255, 0), 2)
+            cv2.putText(img, str(i+1), (int(width - y*width/1080-20), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,255), 1)
+
+        # Show resulting image
+        cv2.imshow("HMI", img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    @staticmethod
+    def ask_leds_order(image, coordinates):
+
+        # Copy original image to prevent changes
+        img = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+        width = 420
+        height = 820
+        img = cv2.resize(img, (width, height))
+        
+        # Draw circles in the coordinates
+        for i, (x, y) in enumerate(coordinates):
+            cv2.circle(img, (int(width - y*width/1080), int(x*height/1920)), 2, (0, 255, 0), 2)
+            cv2.putText(img, str(i+1), (int(width - y*width/1080-20), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,255), 1)
 
         # Show resulting image
         cv2.imshow("HMI", img)
@@ -210,6 +222,7 @@ class DefineModelCV():
         while i < len(coordinates):
             n = (input())
             if n.isdigit():
+                n = int(n)
                 out.append(coordinates[n-1])
                 i += 1
             else:
@@ -227,7 +240,6 @@ class DefineModelCV():
                         i += 1
 
         cv2.destroyAllWindows()
-
         return out
     
     @staticmethod
@@ -251,6 +263,7 @@ class DefineModelCV():
         # TODO: Search for prints and inputs and change that to L.exit_input or something like that
 
         TIMEOUT = 10
+        print("Opening connections with serial port and camera...")
         
         # Get the display camera parameters
         # TODO: Print error
@@ -296,7 +309,8 @@ class DefineModelCV():
         # Start receiving from serial port
         serial.start_receive()
 
-        print("Serial port ready! Please, press CANCEL...")
+        print("Connected to the serial port and to the camera")
+        print("Please, procceed with the display tests...")
 
         # TODO: Print instructions to the user
 
@@ -325,7 +339,7 @@ class DefineModelCV():
 
                 if data.startswith(TEST_DISPLAY_BEGIN):
                     # TODO: Maybe log this
-                    print("Starting capturing the reference images...")
+                    print("Capturing the reference images...")
                     break
             
             sleep(0.1)
