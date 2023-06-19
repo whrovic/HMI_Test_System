@@ -192,7 +192,7 @@ class DefineModelCV():
         # Draw circles in the coordinates
         for i, (x, y) in enumerate(coordinates):
             cv2.circle(img, (int(width - y*width/1080), int(x*height/1920)), 2, (0, 255, 0), 2)
-            cv2.putText(img, str(i+1), (int(width - y*width/1080-20), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,255), 1)
+            cv2.putText(img, str(i+1), (int(width - y*width/1080-25), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 1)
 
         # Show resulting image
         cv2.imshow("HMI", img)
@@ -211,7 +211,7 @@ class DefineModelCV():
         # Draw circles in the coordinates
         for i, (x, y) in enumerate(coordinates):
             cv2.circle(img, (int(width - y*width/1080), int(x*height/1920)), 2, (0, 255, 0), 2)
-            cv2.putText(img, str(i+1), (int(width - y*width/1080-20), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,255), 1)
+            cv2.putText(img, str(i+1), (int(width - y*width/1080-25), int(x*height/1920+2)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 1)
 
         # Show resulting image
         cv2.imshow("HMI", img)
