@@ -1,14 +1,25 @@
 import logging
+import sys
+from datetime import datetime
+from data.path import Path
 
 
 class Log:
     logger = logging.getLogger('Log')
     logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+    
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setLevel(logging.DEBUG)
+    stdout_handler.setFormatter(formatter)
+
+    file_name = datetime.now().strftime(Path.get_logs_directory() + '/log_%Y_%m_%d_%H_%M.log')
+    file_handler = logging.FileHandler(file_name)
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(stdout_handler)
+    logger.addHandler(file_handler)
 
     @staticmethod
     def info_log(message):

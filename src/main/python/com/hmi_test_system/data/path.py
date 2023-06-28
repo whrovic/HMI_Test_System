@@ -8,6 +8,7 @@ class Path:
     resources_directory = os.path.join(file_path, '../../../../resources')
     settings_directory = os.path.join(file_path, '../../../../../../settings')
     model_images_directory = os.path.join(file_path, '../../../../../../model_images')
+    logs_directory = os.path.join(file_path, '../../../../../../logs')
 
     @staticmethod
     def get_settings_directory():
@@ -21,6 +22,10 @@ class Path:
     def get_resources_directory():
         return Path.resources_directory
     
+    @staticmethod
+    def get_logs_directory():
+        return Path.logs_directory
+
     @staticmethod
     def set_resources_directory(resources_directory):
         Path.resources_directory = resources_directory
